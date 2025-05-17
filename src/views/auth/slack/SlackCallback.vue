@@ -8,14 +8,13 @@
 <script setup>
 // You can add logic here if needed, e.g., handling the callback
 import { useRoute, useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
-import { useSlackStore } from '@/stores/slack';
+import { useAuthStore } from '@/stores/authStore';
 import { onMounted } from 'vue';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const slackStore = useSlackStore();
+
 const code = route.query.code;
 const state = route.query.state;
 const error = route.query.error;

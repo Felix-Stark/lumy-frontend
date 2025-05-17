@@ -5,7 +5,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // You can add logic here if needed, e.g., handling the callback
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
@@ -19,28 +19,15 @@ const code = route.query.code;
 const state = route.query.state;
 const error = route.query.error;
 
-onMounted(() => {
-	if (error) {
-		authStore.setError('Slack authentication failed');
-		router.push({ name: 'auth.login' });
-		return;
-	}
-
-	if (!code || !state) {
-		authStore.setError('Invalid Slack callback');
-		router.push({ name: 'auth.login' });
-		return;
-	}
-
-	slackStore
-		.handleSlackCallback(code, state)
-		.then(() => {
+onMounted( async () => {
+	if(code) {
+		const status = await authStore.loginSlack(code as string);
+		if(status) {
 			router.push({ name: 'home' });
-		})
-		.catch((err) => {
-			authStore.setError(err.message);
-			router.push({ name: 'auth.login' });
-		});
+		} else {
+			router.push({ name: 'error' });
+		}
+	}
 });
 
 </script>

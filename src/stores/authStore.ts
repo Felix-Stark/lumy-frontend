@@ -1,4 +1,6 @@
 import { defineStore } from "pinia";
+import api from "..//services/api"; // Assuming you have an api module to handle requests
+import router from "@/router";
 
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,16 +15,23 @@ interface SlackUser {
 	isAdmin: boolean;
 	avatar: string; //slack url to avatar image
 }
-
 export const useAuthStore = defineStore('auth', {
 	state: ()=>({
 		isLoggedIn: false,
 		slackUser: {} as null | SlackUser,
+		token: null as string | null,
+		refresh: null as string | null,
 	}),
 	actions: {
-		async login() {
+		async loginSlack(code: string) {
 			//slack sign in logic
-			
+			const res = await api.get("/slack/login/callback" + code);
+			if (res.status == 200 || res.status == 204 ) {
+				console.log("Login successful", res.data);
+			} else {
+				throw new Error("Failed to login");
+			}
+
 
 			//set slackUser state
 		},

@@ -1,5 +1,8 @@
 # Build Stage
-FROM node:20-alpine AS builder
+FROM 23-alpine3.20 AS builder
+
+# Update apk packages to ensure latest security patches and remove cache
+RUN apk update && apk upgrade --no-cache && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 COPY . .

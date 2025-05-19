@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import api from "..//services/api"; // Assuming you have an api module to handle requests
-import router from "@/router";
+// import router from "@/router";
 
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

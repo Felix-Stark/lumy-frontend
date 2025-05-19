@@ -1,10 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/auth/LoginView.vue'
 import Dashboard from '../views/Dashboard.vue'
+import { useAuthStore } from '@/stores/authStore'
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('@/views/HomeView.vue'),
+      meta: {
+        title: 'Home',
+        requiresAuth: true,
+      }
+    },
     {
       path: '/login',
       name: 'login',
@@ -26,6 +38,18 @@ const router = createRouter({
       component: Dashboard,
     }
   ],
+});
+
+
+// Global navigation guard
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore()
+
+  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router

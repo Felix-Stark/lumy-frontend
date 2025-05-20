@@ -3,6 +3,9 @@
 		<article>
 			<h1 class="font-inter">Welcome to McFeedFace</h1>
 			<h3>Feedback that actually helps -- not hurts.</h3>
+			<div>
+				<mcfeedfaceLogo class="w-32 h-32 mt-4 mb-4" />
+			</div>
 		</article>
 		<section>
 			<p>
@@ -28,6 +31,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import mcfeedfaceLogo from '@/assets/images/mcfeedface-logo.png';
+
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';
 const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=users:read&redirect_uri=${redirectUri}`;
@@ -37,6 +42,4 @@ function signInWithSlack() {
 	window.location.href = slackOauthUrl;
 }
 
-console.log("Client ID:", import.meta.env.VITE_SLACK_CLIENT_ID);
-console.log("All env:", import.meta.env);
 </script>

@@ -25,6 +25,13 @@
 # .
 
 
+feedback fylla i och analyseras
+ poäng kopplas till skill.
+performance data requests från asaya Labs
+feedback data analyseras baserat på skill 
+genomsnitts värde på skill skickas tillbaka
+
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup

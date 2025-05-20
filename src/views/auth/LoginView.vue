@@ -36,4 +36,7 @@ function signInWithSlack() {
 	// Redirect to Slack OAuth URL
 	window.location.href = slackOauthUrl;
 }
+
+console.log("Client ID:", import.meta.env.VITE_SLACK_CLIENT_ID);
+console.log("All env:", import.meta.env);
 </script>

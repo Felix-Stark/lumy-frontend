@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 const clientId = import.meta.env.SLACK_CLIENT_ID;
-const redirectUri = import.meta.env.SLACK_REDIRECT_URI;
+const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';
 const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=users:read&redirect_uri=${redirectUri}`;
 const router = useRouter();
 function signInWithSlack() {

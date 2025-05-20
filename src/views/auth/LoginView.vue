@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import mcfeedfaceLogo from '@/assets/images/mcfeedface-logo.png';
+import mcfeedfaceLogo from '@/assets/images/mcfeedface_logo.png';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';

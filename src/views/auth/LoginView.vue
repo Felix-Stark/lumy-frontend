@@ -35,7 +35,7 @@ import mcfeedfaceLogo from '@/assets/images/mcfeedface_logo.png';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';
-const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&user_scope=users:read,email&redirect_uri=${redirectUri}`;
+const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=identity.basic,identity.email,identity.avatar,identity.team&redirect_uri=${redirectUri}`;
 const router = useRouter();
 function signInWithSlack() {
 	// Redirect to Slack OAuth URL

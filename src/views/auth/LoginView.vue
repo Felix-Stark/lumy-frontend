@@ -34,6 +34,6 @@ const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId
 const router = useRouter();
 function signInWithSlack() {
 	// Redirect to Slack OAuth URL
-	router.push({ path: slackOauthUrl });
+	window.location.href = slackOauthUrl;
 }
 </script>

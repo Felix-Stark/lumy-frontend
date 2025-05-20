@@ -4,7 +4,7 @@
 			<h1 class="font-inter">Welcome to McFeedFace</h1>
 			<h3>Feedback that actually helps -- not hurts.</h3>
 			<div>
-				<mcfeedfaceLogo class="w-32 h-32 mt-4 mb-4" />
+				<img :src="mcfeedfaceLogo" alt="McFeedFace Logo" class="w-32 h-32 mt-4 mb-4" />
 			</div>
 		</article>
 		<section>

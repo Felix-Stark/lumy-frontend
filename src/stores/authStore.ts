@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
 	actions: {
 		async loginSlack(code: string) {
 			//slack sign in logic
-			const res = await api.get("/slack/login/callback/" + code);
+			const res = await api.get("/slack/login/callback?code=" + code);
 			if (res.status == 200 || res.status == 204 ) {
 				console.log("Login successful", res.data);
 				return res.status;

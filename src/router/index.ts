@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '@/views/auth/LoginView.vue'
+import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Home from '../views/Home.vue'
 import { useAuthStore } from '@/stores/authStore'
@@ -19,14 +19,31 @@ const router = createRouter({
       }
     },
     {
-      path: '/login',
-      name: 'login',
-      component: LoginView,
-    },
-    {
-      path: '/slack/callback',
-      name: 'slack-callback',
-      component: () => import('@/views/auth/slack/SlackCallback.vue'),
+      path: '/slack',
+      component: () => import('@/views/auth/slack/SlackLayout.vue'),
+      redirect: '/slack/login',
+      meta: {
+        title: 'Slack Login',
+        requiresAuth: false,
+      },
+      children: [
+        {
+          path: '/slack/login',
+          name: 'slack-login',
+          component: SlackLogin,
+        },
+        {
+          path: '/slack/callback',
+          name: 'slack-callback',
+          component: () => import('@/views/auth/slack/SlackCallback.vue'),
+        },
+        {
+          path: '/slack/register',
+          name: 'slack-register',
+          component: () => import('@/views/auth/slack/SlackRegister.vue'),
+        },
+        
+      ]
     },
     {
       path: '/error',

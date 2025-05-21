@@ -4,7 +4,10 @@ console.log('App.vue loaded')
 </script>
 
 <template>
-  <RouterView />
+  <!-- Main application view -->
+   <main class="flex flex-col items-center justify-center min-h-screen w-screen bg-slate-50">
+     <RouterView />
+   </main>
 </template>
 
 

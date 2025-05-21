@@ -33,16 +33,21 @@ export const useAuthStore = defineStore('auth', {
 					this.refresh = res.data.refresh;
 					this.slackUser = res.data.user;
 					//router.push({ name: "dashboard" });
+					
 				} else {
-					throw new Error("Login failed");
+					console.log('res status: ', res.status);
+					if (res.status === 404) {
+						return res.status
+					}
 				}
 			} catch (error) {
 				console.error("Login error:", error);
+
 			}
 			//set slackUser state
 		},
 		async registerSlackUser(code: string) {
-			
+
 		},
 		async logout() {
 			//logout logic

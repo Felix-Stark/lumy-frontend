@@ -10,7 +10,4 @@
 import SlackAuthPage from '@/layouts/SlackAuthPage.vue';
 import feedyWaiting from '@/assets/images/feedy_waiting.png';
 
-const installSlack = () => {
-	
-}
 </script>

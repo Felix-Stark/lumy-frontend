@@ -20,7 +20,7 @@ const router = createRouter({
     },
     {
       path: '/slack',
-      component: () => import('@/views/auth/slack/SlackLayout.vue'),
+      component: () => import('@/layouts/SlackLayout.vue'),
       redirect: '/slack/login',
       meta: {
         title: 'Slack Login',
@@ -42,7 +42,11 @@ const router = createRouter({
           name: 'slack-register',
           component: () => import('@/views/auth/slack/SlackRegister.vue'),
         },
-        
+        {
+          path: '/slack/install-redirect',
+          name: 'slack-install-redirect',
+          component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
+        }
       ]
     },
     {

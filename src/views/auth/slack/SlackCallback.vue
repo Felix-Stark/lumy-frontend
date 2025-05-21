@@ -26,11 +26,7 @@ const error = route.query.error;
 onMounted( async () => {
 	if(code) {
 		const status = await authStore.loginSlack(code as string);
-		if(status) {
-			router.push({ name: 'home' });
-		} else {
-			router.push({ name: 'error' });
-		}
+		
 	}
 });
 

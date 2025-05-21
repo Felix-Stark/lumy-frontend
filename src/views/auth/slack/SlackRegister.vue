@@ -12,10 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import SlackAuthPage from '@/components/SlackAuthPage.vue'
+import SlackAuthPage from '@/layouts/SlackAuthPage.vue'
 import feedyHappy from '@/assets/images/feedy_happy.png'
+const clientId = import.meta.env.VITE_SLACK_CLIENT_ID
+const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback'
+const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=commands,chat:write,users:read,team:read&user_scope=identity.avatar,identity.basic,identity.email,identity.team`
 
 const registerSlackUser = () => {
-	
+	// Redirect to Slack OAuth URL
+	window.location.href = slackOauthUrl
 }
 </script>

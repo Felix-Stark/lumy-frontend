@@ -26,15 +26,23 @@ export const useAuthStore = defineStore('auth', {
 		async loginSlack(code: string) {
 			//slack sign in logic
 			const res = await api.get("/slack/login/callback?code=" + code);
-			if (res.status == 200 || res.status == 204 ) {
-				console.log("Login successful", res.data);
-				return res.status;
-			} else {
-				throw new Error("Failed to login");
+			try {
+				if (res.status === 200) {
+					this.isLoggedIn = true;
+					this.token = res.data.token;
+					this.refresh = res.data.refresh;
+					this.slackUser = res.data.user;
+					//router.push({ name: "dashboard" });
+				} else {
+					throw new Error("Login failed");
+				}
+			} catch (error) {
+				console.error("Login error:", error);
 			}
-
-
 			//set slackUser state
+		},
+		async registerSlackUser(code: string) {
+			
 		},
 		async logout() {
 			//logout logic

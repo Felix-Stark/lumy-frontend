@@ -30,8 +30,6 @@ onMounted( async () => {
 		if(status === 204) {
 			router.push({ name: 'slack-register' });
 		}
-		console.log('Code:', code);
-		console.log('State:', state);
 	}
 });
 

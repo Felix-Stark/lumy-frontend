@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import Dashboard from '../views/Dashboard.vue'
+import Dashboard from '../views/admin/Dashboard.vue'
 import Home from '../views/Home.vue'
 import { useAuthStore } from '@/stores/authStore'
 

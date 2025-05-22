@@ -3,7 +3,7 @@
 	<div
 	  class="rounded-2xl shadow-md p-6 transition duration-300 relative"
 	  :class="[
-		baseBg,
+		,
 		hoverable ? hoverBg : '',
 		clickable ? 'cursor-pointer' : 'cursor-default'
 	  ]"

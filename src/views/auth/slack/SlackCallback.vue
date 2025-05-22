@@ -27,7 +27,9 @@ onMounted( async () => {
 	console.log('slack callback mounted');
 	if(code) {
 		const status = await authStore.loginSlack(code as string);
-		console.log('Status:', status);
+		if(status === 204) {
+			router.push({ name: 'slack-register' });
+		}
 		console.log('Code:', code);
 		console.log('State:', state);
 	}

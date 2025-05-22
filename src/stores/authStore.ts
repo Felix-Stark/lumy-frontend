@@ -45,7 +45,7 @@ export const useAuthStore = defineStore('auth', {
 					console.log('login status 204: ', res);
 					this.isLoggedIn = false;
 					this.slackUser = null;
-					router.push({ name: "slack-register" });
+					return res.status;
 				}
 			} catch (error: any) {
 				console.error("Login error:", error);
@@ -57,7 +57,6 @@ export const useAuthStore = defineStore('auth', {
 			console.log('register res: ', res);
 			if (res.status === 200) {
 				this.isLoggedIn = true;
-				router.push({name: 'dashboard'})
 			}
 		},
 		async logout() {

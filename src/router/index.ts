@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
 
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
-    next({ name: 'login' })
+    next({ name: 'slack-login' })
   } else {
     next()
   }

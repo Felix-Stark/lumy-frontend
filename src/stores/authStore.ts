@@ -40,25 +40,25 @@ export const useAuthStore = defineStore('auth', {
 					this.refresh = res.data.refresh;
 					this.slackUser = res.data.user;
 					//router.push({ name: "dashboard" });
-					
+				}
+				if (res.status === 204) {
+					console.log('login status 204: ', res);
+					this.isLoggedIn = false;
+					this.slackUser = null;
+					router.push({ name: "slack-register" });
 				}
 			} catch (error: any) {
 				console.error("Login error:", error);
-				if (error.response && error.response.status === 404) {
-					// Handle 404 error
-					console.log('res status: ', error.response.status);
-
-				} else {
-					// Handle other errors
-					console.error("An unexpected error occurred:", error);
-				}
-
 			}
 			//set slackUser state
 		},
 		async registerSlackUser(code: string) {
 			const res = await api.post("/slack/account", { code });
 			console.log('register res: ', res);
+			if (res.status === 200) {
+				this.isLoggedIn = true;
+				router.push({name: 'dashboard'})
+			}
 		},
 		async logout() {
 			//logout logic

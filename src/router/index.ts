@@ -10,9 +10,9 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/admin',
-      name: 'admin',
+      path: '/',
       component: AdminLayout,
+      redirect: '/admin/dashboard',
       meta: {
         title: 'Home',
         requiresAuth: true,

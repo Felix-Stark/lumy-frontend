@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col h-screen w-full mx-0-auto bg-[#EFEFF9]">
+  <div class="flex flex-col h-screen w-full mx-0-auto ">
     <header class="">
 
     </header>

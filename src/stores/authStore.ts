@@ -30,8 +30,9 @@ export const useAuthStore = defineStore('auth', {
 			//slack sign in logic
 
 			const res = await api.get("/slack/login/callback?code=" + code);
-			console.log('login res: ', res);
+
 			try {
+				console.log('login res: ', res);
 				if (res.status === 200) {
 					console.log('login status 200: ', res);
 					this.isLoggedIn = true;

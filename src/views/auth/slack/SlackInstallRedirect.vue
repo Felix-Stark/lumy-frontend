@@ -7,19 +7,29 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+
 import SlackAuthPage from '@/layouts/SlackAuthPage.vue';
 import feedyWaiting from '@/assets/images/feedy_waiting.png';
 import { onMounted } from 'vue';
 
-onMounted(() => {
-	const code = new URL(window.location.href).searchParams.get('code');
-	const state = new URL(window.location.href).searchParams.get('state');
-	const error = new URL(window.location.href).searchParams.get('error');
+const authStore = useAuthStore();
+const route = useRoute();
+const router = useRouter();
+const code = route.query.code;
+const state = route.query.state;
+const error = route.query.error;
+onMounted( async () => {
 
 	if (code) {
 		// Handle the code and state as needed
 		console.log('Code:', code);
 		console.log('State:', state);
+		const status = await authStore.registerSlackUser(code as string);
+		if (status === 200) {
+			router.push({ name: 'dashboard' });
+		}
 	} else if (error) {
 		// Handle the error as needed
 		console.error('Error:', error);

@@ -57,6 +57,7 @@ export const useAuthStore = defineStore('auth', {
 			console.log('register res: ', res);
 			if (res.status === 200) {
 				this.isLoggedIn = true;
+				return res.status;
 			}
 		},
 		async logout() {

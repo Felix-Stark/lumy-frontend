@@ -26,13 +26,7 @@ onMounted( async () => {
 		// Handle the code and state as needed
 		console.log('Code:', code);
 		console.log('State:', state);
-		const status = await authStore.registerSlackUser(code as string);
-		if (status === 200) {
-			router.push({ name: 'dashboard' });
-		}
-	} else if (error) {
-		// Handle the error as needed
-		console.error('Error:', error);
+		await authStore.registerSlackUser(code as string);	
 	}
 });
 </script>

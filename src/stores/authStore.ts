@@ -11,19 +11,19 @@ function isValidEmail(email: string): boolean {
 }
 interface SlackUser {
 	id: string;
-	team_id:string;
+	account_id:string;
+	role: string; //role
 	displayName: string;
-	realName: string;
-	title: string; //role
-	isAdmin: boolean;
+	email: string; //email
 	avatar: string; //slack url to avatar image
 }
 export const useAuthStore = defineStore('auth', {
 	state: ()=>({
 		isLoggedIn: false,
+		isAdmin: false,
 		slackUser: {} as null | SlackUser,
-		token: null as string | null,
-		refresh: null as string | null,
+		// token: null as string | null,
+		// refresh: null as string | null,
 	}),
 	actions: {
 		async loginSlack(code: string) {
@@ -36,10 +36,11 @@ export const useAuthStore = defineStore('auth', {
 				if (res.status === 200) {
 					console.log('login status 200: ', res);
 					this.isLoggedIn = true;
-					this.token = res.data.token;
-					this.refresh = res.data.refresh;
-					this.slackUser = res.data.user;
-					//router.push({ name: "dashboard" });
+					this.isAdmin = res.data.user.role === "admin";
+					this.slackUser = res.data;
+					if(this.isAdmin) {
+						router.push({ name: "dashboard" });
+					}
 				}
 				if (res.status === 204) {
 					console.log('login status 204: ', res);
@@ -57,8 +58,23 @@ export const useAuthStore = defineStore('auth', {
 			console.log('register res: ', res);
 			if (res.status === 200) {
 				this.isLoggedIn = true;
-				
-				return res.status;
+				await this.getMe();
+				if(this.isAdmin) {
+					router.push({ name: "dashboard" });
+				}
+			}
+		},
+		async getMe() {
+			//get user info logic
+			const res = await api.get("/me");
+			console.log('getMe res: ', res);
+			if (res.status === 200) {
+				this.slackUser = res.data;
+				this.isLoggedIn = true;
+				this.isAdmin = res.data.role === "admin";
+			} else {
+				this.isLoggedIn = false;
+				this.slackUser = null;
 			}
 		},
 		async logout() {

@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="flex flex-col items-center justify-center">
 			<div class="flex flex-col items-center justify-center">
 				<img v-if="image" :src="image" alt="McFeedFace Logo" class="w-56 h-auto mt-4 mb-4" />
 			</div>

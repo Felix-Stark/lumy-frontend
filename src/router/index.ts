@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import Dashboard from '../views/admin/Dashboard.vue'
-import Home from '../views/Home.vue'
+import AdminLayout from '@/layouts/AdminLayout.vue'
+
 import { useAuthStore } from '@/stores/authStore'
 
 
@@ -10,13 +10,24 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: '/admin',
+      name: 'admin',
+      component: AdminLayout,
       meta: {
         title: 'Home',
         requiresAuth: true,
-      }
+      },
+      children: [
+        {
+          path: '/admin/dashboard',
+          name: 'admin-dashboard',
+          component: () => import('@/views/admin/Dashboard.vue'),
+          meta: {
+            title: 'Admin Dashboard',
+            requiresAuth: true,
+          },
+        }
+      ]
     },
     {
       path: '/slack',
@@ -24,7 +35,6 @@ const router = createRouter({
       redirect: '/slack/login',
       meta: {
         title: 'Slack Login',
-        requiresAuth: false,
       },
       children: [
         {
@@ -54,11 +64,6 @@ const router = createRouter({
       name: 'error',
       component: () => import('@/views/Error.vue'),
     },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: Dashboard,
-    }
   ],
 });
 

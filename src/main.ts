@@ -1,5 +1,6 @@
 import './assets/tailwind.css'
 import '@fontsource-variable/inter';
+import './chart-setup'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

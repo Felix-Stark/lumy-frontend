@@ -15,7 +15,7 @@ const router = createRouter({
       redirect: '/admin/dashboard',
       meta: {
         title: 'Home',
-        requiresAuth: true,
+        requiresAuth: false,
       },
       children: [
         {
@@ -24,7 +24,7 @@ const router = createRouter({
           component: () => import('@/views/admin/Dashboard.vue'),
           meta: {
             title: 'Admin Dashboard',
-            requiresAuth: true,
+            requiresAuth: false,
           },
         }
       ]

@@ -26,6 +26,10 @@ const error = route.query.error;
 onMounted( async () => {
 	console.log('slack callback mounted');
 	if(code) {
+		const status = await authStore.loginSlack(code as string);
+		if(status === 204) {
+			router.push({ name: 'slack-register' });
+		}
 		await authStore.loginSlack(code as string);
 	}
 });

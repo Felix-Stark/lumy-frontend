@@ -30,7 +30,6 @@ onMounted( async () => {
 		if(status === 204) {
 			router.push({ name: 'slack-register' });
 		}
-		await authStore.loginSlack(code as string);
 	}
 });
 

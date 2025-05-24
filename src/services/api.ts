@@ -4,11 +4,10 @@ const BASE_URL = "https://mcfeedface-api-production.up.railway.app";
 
 const api = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
   headers: {
-	"Content-Type": "application/json",
-  credentials: "include",
+    "Content-Type": "application/json",
   },
 });
-
 
 export default api;

@@ -14,6 +14,7 @@
 		{{ explain }}
 	</p>
 	</section>
+	<div class="w-20 h-20 bg-mypurple hover:bg-mypurple-light"></div>
 	<div class="flex flex-col items-center mt-4">
 		<button v-if="buttonText"
 		  class="bg-mypurple hover:bg-mypurple-light min-w-3xs max-w-3xs text-white font-bold py-2 px-4 rounded-md mt-4 cursor-pointer transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"

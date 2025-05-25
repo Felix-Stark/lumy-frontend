@@ -56,6 +56,23 @@ const router = createRouter({
           path: '/slack/install-redirect',
           name: 'slack-install-redirect',
           component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
+        },
+        {
+          path: '/slack/install-success',
+          name: 'slack-install-success',
+          component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
+        },
+      ]
+    },
+    {
+      path: '/onboarding',
+      component: () => import('@/layouts/OnboardingLayout.vue'),
+      redirect: '/onboarding/framework',
+      children: [
+        {
+          path: '/onboarding/framework',
+          name: 'onboarding-framework',
+          component: () => import('@/views/admin/onboarding/OnboardingFramework.vue'),
         }
       ]
     },

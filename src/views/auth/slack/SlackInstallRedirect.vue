@@ -1,5 +1,5 @@
 <template>
-<SlackAuthPage 
+<SlackAuthLayout 
 	text="Deploying bots and aligning stars... almost there!"
 	:image="feedyWaiting"
 	:loader="true"
@@ -10,7 +10,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
-import SlackAuthPage from '@/layouts/SlackAuthPage.vue';
+import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
 import feedyWaiting from '@/assets/images/feedy_waiting.png';
 import { onMounted } from 'vue';
 

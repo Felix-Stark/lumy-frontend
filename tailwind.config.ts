@@ -1,7 +1,11 @@
-const config = {
+export default {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
+  safelist: [
+    'bg-mypurple',
+    'hover:bg-mypurple-light',
   ],
   theme: {
     extend: {
@@ -15,5 +19,3 @@ const config = {
   },
   plugins: [],
 };
-
-export default config;

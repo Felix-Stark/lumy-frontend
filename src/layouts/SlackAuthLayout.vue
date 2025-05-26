@@ -1,4 +1,5 @@
 <template>
+  <div class="max-w-3xl">
   <article class="flex flex-col items-center justify-center mb-8">
 			<div class="flex flex-col items-center justify-center">
 				<img v-if="image" :src="image" alt="McFeedFace Logo" class="w-56 h-auto mt-4 mb-4" />
@@ -20,6 +21,7 @@
       >
         {{ buttonText }}
       </button>
+    </div>
 </template>
 
 <script setup lang="ts">

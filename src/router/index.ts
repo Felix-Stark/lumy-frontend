@@ -62,6 +62,11 @@ const router = createRouter({
           name: 'slack-install-success',
           component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
         },
+        {
+          path: '/slack/notadmin',
+          name: 'slack-notadmin',
+          component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
+        }
       ]
     },
     {

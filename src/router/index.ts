@@ -65,14 +65,19 @@ const router = createRouter({
       ]
     },
     {
-      path: '/onboarding',
-      component: () => import('@/layouts/OnboardingLayout.vue'),
-      redirect: '/onboarding/framework',
+      path: '/setup',
+      component: () => import('@/layouts/SetupLayout.vue'),
+      redirect: '/setup/framework',
       children: [
         {
-          path: '/onboarding/framework',
-          name: 'onboarding-framework',
-          component: () => import('@/views/admin/onboarding/OnboardingFramework.vue'),
+          path: '/setup/framework',
+          name: 'setup-framework',
+          component: () => import('@/views/admin/setup/Framework.vue'),
+        },
+        {
+          path: '/setup/users',
+          name: 'setup-users',
+          component: () => import('@/views/admin/setup/Users.vue'),
         }
       ]
     },

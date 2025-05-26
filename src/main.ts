@@ -1,4 +1,4 @@
-import './assets/tailwind.css'
+import './style.css'
 import '@fontsource-variable/inter';
 import './chart-setup'
 

@@ -8,7 +8,6 @@
     "playwright.config.*",
     "eslint.config.*",
     "tailwind.config.*",
-    "postcss.config.*",
   ],
   "compilerOptions": {
     "noEmit": true,

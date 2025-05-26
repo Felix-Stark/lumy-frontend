@@ -29,6 +29,11 @@ onMounted( async () => {
 		const status = await authStore.loginSlack(code as string);
 		if(status === 204) {
 			router.push({ name: 'slack-register' });
+		} else if (status === 200) {
+			router.push({ name: 'home' });
+		} else {
+			console.error('Error during Slack login:', status);
+			router.push({ name: 'slack-login' });
 		}
 	}
 });

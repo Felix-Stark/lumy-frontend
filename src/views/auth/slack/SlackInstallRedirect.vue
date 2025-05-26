@@ -21,12 +21,11 @@ const code = route.query.code;
 const state = route.query.state;
 const error = route.query.error;
 onMounted( async () => {
-
 	if (code) {
-		// Handle the code and state as needed
-		console.log('Code:', code);
-		console.log('State:', state);
-		await authStore.registerSlackUser(code as string);	
+		const status = await authStore.registerSlackUser(code as string);
+		if (status === 200) {
+			router.push({ name: 'setup-framework' });
+		}
 	}
 });
 </script>

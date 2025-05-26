@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col items-center justify-center h-screen">
-		<OnboardingComp 
+		<SetupComp 
 			title="Sweet! Now, let's configure your account"
 			text="Don't worry, you can also change these settings later on. This is just to get you set up."
 			button-text="Continue"
@@ -24,7 +24,7 @@
 		  </select>
 
 		</div>
-		</OnboardingComp>
+		</SetupComp>
 	</div>
 </template>
 
@@ -32,12 +32,17 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 const router = useRouter();
-import OnboardingComp from '@/components/onboarding/OnboardingComp.vue';
+import SetupComp from '@/components/setup/SetupComp.vue';
 import api from '@/services/api';
-const selectedFramework = ref('')
+const selectedFramework = ref('');
 
 const setFramework = async () => {
-	// const res = await api.put('/account/framework', { selectedFramework });
+	const res = await api.put('/account/framework', { framework: selectedFramework.value });
+	if (res.status === 200) {
+		router.push('/admin/setup/setup-users');
+	} else {
+		console.error('Error setting framework:', res);
+	}
 	console.log('selectedFramework: ', selectedFramework.value)
 }
 
@@ -63,11 +68,11 @@ const frameworks = [
 
 <!-- <template>
   <div class="flex flex-col items-center justify-center h-screen bg-mcgray">
-    <OnboardingComp 
+    <SetupComp 
       title="Sweet! Now, let's configure your account"
       text="Don't worry, you can also change these settings later on. This is just to get you set up."
       button-text="Continue"
-      :onAction="() => router.push('/admin/onboarding/SetupFramework')"
+      :onAction="() => router.push('/admin/setup/SetupFramework')"
       :disabled="!selectedFramework"
     >
       <select
@@ -83,7 +88,7 @@ const frameworks = [
           {{ fw.name }}
         </option>
       </select>
-    </OnboardingComp>
+    </SetupComp>
   </div>
 </template>
 
@@ -91,7 +96,7 @@ const frameworks = [
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 const router = useRouter();
-import OnboardingComp from '@/components/onboarding/OnboardingComp.vue';
+import SetupComp from '@/components/setup/SetupComp.vue';
 
 const selectedFramework = ref('');
 const frameworks = [

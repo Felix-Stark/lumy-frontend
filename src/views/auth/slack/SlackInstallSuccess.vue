@@ -4,7 +4,7 @@
 	description="Your account has been setup."
 	:image="feedySuccess"
 	button-text="Let's configure your account"
-	:onAction="() => router.push('/admin/onboarding/SetupFramework')"
+	:onAction="() => router.push('/admin/setup/SetupFramework')"
 	/>
 </template>
 

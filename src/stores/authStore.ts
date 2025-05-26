@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-import api from "..//services/api"; // Assuming you have an api module to handle requests
-import { useRouter } from "vue-router";
-import type { AxiosError } from "axios";
-const router = useRouter();
+import api from "..//services/api";
 
 
 function isValidEmail(email: string): boolean {
@@ -38,16 +35,14 @@ export const useAuthStore = defineStore('auth', {
 					this.isLoggedIn = true;
 					this.isAdmin = res.data.user.role === "admin";
 					this.slackUser = res.data;
-					if(this.isAdmin) {
-						router.push({ name: "dashboard" });
-					}
+					
 				}
 				if (res.status === 204) {
 					console.log('login status 204: ', res);
 					this.isLoggedIn = false;
 					this.slackUser = null;
-					return res.status;
 				}
+				return res.status;
 			} catch (error: any) {
 				console.error("Login error:", error);
 			}
@@ -55,13 +50,10 @@ export const useAuthStore = defineStore('auth', {
 		},
 		async registerSlackUser(code: string) {
 			const res = await api.post("/slack/account", { code });
-			console.log('register res: ', res);
+			console.log('register data: ', res.data);
 			if (res.status === 200) {
 				this.isLoggedIn = true;
-				await this.getMe();
-				if(this.isAdmin) {
-					router.push({ name: "dashboard" });
-				}
+				return res.status;
 			}
 		},
 		async getMe() {

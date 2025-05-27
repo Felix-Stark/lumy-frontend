@@ -43,11 +43,7 @@ const users = ref<User[]>(userStore.users || []);
 onMounted(async () => {
   loading.value = true;
   try {
-    if(!userStore.account) {
-      userStore.getUsers().finally(() => {
-        loading.value = false;
-      });
-    }
+    userStore.getUsers();
     const response = await api.get('/users');
     users.value = response.data;
   } catch (error) {

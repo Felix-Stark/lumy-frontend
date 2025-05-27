@@ -35,7 +35,7 @@
 import UserListItem from '@/components/base/UserListItem.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import api from '@/services/api.vue';
+import api from '@/services/api.ts';
 import { useUserStore } from '@/stores/userStore';
 import type { User } from '@/types';
 const userStore = useUserStore();

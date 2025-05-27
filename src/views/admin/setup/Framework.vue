@@ -39,7 +39,7 @@ const selectedFramework = ref('');
 const setFramework = async () => {
 	const res = await api.put('/account/framework', { framework: selectedFramework.value });
 	if (res.status === 200) {
-		router.push('/admin/setup/setup-users');
+		router.push('/setup/users');
 	} else {
 		console.error('Error setting framework:', res);
 	}

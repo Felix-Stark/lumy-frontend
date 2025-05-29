@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col justify-center min-w-2xl h-full p-4">
+	<div class="flex flex-col box-border min-w-2xl h-[75vh] p-4">
     <article class="flex flex-col items-center justify-center">
       <div class="flex flex-col items-center justify-center">
         <h1 class="font-inter font-semibold text-3xl text-center">Gotcha! What about users? Does this look good?</h1>
@@ -12,7 +12,7 @@
 	
 	  </section>
 	  <div v-if="loading" class="w-20 h-20 bg-purple-500"></div>
-    <div v-if="users" class="flex flex-col items-center mt-3">
+    <div v-if="users" class="flex flex-col items-center mt-3 h-full overflow-auto">
       <UserListItem
         v-for="user in users"
         :avatarUrl="user.avatar"
@@ -22,11 +22,12 @@
         :isActive="user.isActive"
         :id="user.id"
         @update:role="role => handleRoleChange(user.id, role)"
+        @update:isActive="isActive => handleActive(user.id, isActive)"
       />
     </div>
     <button
       class="bg-purple-500 hover:bg-purple-400 place-self-center min-w-3xs max-w-3xs mt-10 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out"
-      @click="router.push('/admin/setup/skills')"
+      @click="updateUsers"
       >Next</button>
 	</div>
 </template>
@@ -39,74 +40,225 @@ import api from '@/services/api.ts';
 import { useUserStore } from '@/stores/userStore';
 import type { User } from '@/types';
 const userStore = useUserStore();
-const users = ref<User[]>(userStore.users || []);
+const users = ref<User[]>([]);
 onMounted(async () => {
   loading.value = true;
   try {
-    userStore.getUsers();
-    const response = await api.get('/users');
-    users.value = response.data;
+    if (userStore.users.length < 1) {
+      // users.value = mockUsers;
+      const response = await api.get('/users');
+      users.value = response.data;
+      console.log('Fetched users:', users.value);
+    }
   } catch (error) {
     console.error('Error fetching users:', error);
   } finally {
     loading.value = false;
   }
 });
+const updateUsers = async () => {
+  console.log('Updating users in store:', users.value);
+  users.value.forEach(user => {
+    userStore.updateUser(user.id, { ...user, isActive: user.isActive, role: user.role });
+  });
+}
+const handleActive = async (id: string, isActive: boolean) => {
+  // console.log(`Updating user ${id} active status to ${!isActive}: `, users.value);
+  const user = users.value.find(user => user.id === id);
+  if (user) {
+    user.isActive = !isActive;
+  }
+}
 const handleRoleChange = async (id: string, role: string) => {
-  console.log(`Updating role for user ${id} to ${role}`);
-  const updateRole = await api.patch(`/users/${id}`, {      
-    role: role,
-   });
+  console.log(`Updating user ${id} to ${role}: `, users.value);
+  // const updateRole = await api.patch(`/users/${id}`, {      
+  //   role: role,
+  //  });
 }
 const router = useRouter();
 const loading = ref(false);
 
 
-// const users = ref([
-//   {
-//     avatarUrl: "https://secure.gravatar.com/avatar/fa1137d973c97355a15665ef02eb0ff9.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-192.png",
-//     email: "felix.b.stark@gmail.com",
-//     id: "1",
-//     name: "Felix Stark",
-//     title: "Code monkey",
-//     role: "admin",
-//     isActive: true
-//   },
-//   {
-//     avatarUrl: "https://secure.gravatar.com/avatar/fa1137d973c97355a15665ef02eb0ff9.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-192.png",
-//     email: "felix.b.stark@gmail.com",
-//     id: "3",
-//     name: "Jack Sparrow",
-//     title: "Pirate captain",
-//     role: "member",
-//     isActive: true
-//   },
-//   {
-//     avatarUrl: "https://secure.gravatar.com/avatar/fa1137d973c97355a15665ef02eb0ff9.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-192.png",
-//     email: "felix.b.stark@gmail.com",
-//     id: "4",
-//     name: "Hampus Vemvet",
-//     title: "Okänd",
-//     role: "member",
-//     isActive: true
-//   },
-//   {
-//     avatarUrl: "https://secure.gravatar.com/avatar/fa1137d973c97355a15665ef02eb0ff9.jpg?s=192&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0025-192.png",
-//     email: "felix.b.stark@gmail.com",
-//     id: "5",
-//     name: "Dr Gonzo",
-//     title: "Journalist",
-//     role: "admin",
-//     isActive: true
-//   },
-//   {
-//     avatarUrl: "https://avatars.slack-edge.com/2025-05-13/8894308249666_c06031f8a477492d2fcc_192.jpg",
-//     email: "oscarklink@gmail.com",
-//     id: "2",
-//     name: "Oscar Klink",
-//     title: "Backend wizard",
-//     role: "admin",
-//     isActive: true
-//   }
-// ])
+const mockUsers: User[] = [
+  {
+    id: "1",
+    name: "Alice Johnson",
+    email: "alice.johnson@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+    role: "admin",
+    title: "Team Lead",
+    slack_user_id: "U001",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "2",
+    name: "Bob Smith",
+    email: "bob.smith@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+    role: "member",
+    title: "Developer",
+    slack_user_id: "U002",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "3",
+    name: "Carol White",
+    email: "carol.white@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/3.jpg",
+    role: "member",
+    title: "Designer",
+    slack_user_id: "U003",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "4",
+    name: "David Brown",
+    email: "david.brown@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/4.jpg",
+    role: "admin",
+    title: "Product Owner",
+    slack_user_id: "U004",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "5",
+    name: "Eva Green",
+    email: "eva.green@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/5.jpg",
+    role: "member",
+    title: "QA Engineer",
+    slack_user_id: "U005",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "6",
+    name: "Frank Black",
+    email: "frank.black@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/6.jpg",
+    role: "member",
+    title: "Support",
+    slack_user_id: "U006",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: false,
+  },
+  {
+    id: "7",
+    name: "Grace Lee",
+    email: "grace.lee@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/7.jpg",
+    role: "admin",
+    title: "HR Manager",
+    slack_user_id: "U007",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "8",
+    name: "Henry Adams",
+    email: "henry.adams@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/8.jpg",
+    role: "member",
+    title: "Intern",
+    slack_user_id: "U008",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "9",
+    name: "Ivy Clark",
+    email: "ivy.clark@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/9.jpg",
+    role: "member",
+    title: "Marketing",
+    slack_user_id: "U009",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "10",
+    name: "Jack Miller",
+    email: "jack.miller@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/10.jpg",
+    role: "admin",
+    title: "CTO",
+    slack_user_id: "U010",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "11",
+    name: "Kathy Turner",
+    email: "kathy.turner@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/11.jpg",
+    role: "member",
+    title: "Business Analyst",
+    slack_user_id: "U011",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: false,
+  },
+  {
+    id: "12",
+    name: "Leo Harris",
+    email: "leo.harris@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/12.jpg",
+    role: "member",
+    title: "DevOps",
+    slack_user_id: "U012",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "13",
+    name: "Mona Scott",
+    email: "mona.scott@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/13.jpg",
+    role: "admin",
+    title: "CEO",
+    slack_user_id: "U013",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "14",
+    name: "Nate Young",
+    email: "nate.young@example.com",
+    avatar: "https://randomuser.me/api/portraits/men/14.jpg",
+    role: "member",
+    title: "Frontend Developer",
+    slack_user_id: "U014",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+  {
+    id: "15",
+    name: "Olivia King",
+    email: "olivia.king@example.com",
+    avatar: "https://randomuser.me/api/portraits/women/15.jpg",
+    role: "member",
+    title: "Content Writer",
+    slack_user_id: "U015",
+    slack_team_id: "T001",
+    account_id: "A001",
+    isActive: true,
+  },
+];
 </script>

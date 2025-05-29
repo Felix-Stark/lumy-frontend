@@ -26,14 +26,11 @@ const error = route.query.error;
 onMounted( async () => {
 	console.log('slack callback mounted');
 	if(code) {
-		const status = await authStore.loginSlack(code as string);
-		if(status === 204) {
-			router.push({ name: 'slack-register' });
-		} else if (status === 200) {
-			router.push({ name: 'home' });
+		const path = await authStore.loginSlack(code as string);
+		if (path) {
+			router.push(path);
 		} else {
-			console.error('Error during Slack login:', status);
-			router.push({ name: 'slack-login' });
+			console.error('Login failed');
 		}
 	}
 });

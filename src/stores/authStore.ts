@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', {
 			//slack sign in logic
 
 			const res = await api.get("/slack/login/callback?code=" + code);
-
+			let path = '';
 			try {
 				console.log('login res: ', res);
 				if (res.status === 200) {
@@ -30,13 +30,14 @@ export const useAuthStore = defineStore('auth', {
 					const userStore = useUserStore();
 					userStore.me = res.data.user;
 					userStore.account = res.data.account;
-					
+					path = '/admin/dashboard';
 				}
 				if (res.status === 204) {
 					console.log('login status 204: ', res);
 					this.isLoggedIn = false;
+					path = '/slack/register';
 				}
-				return res.status;
+				return path;
 			} catch (error: any) {
 				console.error("Login error:", error);
 			}
@@ -49,7 +50,7 @@ export const useAuthStore = defineStore('auth', {
 				const userStore = useUserStore();
 				this.isLoggedIn = true;
 				userStore.account = res.data;
-				return res.status;
+				return res.data;
 			}
 		},
 		

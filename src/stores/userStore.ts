@@ -24,6 +24,12 @@ export const useUserStore = defineStore('user', {
 			}
 			return res.status;
 		},
+		async updateUser(userId: string, userData: Partial<User>) {
+			const res = await api.patch(`/users/${userId}`, userData);
+			if(res.status === 200) {
+				return res.data;
+			}
+		},
 		async getAccount() {
 			const res = await api.get('/account');
 			if (res.status === 200) {

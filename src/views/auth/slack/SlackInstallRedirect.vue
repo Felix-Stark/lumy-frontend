@@ -22,8 +22,8 @@ const state = route.query.state;
 const error = route.query.error;
 onMounted( async () => {
 	if (code) {
-		const status = await authStore.registerSlackUser(code as string);
-		if (status === 200) {
+		const data = await authStore.registerSlackUser(code as string);
+		if (data) {
 			router.push({ name: 'setup-framework' });
 		}
 	}

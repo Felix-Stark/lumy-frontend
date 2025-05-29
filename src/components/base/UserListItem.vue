@@ -29,19 +29,16 @@
             	<option selected value="member">Member</option>
             	<option value="admin">Admin</option>
           	</select>
-			<button class=" text-red-500 ">
-				<UserX
-				class="cursor-pointer "
-				@click=""
-				title="Deactivate User"
-			/>
+			<button @click="handleActive" class=" text-red-500 ">
+				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer" />
+				<UserPlus v-else class="w-6 h-6 text-green-500 opacity-100 cursor-pointer" />
 			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { UserX } from 'lucide-vue-next';
+import { UserMinus, UserPlus } from 'lucide-vue-next';
 
 const props = defineProps<{
 	id: string;
@@ -52,10 +49,15 @@ const props = defineProps<{
 	title?: string;
 	role: string;
 }>();
-const emit = defineEmits(['update:role']);
+const emit = defineEmits(['update:role', 'update:isActive']);
+
 
 function onRoleChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     emit('update:role', target.value);
+}
+function handleActive(event: Event) {
+	const target = event.target as HTMLButtonElement;
+	emit('update:isActive', props.isActive);
 }
 </script>

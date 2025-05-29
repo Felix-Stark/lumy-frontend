@@ -11,18 +11,15 @@
 	  <section class="flex flex-col items-center justify-center mt-4">
 	
 	  </section>
-	  <div v-if="loading" class="w-20 h-20 bg-purple-500"></div>
-    <div v-if="users" class="flex flex-col items-center mt-3 h-full overflow-auto">
+    <div v-if="users" class="flex flex-col items-center mt-3 min-h-1/3 max-h-full overflow-auto">
       <UserListItem
         v-for="user in users"
         :avatarUrl="user.avatar"
         :name="user.name"
         :title="user.title"
         v-model:role="user.role"
-        :isActive="user.isActive"
         :id="user.id"
-        @update:role="role => handleRoleChange(user.id, role)"
-        @update:isActive="isActive => handleActive(user.id, isActive)"
+        v-model:isActive="user.isActive"
       />
     </div>
     <button
@@ -45,10 +42,13 @@ onMounted(async () => {
   loading.value = true;
   try {
     if (userStore.users.length < 1) {
-      // users.value = mockUsers;
+      users.value = mockUsers;
       const response = await api.get('/users');
       users.value = response.data;
       console.log('Fetched users:', users.value);
+    } else {
+      users.value = userStore.users;
+      console.log('Using users from store:', users.value);
     }
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -58,23 +58,13 @@ onMounted(async () => {
 });
 const updateUsers = async () => {
   console.log('Updating users in store:', users.value);
+  loading.value = true;
   users.value.forEach(user => {
     userStore.updateUser(user.id, { ...user, isActive: user.isActive, role: user.role });
-  });
+  })
+  router.push('/setup/skills');
 }
-const handleActive = async (id: string, isActive: boolean) => {
-  // console.log(`Updating user ${id} active status to ${!isActive}: `, users.value);
-  const user = users.value.find(user => user.id === id);
-  if (user) {
-    user.isActive = !isActive;
-  }
-}
-const handleRoleChange = async (id: string, role: string) => {
-  console.log(`Updating user ${id} to ${role}: `, users.value);
-  // const updateRole = await api.patch(`/users/${id}`, {      
-  //   role: role,
-  //  });
-}
+
 const router = useRouter();
 const loading = ref(false);
 
@@ -122,7 +112,6 @@ const mockUsers: User[] = [
     email: "david.brown@example.com",
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
     role: "admin",
-    title: "Product Owner",
     slack_user_id: "U004",
     slack_team_id: "T001",
     account_id: "A001",

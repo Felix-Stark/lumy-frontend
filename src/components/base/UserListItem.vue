@@ -29,7 +29,7 @@
             	<option selected value="member">Member</option>
             	<option value="admin">Admin</option>
           	</select>
-			<button @click="handleActive" class=" text-red-500 ">
+			<button @click="emit('update:isActive', !isActive)" class=" text-red-500 ">
 				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer" />
 				<UserPlus v-else class="w-6 h-6 text-green-500 opacity-100 cursor-pointer" />
 			</button>
@@ -55,9 +55,5 @@ const emit = defineEmits(['update:role', 'update:isActive']);
 function onRoleChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     emit('update:role', target.value);
-}
-function handleActive(event: Event) {
-	const target = event.target as HTMLButtonElement;
-	emit('update:isActive', props.isActive);
 }
 </script>

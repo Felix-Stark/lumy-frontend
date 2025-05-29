@@ -4,7 +4,7 @@ export type User = {
   email: string;
   avatar: string; // Slack URL to avatar image
   role: string;
-  title: string;
+  title?: string;
   slack_user_id: string; // Slack user ID
   slack_team_id: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to

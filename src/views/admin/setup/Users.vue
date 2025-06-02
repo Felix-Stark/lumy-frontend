@@ -12,7 +12,7 @@
 	
 	  </section>
     <div v-if="users" class="flex flex-col items-center mt-3 min-h-1/3 max-h-full overflow-auto">
-      <UserListItem
+      <PickUserComp
         v-for="user in users"
         :avatarUrl="user.avatar"
         :name="user.name"
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import UserListItem from '@/components/base/UserListItem.vue';
+import PickUserComp from '@/components/setup/PickUserComp.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import api from '@/services/api.ts';

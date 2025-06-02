@@ -1,7 +1,6 @@
 <template>
 	<div :key="id" :class="[
-            'flex w-full not-last:border-b-2 border-gray-200',
-            isActive === false ? 'opacity-50' : ''
+            'flex w-full not-last:border-b-2 border-gray-200'
         ]">
 		<div class="flex items-center justify-start w-3/4 gap-4 p-2">
 			<!-- Avatar and Name Section -->
@@ -24,36 +23,24 @@
 			</div>
 		</div>
 		<div class="flex items-center flex-1 justify-between">
-			<select :value="role" 
-			@change="onRoleChange" class="border border-gray-300 rounded-md p-2 cursor-pointer">
-            	<option selected value="member">Member</option>
-            	<option value="admin">Admin</option>
-          	</select>
-			<button @click="emit('update:isActive', !isActive)" class=" text-red-500 ">
-				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer" />
-				<UserPlus v-else class="w-6 h-6 text-green-500 opacity-100 cursor-pointer" />
-			</button>
+			<slot name="skillSelect" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { UserMinus, UserPlus } from 'lucide-vue-next';
 
-const props = defineProps<{
+
+defineProps<{
 	id: string;
 	name?: string;
 	email?: string;
 	avatarUrl?: string;
 	isActive?: boolean;
 	title?: string;
-	role: string;
+	role?: string;
+	btn?: boolean;
 }>();
-const emit = defineEmits(['update:role', 'update:isActive']);
 
 
-function onRoleChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    emit('update:role', target.value);
-}
 </script>

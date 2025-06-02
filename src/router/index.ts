@@ -83,6 +83,11 @@ const router = createRouter({
           path: '/setup/users',
           name: 'setup-users',
           component: () => import('@/views/admin/setup/Users.vue'),
+        },
+        {
+          path: '/setup/skills',
+          name: 'setup-skills',
+          component: () => import('@/views/admin/setup/Skills.vue'),
         }
       ]
     },

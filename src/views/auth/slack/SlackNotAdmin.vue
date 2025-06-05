@@ -1,6 +1,6 @@
 <template>
 	<SlackAuthLayout 
-	:image="feedySad"
+	:image="lumySad"
 	title="Oh no! This can't be right!"
 	text="It looks like you're not an admin in your Slack workspace, which is required to install this awesomeness.
 Copy the link below and send to one of your admins and you will be set up in no time!"
@@ -30,7 +30,7 @@ Copy the link below and send to one of your admins and you will be set up in no 
 
 <script setup lang="ts">
 import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
-import feedySad from '@/assets/images/feedy_sad.png';
+import lumySad from '@/assets/images/lumy_sad.png';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 

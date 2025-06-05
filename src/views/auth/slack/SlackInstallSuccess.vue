@@ -2,7 +2,7 @@
 	<SlackAuthLayout 
 	title="Great success!"
 	description="Your account has been setup."
-	:image="feedySuccess"
+	:image="lumyHappy"
 	button-text="Let's configure your account"
 	:onAction="() => router.push('/admin/setup/SetupFramework')"
 	/>
@@ -12,5 +12,5 @@
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
-import feedySuccess from '@/assets/images/feedy_success.png';
+import lumyHappy from '@/assets/images/lumy_happy.png';
 </script>

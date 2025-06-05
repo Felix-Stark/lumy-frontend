@@ -1,7 +1,7 @@
 <template>
 <SlackAuthLayout 
 	text="Deploying bots and aligning stars... almost there!"
-	:image="feedyWaiting"
+	:image="lumyWaiting"
 	:loader="true"
 />
 </template>
@@ -11,7 +11,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
 import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
-import feedyWaiting from '@/assets/images/feedy_waiting.png';
+import lumyWaiting from '@/assets/images/lumy_waiting.png';
 import { onMounted } from 'vue';
 
 const authStore = useAuthStore();

@@ -1,6 +1,6 @@
 <template>
 	<SlackAuthLayout 
-	:image="feedyLogo"
+	:image="lumyLogo"
 	title="Welcome to McFeedFace"	
 	:description="`Feedback that actually helps — not hurts.`"
 	buttonText="Sign in with Slack"
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import feedyLogo from '@/assets/images/feedy_logo.png';
+import lumyLogo from '@/assets/images/lumy.png';
 import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;

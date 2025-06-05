@@ -58,7 +58,7 @@
 
     <button
       class="bg-purple-500 hover:bg-purple-400 place-self-center min-w-3xs max-w-3xs mt-10 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out"
-      @click="router.push('/setup/complete')"
+      @click="postSkills"
       >Finnish</button>
 	</div>
 </template>
@@ -131,7 +131,11 @@ const postSkills = async () => {
     }))
   );
   for(const pair of payload) {
-    await api.post(`/users/${pair.user_id}/skills/${pair.skill_id}`)
+    try {
+      await api.post(`/users/${pair.user_id}/skills/${pair.skill_id}`)
+    } catch (error) {
+      console.error(`Failed to assign skill ${pair.skill_id} to user ${pair.user_id}:`, error);
+    }
   }
 }
 function showTooltip(event: MouseEvent, text: string) {

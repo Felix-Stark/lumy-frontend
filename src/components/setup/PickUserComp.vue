@@ -24,23 +24,36 @@
 			</div>
 		</div>
 		<div class="flex items-center gap-6 w-1/4">
-			<select :value="role" 
-			@change="onRoleChange" class="border border-gray-300 rounded-md p-2 cursor-pointer w-[8rem]">
-            	<option selected value="member">Member</option>
-            	<option value="admin">Admin</option>
-          	</select>
-			<button @click="emit('update:isActive', !isActive)" class=" text-red-500 ">
+			<Listbox :model-value="role" @update:model-value="emit('update:role', $event)">
+				<div class="relative w-[8rem]">
+				<ListboxButton class="border border-gray-300 rounded-md p-2 w-full flex justify-between items-center cursor-pointer bg-white">
+					<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
+					<ChevronDown class="ml-2 w-4 h-4" />
+				</ListboxButton>
+				<ListboxOptions class="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-lg z-10">
+					<ListboxOption value="member" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
+					Member
+					</ListboxOption>
+						<ListboxOption value="admin" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
+						Admin
+						</ListboxOption>
+					</ListboxOptions>
+				</div>
+			</Listbox>
+			<button @click="emit('update:isActive', !isActive)" class="text-red-500">
 				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer" />
-				<UserPlus v-else class="w-6 h-6 text-green-500 opacity-100 cursor-pointer" />
+				<UserPlus v-else class="w-6 h-6 text-green-500 !opacity-100 cursor-pointer" />
 			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { UserMinus, UserPlus } from 'lucide-vue-next';
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
+import { ChevronDown, UserMinus, UserPlus } from 'lucide-vue-next';
 
-const props = defineProps<{
+
+defineProps<{
 	id: string;
 	name?: string;
 	email?: string;
@@ -51,9 +64,4 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(['update:role', 'update:isActive']);
 
-
-function onRoleChange(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    emit('update:role', target.value);
-}
 </script>

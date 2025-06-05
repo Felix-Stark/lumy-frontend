@@ -14,11 +14,12 @@
     <div v-if="users" class="flex flex-col items-center mt-3 min-h-1/3 max-h-full overflow-auto">
       <PickUserComp
         v-for="user in users"
+        :key="user.id"
+        :id="user.id"
         :avatarUrl="user.avatar"
         :name="user.name"
         :title="user.title"
         v-model:role="user.role"
-        :id="user.id"
         v-model:isActive="user.isActive"
       />
     </div>
@@ -36,6 +37,7 @@ import { ref, onMounted } from 'vue';
 import api from '@/services/api.ts';
 import { useUserStore } from '@/stores/userStore';
 import type { User } from '@/types';
+
 const userStore = useUserStore();
 const users = ref<User[]>([]);
 onMounted(async () => {
@@ -43,8 +45,8 @@ onMounted(async () => {
   try {
     if (userStore.users.length < 1) {
       users.value = mockUsers;
-      const response = await api.get('/users');
-      users.value = response.data;
+      // const response = await api.get('/users');
+      // users.value = response.data;
       console.log('Fetched users:', users.value);
     } else {
       users.value = userStore.users;
@@ -57,11 +59,11 @@ onMounted(async () => {
   }
 });
 const updateUsers = async () => {
-  console.log('Updating users in store:', users.value);
   loading.value = true;
   users.value.forEach(user => {
     userStore.updateUser(user.id, { ...user, isActive: user.isActive, role: user.role });
   })
+
   router.push('/setup/skills');
 }
 

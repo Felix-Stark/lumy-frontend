@@ -18,56 +18,44 @@
       :title="user.title"
       >
         <template #skillSelect>
-          <div class="relative w-[15rem]" >
-            <button
-              class="border border-gray-300 bg-white text-gray-700 font-medium py-2 px-4 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 w-full flex items-center justify-between"
-              @click="activeDropdown = activeDropdown === user.id ? '' : user.id"
-              type="button"
-            >
-              {{ skillCounter(user.id) }}
-              <span class="ml-2 text-lg ">&#9662;</span>
-            </button>
-            <div
-              v-if="activeDropdown === user.id"
-              class="absolute top-full left-0 w-full h-[15rem] overflow-auto bg-white z-10 border border-gray-300 rounded shadow"
-              :ref="el => { if (el && dropdownRef.value) (dropdownRef.value as unknown as  Record<string, HTMLElement | null>)[user.id] = el as HTMLElement }"
-            >
-              <el-checkbox-group
-                :model-value="getUserSkills(user.id)"
-                @change="(val: string[]) => setUserSkills(user.id, val)"
-                fill="oklch(62.7% 0.265 303.9)"
-                class="flex flex-col w-full gap-2 p-2"
-              >
-                <el-checkbox-button
-                  v-for="skill in skillOptions"
-                  :key="skill.id"
-                  :value="skill.id"
-                  class="my-checkbox"
-                  
+          <Listbox v-model="selectedSkillIds[user.id]" multiple class="w-full">
+            <div>
+              <ListboxButton class="border  border-gray-300 bg-white text-gray-700 font-medium py-2 px-4 rounded-md w-full flex items-center justify-between cursor-pointer">
+                <span class="">
+                  <template v-if="selectedSkillIds[user.id]?.length">
+                    {{ selectedSkillIds[user.id].length }} skills
+                  </template>
+                  <template v-else>
+                    Assign Skills
+                  </template>
+                </span>
+                <ChevronDown class="ml-2 size-4" />
+              </ListboxButton>
+              <ListboxOptions
+              class="absolute mt-1 w-[15rem] bg-white border border-gray-300 rounded shadow-lg z-10 max-h-60 overflow-auto">
+                <ListboxOption
+                v-for="skill in skillOptions"
+                :key="skill.id"
+                :value="skill.id"
+                as="template"
+                v-slot="{selected}"
+                class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100 flex flex-col"
                 >
-                  <span
-                  @mouseenter="(event) => showTooltip(event, skill.definition)"
-                  @mouseleave="hideTooltip"
-                   class="relative w-full">
-                    {{ skill.skill }}
-                    <Tooltip
-                      :text="skill.definition"
-                      :x="tooltip.x"
-                      :y="tooltip.y"
-                      :visible="tooltip.visible"
-                    />
-                  </span>
-                </el-checkbox-button>
-              </el-checkbox-group>
+                <li :class="{
+                  'text-purple-500 border-purple-500': selected,
+                }">
+                  <span class="font-medium">{{ skill.skill }}</span>
+                  <span class="text-xs text-gray-500">{{ skill.definition }}</span>
+                </li>
+                </ListboxOption>
+              </ListboxOptions>
             </div>
-          </div>
+          </Listbox>
         </template>
       </UserListItem>
 	  </section>
 	  <div v-if="loading" class="w-20 h-20 bg-purple-500"></div>
-    <div v-if="users" class="flex flex-col items-center mt-3">
-      
-    </div>
+
     <button
       class="bg-purple-500 hover:bg-purple-400 place-self-center min-w-3xs max-w-3xs mt-10 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out"
       @click="router.push('/setup/complete')"
@@ -75,19 +63,8 @@
 	</div>
 </template>
 
-<style scoped>
-:deep(.my-checkbox .el-checkbox-button__inner) {
-  /* Optionally: */
-  border-color: #a78bfa;
-  color: #6d28d9;
-}
-:deep(.my-checkbox.is-checked .el-checkbox-button__inner) {
-  background-color: #a78bfa; /* Checked color */
-  color: #fff;
-}
-</style>
-
 <script setup lang="ts">
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
 import UserListItem from '@/components/base/UserListItem.vue';
 import Tooltip from '@/components/base/Tooltip.vue';
 import { useRouter } from 'vue-router';
@@ -96,6 +73,7 @@ import { useUserStore } from '@/stores/userStore';
 import type { User, Skill } from '@/types';
 import type { Ref } from 'vue';
 import api from '@/services/api';
+import { ChevronDown, UserRoundIcon } from 'lucide-vue-next';
 
 
 interface SkillPair {
@@ -108,31 +86,28 @@ const userStore = useUserStore();
 const users = ref<User[]>();
 const skillOptions = ref<Skill[]>([]);
 const selectedSkills = ref<SkillPair[]>([]);
-const activeDropdown = ref<string | ''>('');
+const selectedSkillIds = ref<Record<string, string[]>>({});
 const tooltip = ref({
   text: '',
   x: 0,
   y: 0,
   visible: false
 });
-const dropdownRef = ref<Record<string, HTMLElement | null>>({})
 
 onMounted(async() => {
   loading.value = true;
-  document.addEventListener('mousedown', handleClickOutside);
   try {
-    users.value = mockUsers; // Use mock data for users
-    // Use mock data for skills
+    // users.value = mockUsers;
     // const sortedSkills = mockSkills.sort((a, b) => a.skill.localeCompare(b.skill));
-    // skillOptions.value = sortedSkills; // Sort and set mock skills
+    // skillOptions.value = sortedSkills; 
     
     // Uncomment the following lines to fetch data from the API or store
     //---
     // Fetch users from the store
     await userStore.getUsers();
     users.value = userStore.users;
-    // Fetch skills from the store
 
+    // Fetch skills from api
     const res = await api.get('/skills');
     if (res.status === 200) {
       skillOptions.value = res.data;
@@ -147,26 +122,18 @@ onMounted(async() => {
   }
 })
 
-onBeforeUnmount(() => {
-  document.removeEventListener('mousedown', handleClickOutside);
-});
-
-function handleClickOutside(event: MouseEvent) {
-  // Only close if dropdown is open and click is outside the dropdown
-  if (activeDropdown.value && dropdownRef.value) {
-    const refEl = dropdownRef.value[activeDropdown.value];
-    // Only proceed if refEl is not null
-    if (refEl && !refEl.contains(event.target as Node)) {
-      activeDropdown.value = '';
-    }
+const postSkills = async () => {
+  const payload = Object.entries(selectedSkillIds.value)
+  .flatMap(([userId, skillIds]) =>
+    skillIds.map(skillId => ({
+      user_id: userId,
+      skill_id: skillId
+    }))
+  );
+  for(const pair of payload) {
+    await api.post(`/users/${pair.user_id}/skills/${pair.skill_id}`)
   }
 }
-
-const skillCounter = (userId: string) => {
-  const numSkills = selectedSkills.value.find(s => s.userId === userId)?.skillIds.length || 0;
-  return numSkills > 0 ? `${numSkills} skills assigned` : 'Assign Skills';
-}
-
 function showTooltip(event: MouseEvent, text: string) {
   tooltip.value = {
     text,
@@ -178,29 +145,6 @@ function showTooltip(event: MouseEvent, text: string) {
 
 function hideTooltip() {
   tooltip.value.visible = false;
-}
-
-function getUserSkills(userId: string): string[] {
-  return selectedSkills.value.find(s => s.userId === userId)?.skillIds || [];
-}
-
-function setUserSkills(userId: string, skillIds: string[]) {
-  const entry = selectedSkills.value.find(s => s.userId === userId);
-  if (entry) {
-    entry.skillIds = skillIds;
-  } else {
-    selectedSkills.value.push({ userId, skillIds });
-  }
-  console.log(`Skills for user ${userId} set to:`, skillIds);
-}
-
-function toggleSkill(userId: string, skillId: string) {
-  const current = getUserSkills(userId);
-  if (current.includes(skillId)) {
-    setUserSkills(userId, current.filter(id => id !== skillId));
-  } else {
-    setUserSkills(userId, [...current, skillId]);
-  }
 }
 
 let mockSkills: Skill[] = [

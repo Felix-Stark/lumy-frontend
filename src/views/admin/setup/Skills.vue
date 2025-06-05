@@ -8,7 +8,7 @@
         </p>
       </div>
     </article>
-	  <section class="flex flex-col items-center mt-4 min-w-1/3 max-h-full overflow-auto">
+	  <section class="flex flex-col items-center mt-4 min-w-1/3 min-h-[50vh] max-h-full overflow-auto">
       <UserListItem
       v-for="user in users"
       :key="user.id"
@@ -70,8 +70,8 @@
     </div>
     <button
       class="bg-purple-500 hover:bg-purple-400 place-self-center min-w-3xs max-w-3xs mt-10 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out"
-      @click="router.push('/admin/setup/skills')"
-      >Next</button>
+      @click="router.push('/setup/complete')"
+      >Finnish</button>
 	</div>
 </template>
 

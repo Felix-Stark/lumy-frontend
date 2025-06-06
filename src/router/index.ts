@@ -92,6 +92,17 @@ const router = createRouter({
       ]
     },
     {
+      path: '/feedback',
+      redirect: 'feedback/give',
+      children: [
+        {
+          path: '/feedback/give',
+          name: 'feedback-give',
+          component: () => import('@/views/feedback/give.vue')
+        }
+      ]
+    },
+    {
       path: '/error',
       name: 'error',
       component: () => import('@/views/Error.vue'),

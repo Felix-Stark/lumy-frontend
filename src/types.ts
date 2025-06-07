@@ -25,3 +25,23 @@ export type Skill = {
   definition: string;
   theme: string;
 }
+
+export type FeedbackRequest = {
+  id: string;
+  sender: {
+    id: string;
+    name: string;
+    avatar: string;
+    is_active: boolean;
+  };
+  recipient_id: string;
+  skill: {
+    skill: string;
+    definition: string;
+    theme: string;
+  }
+  message: string;
+  account_id: string;
+  status: string;
+  
+}

@@ -28,7 +28,6 @@ import {
 	  DialogTitle,
 	  DialogDescription,
 	} from '@headlessui/vue'
-import { defineProps, defineEmits } from 'vue'
   
 const props = defineProps({
   isOpen: {

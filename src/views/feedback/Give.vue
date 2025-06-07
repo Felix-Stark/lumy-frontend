@@ -1,12 +1,5 @@
 <template>
 	<div class="flex flex-col p-10 rounded-2xl bg-white drop-shadow-xl w-[75vw] min-h-[80vh] mb-8">
-		<BaseDialog
-		:imgPath="lumyCheering"
-		title="Feedback was sent successfully!"
-		description="Thank you for your feedback! It helps us improve and grow."
-		:isOpen="showDialog"
-		@close="showDialog = false"
-		/>
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-darkblue">Your Feedback Fuels My Superpowers!</h1>
 		</header>
@@ -68,25 +61,27 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useMsgStore } from '@/stores/msgStore'
 import { User2 } from 'lucide-vue-next'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
-import BaseDialog from '@/components/base/BaseDialog.vue'
 import lumyCheering from '@/assets/images/lumy_cheering.png'
 const user = ref<User>()
 const requestInfo = ref<FeedbackRequest>()
 const feedback = ref<string>('')
 const showDialog = ref(true)
 const route = useRoute()
+const router = useRouter()
 const requestUuId = route.query.uuid as string
+const msgStore = useMsgStore()
 
 onMounted(async () => {
 	if (!requestUuId) {
 		console.error('No request ID provided in the route query parameters.')
 	}
 	try {
-		const res = await api.get(`submissions/${requestUuId}`);
+		const res = await api.get(`/requests/${requestUuId}`);
 		requestInfo.value = res.data;
 		requestInfo.value = res.data;
 	} catch (error) {
@@ -95,12 +90,12 @@ onMounted(async () => {
 })
 
 async function postFeedback() {
-	const res = await api.post('submissions', {
+	const res = await api.post('/submissions', {
 		feedback_request_id: requestInfo.value?.id,
-		feedback: feedback.value,
+		content: feedback.value,
 	})
 	if (res.status === 200) {
-		showDialog.value = true
+		router.push({ name: 'feedback-give-success' })
 		feedback.value = ''
 	} else {
 		console.error('Error sending feedback:', res.data)

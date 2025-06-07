@@ -12,5 +12,5 @@
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
-import lumyHappy from '@/assets/images/lumy_happy.png';
+import lumyHappy from '@/assets/images/lumy_cheering.png';
 </script>

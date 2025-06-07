@@ -44,10 +44,10 @@ onMounted(async () => {
   loading.value = true;
   try {
     if (userStore.users.length < 1) {
-      users.value = mockUsers;
-      // const response = await api.get('/users');
-      // users.value = response.data;
-      console.log('Fetched users:', users.value);
+      // users.value = mockUsers;
+      const response = await api.get('/users');
+      users.value = response.data;
+
     } else {
       users.value = userStore.users;
       console.log('Using users from store:', users.value);

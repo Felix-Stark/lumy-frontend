@@ -98,7 +98,7 @@ const router = createRouter({
         {
           path: '/feedback/give',
           name: 'feedback-give',
-          component: () => import('@/views/feedback/give.vue')
+          component: () => import('@/views/feedback/Give.vue')
         }
       ]
     },

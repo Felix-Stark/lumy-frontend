@@ -20,7 +20,7 @@
 				<div v-else class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
 					<User2 />
 				</div>
-				<p class="self-center font-light text-lg">Elena Morales</p>
+				<p class="self-center font-light text-lg">{{ requestInfo?.sender.name }}</p>
 				</div>
 			<section class="pl-10">
 				<p class="text-light italic text-gray-600">“{{requestInfo?.message}}”</p>
@@ -47,7 +47,25 @@
 				</aside>
 			</div>
 		</section>
+		<section>
+			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
+			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+			<div
+			v-if="aiSuggestions.length !== 0"
+			v-for="suggestion in aiSuggestions"
+			:key="suggestion"
+			class="flex flex-col w-full p-8 gap-4 mt-4 bg-gray-300">
+				<p v-if="suggestion.length > 0" class="text-gray-700">{{ suggestion }}</p>
+			</div>
+			<div
+			v-if="aiSuggestions.length === 0"
+			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-gray-200">
+				<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.</p>
+				<button class="bg-lumy-purple text-white text-2xl px-4 py-2">+</button>
+			</div>
+		</section>
 		<hr class="w-full mt-10 mb-10 border-t-2 border-gray-300"/>
+
 		<div class="flex justify-end mt-4">
 			<button
 			@click="postFeedback"
@@ -60,21 +78,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useMsgStore } from '@/stores/msgStore'
 import { User2 } from 'lucide-vue-next'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
-import lumyCheering from '@/assets/images/lumy_cheering.png'
-const user = ref<User>()
+import debounce from 'lodash.debounce'
+
 const requestInfo = ref<FeedbackRequest>()
 const feedback = ref<string>('')
-const showDialog = ref(true)
+const aiSuggestions = ref<string[]>([])
 const route = useRoute()
 const router = useRouter()
 const requestUuId = route.query.uuid as string
-const msgStore = useMsgStore()
+
+const fetchSuggestions = debounce(async (query: string) => {
+	if (query.length < 15) return
+	try {
+		const res = await api.post('feedback/improve', {
+			request_id: requestUuId,
+			text: query,
+		})
+		if (res.status === 200) {
+			aiSuggestions.value = res.data || []
+		} else {
+			console.error('Error fetching AI suggestions:', res.data)
+		}
+	} catch (error) {
+		console.error('Error fetching AI suggestions:', error)
+	}
+}, 300)
+
+watch(feedback, (newVal) => {
+  fetchSuggestions(newVal)
+})
 
 onMounted(async () => {
 	if (!requestUuId) {

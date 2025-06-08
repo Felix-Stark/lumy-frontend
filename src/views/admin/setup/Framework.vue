@@ -86,6 +86,7 @@ onMounted(async () => {
 	} else {
 		console.error('Error fetching bot personalities:', res);
 	}
+	botPersonalities.value = mockBotPersonalities;
 });
 
 const saveSettings = async () => {
@@ -95,8 +96,23 @@ const saveSettings = async () => {
 	} else {
 		console.error('Error setting framework:', res);
 	}
+	
 }
 
+const mockBotPersonalities = [
+	{
+		id: 1,
+		name: 'Friendly',
+		description: 'A warm and approachable personality that encourages open communication.',
+		formatted_name: 'friendly',
+	},
+	{
+		id: 2,
+		name: 'Professional',
+		description: 'A formal and respectful tone suitable for workplace interactions.',
+		formatted_name: 'professional',
+	},
+];
 
 const frameworks = [
 	{

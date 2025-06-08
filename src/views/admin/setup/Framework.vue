@@ -36,7 +36,7 @@
 		  <Listbox v-model="selectedBot">
 			<div class="relative">
 				<ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
-					<span>{{ botPersonalities.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
+					<span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
 					<ChevronDown class="ml-2 size-4"/>
 				</ListboxButton>
 				<ListboxOptions class="absolute mt-1 w-full h-[15rem] overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
@@ -49,7 +49,7 @@
 						<div>
 							<span class="font-medium">{{ bp.name }}</span>
 							<div class="text-xs text-gray-500">
-								{{ bp.definition }}
+								{{ bp.description }}
 							</div>
 						</div>
 					</ListboxOption>
@@ -70,12 +70,23 @@ import {
     ListboxOption,
   } from '@headlessui/vue'
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import type { BotPersonality } from '@/types';
 const router = useRouter();
 import SetupComp from '@/components/setup/SetupComp.vue';
 import api from '@/services/api';
 const selectedFramework = ref();
 const selectedBot = ref();
+const botPersonalities = ref<BotPersonality[]>()
+
+onMounted(async () => {
+	const res = await api.get('/account/bot-personalities');
+	if (res.status === 200) {
+		botPersonalities.value = res.data;
+	} else {
+		console.error('Error fetching bot personalities:', res);
+	}
+});
 
 const saveSettings = async () => {
 	const res = await api.patch('/account', { framework: selectedFramework.value, botPersonality: selectedBot.value });
@@ -86,45 +97,6 @@ const saveSettings = async () => {
 	}
 }
 
-
-
-const botPersonalities = [
-	{
-		id: 'coach_clara',
-		name: 'Coach Clara',
-		definition: 'Empathetic, focused, and great at guiding reflection and growth.'
-	},
-	{
-		id: 'focus_felix',
-		name: 'Focus Felix',
-		definition: 'Minimalist, calm, and obsessed with helping you finish what matters.'
-	},
-	{
-		id: 'treepio',
-		name: 'Treepio',
-		definition: 'Anxiously helpful, fluent in six million forms of feedback.'
-	},
-	{
-		id: 'tengiltron',
-		name: 'Tengiltron',
-		definition: 'Overlord of order. Craves structure. Lives to conquer chaos.'
-	},
-	{
-		id: 'glitch',
-		name: 'Glitch',
-		definition: 'Hyperactive AI sidekick. May or may not be debugging itself.'
-	},
-	{
-		id: 'nudgey',
-		name: 'Nudgey',
-		definition: 'Gently encouraging. Always there with a soft reminder.'
-	},
-	{
-		id: 'sunny',
-		name: 'Sunny',
-		definition: 'Cheerful, supportive, and a bit emoji-happy. Your personal hype bot.'
-	}
-]
 
 const frameworks = [
 	{

@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col items-center justify-center min-h-screen bg-slate-50">
 		<div>
-			<img :src="lumyWaiting" alt="">
+			<img :src="lumyWaiting" alt="" class="w-64 h-auto mb-4" />
 		</div>
 		<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
 		<p class="text-gray-700">Just a sec - compiling your awesomeness..</p>
@@ -20,14 +20,12 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const code = route.query.code;
-const state = route.query.state;
-const error = route.query.error;
 
 onMounted( async () => {
 	console.log('slack callback mounted');
 	if(code) {
 		const path = await authStore.loginSlack(code as string);
-		if (path) {
+		if (path !== undefined) {
 			router.push(path);
 		} else {
 			console.error('Login failed');

@@ -14,8 +14,8 @@
     <div v-if="users" class="flex flex-col items-center mt-3 min-h-1/3 max-h-full overflow-auto">
       <PickUserComp
         v-for="user in users"
-        :key="user.id"
         :id="user.id"
+        :key="user.id"
         :avatarUrl="user.avatar"
         :name="user.name"
         :title="user.title"
@@ -73,7 +73,7 @@ const loading = ref(false);
 
 const mockUsers: User[] = [
   {
-    id: "1",
+    id: 1,
     name: "Alice Johnson",
     email: "alice.johnson@example.com",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
@@ -85,7 +85,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "2",
+    id: 2,
     name: "Bob Smith",
     email: "bob.smith@example.com",
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
@@ -97,7 +97,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "3",
+    id: 3,
     name: "Carol White",
     email: "carol.white@example.com",
     avatar: "https://randomuser.me/api/portraits/women/3.jpg",
@@ -109,7 +109,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "4",
+    id: 4,
     name: "David Brown",
     email: "david.brown@example.com",
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
@@ -120,7 +120,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "5",
+    id: 5,
     name: "Eva Green",
     email: "eva.green@example.com",
     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
@@ -132,7 +132,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "6",
+    id: 6,
     name: "Frank Black",
     email: "frank.black@example.com",
     avatar: "https://randomuser.me/api/portraits/men/6.jpg",
@@ -144,7 +144,7 @@ const mockUsers: User[] = [
     isActive: false,
   },
   {
-    id: "7",
+    id: 7,
     name: "Grace Lee",
     email: "grace.lee@example.com",
     avatar: "https://randomuser.me/api/portraits/women/7.jpg",
@@ -156,7 +156,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "8",
+    id: 8,
     name: "Henry Adams",
     email: "henry.adams@example.com",
     avatar: "https://randomuser.me/api/portraits/men/8.jpg",
@@ -168,7 +168,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "9",
+    id: 9,
     name: "Ivy Clark",
     email: "ivy.clark@example.com",
     avatar: "https://randomuser.me/api/portraits/women/9.jpg",
@@ -180,7 +180,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "10",
+    id: 10,
     name: "Jack Miller",
     email: "jack.miller@example.com",
     avatar: "https://randomuser.me/api/portraits/men/10.jpg",
@@ -192,7 +192,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "11",
+    id: 11,
     name: "Kathy Turner",
     email: "kathy.turner@example.com",
     avatar: "https://randomuser.me/api/portraits/women/11.jpg",
@@ -204,7 +204,7 @@ const mockUsers: User[] = [
     isActive: false,
   },
   {
-    id: "12",
+    id: 12,
     name: "Leo Harris",
     email: "leo.harris@example.com",
     avatar: "https://randomuser.me/api/portraits/men/12.jpg",
@@ -216,7 +216,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "13",
+    id: 13,
     name: "Mona Scott",
     email: "mona.scott@example.com",
     avatar: "https://randomuser.me/api/portraits/women/13.jpg",
@@ -228,7 +228,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "14",
+    id: 14,
     name: "Nate Young",
     email: "nate.young@example.com",
     avatar: "https://randomuser.me/api/portraits/men/14.jpg",
@@ -240,7 +240,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "15",
+    id: 15,
     name: "Olivia King",
     email: "olivia.king@example.com",
     avatar: "https://randomuser.me/api/portraits/women/15.jpg",

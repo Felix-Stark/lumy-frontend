@@ -1,5 +1,5 @@
 export type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   avatar: string; // Slack URL to avatar image
@@ -13,35 +13,41 @@ export type User = {
 };
 
 export type Account = {
-	  id: string;
+	  id: number;
 	  accountId: string;
 	  role: string;
 	  users: User[];
 }
 
 export type Skill = {
-  id: string;
+  id: number;
   skill: string;
   definition: string;
   theme: string;
 }
 
 export type FeedbackRequest = {
-  id: string;
+  id: number;
   sender: {
-    id: string;
+    id: number;
     name: string;
     avatar: string;
     is_active: boolean;
   };
-  recipient_id: string;
+  recipient_id: number;
   skill: {
     skill: string;
     definition: string;
     theme: string;
   }
   message: string;
-  account_id: string;
+  account_id: number;
   status: string;
-  
+}
+
+export type BotPersonality = {
+  id: number;
+  name: string;
+  description: string;
+  formatted_name: string;
 }

@@ -80,7 +80,7 @@ const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>()
 
 onMounted(async () => {
-	const res = await api.get('/account/bot-personalities');
+	const res = await api.get('/bot-personalities');
 	if (res.status === 200) {
 		botPersonalities.value = res.data;
 	} else {

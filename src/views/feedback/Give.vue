@@ -52,17 +52,18 @@
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 			<div
-			v-if="aiSuggestions != null"
+			v-if="aiSuggestions.length > 0"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
-			class="flex flex-col w-full p-8 gap-4 mt-4 bg-gray-300">
+			class="flex w-full p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
+				<button class="bg-lumy-purple text-white text-2xl px-4 py-2">+</button>
+
 			</div>
 			<div
 			v-else
 			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-gray-200">
 				<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.</p>
-				<button class="bg-lumy-purple text-white text-2xl px-4 py-2">+</button>
 			</div>
 		</section>
 		<hr class="w-full mt-10 mb-10 border-t-2 border-gray-300"/>
@@ -84,11 +85,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { User2 } from 'lucide-vue-next'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
-import debounce from 'lodash.debounce'
 
 const requestInfo = ref<FeedbackRequest>()
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
+
+
 const route = useRoute()
 const router = useRouter()
 const requestUuId = route.query.uuid as string
@@ -103,7 +105,7 @@ const getSuggestions = async () => {
 		})
 		console.log('AI suggestions response:', res)
 		if (res.status === 200) {
-			aiSuggestions.value = res.data || []
+			aiSuggestions.value = res.data.suggestions
 		}		
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)
@@ -111,34 +113,6 @@ const getSuggestions = async () => {
 	}
 	
 }
-
-// const fetchSuggestions = debounce(async (query: string) => {
-// 	console.log('Fetching AI suggestions for:', query)
-// 	if (query.length < 15) {
-// 		return
-// 	} else {
-
-// 		try {
-// 			const res = await api.post('feedback/improve', {
-// 				feedback_request_id: requestUuId,
-// 				text: query,
-// 			})
-// 			console.log('AI suggestions response:', res)
-// 			if (res.status === 200) {
-// 				aiSuggestions.value = res.data || []
-// 			} else {
-// 				console.error('Error fetching AI suggestions:', res.data)
-// 			}
-// 		} catch (error) {
-// 			console.error('Error fetching AI suggestions:', error)
-// 		}
-// 	}
-// }, 300)
-
-// watch(feedback, (newVal) => {
-// 	console.log('watcher: ', newVal)
-//   fetchSuggestions(newVal)
-// })
 
 onMounted(async () => {
 	if (!requestUuId) {

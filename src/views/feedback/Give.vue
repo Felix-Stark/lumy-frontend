@@ -93,6 +93,7 @@ const router = useRouter()
 const requestUuId = route.query.uuid as string
 
 const fetchSuggestions = debounce(async (query: string) => {
+	console.log('Fetching AI suggestions for:', query)
 	if (query.length < 15) return
 	try {
 		const res = await api.post('feedback/improve', {
@@ -110,6 +111,7 @@ const fetchSuggestions = debounce(async (query: string) => {
 }, 300)
 
 watch(feedback, (newVal) => {
+	console.log('watcher: ', newVal)
   fetchSuggestions(newVal)
 })
 

@@ -46,6 +46,7 @@
 					<p class="font-semibold text-gray-700">If you need help, check the suggestions below.</p>
 				</aside>
 			</div>
+			<button @click="() => getSuggestions" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2">Improve my feedback!</button>
 		</section>
 		<section>
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
@@ -92,33 +93,56 @@ const route = useRoute()
 const router = useRouter()
 const requestUuId = route.query.uuid as string
 
-const fetchSuggestions = debounce(async (query: string) => {
-	console.log('Fetching AI suggestions for:', query)
+const getSuggestions = async () => {
+	const query = feedback.value
 	if (query.length < 15) {
+		aiSuggestions.value = ['AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.']
 		return
 	} else {
-
 		try {
-			const res = await api.post('feedback/improve', {
-				feedback_request_id: requestUuId,
-				text: query,
-			})
-			console.log('AI suggestions response:', res)
-			if (res.status === 200) {
-				aiSuggestions.value = res.data || []
-			} else {
-				console.error('Error fetching AI suggestions:', res.data)
-			}
-		} catch (error) {
-			console.error('Error fetching AI suggestions:', error)
+		const res = await api.post('feedback/improve', {
+			feedback_request_id: requestUuId,
+			text: query,
+		})
+		if (res.status === 200) {
+			aiSuggestions.value = res.data || []
+		} else {
+			console.error('Error fetching AI suggestions:', res.data)
 		}
+	} catch (error) {
+		console.error('Error fetching AI suggestions:', error)
 	}
-}, 300)
+	}
+	
+}
 
-watch(feedback, (newVal) => {
-	console.log('watcher: ', newVal)
-  fetchSuggestions(newVal)
-})
+// const fetchSuggestions = debounce(async (query: string) => {
+// 	console.log('Fetching AI suggestions for:', query)
+// 	if (query.length < 15) {
+// 		return
+// 	} else {
+
+// 		try {
+// 			const res = await api.post('feedback/improve', {
+// 				feedback_request_id: requestUuId,
+// 				text: query,
+// 			})
+// 			console.log('AI suggestions response:', res)
+// 			if (res.status === 200) {
+// 				aiSuggestions.value = res.data || []
+// 			} else {
+// 				console.error('Error fetching AI suggestions:', res.data)
+// 			}
+// 		} catch (error) {
+// 			console.error('Error fetching AI suggestions:', error)
+// 		}
+// 	}
+// }, 300)
+
+// watch(feedback, (newVal) => {
+// 	console.log('watcher: ', newVal)
+//   fetchSuggestions(newVal)
+// })
 
 onMounted(async () => {
 	if (!requestUuId) {

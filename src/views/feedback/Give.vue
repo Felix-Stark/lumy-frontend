@@ -101,8 +101,8 @@ const getSuggestions = async () => {
 			feedback_request_id: requestUuId,
 			text: query,
 		})
-
-		aiSuggestions.value = res.data
+		console.log('AI suggestions response:', res.data)
+		aiSuggestions.value = res.data.suggestions || []
 		
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)

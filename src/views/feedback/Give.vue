@@ -22,7 +22,7 @@
 				</div>
 				<p class="self-center font-light text-lg">{{ requestInfo?.sender.name }}</p>
 				</div>
-			<section class="pl-10">
+			<section class="pl-10 pb-10">
 				<p class="text-light italic text-gray-600">“{{requestInfo?.message}}”</p>
 			</section>
 		</section>
@@ -37,7 +37,7 @@
 						v-model="feedback"
 					></textarea>
 				</form>
-				<aside class="mt-4 p-4 bg-gray-200  flex flex-col">
+				<aside class="mt-4 p-4 w-[40%] bg-gray-200  flex flex-col">
 					<ul class="list-disc list-inside text-gray-700">
 						<li><span class="font-semibold">Be specific</span> - Focus on one clear behavior or moment.</li>
 						<li><span class="font-semibold">Look ahead</span> - Suggest what they could do more of, less of, or differently next time.</li>

@@ -137,89 +137,84 @@ const postSkills = async () => {
       console.error(`Failed to assign skill ${pair.skill_id} to user ${pair.user_id}:`, error);
     }
   }
-}
-function showTooltip(event: MouseEvent, text: string) {
-  tooltip.value = {
-    text,
-    x: event.clientX + 10,
-    y: event.clientY + 10,
-    visible: true,
-  };
+  userStore.getMe();
+  if( userStore.me?.role === 'admin') {
+    router.push({ name: 'admin-dashboard' });
+  } else {
+    router.push({ name: 'home' });
+  }
 }
 
-function hideTooltip() {
-  tooltip.value.visible = false;
-}
 
 let mockSkills: Skill[] = [
   {
-    id: "1",
+    id: 1,
     skill: "Effective Communication",
     definition: "Clearly conveys information and ideas to individuals or groups.",
     theme: "interpersonal"
   },
   {
-    id: "2",
+    id: 2,
     skill: "Team Leadership",
     definition: "Guides and motivates a group to achieve goals.",
     theme: "leadership"
   },
   {
-    id: "3",
+    id: 3,
     skill: "Critical Thinking",
     definition: "Objectively analyzes and evaluates issues to form a judgment.",
     theme: "analytical thinking"
   },
   {
-    id: "4",
+    id: 4,
     skill: "Problem Solving",
     definition: "Identifies and resolves complex problems in a timely manner.",
     theme: "analytical thinking"
   },
   {
-    id: "5",
+    id: 5,
     skill: "Time Management",
     definition: "Effectively prioritizes tasks to maximize productivity.",
     theme: "execution"
   },
   {
-    id: "6",
+    id: 6,
     skill: "Conflict Resolution",
     definition: "Handles disagreements constructively and diplomatically.",
     theme: "interpersonal"
   },
   {
-    id: "7",
+    id: 7,
     skill: "Strategic Planning",
     definition: "Develops long-term strategies to achieve organizational goals.",
     theme: "leadership"
   },
   {
-    id: "8",
+    id: 8,
     skill: "Attention to Detail",
     definition: "Ensures accuracy and thoroughness in all work.",
     theme: "execution"
   },
   {
-    id: "9",
+    id: 9,
     skill: "Adaptability",
     definition: "Adjusts effectively to changing environments and demands.",
     theme: "interpersonal"
   },
   {
-    id: "10",
+    id: 10,
     skill: "Decision Making",
     definition: "Makes timely and sound decisions even under pressure.",
     theme: "leadership"
   },
   {
-    id: "11",
+    id: 11,
     skill: "Data Analysis",
     definition: "Interprets and draws conclusions from data sets.",
     theme: "analytical thinking"
   },
   {
-    id: "12",
+    id: 12,
     skill: "Project Execution",
     definition: "Drives projects to completion efficiently and effectively.",
     theme: "execution"
@@ -228,7 +223,7 @@ let mockSkills: Skill[] = [
 
 const mockUsers: User[] = [
   {
-    id: "1",
+    id: 1,
     name: "Alice Johnson",
     email: "alice.johnson@example.com",
     avatar: "https://randomuser.me/api/portraits/women/1.jpg",
@@ -240,7 +235,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "2",
+    id: 2,
     name: "Bob Smith",
     email: "bob.smith@example.com",
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
@@ -252,7 +247,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "3",
+    id: 3,
     name: "Carol White",
     email: "carol.white@example.com",
     avatar: "https://randomuser.me/api/portraits/women/3.jpg",
@@ -264,7 +259,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "4",
+    id: 4,
     name: "David Brown",
     email: "david.brown@example.com",
     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
@@ -275,7 +270,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "5",
+    id: 5,
     name: "Eva Green",
     email: "eva.green@example.com",
     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
@@ -287,7 +282,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "6",
+    id: 6,
     name: "Frank Black",
     email: "frank.black@example.com",
     avatar: "https://randomuser.me/api/portraits/men/6.jpg",
@@ -299,7 +294,7 @@ const mockUsers: User[] = [
     isActive: false,
   },
   {
-    id: "7",
+    id: 7,
     name: "Grace Lee",
     email: "grace.lee@example.com",
     avatar: "https://randomuser.me/api/portraits/women/7.jpg",
@@ -311,7 +306,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "8",
+    id: 8,
     name: "Henry Adams",
     email: "henry.adams@example.com",
     avatar: "https://randomuser.me/api/portraits/men/8.jpg",
@@ -323,7 +318,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "9",
+    id: 9,
     name: "Ivy Clark",
     email: "ivy.clark@example.com",
     avatar: "https://randomuser.me/api/portraits/women/9.jpg",
@@ -335,7 +330,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "10",
+    id: 10,
     name: "Jack Miller",
     email: "jack.miller@example.com",
     avatar: "https://randomuser.me/api/portraits/men/10.jpg",
@@ -347,7 +342,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "11",
+    id: 11,
     name: "Kathy Turner",
     email: "kathy.turner@example.com",
     avatar: "https://randomuser.me/api/portraits/women/11.jpg",
@@ -359,7 +354,7 @@ const mockUsers: User[] = [
     isActive: false,
   },
   {
-    id: "12",
+    id: 12,
     name: "Leo Harris",
     email: "leo.harris@example.com",
     avatar: "https://randomuser.me/api/portraits/men/12.jpg",
@@ -371,7 +366,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "13",
+    id: 13,
     name: "Mona Scott",
     email: "mona.scott@example.com",
     avatar: "https://randomuser.me/api/portraits/women/13.jpg",
@@ -383,7 +378,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "14",
+    id: 14,
     name: "Nate Young",
     email: "nate.young@example.com",
     avatar: "https://randomuser.me/api/portraits/men/14.jpg",
@@ -395,7 +390,7 @@ const mockUsers: User[] = [
     isActive: true,
   },
   {
-    id: "15",
+    id: 15,
     name: "Olivia King",
     email: "olivia.king@example.com",
     avatar: "https://randomuser.me/api/portraits/women/15.jpg",

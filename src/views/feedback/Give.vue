@@ -51,14 +51,14 @@
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 			<div
-			v-if="aiSuggestions.length !== 0"
+			v-if="aiSuggestions.length > 14"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
 			class="flex flex-col w-full p-8 gap-4 mt-4 bg-gray-300">
-				<p v-if="suggestion.length > 0" class="text-gray-700">{{ suggestion }}</p>
+				<p class="text-gray-700">{{ suggestion }}</p>
 			</div>
 			<div
-			v-if="aiSuggestions.length === 0"
+			v-else
 			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-gray-200">
 				<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.</p>
 				<button class="bg-lumy-purple text-white text-2xl px-4 py-2">+</button>
@@ -96,7 +96,7 @@ const fetchSuggestions = debounce(async (query: string) => {
 	if (query.length < 15) return
 	try {
 		const res = await api.post('feedback/improve', {
-			request_id: requestUuId,
+			feedback_request_id: requestUuId,
 			text: query,
 		})
 		if (res.status === 200) {

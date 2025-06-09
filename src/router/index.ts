@@ -11,11 +11,20 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: AdminLayout,
-      redirect: '/admin/dashboard',
+      name: 'home',
+      component: () => import('@/views/Home.vue'),
       meta: {
         title: 'Home',
         requiresAuth: false,
+      }
+    },
+    {
+      path: '/admin',
+      component: AdminLayout,
+      redirect: '/admin/dashboard',
+      meta: {
+        title: 'Admin dashboard',
+        requiresAuth: true,
       },
       children: [
         {

@@ -96,23 +96,19 @@ const requestUuId = route.query.uuid as string
 const getSuggestions = async () => {
 	console.log('Fetching AI suggestions for:', feedback.value)
 	const query = feedback.value
-	if (query.length < 15) {
-		aiSuggestions.value = ['AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.']
-		return
-	} else {
-		try {
+	try {
 		const res = await api.post('feedback/improve', {
 			feedback_request_id: requestUuId,
 			text: query,
 		})
-		if (res.status === 200) {
-			aiSuggestions.value = res.data || []
-		} else {
-			console.error('Error fetching AI suggestions:', res.data)
-		}
+
+	aiSuggestions.value = res.data || []
+
+	console.error('Error fetching AI suggestions:', res.data)
+		
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)
-	}
+	
 	}
 	
 }

@@ -52,7 +52,7 @@
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 			<div
-			v-if="aiSuggestions.length > 14"
+			v-if="aiSuggestions != null"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
 			class="flex flex-col w-full p-8 gap-4 mt-4 bg-gray-300">
@@ -101,9 +101,10 @@ const getSuggestions = async () => {
 			feedback_request_id: requestUuId,
 			text: query,
 		})
-		console.log('AI suggestions response:', res.data)
-		aiSuggestions.value = res.data.suggestions || []
-		
+		console.log('AI suggestions response:', res)
+		if (res.status === 200) {
+			aiSuggestions.value = res.data || []
+		}		
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)
 	

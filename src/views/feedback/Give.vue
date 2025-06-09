@@ -48,16 +48,19 @@
 			</div>
 			<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2 cursor-pointer">Improve my feedback!</button>
 		</section>
-		<section>
+		<section ref="suggestionSection">
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+			<div v-if="loadingSuggestions" class="flex w-full justify-center items-center p-8 mt-4">
+				<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
+  			</div>
 			<div
 			v-if="aiSuggestions.length > 0"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
 			class="flex w-full items-center p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
-				<button class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+				<button @click="() => feedback === feedback + ' ' + suggestion" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 
 			</div>
 			<div
@@ -80,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { User2 } from 'lucide-vue-next'
 import type { User, FeedbackRequest } from '@/types'
@@ -89,35 +92,15 @@ import api from '@/services/api'
 const requestInfo = ref<FeedbackRequest>()
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
+const loadingSuggestions = ref<boolean>(false)
+const suggestionsSection = ref<HTMLElement | null>(null)
 
 
 const route = useRoute()
 const router = useRouter()
 const requestUuId = route.query.uuid as string
 
-const getSuggestions = async () => {
-	console.log('Fetching AI suggestions for:', feedback.value)
-	const query = feedback.value
-	try {
-		const res = await api.post('feedback/improve', {
-			feedback_request_id: requestUuId,
-			text: query,
-		})
-		console.log('AI suggestions response:', res)
-		if (res.status === 200) {
-			aiSuggestions.value = res.data.suggestions
-		}		
-	} catch (error) {
-		console.error('Error fetching AI suggestions:', error)
-	
-	}
-	
-}
-
 onMounted(async () => {
-	if (!requestUuId) {
-		console.error('No request ID provided in the route query parameters.')
-	}
 	try {
 		const res = await api.get(`/requests/${requestUuId}`);
 		requestInfo.value = res.data;
@@ -126,6 +109,28 @@ onMounted(async () => {
 		console.error('Error fetching request info:', error);
 	}
 })
+
+const getSuggestions = async () => {
+	loadingSuggestions.value = true
+	const query = feedback.value
+	nextTick(() => {
+    suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
+  })
+	try {
+		const res = await api.post('feedback/improve', {
+			feedback_request_id: requestUuId,
+			text: query,
+		})
+		if (res.status === 200) {
+			aiSuggestions.value = res.data.suggestions
+		}		
+	} catch (error) {
+		console.error('Error fetching AI suggestions:', error)
+	} finally {
+		loadingSuggestions.value = false
+	}
+	
+}
 
 async function postFeedback() {
 	const res = await api.post('/submissions', {

@@ -102,9 +102,7 @@ const getSuggestions = async () => {
 			text: query,
 		})
 
-	aiSuggestions.value = res.data || []
-
-	console.error('Error fetching AI suggestions:', res.data)
+		aiSuggestions.value = res.data
 		
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)

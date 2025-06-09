@@ -46,7 +46,7 @@
 					<p class="font-semibold text-gray-700">If you need help, check the suggestions below.</p>
 				</aside>
 			</div>
-			<button @click="() => getSuggestions" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2 cursor-pointer">Improve my feedback!</button>
+			<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2 cursor-pointer">Improve my feedback!</button>
 		</section>
 		<section>
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>

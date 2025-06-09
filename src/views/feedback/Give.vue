@@ -94,19 +94,24 @@ const requestUuId = route.query.uuid as string
 
 const fetchSuggestions = debounce(async (query: string) => {
 	console.log('Fetching AI suggestions for:', query)
-	if (query.length < 15) return
-	try {
-		const res = await api.post('feedback/improve', {
-			feedback_request_id: requestUuId,
-			text: query,
-		})
-		if (res.status === 200) {
-			aiSuggestions.value = res.data || []
-		} else {
-			console.error('Error fetching AI suggestions:', res.data)
+	if (query.length < 15) {
+		return
+	} else {
+
+		try {
+			const res = await api.post('feedback/improve', {
+				feedback_request_id: requestUuId,
+				text: query,
+			})
+			console.log('AI suggestions response:', res)
+			if (res.status === 200) {
+				aiSuggestions.value = res.data || []
+			} else {
+				console.error('Error fetching AI suggestions:', res.data)
+			}
+		} catch (error) {
+			console.error('Error fetching AI suggestions:', error)
 		}
-	} catch (error) {
-		console.error('Error fetching AI suggestions:', error)
 	}
 }, 300)
 

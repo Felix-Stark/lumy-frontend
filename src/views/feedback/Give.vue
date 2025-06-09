@@ -55,9 +55,9 @@
 			v-if="aiSuggestions.length > 0"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
-			class="flex w-full p-8 gap-4 mt-4 bg-gray-300">
+			class="flex w-full items-center p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
-				<button class="bg-lumy-purple text-white text-2xl px-4 py-2">+</button>
+				<button class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 
 			</div>
 			<div

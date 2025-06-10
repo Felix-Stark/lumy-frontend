@@ -34,6 +34,7 @@
 					<textarea
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
 						placeholder="Write your feedback here..."
+
 						v-model="feedback"
 					></textarea>
 				</form>
@@ -48,11 +49,12 @@
 			</div>
 			<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2 cursor-pointer">Improve my feedback!</button>
 		</section>
-		<section ref="suggestionSection">
+		<section ref="suggestionsSection">
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 			<div v-if="loadingSuggestions" class="flex w-full justify-center items-center p-8 mt-4">
 				<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
+				<p class="text-gray-700">Loading suggestions...</p>
   			</div>
 			<div
 			v-if="aiSuggestions.length > 0"
@@ -60,7 +62,7 @@
 			:key="suggestion"
 			class="flex w-full items-center p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
-				<button @click="() => feedback === feedback + ' ' + suggestion" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+				<button @click="feedback += (feedback ? ' ' : '') + suggestion" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 
 			</div>
 			<div

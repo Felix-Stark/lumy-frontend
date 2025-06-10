@@ -46,16 +46,18 @@
 					</ul>
 					<p class="font-semibold text-gray-700">If you need help, check the suggestions below.</p>
 				</aside>
-				<div v-if="aiSuggestions.length > 1" class="flex justify-end mt-4">
+				
+			</div>
+			<div class="flex justify-between mt-2">
+				<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg cursor-pointer">Improve my feedback!</button>
 					<button
+					v-if="aiSuggestions.length > 1"
 					@click="postFeedback"
 					class="px-6 py-2 bg-lumy-purple text-white rounded-lg hover:opacity-50 transition-colors"
 					>
 						Send Feedback
 					</button>
 				</div>
-			</div>
-			<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg mt-2 cursor-pointer">Improve my feedback!</button>
 		</section>
 		<section ref="suggestionsSection">
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>

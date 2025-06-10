@@ -16,7 +16,7 @@ import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue'
 import lumyCheering from '@/assets/images/lumy_cheering.png'
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID
 const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/install-redirect'
-const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=commands,chat:write,users:read,team:read&redirect_uri=${redirectUri}`
+const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=commands,chat:write,users:read,team:read,users:read.email&redirect_uri=${redirectUri}`
 
 
 const registerSlackUser = () => {

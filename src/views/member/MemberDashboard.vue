@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col gap-8 w-[80vw] min-h-screen">
 		<NavUtility />
-		<header class="grid grid-cols-2 grid-rows-2 gap-8 justify-center mt-16 w-full max-w-5xl">
+		<header class="grid grid-cols-2 grid-rows-2 gap-8 justify-center mt-16 max-w-5xl">
 			<HeadCard
 				class="col-start-1 row-start-1"
 				title="30"
@@ -70,8 +70,15 @@ const feedbackReceived = ref(0);
 const mockUser = ref({
 	id: 2,
 	name: 'Felix Stark',
-	avatar: 'https://avatars.slack-edge.com/2025-05-27/8983175204352_7d413422eec339550eec_192.png'
-
+	avatar: 'https://avatars.slack-edge.com/2025-05-27/8983175204352_7d413422eec339550eec_192.png',
+	skills: [
+		{ id: 1, name: 'JavaScript', level: 4 },
+		{ id: 2, name: 'Vue.js', level: 5 },
+		{ id: 3, name: 'Node.js', level: 3 }
+	],
+	numberOfFeedbacksGiven: 15,
+	numberOfFeedbacksReceived: 30,
+	feedbackSentiment: 83
 })
 
 onMounted(async() => {

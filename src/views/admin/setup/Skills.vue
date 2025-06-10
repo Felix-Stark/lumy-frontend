@@ -59,7 +59,7 @@
     <button
       class="bg-purple-500 hover:bg-purple-400 place-self-center min-w-3xs max-w-3xs mt-10 text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out"
       @click="postSkills"
-      >Finnish</button>
+      >Finish</button>
 	</div>
 </template>
 

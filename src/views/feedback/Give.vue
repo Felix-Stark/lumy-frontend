@@ -32,10 +32,9 @@
 			<div class="flex">
 				<form  class="mt-4 w-[60%]">
 					<textarea
+						v-model="feedback"
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
 						placeholder="Write your feedback here..."
-
-						v-model="feedback"
 					></textarea>
 				</form>
 				<aside class="mt-4 p-4 w-[40%] bg-gray-200  flex flex-col">
@@ -46,18 +45,21 @@
 					</ul>
 					<p class="font-semibold text-gray-700">If you need help, check the suggestions below.</p>
 				</aside>
-				
+				<p class="font-thin text-gray-400">{{ feedback.length }}/3000</p>
 			</div>
 			<div class="flex justify-between mt-2">
-				<button @click="getSuggestions()" class="bg-lumy-purple px-4 py-2 text-white rounded-lg cursor-pointer">Improve my feedback!</button>
-					<button
-					v-if="aiSuggestions.length > 1"
-					@click="postFeedback"
-					class="px-6 py-2 bg-lumy-purple text-white rounded-lg hover:opacity-50 transition-colors"
-					>
-						Send Feedback
-					</button>
-				</div>
+				<BaseButton 
+				:onAction="getSuggestions"
+				btnText="Improve my feedback!"
+				:disabled="loadingSuggestions || feedback.trim().length < 15"
+				/>
+				<BaseButton
+				v-if="aiSuggestions.length > 1"
+				:onAction="postFeedback"
+				btnText="Send Feedback"
+				:disabled="feedback.trim().length < 50"
+				/>
+			</div>
 		</section>
 		<section ref="suggestionsSection">
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
@@ -73,7 +75,6 @@
 			class="flex w-full items-center p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
 				<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
-
 			</div>
 			<div
 			v-else
@@ -84,12 +85,12 @@
 		<hr class="w-full mt-10 mb-10 border-t-2 border-gray-300"/>
 
 		<div v-if="aiSuggestions.length < 1" class="flex justify-end mt-4">
-			<button
-			@click="postFeedback"
-			class="px-6 py-2 bg-lumy-purple text-white rounded-lg hover:opacity-50 transition-colors"
-			>
-				Send Feedback
-			</button>
+			<BaseButton
+				v-if="aiSuggestions.length > 1"
+				:onAction="postFeedback"
+				btnText="Send Feedback"
+				:disabled="feedback.trim().length < 50"
+			/>
 		</div>
 	</div>
 </template>
@@ -98,6 +99,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { User2 } from 'lucide-vue-next'
+import BaseButton from '@/components/base/BaseButton.vue'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 

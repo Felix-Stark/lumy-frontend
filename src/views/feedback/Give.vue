@@ -52,9 +52,9 @@
 		<section ref="suggestionsSection">
 			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
 			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
-			<div v-if="loadingSuggestions" class="flex w-full justify-center items-center p-8 mt-4">
+			<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
 				<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
-				<p class="text-gray-700">Loading suggestions...</p>
+				<p class="text-gray-700">Conferring with the feedback gurus...</p>
   			</div>
 			<div
 			v-if="aiSuggestions.length > 0"

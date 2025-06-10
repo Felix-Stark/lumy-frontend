@@ -26,10 +26,10 @@
 				<p class="text-light italic text-gray-600">“{{requestInfo?.message}}”</p>
 			</section>
 		</section>
-		<section>
+		<section ref="feedbackSection">
 			<h2 class="font-medium text-lg">Your feedback</h2>
 			<p class="font-light text-gray-500">Remember to make your feedback actionable, or use AI to help you write it</p>
-			<div class="flex" ref="feedbackSection">
+			<div class="flex">
 				<form  class="mt-4 w-[60%]">
 					<textarea
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"

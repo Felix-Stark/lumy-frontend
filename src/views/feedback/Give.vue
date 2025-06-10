@@ -29,7 +29,7 @@
 		<section>
 			<h2 class="font-medium text-lg">Your feedback</h2>
 			<p class="font-light text-gray-500">Remember to make your feedback actionable, or use AI to help you write it</p>
-			<div class="flex">
+			<div class="flex" ref="feedbackSection">
 				<form  class="mt-4 w-[60%]">
 					<textarea
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
@@ -62,7 +62,7 @@
 			:key="suggestion"
 			class="flex w-full items-center p-8 gap-4 mt-4 bg-gray-300">
 				<p class="text-gray-700">{{ suggestion }}</p>
-				<button @click="feedback += (feedback ? ' ' : '') + suggestion" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+				<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 
 			</div>
 			<div
@@ -96,6 +96,7 @@ const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
 const loadingSuggestions = ref<boolean>(false)
 const suggestionsSection = ref<HTMLElement | null>(null)
+const feedbackSection = ref<HTMLElement | null>(null)
 
 
 const route = useRoute()
@@ -112,11 +113,22 @@ onMounted(async () => {
 	}
 })
 
+const addSuggestion = (suggestion: string) => {
+	if (feedback.value) {
+		feedback.value += ' ' + suggestion
+	} else {
+		feedback.value = suggestion
+	}
+	nextTick(() => {
+		feedbackSection.value?.scrollIntoView({ behavior: 'instant' })
+	})
+}
+
 const getSuggestions = async () => {
 	loadingSuggestions.value = true
 	const query = feedback.value
 	nextTick(() => {
-    suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
+    suggestionsSection.value?.scrollIntoView({ behavior: 'instant' })
   })
 	try {
 		const res = await api.post('feedback/improve', {

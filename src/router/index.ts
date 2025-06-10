@@ -11,12 +11,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: () => import('@/views/Home.vue'),
       meta: {
         title: 'Home',
         requiresAuth: false,
-      }
+      },
+      children: [
+        {
+          path: '/member',
+          name: 'member',
+          component: () => import('@/views/member/MemberDashboard.vue'),
+        }
+      ]
     },
     {
       path: '/admin',

@@ -1,5 +1,5 @@
 <template>
-      <div class="flex items-center gap-6 w-96 bg-white hover:bg-gray-100 rounded-lg shadow-md p-6 cursor-pointer" @click="onAction">
+      <div class="flex items-center gap-6 w-full max-w-96 bg-white hover:bg-gray-100 rounded-lg shadow-md p-6 cursor-pointer" @click="onAction">
         <slot />
         <div class="flex flex-col w-full justify-between ">
           <h1 class="text-xl font-semibold text-gray-800">{{ title }}</h1>

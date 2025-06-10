@@ -86,7 +86,7 @@ onMounted(async () => {
 	} else {
 		console.error('Error fetching bot personalities:', res);
 	}
-	botPersonalities.value = mockBotPersonalities;
+	// botPersonalities.value = mockBotPersonalities;
 });
 
 const saveSettings = async () => {

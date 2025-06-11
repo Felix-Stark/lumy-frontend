@@ -1,9 +1,9 @@
 <template>
-	<div class="flex flex-col p-0 md:p-10 rounded-2xl bg-white drop-shadow-xl w-[75vw] sm:w-full min-h-[80vh] mb-8">
+	<div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] mt-8 mb-8 md:p-10 md:w-[75vw]">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-darkblue">Your Feedback Fuels My Superpowers!</h1>
 		</header>
-		<hr class="w-full mt-6 mb-10 border-t-2 border-gray-300"/>
+		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
 		<section>
 			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ requestInfo?.skill.skill }}</span></h3>
 			<p class="font-light text-gray-500">{{ requestInfo?.skill.definition }}</p>
@@ -35,6 +35,7 @@
 						v-model="feedback"
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
 						placeholder="Write your feedback here..."
+						rows="6"
 					></textarea>
 				</form>
 				<aside class="mt-4 p-4 sm:w-[40%] w-full bg-gray-200  flex flex-col">

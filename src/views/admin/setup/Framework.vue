@@ -13,7 +13,7 @@
           <div class="relative">
             <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
               <span>
-                {{ frameworks.find(fw => fw.id === selectedFramework)?.name || 'Select a framework' }}
+                {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || 'Select a framework' }}
               </span>
               <ChevronDown class="ml-2 w-4 h-4" />
             </ListboxButton>
@@ -71,21 +71,29 @@ import {
   } from '@headlessui/vue'
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import type { BotPersonality } from '@/types';
+import type { BotPersonality, FeedbackFramework } from '@/types';
 const router = useRouter();
 import SetupComp from '@/components/setup/SetupComp.vue';
 import api from '@/services/api';
 const selectedFramework = ref();
 const selectedBot = ref();
-const botPersonalities = ref<BotPersonality[]>()
+const botPersonalities = ref<BotPersonality[]>();
+const frameworks = ref<FeedbackFramework[]>();
 
 onMounted(async () => {
-	const res = await api.get('/bot-personalities');
-	if (res.status === 200) {
-		botPersonalities.value = res.data;
+	const botRes = await api.get('/bot-personalities');
+	if (botRes.status === 200) {
+		botPersonalities.value = botRes.data;
 	} else {
-		console.error('Error fetching bot personalities:', res);
+		console.error('Error fetching bot personalities:', botRes);
 	}
+	const frameworksRes = await api.get('/frameworks');
+	if (frameworksRes.status === 200) {
+		frameworks.value = frameworksRes.data;
+	} else {
+		console.error('Error fetching frameworks:', frameworksRes);
+	}
+	// For testing purposes, you can uncomment the following lines to use mock data
 	// botPersonalities.value = mockBotPersonalities;
 });
 
@@ -114,7 +122,7 @@ const mockBotPersonalities = [
 	},
 ];
 
-const frameworks = [
+const mockFrameworks = [
 	{
 		id: 'no_framework',
 		name: 'No framework',

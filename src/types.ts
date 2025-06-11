@@ -51,3 +51,12 @@ export type BotPersonality = {
   description: string;
   formatted_name: string;
 }
+
+export type FeedbackFramework = {
+  id: number;
+  name: string;
+  formatted_name: string;
+  definition: string;
+  created_at: string;
+  updated_at: string;
+}

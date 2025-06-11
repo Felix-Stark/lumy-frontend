@@ -84,7 +84,6 @@
 
 		<div v-if="aiSuggestions.length < 1" class="flex justify-end mt-4">
 			<BaseButton
-				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
 			/>
@@ -101,6 +100,7 @@ import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 
 const requestInfo = ref<FeedbackRequest>()
+const disablePost = ref<boolean>(true)
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
 const loadingSuggestions = ref<boolean>(false)

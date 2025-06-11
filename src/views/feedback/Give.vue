@@ -57,7 +57,6 @@
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
-				:disabled="feedback.trim().length < 50"
 				/>
 			</div>
 		</section>
@@ -89,7 +88,7 @@
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
-				:disabled="feedback.trim().length < 50"
+
 			/>
 		</div>
 	</div>

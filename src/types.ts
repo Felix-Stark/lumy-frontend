@@ -53,7 +53,7 @@ export type Skill = {
 }
 
 export type FeedbackRequest = {
-  id: number;
+  id: string;
   sender: {
     id: number;
     name: string;

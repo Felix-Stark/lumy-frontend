@@ -13,11 +13,37 @@ export type User = {
 };
 
 export type Account = {
-	  id: number;
-	  accountId: string;
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+  frameWork: {
+    id: number;
+    name: string;
+    formatted_name: string;
+    definition: string;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
+export type SetupAccount = {
+	  id: string;
+	  account_id: string;
 	  role: string;
-	  users: User[];
+	  users: SetUpUser[]; // Array of users in the account
 }
+
+export type SetUpUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  is_active: boolean;
+  avatar: string;
+  title?: string;
+  suggested_skills: Skill[] | null; // Array of suggested skills for the user
+};
 
 export type Skill = {
   id: number;

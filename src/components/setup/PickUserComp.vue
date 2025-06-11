@@ -40,9 +40,9 @@
 					</ListboxOptions>
 				</div>
 			</Listbox>
-			<button @click="emit('update:isActive', !isActive)" class="text-red-500">
-				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer" />
-				<UserPlus v-else class="w-6 h-6 text-green-500 !opacity-100 cursor-pointer" />
+			<button @click="emit('update:isActive', !isActive)" class="opacity-100">
+				<UserMinus v-if="isActive === true" class="w-6 h-6 cursor-pointer text-red-500" />
+				<UserPlus v-else class="w-6 h-6 text-green-500  cursor-pointer" />
 			</button>
 		</div>
 	</div>

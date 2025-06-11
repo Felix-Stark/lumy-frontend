@@ -20,7 +20,7 @@
         :name="user.name"
         :title="user.title"
         v-model:role="user.role"
-        v-model:isActive="user.isActive"
+        v-model:isActive="user.is_active"
       />
     </div>
     <button
@@ -34,24 +34,21 @@
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import api from '@/services/api.ts';
-import { useUserStore } from '@/stores/userStore';
-import type { User } from '@/types';
 
+import { useUserStore } from '@/stores/userStore';
+import type { SetUpUser, User } from '@/types';
+import { useAuthStore } from '@/stores/authStore';
+
+const router = useRouter();
 const userStore = useUserStore();
-const users = ref<User[]>([]);
+const authStore = useAuthStore();
+const loading = ref(false);
+const users = ref<SetUpUser[]>();
+
 onMounted(async () => {
   loading.value = true;
   try {
-    if (userStore.users.length < 1) {
-      // users.value = mockUsers;
-      const response = await api.get('/users');
-      users.value = response.data;
-
-    } else {
-      users.value = userStore.users;
-      console.log('Using users from store:', users.value);
-    }
+    users.value = authStore.setUpAccount?.users
   } catch (error) {
     console.error('Error fetching users:', error);
   } finally {
@@ -60,15 +57,12 @@ onMounted(async () => {
 });
 const updateUsers = async () => {
   loading.value = true;
-  users.value.forEach(user => {
-    userStore.updateUser(user.id, { ...user, isActive: user.isActive, role: user.role });
+  users.value?.forEach(user => {
+    userStore.updateUser(user.id, { ...user, isActive: user.is_active, role: user.role });
   })
-
   router.push('/setup/skills');
 }
 
-const router = useRouter();
-const loading = ref(false);
 
 
 const mockUsers: User[] = [

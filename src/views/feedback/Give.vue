@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col p-10 md:p-0 rounded-2xl bg-white drop-shadow-xl w-[75vw] min-h-[80vh] mb-8">
+	<div class="flex flex-col p-0 md:p-10 rounded-2xl bg-white drop-shadow-xl w-[75vw] sm:w-full min-h-[80vh] mb-8">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-darkblue">Your Feedback Fuels My Superpowers!</h1>
 		</header>
@@ -30,14 +30,14 @@
 			<h2 class="font-medium text-lg">Your feedback</h2>
 			<p class="font-light text-gray-500">Remember to make your feedback actionable, or use AI to help you write it</p>
 			<div class="flex flex-col sm:flex-row gap-4 mt-4">
-				<form  class="mt-4 w-[60%] sm:w-full">
+				<form  class="mt-4 sm:w-[60%] w-full">
 					<textarea
 						v-model="feedback"
 						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
 						placeholder="Write your feedback here..."
 					></textarea>
 				</form>
-				<aside class="mt-4 p-4 w-[40%] sm:w-full bg-gray-200  flex flex-col">
+				<aside class="mt-4 p-4 sm:w-[40%] w-full bg-gray-200  flex flex-col">
 					<ul class="list-disc list-inside text-gray-700">
 						<li><span class="font-semibold">Be specific</span> - Focus on one clear behavior or moment.</li>
 						<li><span class="font-semibold">Look ahead</span> - Suggest what they could do more of, less of, or differently next time.</li>
@@ -45,7 +45,6 @@
 					</ul>
 					<p class="font-semibold text-gray-700">If you need help, check the suggestions below.</p>
 				</aside>
-				<p class="font-thin text-gray-400">{{ feedback.length }}/3000</p>
 			</div>
 			<div class="flex justify-between mt-2">
 				<BaseButton 
@@ -88,7 +87,6 @@
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
-
 			/>
 		</div>
 	</div>

@@ -4,7 +4,7 @@
 		<header class="grid grid-cols-2 grid-rows-2 gap-8 justify-center mt-16 max-w-5xl">
 			<HeadCard
 				class="col-start-1 row-start-1"
-				:title="summary?.feedback_received_count.toString() || '0'"
+				:title="`${summary?.feedback_received_count ?? 0}`"
 				description="Feedbacks received"
 				:onAction="() => console.log('Feedbacks')"
 			>
@@ -15,7 +15,7 @@
 			</HeadCard>
 			<HeadCard
 				class="col-start-2 row-start-1"
-				:title="summary?.feedback_given_count.toString() || '0'"
+				:title="`${summary?.feedback_given_count ?? 0}`"
 				description="Feedbacks given"
 				:onAction="() => console.log('Projects')"
 			>
@@ -35,7 +35,7 @@
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				:title="summary?.positive_sentiment_percentage.toString() + '%'"
+				:title="`${summary?.positive_sentiment_percentage, '%'}`"
 				description="Postive feedback given"
 				:onAction="() => console.log('weakness')"
 			>

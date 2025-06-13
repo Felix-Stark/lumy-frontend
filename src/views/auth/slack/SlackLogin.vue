@@ -1,7 +1,7 @@
 <template>
 	<SlackAuthLayout 
 	:image="lumyLogo"
-	title="Welcome to McFeedFace"	
+	title="Welcome to Lumy"	
 	:description="`Feedback that actually helps — not hurts.`"
 	buttonText="Sign in with Slack"
 	:onAction="signInWithSlack"

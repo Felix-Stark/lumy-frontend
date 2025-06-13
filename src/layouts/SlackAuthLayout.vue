@@ -2,7 +2,7 @@
   <div class="max-w-3xl">
     <article class="flex flex-col items-center justify-center mb-8">
       <div class="flex flex-col items-center justify-center">
-        <img v-if="image" :src="image" alt="McFeedFace Logo" class="w-56 h-auto mt-4 mb-4" />
+        <img v-if="image" :src="image" alt="lumy Logo" class="w-56 h-auto mt-4 mb-4" />
       </div>
       <div v-if="loader" class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4">
       </div>

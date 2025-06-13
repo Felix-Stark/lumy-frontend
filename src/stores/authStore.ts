@@ -20,6 +20,7 @@ export const useAuthStore = defineStore("auth", {
         console.log("login data: ", res.data);
         if (res.status === 200) {
           this.isLoggedIn = true;
+          sessionStorage.setItem("LumyLoggedIn", "true");
           const userStore = useUserStore();
           userStore.me = res.data.user;
           userStore.account = res.data.account;
@@ -47,8 +48,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout() {
-      //logout logic
-      //clear user state
+      sessionStorage.removeItem("LumyLoggedIn");
     },
   },
 });

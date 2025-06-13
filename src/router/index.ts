@@ -134,9 +134,9 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
 
-  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+  const isLoggedIn = sessionStorage.getItem('LumyLoggedIn') === 'true'
+  if (to.meta.requiresAuth && isLoggedIn) {
     next({ name: 'slack-login' })
   } else {
     next()

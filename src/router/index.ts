@@ -10,18 +10,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      component: () => import('@/views/Home.vue'),
+      path: '/member',
+      component: () => import('@/layouts/MemberLayout.vue'),
+      redirect: '/member/dashboard',
       meta: {
-        title: 'Home',
-        requiresAuth: false,
+        title: 'Member dashboard',
+        requiresAuth: true, // This route requires authentication
       },
       children: [
         {
-          path: '/member',
-          name: 'member',
-          component: () => import('@/views/member/MemberDashboard.vue'),
-        }
+          path: '/member/dashboard',
+          name: 'member-dashboard',
+          component: () => import('@/views/member/Dashboard.vue'),
+        },
       ]
     },
     {

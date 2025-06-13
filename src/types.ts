@@ -12,6 +12,26 @@ export type User = {
   skills?: Skill[]; // Array of skill IDs
 };
 
+export type UserSummary = {
+  feedback_received_count: number;
+  feedback_given_count: number;
+  positive_sentiment_percentage: number;
+  top_positive_skill: string;
+  skills_summary: [
+    {
+      skill_id: number;
+      name: string;
+      average_sentiment: number;
+      feedback_count: number;
+      last_feedback_received: string; // ISO date string
+    },
+  ];
+  chatgpt_summary: {
+    positive: string;
+    improvement: string;
+  };
+};
+
 export type Account = {
   id: number;
   name: string;

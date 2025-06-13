@@ -4,7 +4,7 @@
 		<header class="grid grid-cols-2 grid-rows-2 gap-8 justify-center mt-16 max-w-5xl">
 			<HeadCard
 				class="col-start-1 row-start-1"
-				title="30"
+				:title="summary?.feedback_received_count.toString() || '0'"
 				description="Feedbacks received"
 				:onAction="() => console.log('Feedbacks')"
 			>
@@ -15,7 +15,7 @@
 			</HeadCard>
 			<HeadCard
 				class="col-start-2 row-start-1"
-				title="15"
+				:title="summary?.feedback_given_count.toString() || '0'"
 				description="Feedbacks given"
 				:onAction="() => console.log('Projects')"
 			>
@@ -32,10 +32,10 @@
 				description="Most mentioned strength"
 				:onAction="() => console.log('skill')"
 			>
-			<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				title="83%"
+				:title="summary?.positive_sentiment_percentage.toString() + '%'"
 				description="Postive feedback given"
 				:onAction="() => console.log('weakness')"
 			>
@@ -43,30 +43,99 @@
 			<path d="M6.08365 3.75183C5.85069 1.22515 8.7026 -0.412123 10.7867 1.05183L16.4032 4.99713L22.7219 2.29921C25.0666 1.29811 27.5138 3.48921 26.7577 5.91252L24.7198 12.4432L29.2528 17.5852C30.9348 19.4931 29.5954 22.4846 27.044 22.5183L20.168 22.6092L16.6508 28.485C15.3457 30.6653 12.0707 30.323 11.25 27.9206L9.03822 21.446L2.33149 19.9356C-0.157125 19.3751 -0.841798 16.1721 1.20241 14.6535L6.71146 10.5612L6.08365 3.75183Z" fill="#7FE47E"/>
 			<path d="M24.582 26.6436C24.0866 25.7903 22.9893 25.4979 22.1312 25.9906C21.2731 26.4832 20.979 27.5743 21.4745 28.4276L25.0628 34.6077C25.5582 35.461 26.6555 35.7533 27.5136 35.2607C28.3717 34.768 28.6657 33.6769 28.1703 32.8237L24.582 26.6436Z" fill="#7FE47E"/>
 			</svg>
-
 			</HeadCard>
 		</header>
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
-			<p>You're crushing it in collaboration - teammates clearly love working with you!<br/>Want to level it up even more? Try adding a bit more structure to your planning chats.</p>
+			<p>{{ summary?.top_positive_skill }}</p>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="font-400 text-xl self-start">Skills Overview</h2>
+			<div class="px-4 grid grid-cols-5 gap-4">
+				<p class="font-thin text-gray-300 col-span-1">Skill</p>
+				<p class="font-thin text-gray-300 col-span-2">Sentiment</p>
+				<p class="font-thin text-gray-300 col-span-3"># of feedback</p>
+				<p class="font-thin text-gray-300 col-span-4">Last feedback received</p>
+			</div>
+			<div class="w-full grid grid-cols-5"
+			v-for="skill in summary?.skills_summary"
+			>
+				<p class="col-span-1">{{ skill.name }}</p>
+				<p class="col-span-2">{{ skill.average_sentiment.toFixed(2) }}</p>
+				<p class="col-span-3">{{ skill.feedback_count }}</p>
+				<p class="col-span-4">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</p>
+				<div class="col-span-5 flex justify-between">
+					<button @click="showReq === true" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md ">
+						Request
+					</button>
+					<ChevronLeft class="text-gray-500 w-6 h-6" />
+				</div>
+			</div>
 		</section>
+		<BaseDialog
+		:isOpen="showReq"
+		@close="showReq = false"
+		title="Request Feedback"
+		description="Select a skill and who you want feedback from.">
+			<div class="flex flex-col items-center justify-center gap-4">
+				<select v-model="reqSkill" class="w-full p-2 border border-gray-300 rounded-md">
+					<option value="" disabled selected>Select a skill</option>
+					<option v-for="skill in user?.skills" :key="skill.id" :value="skill.id">
+						{{ skill.skill }}
+					</option>
+				</select>
+				<select v-model="reqUser" class="w-full p-2 border border-gray-300 rounded-md">
+					<option value="" disabled selected>Select a user</option>
+					<option v-for="u in userStore.users" :key="u.id" :value="u.id">
+						{{ u.name }}
+					</option>
+				</select>
+
+				<textarea
+						name="feedback"
+						id="feedback"
+						v-model="reqMsg"
+						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
+						placeholder="What do you want feedback on? Set the scene so your team mates know where to jump in."
+						rows="6"
+					></textarea>
+				<button @click="() => requestFeedback" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md">
+					Request Feedback
+				</button>
+				
+			</div>
+		</BaseDialog>
+		<BaseDialog
+			v-if="showSuccess"
+			:isOpen="showSuccess"
+			@close="showSuccess = false"
+			:imgPath="LumySuccess"
+			:imgAlt="'Lumy Success'"
+			title="Feedback Requested"
+			message="Your feedback request has been sent successfully!"
+			btnText="Close"
+		>
+		</BaseDialog>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { Heart } from 'lucide-vue-next';
+import { ChevronLeft, Heart } from 'lucide-vue-next';
 import NavUtility from '@/components/NavUtility.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
+import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
+import LumySuccess from '@/assets/images/lumy-success.png';
+import type { User, UserSummary } from '@/types';
 import api from '@/services/api';
-import type { User } from '@/types';
 const userStore = useUserStore();
 const user = ref<User | null>(null);
-const feedbackGiven = ref(0);
-const feedbackReceived = ref(0);
+const summary = ref<UserSummary | null>(null);
+const showReq = ref(false);
+const showSuccess = ref(false);
+const reqSkill = ref<number | null>(null);
+const reqUser = ref<number | null>(null);
+const reqMsg = ref<string | null>(null);
 const mockUser = ref({
 	id: 2,
 	name: 'Felix Stark',
@@ -82,18 +151,40 @@ const mockUser = ref({
 })
 
 onMounted(async() => {
-	// await userStore.getMe();
-	// if (userStore.me) {
-	// 	user.value = userStore.me;
-	// 	await userStore.getUserSkills(userStore.me.id);
-	// 	const res = await api.get('/submissions' + `?user_id=${userStore.me.id}`);
-	// 	if (res.status === 200) {
-	// 		const data = res.data;
-	// 		console.log('feedback given data: ', data);
-	// 		feedbackGiven.value = data.length;
-	// 	} else {
-	// 		console.error('Error fetching feedback data:', res.data);
-	// 	}
-	// }
+	user.value = userStore.me;
+	summary.value = userStore.meSummary;
+	if (!user.value) {
+		await userStore.getMe();
+		user.value = userStore.me;
+	}
+	if (!summary.value) {
+		await userStore.getMeSummary();
+		summary.value = userStore.meSummary;
+	}
 })
+
+const requestFeedback = async () => {
+	try {
+		const res = await api.post('/requests', {
+			recipient_id: reqUser.value,
+			skill_id: reqSkill.value,
+			message: reqMsg.value
+		})
+		if (res.status === 200) {
+			alert('Feedback requested successfully!');
+		} else {
+			console.error('Error requesting feedback:', res.data);
+			alert('Failed to request feedback. Please try again.');
+		}
+	} catch (error) {
+		console.error('Error requesting feedback:', error);
+		alert('Failed to request feedback. Please try again.');
+	} finally {
+		showReq.value = false;
+		showSuccess.value = true;
+		reqMsg.value = null;
+		reqSkill.value = null;
+		reqUser.value = null;
+	}
+}
 </script>

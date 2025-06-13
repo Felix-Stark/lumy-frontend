@@ -1,11 +1,12 @@
 import {defineStore} from 'pinia';
 import api from '../services/api';
 import {useAuthStore} from './authStore';
-import type {User, Account, Skill, SetupAccount} from '../types';
+import type { User, Account, Skill, UserSummary } from '../types';
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
 		me: {} as User | null,
+		meSummary: {} as UserSummary | null,
 		userSkills: [] as Skill[] | null,
 		users: [] as User[],
 		account: {} as Account | null,
@@ -17,6 +18,13 @@ export const useUserStore = defineStore('user', {
 				this.me = res.data;
 			}
 			return res.status;
+		},
+		async getMeSummary() {
+			const res = await api.get('/me/summary');
+			if (res.status === 200) {
+				this.meSummary = res.data; //return status and use userStore.me in components
+				return res.status; //return status and use userStore.me in components
+			}
 		},
 		async getUserSkills(userId: number) {
 			const res = await api.get(`/users/${userId}/skills`);

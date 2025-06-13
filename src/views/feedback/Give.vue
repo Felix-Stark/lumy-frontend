@@ -117,7 +117,6 @@ onMounted(async () => {
 	try {
 		const res = await api.get(`/requests/${requestUuId}`);
 		requestInfo.value = res.data;
-		requestInfo.value = res.data;
 	} catch (error) {
 		console.error('Error fetching request info:', error);
 	}

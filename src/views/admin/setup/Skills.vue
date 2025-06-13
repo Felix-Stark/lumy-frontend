@@ -21,7 +21,7 @@
           <Listbox v-model="selectedSkillIds[user.id]" multiple class="w-full">
             <div>
               <ListboxButton class="border  border-gray-300 bg-white text-gray-700 font-medium py-2 px-4 rounded-md w-full flex items-center justify-between cursor-pointer">
-                <span class="">
+                <span>
                   <template v-if="selectedSkillIds[user.id]?.length">
                     {{ selectedSkillIds[user.id].length }} skills
                   </template>

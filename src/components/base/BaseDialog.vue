@@ -7,15 +7,11 @@
 					<img :src="imgPath" alt="Lumy Logo" class="size-40 mx-auto mb-4" />
 				</div>
 				<DialogTitle v-if="title" class="text-2xl font-semibold">{{ title }}</DialogTitle>
-				<DialogDescription v-if="description">
-				{{ description }}
-				</DialogDescription>
-		
-				<p v-if="message">
+				<DialogDescription v-if="message">
 				{{ message }}
-				</p>
-		
-				<button @click="emit('close')" class="px-4 py-2 bg-lumy-purple text-white rounded">OK</button>
+				</DialogDescription>
+				<slot />
+				<button v-if="btnText" @click="emit('close')" class="px-4 py-2 bg-lumy-purple text-white rounded">{{ btnText }}</button>
 			</DialogPanel>
 	  </div>
 	</Dialog>
@@ -39,10 +35,6 @@ const props = defineProps({
 	default: ''
   },
   title: {
-	type: String,
-	default: ''
-  },
-  description: {
 	type: String,
 	default: ''
   },

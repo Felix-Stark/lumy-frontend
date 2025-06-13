@@ -125,7 +125,7 @@ import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
-import LumySuccess from '@/assets/images/lumy-success.png';
+import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { User, UserSummary } from '@/types';
 import api from '@/services/api';
 const userStore = useUserStore();

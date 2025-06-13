@@ -153,6 +153,7 @@ const mockUser = ref({
 onMounted(async() => {
 	user.value = userStore.me;
 	summary.value = userStore.meSummary;
+	console.log('me: ', userStore.me)
 	if (userStore.me === null) {
 		await userStore.getMe();
 		user.value = userStore.me;

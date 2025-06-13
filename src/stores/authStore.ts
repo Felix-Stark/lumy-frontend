@@ -16,14 +16,13 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.get("/slack/login/callback?code=" + code);
       let path = "";
       try {
-        console.log("login res: ", res.status);
+        console.log("login status: ", res.status);
+        console.log("login data: ", res.data);
         if (res.status === 200) {
           this.isLoggedIn = true;
-          this.isAdmin = res.data.user.role === "admin";
           const userStore = useUserStore();
           userStore.me = res.data.user;
           userStore.account = res.data.account;
-          console.log("login data: ", res.data);
           path = "/member";
         }
         if (res.status === 204) {

@@ -23,6 +23,7 @@ export const useAuthStore = defineStore("auth", {
           const userStore = useUserStore();
           userStore.me = res.data.user;
           userStore.account = res.data.account;
+          console.log("login data: ", res.data);
           path = "/member";
         }
         if (res.status === 204) {

@@ -116,7 +116,13 @@ const requestUuId = route.query.uuid as string
 onMounted(async () => {
 	try {
 		const res = await api.get(`/requests/${requestUuId}`);
-		requestInfo.value = res.data;
+
+		if(res.status === 200) {
+			requestInfo.value = res.data
+			console.log('Request info fetched successfully:', requestInfo.value)
+		} else {
+			console.error('Error fetching request info:', res.data)
+		}
 	} catch (error) {
 		console.error('Error fetching request info:', error);
 	}

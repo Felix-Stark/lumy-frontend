@@ -71,17 +71,17 @@
 			v-if="aiSuggestions.length > 0"
 			v-for="suggestion in aiSuggestions"
 			:key="suggestion"
-			class="flex flex-col justify-center sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-gray-300">
+			class="flex flex-col justify-between sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-light-gray">
 				<p class="text-gray-700">{{ suggestion }}</p>
 				<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 			</div>
 			<div
 			v-else
-			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-gray-200">
+			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-light-gray">
 				<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.</p>
 			</div>
 		</section>
-		<hr class="w-full mt-10 mb-10 border-t-2 border-gray-300"/>
+		<hr class="w-full mt-10 mb-10 border-t-2 border-light-gray"/>
 
 		<div v-if="aiSuggestions.length < 1" class="flex justify-end mt-4">
 			<BaseButton

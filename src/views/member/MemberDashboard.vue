@@ -32,7 +32,7 @@
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				:title="`${summary?.positive_sentiment_percentage, '%'}`"
+				:title="`${summary?.positive_sentiment_percentage + '%'}`"
 				description="Postive feedback given"
 			>
 			<svg width="34" height="40" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,7 @@
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</td>
 							<td class="px-4 py-2">
-								<button @click="showReq = true" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md">
+								<button @click="showReq = true" class="flex justify-between items-center bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronLeft />

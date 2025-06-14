@@ -42,7 +42,7 @@
 			</HeadCard>
 		</header>
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
-			<p>{{ summary?.chatgpt_summary }}</p>
+			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="font-400 text-xl self-start mb-4">Skills Overview</h2>
@@ -64,13 +64,15 @@
 							class="border-b last:border-b-0"
 						>
 							<td class="px-4 py-2">{{ skill.name }}</td>
-							<td class="px-4 py-2">{{ skill.average_sentiment.toFixed(2) }}</td>
+							<td v-if="skill.average_sentiment > 0.50" class="px-4 py-2 text-green-500">Positive</td>
+							<td v-if="skill.average_sentiment <= 0.50" class="px-4 py-2 text-red-500">Negative</td>
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</td>
 							<td class="px-4 py-2">
 								<button @click="showReq = true" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md">
 									Request
 								</button>
+								<ChevronLeft />
 							</td>
 						</tr>
 					</tbody>

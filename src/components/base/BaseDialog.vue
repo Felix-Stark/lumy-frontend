@@ -3,7 +3,7 @@
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
 			<DialogPanel class="w-full flex flex-col gap-6 max-w-md rounded-lg bg-white p-8">
-				<div class="w-full">
+				<div v-if="imgPath" class="w-full">
 					<img :src="imgPath" alt="Lumy Logo" class="min-w-40 h-auto  mb-4" />
 				</div>
 				<DialogTitle v-if="title" class="text-2xl font-semibold">{{ title }}</DialogTitle>

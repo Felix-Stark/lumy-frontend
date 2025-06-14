@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-vue-next';
+import { ChevronRight, Heart } from 'lucide-vue-next';
 import NavUtility from '@/components/NavUtility.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';

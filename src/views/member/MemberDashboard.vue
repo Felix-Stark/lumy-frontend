@@ -72,7 +72,7 @@
 								<button @click="showReq = true" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
-								<ChevronLeft />
+								<ChevronRight />
 							</td>
 						</tr>
 					</tbody>
@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronLeft, Heart } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-vue-next';
 import NavUtility from '@/components/NavUtility.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';

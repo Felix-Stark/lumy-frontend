@@ -6,7 +6,6 @@
 				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"
 				description="Feedbacks received"
-				:onAction="() => console.log('Feedbacks')"
 			>
 				<Heart
 				class="w-12 h-12 text-red-500"
@@ -17,7 +16,6 @@
 				class="col-start-2 row-start-1"
 				:title="`${summary?.feedback_given_count ?? 0}`"
 				description="Feedbacks given"
-				:onAction="() => console.log('Projects')"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="lucide lucide-message-square-quote-icon lucide-message-square-quote text-blue-500">
 					<!-- Outer shape filled blue -->
@@ -30,14 +28,12 @@
 			<HeadCard
 				title="Collaboration"
 				description="Most mentioned strength"
-				:onAction="() => console.log('skill')"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
 				:title="`${summary?.positive_sentiment_percentage, '%'}`"
 				description="Postive feedback given"
-				:onAction="() => console.log('weakness')"
 			>
 			<svg width="34" height="40" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M6.08365 3.75183C5.85069 1.22515 8.7026 -0.412123 10.7867 1.05183L16.4032 4.99713L22.7219 2.29921C25.0666 1.29811 27.5138 3.48921 26.7577 5.91252L24.7198 12.4432L29.2528 17.5852C30.9348 19.4931 29.5954 22.4846 27.044 22.5183L20.168 22.6092L16.6508 28.485C15.3457 30.6653 12.0707 30.323 11.25 27.9206L9.03822 21.446L2.33149 19.9356C-0.157125 19.3751 -0.841798 16.1721 1.20241 14.6535L6.71146 10.5612L6.08365 3.75183Z" fill="#7FE47E"/>
@@ -46,29 +42,39 @@
 			</HeadCard>
 		</header>
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
-			<p>{{ summary?.top_positive_skill }}</p>
+			<p>{{ summary?.chatgpt_summary }}</p>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
-			<h2 class="font-400 text-xl self-start">Skills Overview</h2>
-			<div class="px-4 grid grid-cols-5 gap-4">
-				<p class="font-thin text-gray-300 col-span-1">Skill</p>
-				<p class="font-thin text-gray-300 col-span-2">Sentiment</p>
-				<p class="font-thin text-gray-300 col-span-3"># of feedback</p>
-				<p class="font-thin text-gray-300 col-span-4">Last feedback received</p>
-			</div>
-			<div class="w-full grid grid-cols-5"
-			v-for="skill in summary?.skills_summary"
-			>
-				<p class="col-span-1">{{ skill.name }}</p>
-				<p class="col-span-2">{{ skill.average_sentiment.toFixed(2) }}</p>
-				<p class="col-span-3">{{ skill.feedback_count }}</p>
-				<p class="col-span-4">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</p>
-				<div class="col-span-5 flex justify-between">
-					<button @click="showReq === true" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md ">
-						Request
-					</button>
-					<ChevronLeft class="text-gray-500 w-6 h-6" />
-				</div>
+			<h2 class="font-400 text-xl self-start mb-4">Skills Overview</h2>
+			<div class="overflow-x-auto">
+				<table class="min-w-full border border-gray-200 rounded-lg">
+					<thead>
+						<tr class="bg-gray-100">
+							<th class="px-4 py-2 text-left font-thin text-gray-500">Skill</th>
+							<th class="px-4 py-2 text-left font-thin text-gray-500">Sentiment</th>
+							<th class="px-4 py-2 text-left font-thin text-gray-500"># of feedback</th>
+							<th class="px-4 py-2 text-left font-thin text-gray-500">Last feedback received</th>
+							<th class="px-4 py-2"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="skill in summary?.skills_summary"
+							:key="skill.skill_id"
+							class="border-b last:border-b-0"
+						>
+							<td class="px-4 py-2">{{ skill.name }}</td>
+							<td class="px-4 py-2">{{ skill.average_sentiment.toFixed(2) }}</td>
+							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
+							<td class="px-4 py-2">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</td>
+							<td class="px-4 py-2">
+								<button @click="showReq = true" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md">
+									Request
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</section>
 		<BaseDialog

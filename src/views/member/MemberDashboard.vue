@@ -68,8 +68,8 @@
 							<td v-if="skill.average_sentiment <= 0.50" class="px-4 py-2 text-red-500">Negative</td>
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</td>
-							<td class="px-4 py-2">
-								<button @click="showReq = true" class="flex justify-between items-center bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
+							<td class="px-4 py-2 flex justify-between items-center">
+								<button @click="showReq = true" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronLeft />

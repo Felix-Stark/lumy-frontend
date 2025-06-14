@@ -38,7 +38,7 @@
 						rows="6"
 					></textarea>
 				</form>
-				<aside class="mt-4 p-4 sm:w-[40%] w-full bg-gray-200  flex flex-col">
+				<aside class="mt-4 p-4 sm:w-[40%] w-full bg-light-gray flex flex-col">
 					<ul class="list-disc list-inside text-gray-700">
 						<li><span class="font-semibold">Be specific</span> - Focus on one clear behavior or moment.</li>
 						<li><span class="font-semibold">Look ahead</span> - Suggest what they could do more of, less of, or differently next time.</li>

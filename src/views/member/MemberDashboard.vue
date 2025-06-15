@@ -148,22 +148,25 @@ const reqMsg = ref<string | null>(null);
 onMounted(async() => {
 	if(userStore.me === null) {
 		await userStore.getMe();
+		user.value = userStore.me;
+		console.log('me: ', userStore.me)
 	}
-	user.value = userStore.me;
-	console.log('me: ', userStore.me)
 
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
 })
 
 async function openReq() {
+	let userId = userStore.me?.id;
 	if (userStore.users.length === 0) {
 		await userStore.getUsers();
 	}
 	if( userStore.users.length > 0) {
 		showReq.value = true;
 	}
-	await userStore.getUserSkills(user.value?.id as number);
+	if (userId) {
+		await userStore.getUserSkills(userId);
+	}
 }
 
 const requestFeedback = async () => {

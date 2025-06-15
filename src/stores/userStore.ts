@@ -30,6 +30,7 @@ export const useUserStore = defineStore('user', {
 			const res = await api.get(`/users/${userId}/skills`);
 			if (res.status === 200) {
 				this.userSkills = res.data; //return status and use userStore.userSkills in components
+				console.log('userSkills', this.userSkills);
 				return res.status; //return status and use userStore.users in components
 			}
 		},

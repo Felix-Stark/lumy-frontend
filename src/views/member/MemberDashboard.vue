@@ -69,7 +69,7 @@
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ new Date(skill.last_feedback_received).toLocaleDateString() }}</td>
 							<td class="px-4 py-2 flex justify-between items-center">
-								<button @click="showReq = true" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
+								<button @click="openReq" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronRight />
@@ -87,7 +87,7 @@
 			<div class="flex flex-col items-center justify-center gap-4">
 				<select v-model="reqSkill" class="w-full p-2 border border-gray-300 rounded-md">
 					<option value="" disabled selected>Select a skill</option>
-					<option v-for="skill in user?.skills" :key="skill.id" :value="skill.id">
+					<option v-for="skill in userStore.userSkills" :key="skill.id" :value="skill.id">
 						{{ skill.skill }}
 					</option>
 				</select>
@@ -120,7 +120,7 @@
 			:imgAlt="'Lumy Success'"
 			title="Feedback Requested"
 			message="Your feedback request has been sent successfully!"
-			btnText="Close"
+			btnText="OK"
 		>
 		</BaseDialog>
 	</div>
@@ -134,42 +134,37 @@ import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
-import type { User, UserSummary } from '@/types';
+import type { Skill, User, UserSummary } from '@/types';
 import api from '@/services/api';
 const userStore = useUserStore();
 const user = ref<User | null>(null);
 const summary = ref<UserSummary | null>(null);
 const showReq = ref(false);
 const showSuccess = ref(false);
-const reqSkill = ref<number | null>(null);
-const reqUser = ref<number | null>(null);
+const reqSkill = ref<Skill | null>(null);
+const reqUser = ref<User | null>(null);
 const reqMsg = ref<string | null>(null);
-const mockUser = ref({
-	id: 2,
-	name: 'Felix Stark',
-	avatar: 'https://avatars.slack-edge.com/2025-05-27/8983175204352_7d413422eec339550eec_192.png',
-	skills: [
-		{ id: 1, name: 'JavaScript', level: 4 },
-		{ id: 2, name: 'Vue.js', level: 5 },
-		{ id: 3, name: 'Node.js', level: 3 }
-	],
-	numberOfFeedbacksGiven: 15,
-	numberOfFeedbacksReceived: 30,
-	feedbackSentiment: 83
-})
 
 onMounted(async() => {
-
-	await userStore.getMe();
+	if(userStore.me === null) {
+		await userStore.getMe();
+	}
 	user.value = userStore.me;
-
 	console.log('me: ', userStore.me)
 
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
-	console.log('Summary:', userStore.meSummary);
-
 })
+
+async function openReq() {
+	if (userStore.users.length === 0) {
+		await userStore.getUsers();
+	}
+	if( userStore.users.length > 0) {
+		showReq.value = true;
+	}
+	await userStore.getUserSkills(user.value?.id as number);
+}
 
 const requestFeedback = async () => {
 	try {
@@ -179,7 +174,7 @@ const requestFeedback = async () => {
 			message: reqMsg.value
 		})
 		if (res.status === 200) {
-			alert('Feedback requested successfully!');
+			showSuccess.value = true;
 		} else {
 			console.error('Error requesting feedback:', res.data);
 			alert('Failed to request feedback. Please try again.');
@@ -189,10 +184,8 @@ const requestFeedback = async () => {
 		alert('Failed to request feedback. Please try again.');
 	} finally {
 		showReq.value = false;
-		showSuccess.value = true;
 		reqMsg.value = null;
 		reqSkill.value = null;
-		reqUser.value = null;
 	}
 }
 </script>

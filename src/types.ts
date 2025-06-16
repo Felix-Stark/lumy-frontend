@@ -17,20 +17,20 @@ export type UserSummary = {
   feedback_given_count: number;
   positive_sentiment_percentage: number;
   top_positive_skill: string;
-  skills_summary: [
-    {
-      skill_id: number;
-      name: string;
-      average_sentiment: number;
-      feedback_count: number;
-      last_feedback_received: string; // ISO date string
-    },
-  ];
+  skills_summary: SkillSummary[];
   chatgpt_summary: {
     positive: string;
     improvement: string;
   };
 };
+
+export type SkillSummary = {
+  skill_id: number;
+  name: string;
+  average_sentiment: number;
+  feedback_count: number;
+  last_feedback_received: string; // ISO date string
+}
 
 export type Account = {
   id: number;

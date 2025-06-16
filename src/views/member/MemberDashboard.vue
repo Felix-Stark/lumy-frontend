@@ -92,7 +92,7 @@
 				<div v-else class="flex flex-col gap-4 w-full max-w-md">
 				<select v-model="reqSkill" class="w-full p-2 border border-gray-300 rounded-md">
 					<option value="" disabled selected>Select a skill</option>
-					<option v-for="skill in userStore.userSkills" :key="skill.id" :value="skill.id">
+					<option v-for="skill in userSkills" :key="skill.id" :value="skill.id">
 						{{ skill.skill }}
 					</option>
 				</select>
@@ -139,10 +139,11 @@ import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
-import type { Skill, User, UserSummary } from '@/types';
+import type { Skill, SkillSummary, User, UserSummary } from '@/types';
 import api from '@/services/api';
 const userStore = useUserStore();
 const user = ref<User | null>(null);
+const userSkills = ref<{id: number, skill: string}[]>([]);
 const summary = ref<UserSummary | null>(null);
 const showReq = ref(false);
 const showSuccess = ref(false);
@@ -156,7 +157,6 @@ onMounted(async() => {
 		user.value = userStore.me;
 		console.log('me: ', userStore.me)
 	}
-
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
 })
@@ -166,9 +166,10 @@ async function openReq() {
 	if (!userId) {
 		await userStore.getUsers();
 	}
-	if (userId) {
-		await userStore.getUserSkills(userId);
-	}
+	userSkills.value = summary.value?.skills_summary.map(skill => ({
+		id: skill.skill_id,
+		skill: skill.name
+	})) || [];
 	if( userStore.users.length > 0) {
 		showReq.value = true;
 	}

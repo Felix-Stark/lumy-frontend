@@ -163,7 +163,7 @@ onMounted(async() => {
 
 async function openReq() {
 	let userId = userStore.me?.id;
-	if (userStore.users.length === 0) {
+	if (!userId) {
 		await userStore.getUsers();
 	}
 	if (userId) {
@@ -172,7 +172,7 @@ async function openReq() {
 	if( userStore.users.length > 0) {
 		showReq.value = true;
 	}
-}
+} 
 
 const requestFeedback = async () => {
 	try {

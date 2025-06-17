@@ -143,7 +143,7 @@ import type { Skill, SkillSummary, User, UserSummary } from '@/types';
 import api from '@/services/api';
 const userStore = useUserStore();
 const user = ref<User | null>(null);
-const userSkills = ref<{id: number, skill: string}[]>([]);
+const userSkills = ref<Skill[]>([]);
 const summary = ref<UserSummary | null>(null);
 const showReq = ref(false);
 const showSuccess = ref(false);
@@ -162,15 +162,28 @@ onMounted(async() => {
 })
 
 async function openReq() {
+	loading.value = true;
 	let userId = userStore.me?.id;
 	if (!userId) {
 		await userStore.getUsers();
 	}
-	userSkills.value = summary.value?.skills_summary.map(skill => ({
-		id: skill.skill_id,
-		skill: skill.name
-	})) || [];
-	if( userStore.users.length > 0) {
+	if (userId) {
+		await userStore.getUserSkills(userId);
+		userSkills.value = userStore.userSkills as Skill[];
+	}
+	// const res = await api.get(`/users/${userId}/skills`);
+	// if (res.status === 200) {
+	// 	userSkills.value = res.data.map((skill: Skill) => ({
+	// 		id: skill.id,
+	// 		skill: skill
+	// 	}));
+	// 	console.log('User skills:', userSkills.value);
+	// 	loading.value = false;
+	// } else {
+	// 	console.error('Error fetching user skills:', res.data);
+	// 	alert('Failed to load skills. Please try again.');
+	// }
+	if( userStore.users.length > 0 && userSkills.value.length > 0) {
 		showReq.value = true;
 	}
 } 

@@ -156,32 +156,13 @@ onMounted(async() => {
 	}
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
+	console.log('summary: ', summary.value);
+	console.log('meSummary: ', userStore.meSummary);
 })
 
 async function openReq() {
 	console.log('Opening request dialog');
-	let userId = userStore.me?.id;
-	if (!userId) {
-		await userStore.getUsers();
-	}
-	if (userId) {
-		await userStore.getUserSkills(userId);
-		showReq.value = true;
-		console.log('User skills:', userStore.userSkills);
-	}
-	// const res = await api.get(`/users/${userId}/skills`);
-	// if (res.status === 200) {
-	// 	userSkills.value = res.data.map((skill: Skill) => ({
-	// 		id: skill.id,
-	// 		skill: skill
-	// 	}));
-	// 	console.log('User skills:', userSkills.value);
-	// 	loading.value = false;
-	// } else {
-	// 	console.error('Error fetching user skills:', res.data);
-	// 	alert('Failed to load skills. Please try again.');
-	// }
-	
+	showReq.value = true;
 } 
 
 const requestFeedback = async () => {

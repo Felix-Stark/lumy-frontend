@@ -185,6 +185,7 @@ async function openReq() {
 	// }
 	if( userStore.users.length > 0 && userSkills.value.length > 0) {
 		showReq.value = true;
+		loading.value = false;
 	}
 } 
 

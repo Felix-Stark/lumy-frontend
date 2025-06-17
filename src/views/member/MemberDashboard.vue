@@ -89,8 +89,8 @@
 				<div class="flex flex-col gap-4 w-full max-w-md">
 				<select v-model="reqSkill" class="w-full p-2 border border-gray-300 rounded-md">
 					<option value="" disabled selected>Select a skill</option>
-					<option v-for="skill in userSkills" :key="skill.id" :value="skill.id">
-						{{ skill.skill }}
+					<option v-for="skill in userStore.meSummary?.skills_summary" :key="skill.skill_id" :value="skill.skill_id">
+						{{ skill.name }}
 					</option>
 				</select>
 				<select v-model="reqUser" class="w-full p-2 border border-gray-300 rounded-md">
@@ -147,7 +147,6 @@ const showSuccess = ref(false);
 const reqSkill = ref<Skill | null>(null);
 const reqUser = ref<User | null>(null);
 const reqMsg = ref<string | null>(null);
-const loading = ref(false);
 onMounted(async() => {
 	if(userStore.me === null) {
 		await userStore.getMe();

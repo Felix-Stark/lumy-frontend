@@ -85,11 +85,8 @@
 		title="Request Feedback"
 		description="Select a skill and who you want feedback from.">
 			<div class="flex flex-col items-center justify-center gap-4">
-				<BaseLoader 
-				v-if="loading === true"
-				text="Loading skills and users... "
-				/>
-				<div v-else class="flex flex-col gap-4 w-full max-w-md">
+				
+				<div class="flex flex-col gap-4 w-full max-w-md">
 				<select v-model="reqSkill" class="w-full p-2 border border-gray-300 rounded-md">
 					<option value="" disabled selected>Select a skill</option>
 					<option v-for="skill in userSkills" :key="skill.id" :value="skill.id">

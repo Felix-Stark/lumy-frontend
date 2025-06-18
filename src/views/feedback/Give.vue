@@ -8,7 +8,7 @@
 			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ requestInfo?.skill.skill }}</span></h3>
 			<p class="font-light text-gray-500">{{ requestInfo?.skill.definition }}</p>
 		</section>
-		<hr class="w-full mt-10 mb-10 border-t-2 border-gray-300"/>
+		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<section>
 			<div class="flex gap-4">
 				<img
@@ -22,7 +22,7 @@
 				</div>
 				<p class="self-center font-light text-lg">{{ requestInfo?.sender.name }}</p>
 				</div>
-			<section class="pl-10 pb-10">
+			<section v-if="requestInfo?.message " class="pl-10 pb-6">
 				<p class="text-light italic text-gray-600">“{{requestInfo?.message}}”</p>
 			</section>
 		</section>

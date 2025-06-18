@@ -103,7 +103,7 @@ import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 
 const requestInfo = ref<FeedbackRequest>()
-const disablePost = ref<boolean>(true)
+const disablePost = ref<boolean>(false)
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
 const loadingSuggestions = ref<boolean>(false)

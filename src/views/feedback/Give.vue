@@ -39,12 +39,10 @@
 					></textarea>
 				</form>
 				<aside class="mt-4 p-4 sm:w-[40%] w-full bg-light-gray flex flex-col justify-center">
-					<ul class="list-disc list-inside text-gray-700 text-sm">
-						<li><span class="font-semibold">Be specific</span> - Focus on one clear behavior or moment.</li>
-						<li><span class="font-semibold">Look ahead</span> - Suggest what they could do more of, less of, or differently next time.</li>
-						<li><span class="font-semibold">Keep it constructive</span> - Aim to support growth and not to judge.</li>
-					</ul>
-					<p class="font-semibold mt-4 text-gray-700 text-sm">If you need help, check the suggestions below.</p>
+					<h3 class="font-light text-gray-600 mb-2">How to write great feedback the - {{ requestInfo?.framework.name }} way:</h3>
+					<p class="text-gray-400">
+						{{ requestInfo?.framework.definition }}
+					</p>
 				</aside>
 			</div>
 			<div class="flex justify-between mt-2">

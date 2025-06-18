@@ -89,6 +89,7 @@ export type FeedbackRequest = {
   message: string;
   account_id: number;
   status: string;
+  framework: FeedbackFramework;
 }
 
 export type BotPersonality = {

@@ -148,14 +148,10 @@ const reqSkill = ref<Skill | null>(null);
 const reqUser = ref<User | null>(null);
 const reqMsg = ref<string | null>(null);
 onMounted(async() => {
-	if(userStore.me === null) {
-		await userStore.getMe();
-		user.value = userStore.me;
-		console.log('me: ', userStore.me)
-	}
+	await userStore.getUsers();
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
-	console.log('summary: ', summary.value);
+	console.log('users: ', userStore.users);
 	console.log('meSummary: ', userStore.meSummary);
 })
 

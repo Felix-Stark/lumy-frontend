@@ -89,7 +89,7 @@
 				<div class="flex flex-col gap-4 w-full max-w-md">
 				<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 				
-				<select v-model="reqUser" class="w-full p-2 border border-gray-300 rounded-md">
+				<select multiple v-model="reqUser" aria-label="Select who you want feedback from" class="w-full p-2 border border-gray-300 rounded-md">
 					<option value="" disabled selected>Select a user</option>
 					<option v-for="u in userStore.users" :key="u.id" :value="u.id">
 						{{ u.name }}

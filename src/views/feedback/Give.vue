@@ -57,7 +57,7 @@
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
-				:disabled="disablePost || feedback.trim().length < 15"
+				:disabled="disablePost === true || feedback.trim().length < 15"
 				/>
 			</div>
 		</section>
@@ -88,7 +88,7 @@
 			<BaseButton
 				:onAction="postFeedback"
 				btnText="Send Feedback"
-				:disabled="disablePost || feedback.trim().length < 15"
+				:disabled="disablePost === true || feedback.trim().length < 15"
 			/>
 		</div>
 	</div>

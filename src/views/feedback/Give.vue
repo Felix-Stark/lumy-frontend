@@ -57,6 +57,7 @@
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
 				btnText="Send Feedback"
+				:disabled="disablePost || feedback.trim().length < 15"
 				/>
 			</div>
 		</section>
@@ -87,6 +88,7 @@
 			<BaseButton
 				:onAction="postFeedback"
 				btnText="Send Feedback"
+				:disabled="disablePost || feedback.trim().length < 15"
 			/>
 		</div>
 	</div>
@@ -129,11 +131,7 @@ onMounted(async () => {
 })
 
 const addSuggestion = (suggestion: string) => {
-	if (feedback.value) {
-		feedback.value += ' ' + suggestion
-	} else {
-		feedback.value = suggestion
-	}
+	feedback.value = suggestion
 	nextTick(() => {
 		feedbackSection.value?.scrollIntoView({ behavior: 'instant' })
 	})
@@ -162,6 +160,7 @@ const getSuggestions = async () => {
 }
 
 async function postFeedback() {
+	disablePost.value = true
 	const res = await api.post('/submissions', {
 		feedback_request_id: requestInfo.value?.id,
 		content: feedback.value,

@@ -118,25 +118,22 @@ const router = useRouter()
 const requestUuId = route.query.uuid as string
 
 onMounted(async () => {
-	try {
-		const res = await api.get(`/requests/${requestUuId}`);
+	const res = await api.get(`/requests/${requestUuId}`);
 
-		if(res.status === 200) {
-			requestInfo.value = res.data
-			console.log('Request info fetched successfully:', requestInfo.value)
-		} else if (res.status === 403) {
-			console.log('Error posting feedback:', res)
-			errorStore.setError({
-				code: res.status,
-				detail: res.data.detail || 'An error occurred while posting feedback.'
-			});
-			router.push({ name: 'error' });
-		} else {
-			console.error('Error fetching request info:', res.data)
-		}
-	} catch (error) {
-		console.error('Error fetching request info:', error);
+	if(res.status === 200) {
+		requestInfo.value = res.data
+		console.log('Request info fetched successfully:', requestInfo.value)
+	} else if (res.status === 403) {
+		console.log('Error posting feedback:', res)
+		errorStore.setError({
+			code: res.status,
+			detail: res.data.detail || 'An error occurred while posting feedback.'
+		});
+		router.push({ name: 'error' });
+	} else {
+		console.error('Error fetching request info:', res.data)
 	}
+	
 })
 
 const addSuggestion = (suggestion: string) => {

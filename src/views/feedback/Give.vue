@@ -100,7 +100,7 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 import { useErrorStore } from '@/stores/errorStore'
-import type { Axios, AxiosError } from 'axios'
+import type { AxiosError } from 'axios'
 
 const errorStore = useErrorStore()
 
@@ -118,22 +118,28 @@ const router = useRouter()
 const requestUuId = route.query.uuid as string
 
 onMounted(async () => {
-	const res = await api.get(`/requests/${requestUuId}`);
-	console.log('res', res)
-	if(res.status === 200) {
-		requestInfo.value = res.data
-		console.log('Request info fetched successfully:', requestInfo.value)
-	} else if (res.status === 403) {
-		console.log('Error posting feedback:', res)
-		errorStore.setError({
-			code: res.status,
-			detail: res.data.detail || 'An error occurred while posting feedback.'
-		});
-		router.push({ name: 'error' });
-	} else {
-		console.error('Error fetching request info:', res.data)
+	try {
+		const res = await api.get(`/requests/${requestUuId}`);
+
+		if(res.status === 200) {
+			requestInfo.value = res.data
+			console.log('Request info fetched successfully:', requestInfo.value)
+		}
+	} catch (error: any) {
+		console.error('Error fetching request info:', error);
+		if (error.response && error.response.status == 403) {
+			errorStore.setError({
+				code: error.response?.status || 500,
+				detail: error.response?.data?.detail || 'An error occurred while fetching the request info.'
+			})
+		} else {
+			errorStore.setError({
+				code: 500,
+				detail: 'An unexpected error occurred.'
+			})
+		}
+		router.push({ name: 'error' })
 	}
-	
 })
 
 const addSuggestion = (suggestion: string) => {

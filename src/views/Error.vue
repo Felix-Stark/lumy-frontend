@@ -16,4 +16,7 @@ import { useErrorStore } from '@/stores/errorStore';
 import { onMounted } from 'vue';
 import LumyConcerned from '@/assets/images/lumy_concerned.png';
 const errorStore = useErrorStore();
+onMounted(() => {
+	console.log('Error:', errorStore.error);
+})
 </script>

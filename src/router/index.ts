@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import AdminLayout from '@/layouts/AdminLayout.vue'
+import AdminLayout from '@/layouts/admin/AdminLayout.vue'
 
 import { useAuthStore } from '@/stores/authStore'
 
@@ -31,20 +31,41 @@ const router = createRouter({
       redirect: '/admin/dashboard',
       meta: {
         title: 'Admin dashboard',
-        requiresAuth: true,
+        requiresAuth: false,
       },
       children: [
         {
-          path: '/admin/dashboard',
+          path: '',
           name: 'admin-dashboard',
           component: () => import('@/views/admin/Dashboard.vue'),
           meta: {
             title: 'Admin Dashboard',
             requiresAuth: false,
           },
-        }
+        },
+        {
+          path: 'settings',
+          component: () => import('@/layouts/admin/AdminSettingsLayout.vue'),
+          redirect: '/admin/settings/general',
+          meta: {
+            title: 'Admin Settings',
+          },
+          children: [
+            {
+              path: 'general',
+              name: 'admin-settings-general',
+              component: () => import('@/views/admin/settings/General.vue'),
+            },
+            {
+              path: 'users',
+              name: 'admin-settings-users',
+              component: () => import('@/views/admin/settings/Users.vue'),
+            }
+          ]
+        },
       ]
     },
+    
     {
       path: '/slack',
       component: () => import('@/layouts/SlackLayout.vue'),
@@ -135,8 +156,9 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
 
-  const isLoggedIn = sessionStorage.getItem('LumyLoggedIn') === 'true'
+  const isLoggedIn = sessionStorage.getItem('LumyLoggedIn')
   if (to.meta.requiresAuth && !isLoggedIn) {
+
     next({ name: 'slack-login' })
   } else {
     next()

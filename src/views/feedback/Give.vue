@@ -124,6 +124,13 @@ onMounted(async () => {
 		if(res.status === 200) {
 			requestInfo.value = res.data
 			console.log('Request info fetched successfully:', requestInfo.value)
+		} else if (res.status === 403) {
+			console.log('Error posting feedback:', res)
+			errorStore.setError({
+				code: res.status,
+				detail: res.data.detail || 'An error occurred while posting feedback.'
+			});
+			router.push({ name: 'error' });
 		} else {
 			console.error('Error fetching request info:', res.data)
 		}
@@ -171,17 +178,9 @@ async function postFeedback() {
 	if (res.status === 200) {
 		router.push({ name: 'feedback-give-success' })
 		feedback.value = ''
-	} else {
-		console.log('Error posting feedback:', res)
-		errorStore.setError({
-			code: res.status,
-			detail: res.data.detail || 'An error occurred while posting feedback.'
-		});
-		router.push({ name: 'error' });
+	} else{
+		console.error('Error posting feedback:', res.data)
 	}
-
-
-	
 		
 }
 

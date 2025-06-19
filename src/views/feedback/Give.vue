@@ -99,6 +99,10 @@ import { User2 } from 'lucide-vue-next'
 import BaseButton from '@/components/base/BaseButton.vue'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
+import { useErrorStore } from '@/stores/errorStore'
+import type { Axios, AxiosError } from 'axios'
+
+const errorStore = useErrorStore()
 
 const requestInfo = ref<FeedbackRequest>()
 const disablePost = ref<boolean>(false)
@@ -159,6 +163,7 @@ const getSuggestions = async () => {
 
 async function postFeedback() {
 	disablePost.value = true
+
 	const res = await api.post('/submissions', {
 		feedback_request_id: requestInfo.value?.id,
 		content: feedback.value,
@@ -167,8 +172,17 @@ async function postFeedback() {
 		router.push({ name: 'feedback-give-success' })
 		feedback.value = ''
 	} else {
-		console.error('Error sending feedback:', res.data)
+		console.log('Error posting feedback:', res)
+		errorStore.setError({
+			code: res.status,
+			detail: res.data.detail || 'An error occurred while posting feedback.'
+		});
+		router.push({ name: 'error' });
 	}
+
+
+	
+		
 }
 
 </script>

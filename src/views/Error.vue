@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col items-center justify-center min-h-screen bg-slate-50">
 		<div>
-			<img :src="LumyConcerned" alt="Lumy Logo" class="w-40 h-40 mb-4" />
+			<img :src="LumyConcerned" alt="Lumy Logo" class="w-48 h-48 mb-4" />
 		</div>
 		<h1 class="text-4xl font-bold text-lumy-purple mb-4">Oh no!</h1>
 		<p class="text-lg text-gray-700 mb-8">Something went wrong.</p>

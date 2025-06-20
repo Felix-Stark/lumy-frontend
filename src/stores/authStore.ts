@@ -40,12 +40,18 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
       if (res.status === 200) {
-        this.isLoggedIn = true;
         this.setUpAccount = await res.data.content;
         return res.data;
       }
     },
-
+    async verifyAccount(accountId: string) {
+      const res = await api.post("/slack/verify-setup", { account_id: accountId });
+      if (res.status === 200) {
+        this.isLoggedIn = true;
+        
+        return res.status;
+      }
+    },
     async logout() {
       sessionStorage.removeItem("LumyLoggedIn");
     },

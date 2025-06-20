@@ -93,8 +93,6 @@ onMounted(async () => {
 	} else {
 		console.error('Error fetching frameworks:', frameworksRes);
 	}
-	// For testing purposes, you can uncomment the following lines to use mock data
-	// botPersonalities.value = mockBotPersonalities;
 });
 
 const saveSettings = async () => {

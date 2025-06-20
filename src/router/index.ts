@@ -112,25 +112,20 @@ const router = createRouter({
       redirect: '/setup/framework',
       children: [
         {
-          path: '/setup/framework',
+          path: 'framework',
           name: 'setup-framework',
           component: () => import('@/views/admin/setup/Framework.vue'),
         },
         {
-          path: '/setup/users',
+          path: 'users',
           name: 'setup-users',
           component: () => import('@/views/admin/setup/Users.vue'),
         },
-        {
-          path: '/setup/skills',
-          name: 'setup-skills',
-          component: () => import('@/views/admin/setup/Skills.vue'),
-        }
       ]
     },
     {
       path: '/feedback',
-      redirect: 'feedback/give',
+      redirect: '/feedback/give',
       children: [
         {
           path: '/feedback/give',

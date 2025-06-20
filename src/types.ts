@@ -9,7 +9,6 @@ export type User = {
   slack_team_id: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
   isActive: boolean;
-  skills?: Skill[]; // Array of skill IDs
 };
 
 export type UserSummary = {

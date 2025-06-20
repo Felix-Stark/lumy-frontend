@@ -60,9 +60,23 @@ const updateUsers = async () => {
   users.value?.forEach(user => {
     userStore.updateUser(user.id, { ...user, isActive: user.is_active, role: user.role });
   })
-  router.push('/setup/skills');
+  verifyAccount();
 }
-
+async function verifyAccount() {
+  const accountId = authStore.setUpAccount?.id;
+  if (!accountId) {
+    console.error('No account ID found');
+    return;
+  } else {
+    const verified = await authStore.verifyAccount(accountId);
+    if (verified) {
+      console.log('Account verified successfully');
+      router.push({ name: 'admin.setup.framework' });
+    } else {
+      console.error('Account verification failed');
+    }
+  }
+}
 
 
 const mockUsers: User[] = [

@@ -28,7 +28,6 @@ const router = createRouter({
     {
       path: '/admin',
       component: AdminLayout,
-      redirect: '/admin/dashboard',
       meta: {
         title: 'Admin dashboard',
         requiresAuth: false,

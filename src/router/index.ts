@@ -157,6 +157,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'slack-login' })
   } else if (isLoggedIn && to.meta.isAdmin) {
     const role = sessionStorage.getItem('LumyRole')
+    console.log('role in role check: ', role)
     if (role !== 'admin') {
       const errorStore = useErrorStore();
       errorStore.setError({

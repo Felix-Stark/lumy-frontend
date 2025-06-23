@@ -60,24 +60,55 @@
 			</div>
 		</section>
 		<section ref="suggestionsSection">
-			<h2 class="font-medium text-lg mt-10">AI Suggestions</h2>
-			<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 			<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
 				<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
 				<p class="text-gray-700">Conferring with the feedback gurus...</p>
   			</div>
-			<div
-			v-if="aiSuggestions.length > 0"
-			v-for="suggestion in aiSuggestions"
-			:key="suggestion"
-			class="flex flex-col justify-between sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-light-gray">
-				<p class="text-gray-700">{{ suggestion }}</p>
-				<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
-			</div>
-			<div
-			v-else
-			class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-light-gray">
-				<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestion.</p>
+			<div v-if="showTabs" class="flex flex-col w-full mt-4">
+				<div class="flex gap-2 bg-light-gray p-2 rounded-t-lg">
+					<button
+					@click="activeTab = 'ai'"
+					:class="[
+						'px-4 py-2 rounded-t-lg focus:outline-none',
+						activeTab === 'ai' ? 'bg-white font-semibold' : 'bg-light-gray text-gray-500'
+					]"
+					>
+					AI suggestions
+					</button>
+					<button
+					@click="activeTab = 'coaching'"
+					:class="[
+						'px-4 py-2 rounded-t-lg focus:outline-none',
+						activeTab === 'coaching' ? 'bg-white font-semibold' : 'bg-light-gray text-gray-500'
+					]"
+					>
+					Coaching
+					</button>
+				</div>
+				<div class="bg-white p-4 rounded-b-lg">
+					<div v-if="activeTab === 'ai'">
+					<!-- AI suggestions content here -->
+						<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+						<div
+						v-if="aiSuggestions.length > 0"
+						v-for="suggestion in aiSuggestions"
+						:key="suggestion"
+						class="flex flex-col justify-between sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-light-gray">
+							<p class="text-gray-700">{{ suggestion }}</p>
+							<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+						</div>
+						<div
+						v-else
+						class="flex w-full justify-between items-center p-8 gap-4 mt-4 bg-light-gray">
+							<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestions.</p>
+						</div>
+					</div>
+					<div v-else>
+						<!-- Coaching content here -->
+						<h2 class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
+						<p class="text-gray-600" v-for="sugg in coachingSuggestions">{{ sugg }}</p>
+					</div>
+				</div>
 			</div>
 		</section>
 		<hr class="w-full mt-10 mb-10 border-t-2 border-light-gray"/>
@@ -108,10 +139,12 @@ const requestInfo = ref<FeedbackRequest>()
 const disablePost = ref<boolean>(false)
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
+const coachingSuggestions = ref<string[]>([])
 const loadingSuggestions = ref<boolean>(false)
 const suggestionsSection = ref<HTMLElement | null>(null)
 const feedbackSection = ref<HTMLElement | null>(null)
-
+const activeTab = ref<'ai' | 'coaching'>('ai')
+const showTabs = ref(false)
 
 const route = useRoute()
 const router = useRouter()
@@ -151,9 +184,11 @@ const addSuggestion = (suggestion: string) => {
 
 const getSuggestions = async () => {
 	loadingSuggestions.value = true
+	showTabs.value = true
+	activeTab.value = 'ai'
 	const query = feedback.value
 	nextTick(() => {
-    suggestionsSection.value?.scrollIntoView({ behavior: 'instant' })
+    suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
   })
 	try {
 		const res = await api.post('feedback/improve', {
@@ -162,7 +197,14 @@ const getSuggestions = async () => {
 		})
 		if (res.status === 200) {
 			aiSuggestions.value = res.data.suggestions
-		}		
+		}
+		const coachRes = await api.post('/feedback/improve-guidance', {
+			feedback_request_id: requestUuId,
+			text: query
+		})
+		if (coachRes.status === 200) {
+			coachingSuggestions.value = coachRes.data.coaching_summary
+		}
 	} catch (error) {
 		console.error('Error fetching AI suggestions:', error)
 	} finally {

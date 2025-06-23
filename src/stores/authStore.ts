@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("auth", {
         console.log("login data: ", res.data);
         if (res.status === 200) {
           console.log("login status: ", res.status);
-          const role = res.data.user.role;
+          const role = res.data.role;
           sessionStorage.setItem("LumyRole", role);
           console.log('role in res: ', role)
           this.isLoggedIn = true;
@@ -27,7 +27,6 @@ export const useAuthStore = defineStore("auth", {
           path = `/${role}`;
         }
         if (res.status === 204) {
-          console.log("login status 204: ", res);
           this.isLoggedIn = false;
           path = "/slack/register";
         }

@@ -81,14 +81,15 @@
 					Coaching
 					</button>
 				</div>
-				<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
-					<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
-					<p class="text-gray-700">Conferring with the feedback gurus...</p>
-				</div>
+				
 				<div class="bg-white p-4 rounded-b-lg">
 					<div v-if="activeTab === 'ai'">
 					<!-- AI suggestions content here -->
-						<p class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+						<p v-if="!loadingSuggestions" class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+						<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
+							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
+							<p class="text-gray-700">Conferring with the feedback gurus...</p>
+						</div>
 						<div
 						v-if="aiSuggestions.length > 0"
 						v-for="suggestion in aiSuggestions"
@@ -105,7 +106,7 @@
 					</div>
 					<div v-else>
 						<!-- Coaching content here -->
-						<h2 class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
+						<h2 v-if="!loadingSuggestions" class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
 						<p class="text-gray-600" v-for="sugg in coachingSuggestions">{{ sugg }}</p>
 					</div>
 				</div>

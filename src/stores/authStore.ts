@@ -23,7 +23,9 @@ export const useAuthStore = defineStore("auth", {
           const userStore = useUserStore();
           userStore.me = res.data.user;
           userStore.account = res.data.account;
-          path = "/member";
+          sessionStorage.setItem("LumyRole", res.data.user.role);
+          this.isLoggedIn = true;
+          path = `/${userStore.me?.role}`;
         }
         if (res.status === 204) {
           console.log("login status 204: ", res);
@@ -48,7 +50,12 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.post("/slack/verify-setup", { account_id: accountId });
       if (res.status === 200) {
         this.isLoggedIn = true;
-        
+        sessionStorage.setItem("LumyLoggedIn", "true");
+          const userStore = useUserStore();
+          userStore.me = res.data.user;
+          userStore.account = res.data.account;
+          sessionStorage.setItem("LumyRole", res.data.user.role);
+          this.isLoggedIn = true;
         return res.status;
       }
     },

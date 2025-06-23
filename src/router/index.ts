@@ -3,6 +3,7 @@ import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
 import AdminLayout from '@/layouts/admin/AdminLayout.vue'
 
 import { useAuthStore } from '@/stores/authStore'
+import { useErrorStore } from '@/stores/errorStore';
 
 
 
@@ -14,7 +15,6 @@ const router = createRouter({
       component: () => import('@/layouts/MemberLayout.vue'),
       redirect: '/member/dashboard',
       meta: {
-        title: 'Member dashboard',
         requiresAuth: true, // This route requires authentication
       },
       children: [
@@ -31,6 +31,7 @@ const router = createRouter({
       meta: {
         title: 'Admin dashboard',
         requiresAuth: false,
+        isAdmin: true, // This route requires admin privileges
       },
       children: [
         {
@@ -154,7 +155,19 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !isLoggedIn) {
 
     next({ name: 'slack-login' })
-  } else {
+  } else if (isLoggedIn && to.meta.isAdmin) {
+    const role = sessionStorage.getItem('LumyRole')
+    if (role !== 'admin') {
+      const errorStore = useErrorStore();
+      errorStore.setError({
+        code: 403,
+        detail: 'You do not have permission to access this page.',
+      });
+      next({ name: 'error' })
+    } else {
+      next()
+    }
+  }else {
     next()
   }
 })

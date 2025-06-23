@@ -67,7 +67,7 @@ const router = createRouter({
     },
     
     {
-      path: '/slack',
+      path: '/',
       component: () => import('@/layouts/SlackLayout.vue'),
       redirect: '/slack/login',
       meta: {

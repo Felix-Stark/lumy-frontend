@@ -16,16 +16,16 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.get("/slack/login/callback?code=" + code);
       let path = "";
       try {
-        console.log("login status: ", res.status);
         console.log("login data: ", res.data);
         if (res.status === 200) {
-          sessionStorage.setItem("LumyLoggedIn", "true");
+          console.log("login status: ", res.status);
           const userStore = useUserStore();
           userStore.me = res.data.user;
           userStore.account = res.data.account;
           sessionStorage.setItem("LumyRole", res.data.user.role);
           console.log("me: ", userStore.me);
           this.isLoggedIn = true;
+          sessionStorage.setItem("LumyLoggedIn", "true");
           path = `/${userStore.me?.role}`;
         }
         if (res.status === 204) {

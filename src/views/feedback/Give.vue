@@ -60,16 +60,12 @@
 			</div>
 		</section>
 		<section ref="suggestionsSection">
-			<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
-				<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
-				<p class="text-gray-700">Conferring with the feedback gurus...</p>
-  			</div>
 			<div v-if="showTabs" class="flex flex-col w-full mt-4">
-				<div class="flex gap-2 bg-light-gray p-2 rounded-t-lg">
+				<div class="bg-light-gray p-2 rounded-t-lg">
 					<button
 					@click="activeTab = 'ai'"
 					:class="[
-						'px-4 py-2 rounded-t-lg focus:outline-none',
+						'px-4 py-2 rounded-t-lg focus:outline-none cursor-pointer',
 						activeTab === 'ai' ? 'bg-white font-semibold' : 'bg-light-gray text-gray-500'
 					]"
 					>
@@ -78,12 +74,16 @@
 					<button
 					@click="activeTab = 'coaching'"
 					:class="[
-						'px-4 py-2 rounded-t-lg focus:outline-none',
+						'px-4 py-2 rounded-t-lg focus:outline-none cursor-pointer',
 						activeTab === 'coaching' ? 'bg-white font-semibold' : 'bg-light-gray text-gray-500'
 					]"
 					>
 					Coaching
 					</button>
+				</div>
+				<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
+					<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
+					<p class="text-gray-700">Conferring with the feedback gurus...</p>
 				</div>
 				<div class="bg-white p-4 rounded-b-lg">
 					<div v-if="activeTab === 'ai'">

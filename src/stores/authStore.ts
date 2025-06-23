@@ -24,6 +24,7 @@ export const useAuthStore = defineStore("auth", {
           userStore.me = res.data.user;
           userStore.account = res.data.account;
           sessionStorage.setItem("LumyRole", res.data.user.role);
+          console.log("me: ", userStore.me);
           this.isLoggedIn = true;
           path = `/${userStore.me?.role}`;
         }

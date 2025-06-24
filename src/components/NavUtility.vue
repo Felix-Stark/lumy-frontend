@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute top-0 right-0 flex items-center gap-1 m-4">
+	<div class="absolute top-0 right-0 flex items-center gap-4 mr-8 mt-6">
 		<!-- <router-link @click="onAction" class="rounded-full p-2 bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
 			<Search class="text-gray-500 size-5" />
 		</router-link> -->
@@ -8,21 +8,21 @@
 		</router-link> -->
 		<router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
 			<Home :class="[,
-				isExactActive === true ? 'text-lumy-purple size-6'
-				: 'text-gray-500 size-5'
+				isExactActive === true ? 'text-lumy-purple size-5'
+				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
 		<router-link to="/member" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
 			<UserRound :class="[,
-				isExactActive === true ? 'text-lumy-purple size-6'
-				: 'text-gray-500 size-5'
+				isExactActive === true ? 'text-lumy-purple size-5'
+				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
 
 		<router-link to="/admin/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
 			<Settings :class="[,
-				isActive ? 'text-lumy-purple size-6'
-				: 'text-gray-500 size-5'
+				isActive ? 'text-lumy-purple size-5'
+				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
 	</div>

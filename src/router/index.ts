@@ -13,13 +13,12 @@ const router = createRouter({
     {
       path: '/member',
       component: () => import('@/layouts/MemberLayout.vue'),
-      redirect: '/member/dashboard',
       meta: {
         requiresAuth: true, // This route requires authentication
       },
       children: [
         {
-          path: '/member/dashboard',
+          path: '',
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },

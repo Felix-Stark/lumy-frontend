@@ -72,7 +72,11 @@
             :onAction="() => saveSettings()"
             />
         </article>
-
+        <BaseToast
+        :show="showToast"
+        :text="toastText"
+        :bg-class="toastBg"
+        />
     </div>
 </template>
 
@@ -80,11 +84,15 @@
 import type { BotPersonality, FeedbackFramework } from '@/types';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseToast from '@/components/base/BaseToast.vue';
 import { ChevronDown } from 'lucide-vue-next';
 import { useUserStore } from '@/stores/userStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
 const userStore = useUserStore();
+const showToast = ref(false)
+const toastText = ref('Settings saved!')
+const toastBg = ref('bg-green-500')
 const newAccountName = ref('')
 // const timezone = ref();
 const selectedFramework = ref<number>();
@@ -111,13 +119,25 @@ async function saveSettings() {
     if (!selectedFramework.value) {
         selectedFramework.value = account.value?.framework?.id;
     }
-    if(!selectedBot.value) {
+    if (!selectedBot.value) {
         selectedBot.value = 4;
     }
-    const res = await api.patch('/account', {
-        framework: selectedFramework.value,
-        bot_personality: selectedBot.value
-    })
+    try {
+        const res = await api.patch('/account', {
+            framework: selectedFramework.value,
+            bot_personality: selectedBot.value
+        })
+        if (res.status === 200) {
+            toastText.value = 'Settings saved!'
+            toastBg.value = 'bg-green-500'
+            showToast.value = true
+        }
+    } catch (error: any) {
+        console.log('failed to save settings: ', error)
+        toastText.value = error?.response?.data?.detail || 'Could not save settings'
+        toastBg.value = 'bg-red-500'
+        showToast.value = true
+    }
 }
 
 </script>

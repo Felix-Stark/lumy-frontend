@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center w-[80vw] min-h-screen ">
+    <div class="flex flex-col items-center w-[80vw] ">
         <SettingsNav />
         <main class="w-full">
         <router-view />
@@ -8,5 +8,4 @@
 </template>
 <script setup lang="ts">
 import SettingsNav from '@/components/admin/SettingsNav.vue';
-import NavUtility from '@/components/NavUtility.vue';
 </script>

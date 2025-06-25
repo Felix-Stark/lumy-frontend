@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col items-center w-[80%] min-h-screen p-12 ">
+	<div class="flex flex-col items-center w-[80%] p-12 ">
 		<NavUtility />
         <main class="flex flex-col items-center w-full">
         <router-view />

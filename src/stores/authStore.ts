@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import api from "..//services/api";
 import { useUserStore } from "./userStore";
 import type { SetupAccount } from "@/types";
-
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLoggedIn: false,
@@ -18,13 +17,13 @@ export const useAuthStore = defineStore("auth", {
       try {
         console.log("login data: ", res.data);
         if (res.status === 200) {
-          console.log("login status: ", res.status);
           const role = res.data.role;
+          const userStore = useUserStore();
+          userStore.getAccount();
           sessionStorage.setItem("LumyRole", role);
-          console.log('role in res: ', role)
-          this.isLoggedIn = true;
           sessionStorage.setItem("LumyLoggedIn", "true");
           path = `/${role}`;
+          this.isLoggedIn = true;
         }
         if (res.status === 204) {
           this.isLoggedIn = false;

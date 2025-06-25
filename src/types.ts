@@ -36,7 +36,7 @@ export type Account = {
   name: string;
   created_at: string;
   updated_at: string;
-  frameWork: {
+  framework: {
     id: number;
     name: string;
     formatted_name: string;

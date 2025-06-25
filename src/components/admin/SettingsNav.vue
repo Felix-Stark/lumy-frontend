@@ -1,21 +1,21 @@
 <template>
     <header class="w-full mt-12 flex justify-center">
         <nav class="flex items-center justify-center gap-4 p-4 w-full">
-            <router-link to="/admin/settings/general" v-slot="{isActive}">
+            <router-link to="/admin/settings/general" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
-                isActive
+                isExactActive
                     ? 'bg-lumy-dark text-white'
-                    : 'bg-gray-400 text-gray-700'
+                    : 'bg-gray-200 text-gray-700'
                 ]">
                     General
                 </span>
             
             </router-link>
-            <router-link to="/admin/settings/users" v-slot="{isActive}">
+            <router-link to="/admin/settings/users" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
-                isActive
+                isExactActive
                     ? 'bg-lumy-dark text-white'
-                    : 'bg-gray-400 text-gray-700'
+                    : 'bg-gray-200 text-gray-700'
                 ]">
                     Users
                 </span>

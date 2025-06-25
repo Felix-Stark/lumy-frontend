@@ -21,7 +21,7 @@
                         </span>
                         <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
-                        <ListboxOptions class="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ListboxOptions class="absolute mt-1 w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10 right-0 left-0">
                             <ListboxOption
                                 v-for="fw in frameworks"
                                 :key="fw.id"
@@ -49,7 +49,7 @@
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot?.id)?.name || 'Select a bot personality' }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
-                        <ListboxOptions class="absolute mt-1 w-full overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ListboxOptions class="absolute mt-1 w-full overflow-auto bg-white border border-gray-300 rounded shadow-lg max-h-48 left-0 right-0 z-10">
                             <ListboxOption
                             v-for="bp in botPersonalities"
                             :key="bp.id"
@@ -127,6 +127,7 @@ async function saveSettings() {
             framework: selectedFramework.value,
             bot_personality: selectedBot.value
         })
+        console.log('saveSettings res: ', res)
         if (res.status === 200) {
             toastText.value = 'Settings saved!'
             toastBg.value = 'bg-green-500'

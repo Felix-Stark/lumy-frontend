@@ -74,7 +74,9 @@ import { ref, onMounted } from 'vue';
 import type { BotPersonality, FeedbackFramework } from '@/types';
 const router = useRouter();
 import SetupComp from '@/components/setup/SetupComp.vue';
+import { useAuthStore } from '@/stores/authStore';
 import api from '@/services/api';
+const authStore = useAuthStore();
 const selectedFramework = ref();
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>();
@@ -98,6 +100,11 @@ onMounted(async () => {
 const saveSettings = async () => {
 	const res = await api.patch('/account', { framework: selectedFramework.value, botPersonality: selectedBot.value });
 	if (res.status === 200) {
+		// Fetch updated account and update store
+		const accountRes = await api.get('/account');
+		if (accountRes.status === 200) {
+			authStore.setUpAccount = accountRes.data;
+		}
 		router.push('/setup/users');
 	} else {
 		console.error('Error setting framework:', res);

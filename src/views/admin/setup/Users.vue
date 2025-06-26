@@ -48,7 +48,14 @@ const users = ref<SetUpUser[]>();
 onMounted(async () => {
   loading.value = true;
   try {
-    users.value = authStore.setUpAccount?.users
+    if (!authStore.setUpAccount?.users) {
+      // Try to fetch account if not present
+      const accountRes = await api.get('/account');
+      if (accountRes.status === 200) {
+        authStore.setUpAccount = accountRes.data;
+      }
+    }
+    users.value = authStore.setUpAccount?.users;
   } catch (error) {
     console.error('Error fetching users:', error);
   } finally {

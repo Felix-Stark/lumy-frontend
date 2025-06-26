@@ -49,7 +49,9 @@ export const useUserStore = defineStore('user', {
 			}
 		},
 		async getAccount() {
+			console.log('getting account')
 			const res = await api.get('/account');
+			console.log('account res: ', res)
 			if (res.status === 200) {
 				this.account = res.data;
 			}

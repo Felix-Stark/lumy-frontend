@@ -6,7 +6,6 @@
                     General settings
                 </h1>
                 <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
-                    <p>Current Framework: {{ account?.framework.name }}</p>
                     <label for="fw">Feedback Frameworks</label>
                     <select name="framework" id="fw" v-model="selectedFramework">
                         <option v-for="fw in frameworks" :value="fw.id">{{ fw.name }}</option>

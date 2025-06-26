@@ -67,7 +67,7 @@
                 <Listbox v-model="selectedBot">
                     <div class="relative">
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
-                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot?.id)?.name || 'Select a bot personality' }}</span>
+                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         <ListboxOptions class="absolute mt-1 w-full overflow-auto bg-white border border-gray-300 rounded shadow-lg max-h-48 left-0 right-0 z-10">

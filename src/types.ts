@@ -8,7 +8,7 @@ export type User = {
   slack_user_id: string; // Slack user ID
   slack_team_id: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
-  isActive: boolean;
+  is_active: boolean;
 };
 
 export type UserSummary = {

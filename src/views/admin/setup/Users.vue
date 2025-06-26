@@ -20,7 +20,7 @@
         :name="user.name"
         :title="user.title"
         v-model:role="user.role"
-        v-model:isActive="user.is_active"
+        v-model:is_active="user.is_active"
       />
     </div>
     <button
@@ -66,7 +66,7 @@ onMounted(async () => {
 const updateUsers = async () => {
   loading.value = true;
   users.value?.forEach(user => {
-    userStore.updateUser(user.id, { ...user, isActive: user.is_active, role: user.role });
+    userStore.updateUser(user.id, { ...user, is_active: user.is_active, role: user.role });
   })
   verifyAccount();
 }
@@ -98,7 +98,7 @@ const mockUsers: User[] = [
     slack_user_id: "U001",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 2,
@@ -110,7 +110,7 @@ const mockUsers: User[] = [
     slack_user_id: "U002",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 3,
@@ -122,7 +122,7 @@ const mockUsers: User[] = [
     slack_user_id: "U003",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 4,
@@ -133,7 +133,7 @@ const mockUsers: User[] = [
     slack_user_id: "U004",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 5,
@@ -145,7 +145,7 @@ const mockUsers: User[] = [
     slack_user_id: "U005",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 6,
@@ -157,7 +157,7 @@ const mockUsers: User[] = [
     slack_user_id: "U006",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: false,
+    is_active: false,
   },
   {
     id: 7,
@@ -169,7 +169,7 @@ const mockUsers: User[] = [
     slack_user_id: "U007",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 8,
@@ -181,7 +181,7 @@ const mockUsers: User[] = [
     slack_user_id: "U008",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 9,
@@ -193,7 +193,7 @@ const mockUsers: User[] = [
     slack_user_id: "U009",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 10,
@@ -205,7 +205,7 @@ const mockUsers: User[] = [
     slack_user_id: "U010",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 11,
@@ -217,7 +217,7 @@ const mockUsers: User[] = [
     slack_user_id: "U011",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: false,
+    is_active: false,
   },
   {
     id: 12,
@@ -229,7 +229,7 @@ const mockUsers: User[] = [
     slack_user_id: "U012",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 13,
@@ -241,7 +241,7 @@ const mockUsers: User[] = [
     slack_user_id: "U013",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 14,
@@ -253,7 +253,7 @@ const mockUsers: User[] = [
     slack_user_id: "U014",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
   {
     id: 15,
@@ -265,7 +265,7 @@ const mockUsers: User[] = [
     slack_user_id: "U015",
     slack_team_id: "T001",
     account_id: "A001",
-    isActive: true,
+    is_active: true,
   },
 ];
 </script>

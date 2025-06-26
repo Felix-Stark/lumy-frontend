@@ -54,7 +54,7 @@ import { ChevronDown, UserMinus, UserPlus } from 'lucide-vue-next';
 
 
 defineProps<{
-	id: number;
+	id: string;
 	name?: string;
 	email?: string;
 	avatarUrl?: string;

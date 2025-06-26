@@ -6,7 +6,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLoggedIn: false,
     isAdmin: false,
-    accountId: null as number | null,
+    accountId: null as string | null,
     setUpAccount: {} as SetupAccount | null,
   }),
   actions: {
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
       if (res.status === 200) {
-        this.setUpAccount = await res.data.content;
+        this.setUpAccount = await res.data;
         return res.data;
       }
     },
@@ -52,6 +52,7 @@ export const useAuthStore = defineStore("auth", {
           userStore.me = res.data.user;
           userStore.account = res.data.account;
           sessionStorage.setItem("LumyRole", res.data.user.role);
+
           this.isLoggedIn = true;
         return res.status;
       }

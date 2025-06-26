@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', {
 				return res.status; //return status and use userStore.me in components
 			}
 		},
-		async getUserSkills(userId: number) {
+		async getUserSkills(userId: string) {
 			const res = await api.get(`/users/${userId}/skills`);
 			if (res.status === 200) {
 				this.userSkills = res.data; //return status and use userStore.userSkills in components
@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', {
 			}
 			
 		},
-		async updateUser(userId: number, userData: Partial<User>) {
+		async updateUser(userId: string, userData: Partial<User>) {
 			const res = await api.patch(`/users/${userId}`, userData);
 			if(res.status === 200) {
 				return res.data;

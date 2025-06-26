@@ -17,7 +17,7 @@
               </span>
               <ChevronDown class="ml-2 w-4 h-4" />
             </ListboxButton>
-            <ListboxOptions class="absolute mt-1 w-full bg-white border border-gray-300 rounded shadow-lg z-10">
+            <ListboxOptions class="absolute mt-1 w-full h-48 bg-white border border-gray-300 rounded shadow-lg z-10">
               <ListboxOption
                 v-for="fw in frameworks"
                 :key="fw.id"
@@ -39,7 +39,7 @@
 					<span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
 					<ChevronDown class="ml-2 size-4"/>
 				</ListboxButton>
-				<ListboxOptions class="absolute mt-1 w-full h-[15rem] overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+				<ListboxOptions class="absolute mt-1 w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
 					<ListboxOption
 					v-for="bp in botPersonalities"
 					:key="bp.id"

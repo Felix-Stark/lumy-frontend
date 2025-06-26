@@ -138,8 +138,7 @@ onMounted(async () => {
         frameworks.value = resFrameworks.data;
         console.log('fw res: ', resFrameworks)
     }
-    const currentFramework = frameworks.value.find(fw => fw.id === account.value?.framework_id);
-    const currentBot = botPersonalities.value.find(bp => bp.id === account.value?.bot_personality_id)
+    
 })
 
 async function saveSettings() {

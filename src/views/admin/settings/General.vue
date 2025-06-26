@@ -1,9 +1,28 @@
 <template>
     <div class="flex flex-col w-full min-h-[80vh] bg-white p-8 pl-12 rounded-xl shadow-md">
         <article class="flex flex-col gap-12">
-            <h1 class="font-thin text-2xl text-gray-500">
-                General settings
-            </h1>
+            <form class="w-full">
+                <h1 class="font-thin text-2xl text-gray-500">
+                    General settings
+                </h1>
+                <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
+                    <label for="fw">Feedback Frameworks</label>
+                    <select name="framework" id="fw" v-model="selectedFramework">
+                        <option selected :value="account?.framework.id">{{ account?.framework.name }}</option>
+                        <option v-for="fw in frameworks" :value="fw.id">{{ fw.name }}</option>
+                    </select>
+                </div>
+                <h1 class="font-thin text-2xl text-gray-500">
+                    Bot settings
+                </h1>
+                <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
+                    <label for="bp">Bot personality</label>
+                    <select name="bot-personality" id="bp" v-model="selectedBot">
+                        <!-- <option selected :value="account?.framework.id">{{ account?.framework.name }}</option> -->
+                        <option v-for="bp in botPersonalities" :value="bp.id">{{ bp.name }}</option>
+                    </select>
+                </div>
+            </form>
             <!-- <div class="flex flex-col w-full pl-8 border-l border-gray-300">
                 <label for="account_name" class="font-thin">Account name</label>
                 <input type="text" name="account_name"
@@ -11,7 +30,7 @@
                 :placeholder="account?.name"
                 v-model="newAccountName" />
             </div> -->
-            <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
+            <!-- <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
                 <Listbox v-model="selectedFramework">
                     <div class="relative">
@@ -66,7 +85,7 @@
                         </ListboxOptions>
                     </div>
                 </Listbox>
-            </div>
+            </div> -->
             <BaseButton
             btnText="Save settings"
             :onAction="() => saveSettings()"
@@ -95,7 +114,7 @@ const toastText = ref('Settings saved!')
 const toastBg = ref('bg-green-500')
 const newAccountName = ref('')
 // const timezone = ref();
-const selectedFramework = ref<number>();
+const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 // const botLanguage = ref();
 const selectedBot = ref();
@@ -119,13 +138,15 @@ async function saveSettings() {
     if (!selectedFramework.value) {
         selectedFramework.value = account.value?.framework?.id;
     }
-    if (!selectedBot.value) {
-        selectedBot.value = 4;
+    if(!selectedBot.value) {
+        selectedBot.value = 0
     }
+    console.log('selected framework: ', selectedFramework.value)
+    console.log('selected bot: ', selectedBot.value)
     try {
         const res = await api.patch('/account', {
-            framework: selectedFramework.value,
-            bot_personality: selectedBot.value
+            framework: selectedFramework.value.id,
+            bot_personality: selectedBot.value.id
         })
         console.log('saveSettings res: ', res)
         if (res.status === 200) {

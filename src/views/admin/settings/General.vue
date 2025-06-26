@@ -8,7 +8,7 @@
                 <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
                     <label for="fw">Feedback Frameworks</label>
                     <select name="framework" id="fw" v-model="selectedFramework">
-                        <option selected :value="account?.framework.id">{{ account?.framework.name }}</option>
+                        <option selected :value=" account?.framework ? account?.framework.id : 0">{{ account?.framework.name }}</option>
                         <option v-for="fw in frameworks" :value="fw.id">{{ fw.name }}</option>
                     </select>
                 </div>

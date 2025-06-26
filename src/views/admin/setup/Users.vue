@@ -34,6 +34,7 @@
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import api from '@/services/api';
 
 import { useUserStore } from '@/stores/userStore';
 import type { SetUpUser, User } from '@/types';

@@ -98,7 +98,7 @@ onMounted(async () => {
 });
 
 const saveSettings = async () => {
-	const res = await api.patch('/account', { framework: selectedFramework.value, botPersonality: selectedBot.value });
+	const res = await api.patch('/account', { framework_id: selectedFramework.value, bot_personality_id: selectedBot.value });
 	if (res.status === 200) {
 		// Fetch updated account and update store
 		const accountRes = await api.get('/account');

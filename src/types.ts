@@ -34,16 +34,10 @@ export type SkillSummary = {
 export type Account = {
   id: number;
   name: string;
+  framework_id: number;
+  bot_personality_id: number;
   created_at: string;
   updated_at: string;
-  framework: {
-    id: number;
-    name: string;
-    formatted_name: string;
-    definition: string;
-    created_at: string;
-    updated_at: string;
-  };
 };
 
 export type SetupAccount = {

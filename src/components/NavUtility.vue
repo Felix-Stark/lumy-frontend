@@ -40,7 +40,7 @@ const isSticky = ref(false)
 
 const handleScroll = () => {
   // Adjust 80 to your nav's offset height
-  isSticky.value = window.scrollY > 80
+  isSticky.value = window.scrollY > 40
 }
 
 onMounted(() => {

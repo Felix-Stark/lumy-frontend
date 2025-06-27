@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("auth", {
         return res.data;
       }
     },
-    async verifyAccount(accountId: string) {
+    async verifyAccount(accountId: number) {
       const res = await api.post("/slack/verify-setup", { account_id: accountId });
       if (res.status === 200) {
         this.isLoggedIn = true;

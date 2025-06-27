@@ -1,5 +1,5 @@
 export type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   avatar: string; // Slack URL to avatar image
@@ -32,7 +32,7 @@ export type SkillSummary = {
 }
 
 export type Account = {
-  id: string;
+  id: number;
   name: string;
   framework_id: number;
   bot_personality_id: number;
@@ -41,14 +41,14 @@ export type Account = {
 };
 
 export type SetupAccount = {
-	  id: string;
-	  account_id: string;
+	  id: number;
+	  account_id: number;
 	  role: string;
 	  users: SetUpUser[]; // Array of users in the account
 }
 
 export type SetUpUser = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   role: string;
@@ -59,41 +59,41 @@ export type SetUpUser = {
 };
 
 export type Skill = {
-  id: string;
+  id: number;
   skill: string;
   definition: string;
   theme: string;
 }
 
 export type FeedbackRequest = {
-  id: string;
+  id: number;
   sender: {
-    id: string;
+    id: number;
     name: string;
     avatar: string;
     is_active: boolean;
   };
-  recipient_id: string;
+  recipient_id: number;
   skill: {
-    skill: string;
+    skill: number;
     definition: string;
     theme: string;
   }
-  message: string;
-  account_id: string;
+  message: number;
+  account_id: number;
   status: string;
   framework: FeedbackFramework;
 }
 
 export type BotPersonality = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   formatted_name: string;
 }
 
 export type FeedbackFramework = {
-  id: string;
+  id: number;
   name: string;
   formatted_name: string;
   definition: string;

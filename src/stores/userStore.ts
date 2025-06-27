@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', {
 				return res.status; //return status and use userStore.me in components
 			}
 		},
-		async getUserSkills(userId: string) {
+		async getUserSkills(userId: number) {
 			const res = await api.get(`/users/${userId}/skills`);
 			if (res.status === 200) {
 				this.userSkills = res.data; //return status and use userStore.userSkills in components

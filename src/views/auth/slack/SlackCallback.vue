@@ -1,9 +1,9 @@
 <template>
-	<div class="flex flex-col items-center justify-center min-h-screen bg-slate-50">
-		<div>
+	<div class="flex flex-col items-center justify-center max-w-3xl w-full rounded-2xl shadow-md h-[80vh] bg-white">
+		<div class="relative">
 			<img :src="lumyWaiting" alt="" class="w-64 h-auto mb-4" />
+			<div class="w-12 h-12 absolute left-22 bottom-7 border-4 border-slate-200 border-t-lumy-purple border-b-lumy-purple rounded-full animate-spin mb-4"></div>
 		</div>
-		<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
 		<p class="text-gray-700">Just a sec - compiling your awesomeness..</p>
 	</div>
 </template>

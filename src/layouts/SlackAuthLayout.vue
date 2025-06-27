@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl">
+  <div class="max-w-3xl bg-white rounded-2xl shadow-md h-[80vh] w-full">
     <article class="flex flex-col items-center justify-center mb-8">
       <div class="flex flex-col items-center justify-center">
         <img v-if="image" :src="image" alt="lumy Logo" class="w-56 h-auto mt-4 mb-4" />
@@ -17,9 +17,9 @@
       <slot name="text" />
     </section>
 
-    <section class="flex flex-col items-center justify-center  text-center">
+    <section class="flex flex-col items-center justify-center  text-center pb-6">
       <button v-if="buttonText"
-        class="bg-purple-500 hover:bg-[#962dffb5] min-w-3xs text-white font-bold py-2 px-4 rounded-md mt-4 cursor-pointer transition duration-200 ease-in-out"
+        class="bg-lumy-purple hover:bg-[#962dffb5] min-w-3xs text-white font-bold py-2 px-4 rounded-md mt-4 cursor-pointer transition duration-200 ease-in-out"
         @click="onAction">
         {{ buttonText }}
       </button>

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col box-border min-w-2xl h-[75vh] p-4">
+	<div class="flex flex-col box-border min-w-2xl justify-center h-[75vh] p-4">
     <article class="flex flex-col items-center justify-center">
       <div class="flex flex-col items-center justify-center">
         <h1 class="font-inter font-semibold text-3xl text-center">Gotcha! What about users? Does this look good?</h1>

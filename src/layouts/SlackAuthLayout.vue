@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl bg-white rounded-2xl shadow-md h-[80vh] w-full">
+  <div class="max-w-3xl bg-white rounded-2xl shadow-md w-full">
     <article class="flex flex-col items-center justify-center mb-8">
       <div class="flex flex-col items-center justify-center">
         <img v-if="image" :src="image" alt="lumy Logo" class="w-56 h-auto mt-4 mb-4" />

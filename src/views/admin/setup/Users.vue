@@ -50,13 +50,7 @@ onMounted(async () => {
   loading.value = true;
   console.log('setup account in users: ', authStore.setUpAccount);
   try {
-    if (!authStore.setUpAccount) {
-      // Try to fetch account if not present
-      const accountRes = await api.get('/account');
-      if (accountRes.status === 200) {
-        
-      }
-    }
+
     users.value = authStore.setUpAccount?.users;
   } catch (error) {
     console.error('Error fetching users:', error);

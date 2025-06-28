@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-3xl bg-white rounded-2xl shadow-md w-full">
+  <div class="max-w-3xl bg-white rounded-2xl shadow-md w-full p-8">
     <article class="flex flex-col items-center justify-center mb-8">
       <div class="flex flex-col items-center justify-center">
         <img v-if="image" :src="image" alt="lumy Logo" class="w-56 h-auto mt-4 mb-4" />
@@ -17,7 +17,7 @@
       <slot name="text" />
     </section>
 
-    <section class="flex flex-col items-center justify-center  text-center pb-6">
+    <section class="flex flex-col items-center justify-center  text-center">
       <button v-if="buttonText"
         class="bg-lumy-purple hover:bg-[#962dffb5] min-w-3xs text-white font-bold py-2 px-4 rounded-md mt-4 cursor-pointer transition duration-200 ease-in-out"
         @click="onAction">

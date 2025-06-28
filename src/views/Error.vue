@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col items-center justify-center min-h-screen bg-slate-50">
+	<div class="flex flex-col items-center justify-center max-h-80vh p-8 bg-white shadow-md rounded-2xl">
 		<div>
 			<img :src="LumyConcerned" alt="Lumy Logo" class="w-48 h-48 mb-4" />
 		</div>

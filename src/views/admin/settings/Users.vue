@@ -1,6 +1,6 @@
 <template>
     <div class="border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[75vh] overflow-auto">
-        <div class="p-4 overflow-auto">
+        <div class="p-4 h-full overflow-auto">
             <PickUserComp
             v-for="user in users"
             :id="user.id"

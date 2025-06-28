@@ -17,7 +17,7 @@
               </span>
               <ChevronDown class="ml-2 w-4 h-4" />
             </ListboxButton>
-            <ListboxOptions class="absolute mt-1 w-full h-48 bg-white border border-gray-300 rounded shadow-lg z-10">
+            <ListboxOptions class="absolute mt-1 w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
               <ListboxOption
                 v-for="fw in frameworks"
                 :key="fw.id"

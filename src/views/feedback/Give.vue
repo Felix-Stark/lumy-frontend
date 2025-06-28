@@ -107,9 +107,7 @@
 					<div v-else>
 						<!-- Coaching content here -->
 						<h2 v-if="!loadingSuggestions" class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
-						<ol>
-							<li class="text-gray-600 " v-for="sugg in coachingSuggestions">{{ sugg }}</li>
-						</ol>
+						<div v-html="coachingSuggestions"></div>
 					</div>
 				</div>
 			</div>

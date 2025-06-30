@@ -1,5 +1,5 @@
 <template>
-<SlackAuthLayout 
+<SlackFlowComp 
 	text="Deploying bots and aligning stars... almost there!"
 	:image="lumyWaiting"
 	:loader="true"
@@ -10,8 +10,8 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
-import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
-import lumyWaiting from '@/assets/images/lumy_waiting.png';
+import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
+import lumyWaiting from '@/assets/images/lumy_connecting.png';
 import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
@@ -24,7 +24,7 @@ onMounted( async () => {
 	if (code) {
 		const data = await authStore.registerSlackUser(code as string);
 		if (data) {
-			router.push({ name: 'setup-framework' });
+			router.push({ name: 'setup-frameworks' });
 		}
 	}
 });

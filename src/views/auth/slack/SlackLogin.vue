@@ -1,5 +1,5 @@
 <template>
-	<SlackAuthLayout 
+	<SlackFlowComp 
 	:image="lumyLogo"
 	title="Welcome to Lumy"	
 	:description="`Feedback that actually helps — not hurts.`"
@@ -9,14 +9,14 @@
 		<template #text>
 			Connect your Slack account to give and get meaningful, skill-based feedback <br/> — with a little help from AI.
 		</template>
-	</SlackAuthLayout>
+	</SlackFlowComp>
 </template>
 
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import lumyLogo from '@/assets/images/lumy.png';
-import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
+import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';

@@ -1,5 +1,5 @@
 <template>
-	<SlackAuthLayout 
+	<SlackFlowComp 
 	title="Great success!"
 	description="Your account has been setup."
 	:image="lumyHappy"
@@ -11,6 +11,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
+import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 import lumyHappy from '@/assets/images/lumy_cheering.png';
 </script>

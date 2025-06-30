@@ -11,6 +11,63 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      component: () => import('@/layouts/SlackLayout.vue'),
+      redirect: '/slack/login',
+      meta: {
+        title: 'Slack Login',
+      },
+      children: [
+        {
+          path: '/slack/login',
+          name: 'slack-login',
+          component: SlackLogin,
+        },
+        {
+          path: '/slack/callback',
+          name: 'slack-callback',
+          component: () => import('@/views/auth/slack/SlackCallback.vue'),
+        },
+        {
+          path: '/slack/register',
+          name: 'slack-register',
+          component: () => import('@/views/auth/slack/SlackRegister.vue'),
+        },
+        {
+          path: '/slack/install-redirect',
+          name: 'slack-install-redirect',
+          component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
+        },
+        {
+          path: '/slack/install-success',
+          name: 'slack-install-success',
+          component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
+        },
+        {
+          path: '/slack/notadmin',
+          name: 'slack-notadmin',
+          component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
+        }
+      ]
+    },
+    {
+      path: '/setup',
+      component: () => import('@/layouts/SetupLayout.vue'),
+      redirect: '/setup/frameworks',
+      children: [
+        {
+          path: 'frameworks',
+          name: 'setup-frameworks',
+          component: () => import('@/views/auth/setup/Frameworks.vue'),
+        },
+        {
+          path: 'users',
+          name: 'setup-users',
+          component: () => import('@/views/auth/setup/Users.vue'),
+        },
+      ]
+    },
+    {
       path: '/member',
       component: () => import('@/layouts/MemberLayout.vue'),
       meta: {
@@ -65,63 +122,7 @@ const router = createRouter({
       ]
     },
     
-    {
-      path: '/',
-      component: () => import('@/layouts/SlackLayout.vue'),
-      redirect: '/slack/login',
-      meta: {
-        title: 'Slack Login',
-      },
-      children: [
-        {
-          path: '/slack/login',
-          name: 'slack-login',
-          component: SlackLogin,
-        },
-        {
-          path: '/slack/callback',
-          name: 'slack-callback',
-          component: () => import('@/views/auth/slack/SlackCallback.vue'),
-        },
-        {
-          path: '/slack/register',
-          name: 'slack-register',
-          component: () => import('@/views/auth/slack/SlackRegister.vue'),
-        },
-        {
-          path: '/slack/install-redirect',
-          name: 'slack-install-redirect',
-          component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
-        },
-        {
-          path: '/slack/install-success',
-          name: 'slack-install-success',
-          component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
-        },
-        {
-          path: '/slack/notadmin',
-          name: 'slack-notadmin',
-          component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
-        }
-      ]
-    },
-    {
-      path: '/setup',
-      component: () => import('@/layouts/SetupLayout.vue'),
-      redirect: '/setup/framework',
-      children: [
-        {
-          path: 'framework',
-          name: 'setup-framework',
-          component: () => import('@/views/admin/setup/Framework.vue'),
-        },
-        {
-          path: 'users',
-          name: 'setup-users',
-          component: () => import('@/views/admin/setup/Users.vue'),
-        },
-      ]
-    },
+    
     {
       path: '/feedback',
       redirect: '/feedback/give',

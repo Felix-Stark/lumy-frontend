@@ -5,7 +5,7 @@ console.log('App.vue loaded')
 
 <template>
   <!-- Main application view -->
-   <main class="flex flex-col border-box items-center justify-center  w-screen min-h-screen bg-slate-100 p-8">
+   <main class="flex flex-col box-border items-center justify-center  w-screen min-h-screen bg-slate-100">
      <RouterView />
    </main>
 </template>

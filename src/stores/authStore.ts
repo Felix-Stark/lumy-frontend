@@ -7,21 +7,19 @@ export const useAuthStore = defineStore("auth", {
     isLoggedIn: false,
     isAdmin: false,
     accountId: null as string | null,
-    setUpAccount: {} as SetupAccount | null,
+    setupAccount: loadSetupAccount(),
   }),
   actions: {
     async loginSlack(code: string) {
-
-      const res = await api.get("/slack/login/callback?code=" + code);
       let path = "";
       try {
+        const res = await api.get("/slack/login/callback?code=" + code);
         console.log("login data: ", res.data);
         if (res.status === 200) {
           const role = res.data.role;
           const userStore = useUserStore();
           userStore.getAccount();
           sessionStorage.setItem("LumyRole", role);
-          sessionStorage.setItem("LumyLoggedIn", "true");
           path = `/${role}`;
           this.isLoggedIn = true;
         }
@@ -39,7 +37,8 @@ export const useAuthStore = defineStore("auth", {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
       if (res.status === 200) {
-        this.setUpAccount = await res.data;
+        this.setupAccount = await res.data; //store this in sessionStorage
+        sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
         return res.data;
       }
     },
@@ -62,3 +61,12 @@ export const useAuthStore = defineStore("auth", {
     },
   },
 });
+
+function loadSetupAccount(): SetupAccount | null {
+  const raw = sessionStorage.getItem("LumySetupAccount");
+  try {
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}

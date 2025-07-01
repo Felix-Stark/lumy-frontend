@@ -1,26 +1,24 @@
 <template>
-	<div>
-		<article class="flex flex-col items-center justify-center ">
-			<h1 v-if="title" class="font-inter font-semibold text-3xl text-center">{{ title }}</h1>
-			<p v-if="text" class="font-inter font-light text-center mt-2.5">
-				{{ text }}
-			</p>
-		</article>
-		<section class="flex flex-col items-center justify-center mt-4">
-			<slot/>
-		<p>
-			{{ explain }}
+	<article class="flex flex-col items-center justify-center ">
+		<h1 v-if="title" class="font-inter font-semibold text-3xl text-center">{{ title }}</h1>
+		<p v-if="text" class="font-inter font-light text-center mt-2.5">
+			{{ text }}
 		</p>
-		</section>
-		<div class="flex flex-col items-center mt-3">
-			<button v-if="buttonText"
-			class="bg-purple-500 hover:bg-purple-400 min-w-3xs max-w-3xs text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-			@click="onAction"
-			:disabled="disabled"
-			>
-				{{ buttonText }}
-			</button>
-		</div>
+	</article>
+	<section class="flex flex-col items-center justify-center mt-4">
+		<slot/>
+	<p>
+		{{ explain }}
+	</p>
+	</section>
+	<div class="flex flex-col items-center mt-3">
+		<button v-if="buttonText"
+		class="bg-purple-500 hover:bg-purple-400 min-w-3xs max-w-3xs text-white font-bold py-2 px-4 rounded-md cursor-pointer transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+		@click="onAction"
+		:disabled="disabled"
+		>
+			{{ buttonText }}
+		</button>
 	</div>
   </template>
   

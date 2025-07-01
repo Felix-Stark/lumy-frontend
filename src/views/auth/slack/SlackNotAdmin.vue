@@ -1,16 +1,16 @@
 <template>
-	<SlackAuthLayout 
+	<SlackFlowComp 
 	:image="lumySad"
 	title="Oh no! This can't be right!"
 	text="It looks like you're not an admin in your Slack workspace, which is required to install this awesomeness.
 Copy the link below and send to one of your admins and you will be set up in no time!"
 	>
-	<div class="flex items-center mt-4">
-		<p class="font-inter font-light text-lg text-center border border-gray-300 rounded p-4">
+	<div class="flex items-center mt-4 border border-gray-300 rounded">
+		<p class="font-inter font-light  text-center p-4">
 			{{ installLink }}
 		</p>
 		<button
-			class="bg-purple-500 text-white p-4 rounded hover:bg-purple-400 transition"
+			class="bg-purple-500 text-white flex-1 p-4 rounded-r hover:bg-purple-400 transition"
 			@click="copyLink"
 			type="button"
 		>
@@ -25,11 +25,11 @@ Copy the link below and send to one of your admins and you will be set up in no 
         Link copied to clipboard!
       </div>
     </transition>
-	</SlackAuthLayout>
+	</SlackFlowComp>
 </template>
 
 <script setup lang="ts">
-import SlackAuthLayout from '@/layouts/SlackAuthLayout.vue';
+import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 import lumySad from '@/assets/images/lumy_sad.png';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';

@@ -48,10 +48,10 @@ const users = ref<SetUpUser[]>();
 
 onMounted(async () => {
   loading.value = true;
-  console.log('setup account in users: ', authStore.setUpAccount);
+  console.log('setup account in users: ', authStore.setupAccount);
   try {
 
-    users.value = authStore.setUpAccount?.users;
+    users.value = authStore.setupAccount?.users;
   } catch (error) {
     console.error('Error fetching users:', error);
   } finally {
@@ -66,7 +66,7 @@ const updateUsers = async () => {
   verifyAccount();
 }
 async function verifyAccount() {
-  const accountId = authStore.setUpAccount?.id;
+  const accountId = authStore.setupAccount?.id;
   if (!accountId) {
     console.error('No account ID found');
     return;

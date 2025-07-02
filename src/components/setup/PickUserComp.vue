@@ -1,7 +1,7 @@
 <template>
 	<div :key="id" :class="[
             'flex w-full not-last:border-b-2 border-gray-200',
-            isActive === true ? 'opacity-50' : ''
+            isActive === true ? '' : 'opacity-50'
         ]">
 		<div class="flex items-center justify-start w-full gap-4 p-2">
 			<!-- Avatar and Name Section -->

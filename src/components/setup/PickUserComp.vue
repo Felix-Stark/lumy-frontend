@@ -1,9 +1,9 @@
 <template>
 	<div :key="id" :class="[
             'flex w-full not-last:border-b-2 border-gray-200',
-            isActive === true ? '' : 'opacity-50'
+            
         ]">
-		<div class="flex items-center justify-start w-full gap-4 p-2">
+		<div :class="['flex items-center justify-start w-full gap-4 p-2', isActive === true ? '' : 'opacity-50']">
 			<!-- Avatar and Name Section -->
 			<img
 				v-if="avatarUrl"
@@ -25,7 +25,7 @@
 		</div>
 		<div class="flex items-center gap-6 w-1/4">
 			<Listbox :model-value="role" @update:model-value="emit('update:role', $event)">
-				<div class="relative w-[8rem]">
+				<div :class="['relative w-[8rem]', isActive === true ? '' : 'opacity-50']">
 					<ListboxButton class="border border-gray-300 rounded-md p-2 w-full flex justify-between items-center cursor-pointer bg-white">
 						<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
 						<ChevronDown class="ml-2 w-4 h-4" />

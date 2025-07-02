@@ -6,10 +6,10 @@
 		</p>
 	</article>
 	<section class="flex flex-col items-center justify-center mt-4">
+		<p>
+			{{ explain }}
+		</p>
 		<slot/>
-	<p>
-		{{ explain }}
-	</p>
 	</section>
 	<div class="flex flex-col items-center mt-3">
 		<button v-if="buttonText"

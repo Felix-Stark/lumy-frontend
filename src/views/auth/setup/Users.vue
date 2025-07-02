@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col box-border min-w-2xl justify-center max-h-[75vh] p-4">
+	<div class="flex flex-col box-border max-w-2xl w-full justify-center max-h-[75vh] p-4">
     <article class="flex flex-col items-center justify-center">
       <div class="flex flex-col items-center justify-center">
         <h1 class="font-inter font-semibold text-3xl text-center">Gotcha! What about users? Does this look good?</h1>
@@ -20,7 +20,7 @@
         :name="user.name"
         :title="user.title"
         v-model:role="user.role"
-        v-model:is_active="user.is_active"
+        v-model:isActive="user.is_active"
       />
     </div>
     <button

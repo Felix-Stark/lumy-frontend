@@ -4,7 +4,7 @@ import { useUserStore } from "./userStore";
 import type { SetupAccount } from "@/types";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    isLoggedIn: false,
+    isLoggedIn: setLoggedIn(),
     isAdmin: false,
     accountId: null as string | null,
     setupAccount: loadSetupAccount(),
@@ -17,9 +17,8 @@ export const useAuthStore = defineStore("auth", {
         console.log("login data: ", res.data);
         if (res.status === 200) {
           const role = res.data.role;
-          const userStore = useUserStore();
-          userStore.getAccount();
           sessionStorage.setItem("LumyRole", role);
+          sessionStorage.setItem("loggedin", "true")
           path = `/${role}`;
           this.isLoggedIn = true;
         }
@@ -45,14 +44,8 @@ export const useAuthStore = defineStore("auth", {
     async verifyAccount(accountId: number) {
       const res = await api.post("/slack/verify-setup", { account_id: accountId });
       if (res.status === 200) {
+        sessionStorage.setItem("loggedin", "true");
         this.isLoggedIn = true;
-        sessionStorage.setItem("LumyLoggedIn", "true");
-          const userStore = useUserStore();
-          userStore.me = res.data.user;
-          userStore.account = res.data.account;
-          sessionStorage.setItem("LumyRole", res.data.user.role);
-
-          this.isLoggedIn = true;
         return res.status;
       }
     },
@@ -64,6 +57,14 @@ export const useAuthStore = defineStore("auth", {
 
 function loadSetupAccount(): SetupAccount | null {
   const raw = sessionStorage.getItem("LumySetupAccount");
+  try {
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+function setLoggedIn(): boolean | null {
+  const raw = sessionStorage.getItem("loggedin");
   try {
     return raw ? JSON.parse(raw) : null;
   } catch {

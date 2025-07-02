@@ -150,27 +150,26 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
+  const store = useAuthStore();
 
-  const isLoggedIn = sessionStorage.getItem('LumyLoggedIn')
-  if (to.meta.requiresAuth && !isLoggedIn) {
-
+  if (to.meta.requiresAuth && !store.isLoggedIn) {
     next({ name: 'slack-login' })
-  } else if (isLoggedIn && to.meta.isAdmin) {
+  } else if (store.isLoggedIn && to.meta.isAdmin) {
     const role = sessionStorage.getItem('LumyRole')
     console.log('role in role check: ', role)
-    if (role !== 'admin') {
-      const errorStore = useErrorStore();
-      errorStore.setError({
-        code: 403,
-        detail: 'You do not have permission to access this page.',
-      });
-      next({ name: 'error' })
+      if (role !== 'admin') {
+        const errorStore = useErrorStore();
+        errorStore.setError({
+          code: 403,
+          detail: 'You do not have permission to access this page.',
+        });
+        next({ name: 'error' })
+        } else {
+        next()
+      }
     } else {
       next()
     }
-  }else {
-    next()
-  }
 })
 
 export default router

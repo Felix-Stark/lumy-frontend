@@ -56,14 +56,14 @@ const router = createRouter({
       redirect: '/setup/frameworks',
       children: [
         {
-          path: 'frameworks',
-          name: 'setup-frameworks',
-          component: () => import('@/views/auth/setup/Frameworks.vue'),
-        },
-        {
           path: 'users',
           name: 'setup-users',
           component: () => import('@/views/auth/setup/Users.vue'),
+        },
+        {
+          path: 'frameworks',
+          name: 'setup-frameworks',
+          component: () => import('@/views/auth/setup/Frameworks.vue'),
         },
       ]
     },

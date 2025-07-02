@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia';
 import api from '../services/api';
 import {useAuthStore} from './authStore';
-import type { User, Account, Skill, UserSummary } from '../types';
+import type { User, Account, Skill, UserSummary, SetupUser } from '../types';
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
@@ -42,10 +42,14 @@ export const useUserStore = defineStore('user', {
 			}
 			
 		},
-		async updateUser(userId: number, userData: Partial<User>) {
-			const res = await api.patch(`/users/${userId}`, userData);
-			if(res.status === 200) {
-				return res.data;
+		async updateUser(userId: number, userData: Partial<SetupUser>) {
+			try {
+				const res = await api.patch(`/users/${userId}`, userData);
+				if(res.status === 200) {
+					return res.data;
+				}
+			} catch (error: any) {
+				console.error('error in update user: ', error)
 			}
 		},
 		async getAccount() {

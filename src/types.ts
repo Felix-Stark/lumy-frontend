@@ -44,10 +44,10 @@ export type SetupAccount = {
 	  id: number;
 	  account_id: number;
 	  role: string;
-	  users: SetUpUser[]; // Array of users in the account
+	  users: SetupUser[]; // Array of users in the account
 }
 
-export type SetUpUser = {
+export type SetupUser = {
   id: number;
   name: string;
   email: string;

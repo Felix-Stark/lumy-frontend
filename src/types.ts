@@ -55,7 +55,7 @@ export type SetupUser = {
   is_active: boolean;
   avatar: string;
   title?: string;
-  suggested_skills: Skill[] | null; // Array of suggested skills for the user
+  suggested_skills: Skill[] | null;
 };
 
 export type Skill = {

@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col box-border max-w-2xl w-full justify-center max-h-[75vh] p-4">
+	<div class="flex flex-col box-border max-w-2xl w-full justify-center  p-4">
     <SetupComp
         title="Gotcha! What about users? Does this look good?"
         text="Don't worry, you can change these settings later on as well. This is just to get you set up."
@@ -7,7 +7,7 @@
         :onAction="updateUsers"
         :disabled="loading"
       >
-      <div v-if="users" class="flex flex-col items-center mt-3 w-full max-h-full overflow-auto">
+      <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
         <PickUserComp
           v-for="user in users"
           :id="user.id"
@@ -29,7 +29,6 @@ import PickUserComp from '@/components/setup/PickUserComp.vue';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import api from '@/services/api';
-
 import { useUserStore } from '@/stores/userStore';
 import type { SetupUser } from '@/types';
 import { useAuthStore } from '@/stores/authStore';
@@ -42,7 +41,6 @@ const users = ref<SetupUser[]>();
 
 onMounted(async () => {
   loading.value = true;
-  console.log('setup account in users: ', authStore.setupAccount);
   try {
     users.value = authStore.setupAccount?.users;
   } catch (error) {

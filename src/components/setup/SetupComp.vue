@@ -1,11 +1,11 @@
 <template>
-	<article class="flex flex-col items-center justify-center ">
+	<article class="flex flex-col items-center justify-center h-full">
 		<h1 v-if="title" class="font-inter font-semibold text-3xl text-center">{{ title }}</h1>
 		<p v-if="text" class="font-inter font-light text-center mt-2.5">
 			{{ text }}
 		</p>
 	</article>
-	<section class="flex flex-col items-center justify-center mt-4">
+	<section class="flex flex-col items-center justify-center p-2 overflow-auto mt-4">
 		<p>
 			{{ explain }}
 		</p>

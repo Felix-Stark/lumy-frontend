@@ -1,6 +1,6 @@
 <template>
-	<div :key="id" class="flex w-full not-last:border-b-2 border-gray-200">
-		<div :class="['flex items-center justify-start w-full gap-4 p-2', isActive === true ? '' : 'opacity-50']">
+	<div :key="id" class="flex justify-between w-full not-last:border-b-2 border-gray-200">
+		<div :class="['flex items-center gap-4 p-2', isActive === true ? '' : 'opacity-50']">
 			<!-- Avatar and Name Section -->
 			<img
 				v-if="avatarUrl"
@@ -20,9 +20,9 @@
 				</p>
 			</div>
 		</div>
-		<div class="flex items-center gap-6 w-1/4">
+		<div class="flex flex-col gap-2 sm:flex-row items-center justify-end sm:gap-6 ">
 			<Listbox :model-value="role" @update:model-value="emit('update:role', $event)">
-				<div :class="['relative w-[8rem]', isActive === true ? '' : 'opacity-50']">
+				<div :class="['relative w-[6rem]', isActive === true ? '' : 'opacity-50']">
 					<ListboxButton class="border border-gray-300 rounded-md p-2 w-full flex justify-between items-center cursor-pointer bg-white">
 						<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
 						<ChevronDown class="ml-2 w-4 h-4" />
@@ -38,7 +38,7 @@
 				</div>
 			</Listbox>
 			<button
-			:class="['px-4 py-2 text-white', isActive === true ? 'bg-red-500' : 'bg-green-500']" 
+			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-500' : 'bg-green-500 px-8']" 
 			@click="emit('update:isActive', !isActive)"
 			>
 				{{ isActive === true ? 'Remove' : 'Add' }}
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
-import { ChevronDown, UserMinus, UserPlus } from 'lucide-vue-next';
+import { ChevronDown } from 'lucide-vue-next';
 
 
 defineProps<{

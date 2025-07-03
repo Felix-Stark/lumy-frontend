@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col justify-center items-center w-full h-full sm:w-3xl sm:h-[80vh] bg-white rounded-2xl shadow-xl p-8">
+	<div class="flex flex-col box-border justify-center items-center w-full  sm:w-3xl  bg-white rounded-2xl shadow-xl p-8">
 		<router-view />
 	</div>
 </template>

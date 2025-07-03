@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col items-center justify-center h-screen">
+	<div class="flex flex-col items-center justify-center">
 		<SetupComp 
 			title="Sweet! Now, let's configure your account"
 			text="Don't worry, you can also change these settings later on. This is just to get you set up."

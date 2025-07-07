@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[75vh]">
-        <div class="p-4 h-full overflow-auto">
+        <div class="p-4 w-full h-full overflow-auto">
             <PickUserComp
             v-for="user in users"
             :id="user.id"
@@ -18,6 +18,20 @@
             btnText="Save changes"
         />
     </div>
+    <BaseToast
+        v-if="loading"
+        text="Saving changes..."
+        bgClass="bg-blue-600"
+        :show="loading"
+        :duration="3000"
+    />
+    <BaseToast
+        v-if="success"
+        text="Changes saved successfully!"
+        bgClass="bg-green-600"
+        :show="success"
+        :duration="3000"
+    />
 </template>
 
 <script setup lang="ts">
@@ -27,11 +41,14 @@ import type { User } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import api from '@/services/api';
+import BaseToast from '@/components/base/BaseToast.vue';
 
 const userStore = useUserStore();
 const users = ref<User[]>();
 const account = computed(() => userStore.account);
 const loading = ref(false);
+const success = ref(false);
+
 
 onMounted(async() => {
     if(account === null) {
@@ -51,10 +68,13 @@ const updateUsers = async () => {
   loading.value = true;
   try {
     users.value?.forEach(user => {
-    userStore.updateUser(user.id, { ...user, is_active: user.is_active, role: user.role });
-  })
+        userStore.updateUser(user.id, { ...user, is_active: user.is_active, role: user.role });
+    });
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
+  } finally {
+    loading.value = false;
+
   }
 }
 </script>

@@ -1,48 +1,29 @@
 <template>
-    <div class="flex flex-col gap-12 w-full min-h-[60vh] bg-white p-8  rounded-xl shadow-md">
+    <div class="flex flex-col justify-between w-full bg-white p-8  rounded-xl shadow-md">
         <article class="flex flex-col gap-8">
-            <!-- <form class="w-full">
-                <h1 class="font-thin text-2xl text-gray-500">
-                    General settings
-                </h1>
-                <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
-                    <label class="font-thin text-sm" for="fw">Feedback Frameworks</label>
-                    <select class="border rounded border-gray-400 focus:outline-lumy-purple" name="framework" id="fw" v-model="selectedFramework">
-                        <option v-for="fw in frameworks" :value="fw.id">{{ fw.name }}</option>
-                    </select>
-                </div>
-                <h1 class="font-thin text-2xl text-gray-500">
-                    Bot settings
-                </h1>
-                <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
-                    <label for="bp">Bot personality</label>
-                    <select name="bot-personality" id="bp" v-model="selectedBot">
-                        <option v-for="bp in botPersonalities" :value="bp.id">{{ bp.name }}</option>
-                    </select>
-                </div>
-            </form> -->
-            <!-- currently unavalible -->
-            <!-- <div class="flex flex-col w-1/2 pl-8 border-l border-gray-300">
-                <label for="account_name" class="font-thin">Account name</label>
-                <input type="text" name="account_name"
-                class="border border-gray-300 rounded  p-2 focus:outline-lumy-purple"
-                :placeholder="account?.name"
-                v-model="newAccountName" />
-            </div> -->
             <h1 class="font-thin text-2xl text-gray-500">
                 General settings
             </h1>
-            <div class="flex flex-col w-1/2 pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
+                <div class="relative">
                 <Listbox v-model="selectedFramework">
-                    <div class="relative">
+                    <Float
+                            placement="bottom"
+                            :flip="true"
+                            :offset="4"
+                            :portal="true"
+                        >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                         <span>
                             {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || 'Select a framework' }}
                         </span>
                         <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
-                        <ListboxOptions class="absolute mt-1 w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10 right-0 left-0">
+                        
+                        <ListboxOptions class="
+                        max-w-96
+                        max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
                             <ListboxOption
                                 v-for="fw in frameworks"
                                 :key="fw.id"
@@ -51,42 +32,55 @@
                             >
                                 <div>
                                 <span class="font-medium">{{ fw.name }}</span>
-                                <div class="text-xs text-gray-500">{{ fw.definition }}</div>
+                                <div class="text-xs text-gray-500 text-wrap">{{ fw.definition }}</div>
                                 </div>
                             </ListboxOption>
                         </ListboxOptions>
-                    </div>
+                    </Float>
                 </Listbox>
+                </div>
+
             </div>
             <hr class="text-gray-300" />
             <h1 class="font-thin text-2xl text-gray-500">
                 Bot settings
             </h1>
-            <div class="flex flex-col w-1/2 pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Bot personality</p>
+                <div class="relative">
                 <Listbox v-model="selectedBot">
-                    <div class="relative">
+                    <Float
+                            placement="bottom"
+                            :flip="true"
+                            :offset="4"
+                            :portal="true"
+                        >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
-                        <ListboxOptions class="absolute mt-1 w-full overflow-auto bg-white border border-gray-300 rounded shadow-lg max-h-48 left-0 right-0 z-10">
-                            <ListboxOption
-                            v-for="bp in botPersonalities"
-                            :key="bp.id"
-                            :value="bp.id"
-                            class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
-                            >
-                                <div>
-                                    <span class="font-medium">{{ bp.name }}</span>
-                                    <div class="text-xs text-gray-500">
-                                        {{ bp.description }}
+                        
+                            <ListboxOptions class="
+                            max-w-96
+                            max-h-48
+                            overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                                <ListboxOption
+                                v-for="bp in botPersonalities"
+                                :key="bp.id"
+                                :value="bp.id"
+                                class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
+                                >
+                                    <div>
+                                        <span class="font-medium">{{ bp.name }}</span>
+                                        <div class="text-xs text-gray-500">
+                                            {{ bp.description }}
+                                        </div>
                                     </div>
-                                </div>
-                            </ListboxOption>
-                        </ListboxOptions>
-                    </div>
+                                </ListboxOption>
+                            </ListboxOptions>
+                        </Float>
                 </Listbox>
+                </div>
             </div>
 
         </article>
@@ -106,6 +100,7 @@
 <script setup lang="ts">
 import type { BotPersonality, FeedbackFramework } from '@/types';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue';
+import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { ChevronDown } from 'lucide-vue-next';

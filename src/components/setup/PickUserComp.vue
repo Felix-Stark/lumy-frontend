@@ -23,7 +23,7 @@
 		<div class="flex flex-col gap-2 sm:flex-row items-center justify-end sm:gap-6 ">
 			<Listbox :model-value="role" @update:model-value="emit('update:role', $event)">
 				<div :class="['relative w-[6rem]', isActive === true ? '' : 'opacity-50']">
-					<ListboxButton class="border border-gray-300 rounded-md p-2 w-full flex justify-between items-center cursor-pointer bg-white">
+					<ListboxButton :disabled="!isActive" :class="['border border-gray-300 rounded-md p-2 w-full flex justify-between items-center  bg-white', isActive ? 'cursor-pointer' : 'cursor-not-allowed']">
 						<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
 						<ChevronDown class="ml-2 w-4 h-4" />
 					</ListboxButton>

@@ -1,7 +1,7 @@
 <template>
-	<div class="flex flex-col items-center w-[80%] h-screen ">
+	<div class="flex flex-col items-center w-full p-4 md:w-[80vw] h-full">
 		<NavUtility />
-        <main class="flex flex-col items-center w-full">
+        <main class="flex flex-col items-center w-full mt-12">
         <router-view />
         </main>
     </div>

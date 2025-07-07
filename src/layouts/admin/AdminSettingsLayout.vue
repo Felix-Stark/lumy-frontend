@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center w-[80vw] ">
+    <div class="flex flex-col items-center w-full md:w-[80vw] min-h-full ">
         <SettingsNav />
         <main class="w-full">
         <router-view />

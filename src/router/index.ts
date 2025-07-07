@@ -94,10 +94,6 @@ const router = createRouter({
           path: '',
           name: 'admin-dashboard',
           component: () => import('@/views/admin/Dashboard.vue'),
-          meta: {
-            title: 'Admin Dashboard',
-            requiresAuth: false,
-          },
         },
         {
           path: 'settings',

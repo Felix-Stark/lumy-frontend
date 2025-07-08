@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[75vh]">
-        <div class="p-4 w-full h-full overflow-auto">
+        <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
             <PickUserComp
             v-for="user in users"
             :id="user.id"
@@ -13,7 +13,7 @@
             />
         </div>
         <BaseButton
-            :loading="loading"
+            :disabled="loading"
             :onAction="updateUsers"
             btnText="Save changes"
         />
@@ -26,11 +26,11 @@
         :duration="3000"
     />
     <BaseToast
-        v-if="success"
         text="Changes saved successfully!"
         bgClass="bg-green-600"
         :show="success"
         :duration="3000"
+        @close="success = false"
     />
 </template>
 
@@ -74,7 +74,7 @@ const updateUsers = async () => {
     console.error('error in updateUser fn: ', error)
   } finally {
     loading.value = false;
-
+    success.value = true;
   }
 }
 </script>

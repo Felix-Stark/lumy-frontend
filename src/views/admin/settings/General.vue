@@ -91,6 +91,8 @@
         />
         <BaseToast
         :show="showToast"
+        @close="showToast = false"
+        :duration="3000"
         :text="toastText"
         :bg-class="toastBg"
         />

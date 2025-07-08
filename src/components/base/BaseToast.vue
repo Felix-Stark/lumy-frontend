@@ -31,7 +31,7 @@ onMounted(() => {
     timeout = setTimeout(() => {
       // Emit an event to close the toast after the duration
       emit('close')
-    }, props.duration)
+    }, props.duration ?? 3000)
   }
 })
 

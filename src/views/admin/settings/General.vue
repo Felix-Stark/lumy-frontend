@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import type { BotPersonality, FeedbackFramework } from '@/types';
+import type { Account, BotPersonality, FeedbackFramework } from '@/types';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue';
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
@@ -117,23 +117,25 @@ const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
-const account = computed(() => userStore.account);
+const account = ref<Account>()
 onMounted(async () => {
-    if(userStore.account === null) {
-        userStore.getAccount();
-    }
-    console.log('account in general settings: ', userStore.account)
-    selectedFramework.value = account.value?.framework_id;
-    selectedBot.value = account.value?.bot_personality_id;
-    const res = await api.get('/bot-personalities');
-    if( res.status === 200) {
-        botPersonalities.value = res.data;
-        console.log('bot res: ', res)
-    }
-    const resFrameworks = await api.get('/frameworks');
-    if (resFrameworks.status === 200) {
-        frameworks.value = resFrameworks.data;
-        console.log('fw res: ', resFrameworks)
+    try {
+        account.value = await userStore.getAccount();
+        const res = await api.get('/bot-personalities');
+        if( res.status === 200) {
+            botPersonalities.value = res.data;
+            selectedBot.value = account.value?.bot_personality_id;
+        }
+        const resFrameworks = await api.get('/frameworks');
+        if (resFrameworks.status === 200) {
+            frameworks.value = resFrameworks.data;
+            selectedFramework.value = account.value?.framework_id;
+        }
+    } catch (error: any) {
+        console.error('Error fetching data: ', error);
+        toastText.value = error?.response?.data?.detail || 'Could not load settings';
+        toastBg.value = 'bg-red-500';
+        showToast.value = true;
     }
     
 })

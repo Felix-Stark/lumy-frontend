@@ -59,7 +59,7 @@ export const useUserStore = defineStore('user', {
 			if (res.status === 200) {
 				this.account = res.data;
 			}
-			return res.status;
+			return res.data as Account;
 		},
 	}
 })

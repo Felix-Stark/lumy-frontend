@@ -38,7 +38,7 @@
 				</div>
 			</Listbox>
 			<button
-			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-300' : 'bg-green-300 px-8']" 
+			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8']" 
 			@click="emit('update:isActive', !isActive)"
 			>
 				{{ isActive === true ? 'Remove' : 'Add' }}

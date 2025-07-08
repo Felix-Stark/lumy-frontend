@@ -3,7 +3,7 @@
     <div
       v-if="show"
       :class="[
-        'fixed bottom-8 right-8 px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
+        'fixed bottom-8 px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
         bgClass
       ]"
       role="alert"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted, onMounted } from 'vue'
+import { watch, onUnmounted, onMounted } from 'vue'
 
 const props = defineProps<{
   text: string
@@ -35,9 +35,25 @@ onMounted(() => {
   }
 })
 
-onUnmounted(() => {
+const clear = () => {
   if (timeout) clearTimeout(timeout)
-})
+  timeout = null
+}
+
+watch(
+  () => props.show,
+  (val) => {
+    clear()
+    if (val) {
+      timeout = setTimeout(() => {
+        emit('close')
+      }, props.duration ?? 3000)
+    }
+  }
+)
+
+onUnmounted(clear)
+
 </script>
 
 <style scoped>

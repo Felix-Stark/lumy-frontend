@@ -27,7 +27,7 @@
     />
     <BaseToast
         text="Changes saved successfully!"
-        bgClass="bg-green-600"
+        bgClass="bg-green-500"
         :show="success"
         :duration="3000"
         @close="success = false"

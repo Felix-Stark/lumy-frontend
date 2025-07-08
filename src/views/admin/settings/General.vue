@@ -16,7 +16,7 @@
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                         <span>
-                            {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || frameworks?.find(fw => fw.id === account?.framework_id) }}
+                            {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || frameworks?.find(fw => fw.id === account?.framework_id)?.name }}
                         </span>
                         <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
@@ -56,7 +56,7 @@
                             :portal="true"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
-                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || botPersonalities?.find(bp => bp.id === account?.bot_personality_id) }}</span>
+                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || botPersonalities?.find(bp => bp.id === account?.bot_personality_id)?.name }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         
@@ -122,6 +122,9 @@ onMounted(async () => {
     if(userStore.account === null) {
         userStore.getAccount();
     }
+    console.log('account in general settings: ', userStore.account)
+    // selectedFramework.value = account.value?.framework_id;
+    // selectedBot.value = account.value?.bot_personality_id;
     const res = await api.get('/bot-personalities');
     if( res.status === 200) {
         botPersonalities.value = res.data;

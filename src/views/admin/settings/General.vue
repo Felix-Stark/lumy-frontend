@@ -16,7 +16,7 @@
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                         <span>
-                            {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || 'Select a framework' }}
+                            {{ frameworks?.find(fw => fw.id === selectedFramework)?.name || frameworks?.find(fw => fw.id === account?.framework_id) }}
                         </span>
                         <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
@@ -56,7 +56,7 @@
                             :portal="true"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
-                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || 'Select a bot personality' }}</span>
+                            <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name || botPersonalities?.find(bp => bp.id === account?.bot_personality_id) }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         
@@ -113,11 +113,8 @@ const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
 const toastBg = ref('bg-green-500')
-const newAccountName = ref('')
-// const timezone = ref();
 const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
-// const botLanguage = ref();
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const account = computed(() => userStore.account);

@@ -17,9 +17,7 @@ export const useAuthStore = defineStore("auth", {
         console.log("login data: ", res.data);
         if (res.status === 200) {
           const role = res.data.role;
-          console.log("role in loginSlack: ", role);
-          console.log("res.data in loginSlack: ", res.data);
-          sessionStorage.setItem("LumyRole", role);
+          sessionStorage.setItem("LumyRole", JSON.stringify(role));
           sessionStorage.setItem("loggedin", "true")
           path = `/${role}`;
           this.isLoggedIn = true;
@@ -56,6 +54,8 @@ export const useAuthStore = defineStore("auth", {
     },
   },
 });
+
+
 
 function loadSetupAccount(): SetupAccount | null {
   const raw = sessionStorage.getItem("LumySetupAccount");

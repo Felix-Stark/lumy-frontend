@@ -86,7 +86,7 @@ const showTooltip = ref(false)
 const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
-const role = ref('')
+const role = ref()
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text
@@ -105,7 +105,8 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  role.value = sessionStorage.getItem('role') || ''
+  role.value = sessionStorage.getItem('role')
+  console.log('Role from sessionStorage:', role.value)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)

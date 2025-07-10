@@ -105,7 +105,10 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  role.value = sessionStorage.getItem('LumyRole')
+  const raw = sessionStorage.getItem('LumyRole')
+  if (raw) {
+	role.value = JSON.parse(raw)
+  }
   console.log('Role from sessionStorage:', role.value)
 })
 onUnmounted(() => {

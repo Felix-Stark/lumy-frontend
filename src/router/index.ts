@@ -86,8 +86,8 @@ const router = createRouter({
       component: AdminLayout,
       meta: {
         title: 'Admin dashboard',
-        requiresAuth: false,
-        isAdmin: false, // This route requires admin privileges
+        requiresAuth: true,
+        isAdmin: true, // This route requires admin privileges
       },
       children: [
         {

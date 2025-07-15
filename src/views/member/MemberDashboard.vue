@@ -1,7 +1,5 @@
 <template>
-	<div class="flex flex-col gap-8 w-[80vw] min-h-screen">
-		<NavUtility />
-		<header class="grid grid-cols-2 grid-rows-2 gap-8 justify-center mt-16 max-w-5xl">
+		<header class="grid grid-cols-2 md:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"
@@ -121,7 +119,6 @@
 			btnText="OK"
 		>
 		</BaseDialog>
-	</div>
 </template>
 
 <script setup lang="ts">

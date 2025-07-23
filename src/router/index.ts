@@ -149,11 +149,11 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
-
+  const raw = sessionStorage.getItem('LumyRole')
+  const role = raw ? JSON.parse(raw) : null;
   if (to.meta.requiresAuth && !store.isLoggedIn) {
     next({ name: 'slack-login' })
-  } else if (store.isLoggedIn && to.meta.isAdmin) {
-    const role = sessionStorage.getItem('LumyRole')
+  } else if (to.meta.isAdmin) {
     console.log('role in role check: ', role)
       if (role !== 'admin') {
         const errorStore = useErrorStore();

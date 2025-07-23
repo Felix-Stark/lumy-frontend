@@ -90,11 +90,11 @@ const router = createRouter({
         isAdmin: true, // This route requires admin privileges
       },
       children: [
-        {
-          path: '',
-          name: 'admin-dashboard',
-          component: () => import('@/views/admin/Dashboard.vue'),
-        },
+        // {
+        //   path: '',
+        //   name: 'admin-dashboard',
+        //   component: () => import('@/views/admin/Dashboard.vue'),
+        // },
         {
           path: 'settings',
           component: () => import('@/layouts/admin/AdminSettingsLayout.vue'),

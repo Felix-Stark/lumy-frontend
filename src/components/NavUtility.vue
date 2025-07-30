@@ -15,9 +15,9 @@
 		</button>
 
 		<ul class="flex flex-col gap-4 text-gray-700 text-lg font-semibold pt-8">
-			<li v-if="role === 'admin'">
+			<!-- <li v-if="role === 'admin'">
 				<router-link to="/admin">Admin</router-link>
-			</li>
+			</li> -->
 			<li>
 				<router-link to="/member">Profile</router-link>
 			</li>
@@ -39,15 +39,15 @@
 		'hidden md:flex'
     ]"
     style="transition: all 0.3s;">
-		<router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<!-- <router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
 		@mouseleave="handleMouseLeave"
-		>
-			<Home :class="[,
+		> -->
+			<!-- <Home :class="[,
 				isExactActive === true ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
-			]" />
-		</router-link>
+			]" /> -->
+		<!-- </router-link> -->
 		<router-link to="/member" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Profile')"
 		@mouseleave="handleMouseLeave"

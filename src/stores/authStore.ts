@@ -19,7 +19,8 @@ export const useAuthStore = defineStore("auth", {
           const role = res.data.role;
           sessionStorage.setItem("LumyRole", JSON.stringify(role));
           sessionStorage.setItem("loggedin", "true")
-          path = `/${role}`;
+          // path = `/${role}`; set path based on role
+          path = "/member";
           this.isLoggedIn = true;
         }
         if (res.status === 204) {

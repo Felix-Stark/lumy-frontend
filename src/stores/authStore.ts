@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import api from "..//services/api";
 import { useUserStore } from "./userStore";
 import type { SetupAccount } from "@/types";
+import { useErrorStore } from "./errorStore";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     isLoggedIn: setLoggedIn(),
@@ -22,10 +23,16 @@ export const useAuthStore = defineStore("auth", {
           // path = `/${role}`; set path based on role
           path = "/member";
           this.isLoggedIn = true;
-        }
-        if (res.status === 204) {
+        } else if (res.status === 204) {
           this.isLoggedIn = false;
           path = "/slack/register";
+        } else {
+          this.isLoggedIn = false;
+          path = "/error";
+          useErrorStore().setError({
+            code: res.status,
+            detail: res.statusText || "Login failed. Please try again.",
+          });
         }
         return path;
       } catch (error: any) {

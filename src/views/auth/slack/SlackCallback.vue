@@ -22,13 +22,18 @@ const code = route.query.code;
 
 onMounted( async () => {
 	console.log('slack callback mounted');
-	if(code) {
+	try {
+		if(code) {
 		const path = await authStore.loginSlack(code as string);
 		if (path !== undefined) {
 			router.push(path);
 		} else {
 			console.error('Login failed');
 		}
+	}
+	} catch (error) {
+		console.error('Error during Slack callback: ', error);
+		router.push({ name: 'SlackError' });
 	}
 });
 

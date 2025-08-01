@@ -19,7 +19,7 @@ import lumyLogo from '@/assets/images/lumy.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
-const redirectUri = 'https://mcfeedface-frontend-production.up.railway.app/slack/callback';
+const redirectUri = 'https://app.getlumy.app/slack/callback';
 const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=users:read,team:read&redirect_uri=${redirectUri}`
 
 const router = useRouter();

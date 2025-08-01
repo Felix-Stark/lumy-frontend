@@ -5,6 +5,13 @@
                 General settings
             </h1>
             <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
+                <p class="font-thin py-2 text-sm">Company name</p>
+                <p v-if="editName === false" class="text-gray-700">{{ newName ? newName : account?.name }}<span><button @click="editName = true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-icon lucide-pencil"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></button></span></p>
+                <div v-else class="flex items-center gap-2">
+                    <input v-model="newName" type="text" class="border border-gray-300 rounded p-2 w-full" placeholder="Enter new company name" />
+                </div>
+            </div>
+            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
                 <div class="relative">
                 <Listbox v-model="selectedFramework">
@@ -22,7 +29,7 @@
                         </ListboxButton>
                         
                         <ListboxOptions class="
-                        max-w-96
+                        w-full
                         max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
                             <ListboxOption
                                 v-for="fw in frameworks"
@@ -61,7 +68,7 @@
                         </ListboxButton>
                         
                             <ListboxOptions class="
-                            max-w-96
+                            w-full
                             max-h-48
                             overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                                 <ListboxOption
@@ -113,6 +120,8 @@ const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
 const toastBg = ref('bg-green-500')
+const editName = ref(false);
+const newName = ref('');
 const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
@@ -141,18 +150,14 @@ onMounted(async () => {
 })
 
 async function saveSettings() {
-    if (!selectedFramework.value) {
-        selectedFramework.value = account.value?.framework_id;
-    }
-    if(!selectedBot.value) {
-        selectedBot.value = account.value?.bot_personality_id;
-    }
     console.log('selected framework: ', selectedFramework.value)
     console.log('selected bot: ', selectedBot.value)
+    console.log('new name: ', newName.value)
     try {
         const res = await api.patch('/account', {
             framework: selectedFramework.value.id,
-            bot_personality: selectedBot.value.id
+            bot_personality: selectedBot.value.id,
+            name: newName.value || account.value?.name
         })
         console.log('saveSettings res: ', res)
         if (res.status === 200) {
@@ -165,6 +170,8 @@ async function saveSettings() {
         toastText.value = error?.response?.data?.detail || 'Could not save settings'
         toastBg.value = 'bg-red-500'
         showToast.value = true
+    } finally {
+        account.value = await userStore.getAccount(); // Refresh account data
     }
 }
 

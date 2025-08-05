@@ -65,7 +65,7 @@
 						>
 							<td class="px-4 py-2">{{ skill.name }}</td>
 							<td v-if="skill.average_sentiment >= 0.60" class="px-4 py-2 text-green-500">Positive</td>
-							<td v-if="skill.average_sentiment > 0.40" class="px-4 py-2 text-yellow-500">Neutral</td>
+							<td v-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-4 py-2 text-yellow-500">Neutral</td>
 							<td v-if="skill.average_sentiment === null" class="px-4 py-2 text-gray-500">No feedback</td>
 							<td v-if="skill.average_sentiment <= 0.40" class="px-4 py-2 text-red-500">Negative</td>
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>

@@ -29,9 +29,10 @@
                                 :key="fw.id"
                                 :value="fw.id"
                                 class="cursor-pointer text-wrap px-4 py-2 hover:bg-purple-50"
+                                v-slot="{ selected }"
                             >
                                 <div>
-                                <span class="font-medium">{{ fw.name }}</span>
+                                <span class="font-medium flex">{{ fw.name }} <CheckIcon v-show="selected" /></span>
                                 <div class="text-xs text-gray-500 text-wrap">{{ fw.definition }}</div>
                                 </div>
                             </ListboxOption>
@@ -103,13 +104,13 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
-import { Check, CheckIcon, ChevronDown } from 'lucide-vue-next';
+import { CheckIcon, ChevronDown } from 'lucide-vue-next';
 import { useUserStore } from '@/stores/userStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
-import testBots from '@/test/mockBotFrameworks.json';
-import testFrameworks from '@/test/mockFeedbackFrameworks.json';
-import testAccount from '@/test/mockAccount.json';
+// import testBots from '@/test/mockBotFrameworks.json';
+// import testFrameworks from '@/test/mockFeedbackFrameworks.json';
+// import testAccount from '@/test/mockAccount.json';
 const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')

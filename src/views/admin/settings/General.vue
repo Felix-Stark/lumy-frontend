@@ -6,7 +6,7 @@
             </h1>
             <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Company name</p>
-                <input v-model="newName" name="company-name" class="text-lg border border-gray-300 rounded outline-lumy-purple" :value="account?.name"/>
+                <input v-model="companyName" name="company-name" class="text-lg border border-gray-300 rounded outline-lumy-purple" />
             </div>
             <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
@@ -117,7 +117,7 @@ const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
 const toastBg = ref('bg-green-500')
-const newName = ref('');
+const companyName = ref('');
 const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
@@ -126,6 +126,7 @@ const account = ref<Account>()
 onMounted(async () => {
     try {
         account.value = await userStore.getAccount();
+        companyName.value = account.value?.name || '';
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
             botPersonalities.value = res.data;
@@ -148,12 +149,12 @@ onMounted(async () => {
 async function saveSettings() {
     console.log('selected framework: ', selectedFramework.value)
     console.log('selected bot: ', selectedBot.value)
-    console.log('new name: ', newName.value)
+    console.log('new name: ', companyName.value)
     try {
         const res = await api.patch('/account', {
             framework: selectedFramework.value.id,
             bot_personality: selectedBot.value.id,
-            name: newName.value ? newName.value : account.value?.name
+            name: companyName.value ? companyName.value : account.value?.name
         })
         console.log('saveSettings res: ', res)
         if (res.status === 200) {

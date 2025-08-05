@@ -1,25 +1,20 @@
 <template>
     <div class="flex flex-col justify-between w-full bg-white p-8  rounded-xl shadow-md">
-        <article class="flex flex-col gap-8">
+        <article class="flex flex-col gap-8 md:w-1/2 relative">
             <h1 class="font-thin text-2xl text-gray-500">
                 General settings
             </h1>
-            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Company name</p>
-                <input v-model="companyName" name="company-name" class="text-lg border border-gray-300 rounded outline-lumy-purple" />
+                <input v-model="companyName" name="company-name" class=" text-gray-700 p-2 border border-gray-300 rounded outline-lumy-purple" />
             </div>
-            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
                 <Listbox v-model="selectedFramework">
                     <Float
-                            as="div"
-                            class="relative"
-                            placement="bottom"
+                            placement="bottom-start"
                             :flip="true"
                             :offset="4"
-                            :portal="true"
-                            floating-as="template"
-
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>
@@ -28,15 +23,12 @@
                             <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
                         
-                        <ListboxOptions class="
-                        absolute
-                        w-full
-                        max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
+                        <ListboxOptions class=" max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
                             <ListboxOption
                                 v-for="fw in frameworks"
                                 :key="fw.id"
                                 :value="fw.id"
-                                class="cursor-pointer select-none px-4 py-2 hover:bg-purple-50"
+                                class="cursor-pointer text-wrap px-4 py-2 hover:bg-purple-50"
                             >
                                 <div>
                                 <span class="font-medium">{{ fw.name }}</span>
@@ -52,40 +44,37 @@
             <h1 class="font-thin text-2xl text-gray-500">
                 Bot settings
             </h1>
-            <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Bot personality</p>
                 <Listbox v-model="selectedBot">
                     <Float
-                            as="div"
-                            class="relative"
-                            placement="bottom"
+                            placement="bottom-start"
                             :flip="true"
                             :offset="4"
-                            :portal="true"
-                            floating-as="template"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name }}</span>
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         
-                        <ListboxOptions class="
-                        absolute
-                        w-full
-                        max-h-48
-                        overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ListboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                             <ListboxOption
                             v-for="bp in botPersonalities"
                             :key="bp.id"
                             :value="bp.id"
-                            class="cursor-pointer text-wrap px-4 py-2 hover:bg-purple-100"
+                            class="cursor-pointer text-wrap px-4 py-2 "
+                            v-slot="{ active, selected }"
                             >
-                                <div>
-                                    <span class="font-medium">{{ bp.name }}</span>
-                                    <div class="text-xs text-gray-500">
-                                        {{ bp.description }}
+                                <li :class="['flex items-center', { 'bg-purple-100': active }]">
+                                    <div>
+                                        <span class="font-medium flex gap-2">
+                                            {{ bp.name }} <CheckIcon v-show="selected" />
+                                        </span>
+                                        <div class="text-xs text-gray-500">
+                                            {{ bp.description }}
+                                        </div>
                                     </div>
-                                </div>
+                                </li>
                             </ListboxOption>
                         </ListboxOptions>
                     </Float>
@@ -114,10 +103,13 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headless
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
-import { ChevronDown } from 'lucide-vue-next';
+import { Check, CheckIcon, ChevronDown } from 'lucide-vue-next';
 import { useUserStore } from '@/stores/userStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
+import testBots from '@/test/mockBotFrameworks.json';
+import testFrameworks from '@/test/mockFeedbackFrameworks.json';
+import testAccount from '@/test/mockAccount.json';
 const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
@@ -129,6 +121,13 @@ const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const account = ref<Account>()
 onMounted(async () => {
+    // Uncomment the following lines to use the mock data for testing
+    // account.value = testAccount[0];
+    // companyName.value = account.value?.name || '';
+    // selectedFramework.value = account.value?.framework_id;
+    // selectedBot.value = account.value?.bot_personality_id;
+    // botPersonalities.value = testBots;
+    // frameworks.value = testFrameworks;
     try {
         account.value = await userStore.getAccount();
         companyName.value = account.value?.name || '';

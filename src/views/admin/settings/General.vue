@@ -10,7 +10,6 @@
             </div>
             <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
-                <div class="relative">
                 <Listbox v-model="selectedFramework">
                     <Float
                             as="div"
@@ -46,7 +45,6 @@
                         </ListboxOptions>
                     </Float>
                 </Listbox>
-                </div>
 
             </div>
             <hr class="text-gray-300" />
@@ -55,13 +53,15 @@
             </h1>
             <div class="flex flex-col w-full md:w-1/2 pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Bot personality</p>
-                <div class="relative">
                 <Listbox v-model="selectedBot">
                     <Float
+                            as="div"
+                            class="relative"
                             placement="bottom"
                             :flip="true"
                             :offset="4"
                             :portal="true"
+                            floating-as="template"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name }}</span>
@@ -76,7 +76,7 @@
                             v-for="bp in botPersonalities"
                             :key="bp.id"
                             :value="bp.id"
-                            class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
+                            class="cursor-pointer text-wrap px-4 py-2 hover:bg-purple-100"
                             >
                                 <div>
                                     <span class="font-medium">{{ bp.name }}</span>
@@ -88,7 +88,6 @@
                         </ListboxOptions>
                     </Float>
                 </Listbox>
-                </div>
             </div>
 
         </article>

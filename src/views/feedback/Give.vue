@@ -47,9 +47,9 @@
 			</div>
 			<div class="flex justify-between mt-2">
 				<BaseButton 
-				:onAction="getSuggestions"
+				:onAction="getAiSuggestions"
 				btnText="Improve my feedback!"
-				:disabled="loadingSuggestions || feedback.trim().length < 15"
+				:disabled="loadingAiSuggestions || feedback.trim().length < 15"
 				/>
 				<BaseButton
 				v-if="aiSuggestions.length > 1"
@@ -72,7 +72,7 @@
 					AI suggestions
 					</button>
 					<button
-					@click="activeTab = 'coaching'"
+					@click="getCoaching"
 					:class="[
 						'px-4 py-2 rounded-t-lg focus:outline-none cursor-pointer',
 						activeTab === 'coaching' ? 'bg-white font-semibold' : 'bg-light-gray text-gray-500'
@@ -85,8 +85,8 @@
 				<div class="bg-white p-4 rounded-b-lg">
 					<div v-if="activeTab === 'ai'">
 					<!-- AI suggestions content here -->
-						<p v-if="!loadingSuggestions" class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
-						<div v-if="loadingSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
+						<p v-if="!loadingAiSuggestions" class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
+						<div v-if="loadingAiSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
 							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
 							<p class="text-gray-700">Conferring with the feedback gurus...</p>
 						</div>
@@ -106,7 +106,11 @@
 					</div>
 					<div v-else>
 						<!-- Coaching content here -->
-						<h2 v-if="!loadingSuggestions" class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
+						<h2 class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
+						<div v-if="loadingCoaching" class="flex flex-col w-full justify-center items-center p-8 mt-4">
+							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
+							<p class="text-gray-700">Conferring with the feedback gurus...</p>
+						</div>
 						<div v-html="coachingSuggestions"></div>
 					</div>
 				</div>
@@ -141,10 +145,11 @@ const disablePost = ref<boolean>(false)
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
 const coachingSuggestions = ref<string[]>([])
-const loadingSuggestions = ref<boolean>(false)
+const loadingAiSuggestions = ref<boolean>(false)
+const loadingCoaching = ref<boolean>(false)
 const suggestionsSection = ref<HTMLElement | null>(null)
 const feedbackSection = ref<HTMLElement | null>(null)
-const activeTab = ref<'ai' | 'coaching'>('ai')
+const activeTab = ref<'ai' | 'coaching'>()
 const showTabs = ref(false)
 
 const route = useRoute()
@@ -183,13 +188,13 @@ const addSuggestion = (suggestion: string) => {
 	})
 }
 
-const getSuggestions = async () => {
-	loadingSuggestions.value = true
+const getAiSuggestions = async () => {
+	loadingAiSuggestions.value = true
 	showTabs.value = true
 	activeTab.value = 'ai'
 	const query = feedback.value
 	nextTick(() => {
-    suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
+	suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
   })
 	try {
 		const res = await api.post('feedback/improve', {
@@ -199,6 +204,22 @@ const getSuggestions = async () => {
 		if (res.status === 200) {
 			aiSuggestions.value = res.data.suggestions
 		}
+	} catch (error) {
+		console.error('Error fetching AI suggestions:', error)
+	} finally {
+		loadingAiSuggestions.value = false
+	}
+}
+
+const getCoaching = async () => {
+	loadingCoaching.value = true
+	showTabs.value = true
+	activeTab.value = 'coaching'
+	const query = feedback.value
+	nextTick(() => {
+		suggestionsSection.value?.scrollIntoView({ behavior: 'smooth' })
+	})
+	try {
 		const coachRes = await api.post('/feedback/improve-guidance', {
 			feedback_request_id: requestUuId,
 			text: query
@@ -207,11 +228,10 @@ const getSuggestions = async () => {
 			coachingSuggestions.value = coachRes.data.coaching_summary
 		}
 	} catch (error) {
-		console.error('Error fetching AI suggestions:', error)
+		console.error('Error fetching coaching suggestions:', error)
 	} finally {
-		loadingSuggestions.value = false
+		loadingCoaching.value = false
 	}
-	
 }
 
 async function postFeedback() {

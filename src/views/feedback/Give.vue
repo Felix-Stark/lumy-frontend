@@ -136,7 +136,6 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 import { useErrorStore } from '@/stores/errorStore'
-import type { AxiosError } from 'axios'
 
 const errorStore = useErrorStore()
 
@@ -212,7 +211,11 @@ const getAiSuggestions = async () => {
 }
 
 const getCoaching = async () => {
-	loadingCoaching.value = true
+	if (coachingSuggestions.value.length > 0) {
+		activeTab.value = 'coaching'
+		return
+	} else {
+		loadingCoaching.value = true
 	showTabs.value = true
 	activeTab.value = 'coaching'
 	const query = feedback.value
@@ -232,6 +235,7 @@ const getCoaching = async () => {
 	} finally {
 		loadingCoaching.value = false
 	}
+	}
 }
 
 async function postFeedback() {
@@ -242,7 +246,7 @@ async function postFeedback() {
 		content: feedback.value,
 	})
 	if (res.status === 200) {
-		router.push({ name: 'feedback-give-success' })
+		router.push('/feedback/give/success')
 		feedback.value = ''
 	} else{
 		console.error('Error posting feedback:', res.data)

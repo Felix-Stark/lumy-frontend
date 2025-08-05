@@ -22,13 +22,14 @@
 
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
-                        <span>
-                            {{ frameworks?.find(fw => fw.id === selectedFramework)?.name }}
-                        </span>
-                        <ChevronDown class="ml-2 w-4 h-4" />
+                            <span>
+                                {{ frameworks?.find(fw => fw.id === selectedFramework)?.name }}
+                            </span>
+                            <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
                         
                         <ListboxOptions class="
+                        absolute
                         w-full
                         max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
                             <ListboxOption
@@ -69,6 +70,7 @@
                         </ListboxButton>
                         
                         <ListboxOptions class="
+                        absolute
                         w-full
                         max-h-48
                         overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">

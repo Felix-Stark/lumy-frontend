@@ -13,10 +13,14 @@
                 <div class="relative">
                 <Listbox v-model="selectedFramework">
                     <Float
+                            as="div"
+                            class="relative"
                             placement="bottom"
                             :flip="true"
                             :offset="4"
                             :portal="true"
+                            floating-as="template"
+
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                         <span>
@@ -64,25 +68,25 @@
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         
-                            <ListboxOptions class="
-                            w-full
-                            max-h-48
-                            overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                                <ListboxOption
-                                v-for="bp in botPersonalities"
-                                :key="bp.id"
-                                :value="bp.id"
-                                class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
-                                >
-                                    <div>
-                                        <span class="font-medium">{{ bp.name }}</span>
-                                        <div class="text-xs text-gray-500">
-                                            {{ bp.description }}
-                                        </div>
+                        <ListboxOptions class="
+                        w-full
+                        max-h-48
+                        overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                            <ListboxOption
+                            v-for="bp in botPersonalities"
+                            :key="bp.id"
+                            :value="bp.id"
+                            class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
+                            >
+                                <div>
+                                    <span class="font-medium">{{ bp.name }}</span>
+                                    <div class="text-xs text-gray-500">
+                                        {{ bp.description }}
                                     </div>
-                                </ListboxOption>
-                            </ListboxOptions>
-                        </Float>
+                                </div>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </Float>
                 </Listbox>
                 </div>
             </div>

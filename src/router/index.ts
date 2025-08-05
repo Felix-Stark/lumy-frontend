@@ -65,6 +65,11 @@ const router = createRouter({
           name: 'setup-frameworks',
           component: () => import('@/views/auth/setup/Frameworks.vue'),
         },
+        {
+          path: 'complete',
+          name: 'setup-complete',
+          component: () => import('@/views/auth/setup/Complete.vue'),
+        }
       ]
     },
     {

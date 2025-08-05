@@ -1,7 +1,8 @@
 <template>
 	<SlackFlowComp 
-	title="Great!"
-	description="Your account has been connected."
+	title="Great success!"
+	description="Your account has been setup!"
+    text="Now, check out what I sent you in Slack."
 	:image="lumyHappy"
 	button-text="Let's configure your account"
 	:onAction="() => router.push('/setup/framework')"
@@ -12,5 +13,5 @@
 import { useRouter } from 'vue-router';
 const router = useRouter();
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
-import lumyHappy from '@/assets/images/lumy_connecting.png';
+import lumyHappy from '@/assets/images/lumy_cheering.png';
 </script>

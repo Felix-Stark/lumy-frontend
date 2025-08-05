@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+// import this where needed set props for text and show. Toast will automatically close after 3 seconds unless duration is set. Change bgClass to set background color.
 import { watch, onUnmounted, onMounted } from 'vue'
 
 const props = defineProps<{

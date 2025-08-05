@@ -5,7 +5,7 @@
 			{{ text }}
 		</p>
 	</article>
-	<section class="flex flex-col items-center justify-center p-2 overflow-auto mt-4">
+	<section class="flex flex-col items-center justify-center p-2  mt-4">
 		<p>
 			{{ explain }}
 		</p>

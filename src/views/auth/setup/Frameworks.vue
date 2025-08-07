@@ -61,9 +61,9 @@
 							v-for="bp in botPersonalities"
 							:key="bp.id"
 							:value="bp.id"
-							class="cursor-pointer select-none px-4 py-2 hover:bg-purple-100"
+							class="cursor-pointer select-none hover:bg-purple-50"
 							>
-								<div>
+								<div class="px-4 py-2">
 									<span class="font-medium">{{ bp.name }}</span>
 									<div class="text-xs text-gray-500">
 										{{ bp.description }}

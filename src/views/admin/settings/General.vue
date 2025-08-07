@@ -15,7 +15,6 @@
                             placement="bottom-start"
                             :flip="true"
                             :offset="4"
-                            :same-width="true"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>
@@ -53,7 +52,6 @@
                             placement="bottom-start"
                             :flip="true"
                             :offset="4"
-                            :same-width="true"
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name }}</span>

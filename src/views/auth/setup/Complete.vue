@@ -4,8 +4,8 @@
 	description="Your account has been setup!"
     text="Now, check out what I sent you in Slack."
 	:image="lumyHappy"
-	button-text="Let's configure your account"
-	:onAction="() => router.push('/setup/framework')"
+	button-text="Or go to your dashboard"
+	:onAction="() => router.push('/member')"
 	/>
 </template>
 

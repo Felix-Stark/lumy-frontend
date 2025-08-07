@@ -29,9 +29,9 @@
 								v-for="fw in frameworks"
 								:key="fw.id"
 								:value="fw.id"
-								class="cursor-pointer select-none px-4 py-2 hover:bg-purple-50"
+								class="cursor-pointer select-none hover:bg-purple-50"
 							>
-								<div>
+								<div class="px-4 py-2">
 								<span class="font-medium">{{ fw.name }}</span>
 								<div class="text-xs text-gray-500">{{ fw.definition }}</div>
 								</div>

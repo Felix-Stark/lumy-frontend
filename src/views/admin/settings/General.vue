@@ -23,7 +23,7 @@
                             <ChevronDown class="ml-2 w-4 h-4" />
                         </ListboxButton>
                         
-                        <ListboxOptions class=" max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
+                        <ListboxOptions class=" max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
                             <ListboxOption
                                 v-for="fw in frameworks"
                                 :key="fw.id"
@@ -58,7 +58,7 @@
                             <ChevronDown class="ml-2 size-4"/>
                         </ListboxButton>
                         
-                        <ListboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ListboxOptions class="w-full max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                             <ListboxOption
                             v-for="bp in botPersonalities"
                             :key="bp.id"

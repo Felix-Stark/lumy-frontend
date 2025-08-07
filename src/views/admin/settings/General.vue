@@ -28,12 +28,12 @@
                                 v-for="fw in frameworks"
                                 :key="fw.id"
                                 :value="fw.id"
-                                class="cursor-pointer text-wrap px-4 py-2 hover:bg-purple-50"
+                                class="cursor-pointer text-wrap hover:bg-purple-50"
                                 v-slot="{ selected }"
                             >
-                                <div>
-                                <span class="font-medium flex">{{ fw.name }} <CheckIcon v-show="selected" /></span>
-                                <div class="text-xs text-gray-500 text-wrap">{{ fw.definition }}</div>
+                                <div class="px-4 py-2">
+                                    <span class="font-medium flex">{{ fw.name }} <CheckIcon v-show="selected" /></span>
+                                    <div class="text-xs text-gray-500 text-wrap">{{ fw.definition }}</div>
                                 </div>
                             </ListboxOption>
                         </ListboxOptions>
@@ -63,11 +63,11 @@
                             v-for="bp in botPersonalities"
                             :key="bp.id"
                             :value="bp.id"
-                            class="cursor-pointer text-wrap px-4 py-2 "
+                            class="cursor-pointer text-wrap "
                             v-slot="{ active, selected }"
                             >
-                                <li :class="['flex items-center', { 'bg-purple-100': active }]">
-                                    <div>
+                                <li :class="['flex items-center', { 'bg-purple-50': active }]">
+                                    <div class="px-4 py-2">
                                         <span class="font-medium flex gap-2">
                                             {{ bp.name }} <CheckIcon v-show="selected" />
                                         </span>

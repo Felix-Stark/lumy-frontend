@@ -62,8 +62,8 @@ import {
     ComboboxLabel,
     ComboboxButton
   } from '@headlessui/vue'
-import BaseDialog from '@/components/dialogs/BaseDialog.vue';
-import BaseButton from '@/components/buttons/BaseButton.vue';
+import BaseDialog from '@/components/base/BaseDialog.vue';
+import BaseButton from '@/components/base/BaseButton.vue';
 import { ref, onMounted } from 'vue';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import api from '@/services/api';

@@ -24,8 +24,10 @@ onMounted( async () => {
 	console.log('slack install redirect mounted', code);
 	if (code) {
 		const status = await authStore.registerSlackUser(code as string);
-		if (status) {
+		if (status === 204 || status === 200) {
 			router.push({ name: 'setup-frameworks' });
+		} else {
+			router.push({ name: 'slack-not-admin' });
 		}
 	}
 });

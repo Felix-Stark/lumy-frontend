@@ -36,7 +36,7 @@ import { ref } from 'vue';
 
 const showToast = ref(false);
 
-const installLink = 'https://staging.getlumy.app/';
+const installLink = import.meta.env.VITE_BASE_URL;
 
 const copyLink = () => {
 	navigator.clipboard.writeText(installLink)

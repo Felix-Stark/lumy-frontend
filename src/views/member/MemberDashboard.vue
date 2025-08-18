@@ -108,15 +108,9 @@ import api from '@/services/api';
 
 const router = useRouter();
 const userStore = useUserStore();
-const user = ref<User | null>(null);
-const userSkills = ref<Skill[]>([]);
 const summary = ref<UserSummary | null>(null);
-const showReq = ref(false);
 const showSuccess = ref(false);
-const reqSkill = ref<SkillSummary | null>(null);
 
-const reqUser = ref<User | null>(null);
-const reqMsg = ref<string | null>(null);
 onMounted(async() => {
 	await userStore.getUsers();
 	await userStore.getMeSummary();
@@ -125,35 +119,9 @@ onMounted(async() => {
 	console.log('meSummary: ', userStore.meSummary);
 })
 
-async function openReq(skill: SkillSummary) {
-	reqSkill.value = skill
-	console.log('Opening request dialog');
-	showReq.value = true;
-} 
-
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
 	router.push('/feedback/request');
 }
 
-const requestFeedback = async () => {
-	console.log('request feedback called');
-	try {
-		const res = await api.post('/requests', {
-			recipient_id: reqUser.value,
-			skill_id: reqSkill.value,
-			message: reqMsg.value
-		})
-		console.log('Feedback request response:', res);
-		if (res.status === 200) {
-			showSuccess.value = true;
-		} else {
-			console.error('Error requesting feedback:', res.data);
-			alert('Failed to request feedback. Please try again.');
-		}
-	} catch (error) {
-		console.error('Error requesting feedback:', error);
-		alert('Failed to request feedback. Please try again.');
-	}
-}
 </script>

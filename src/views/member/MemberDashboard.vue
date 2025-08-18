@@ -71,7 +71,7 @@
 							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ skill.last_feedback_received ?  new Date(skill.last_feedback_received).toLocaleDateString() : 'None' }}</td>
 							<td class="px-4 py-2 flex justify-between items-center">
-								<button @click="openReq(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
+								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronRight />
@@ -81,37 +81,6 @@
 				</table>
 			</div>
 		</section>
-		<BaseDialog
-		:isOpen="showReq"
-		@close="showReq = false"
-		title="Request Feedback"
-		description="Select a skill and who you want feedback from.">
-			<div class="flex flex-col items-center justify-center gap-4">
-				
-				<div class="flex flex-col gap-4 w-full max-w-md">
-				<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
-				
-				<select multiple v-model="reqUser" aria-label="Select who you want feedback from" class="w-full p-2 border border-gray-300 rounded-md">
-					<option value="" disabled selected>Select a user</option>
-					<option v-for="u in userStore.users" :key="u.id" :value="u.id">
-						{{ u.name }}
-					</option>
-				</select>
-
-				<textarea
-						name="feedback"
-						id="feedback"
-						v-model="reqMsg"
-						class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
-						placeholder="What do you want feedback on? Set the scene so your team mates know where to jump in."
-						rows="6"
-					></textarea>
-				<button @click="() => requestFeedback" class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md">
-					Request Feedback
-				</button>
-				</div>
-			</div>
-		</BaseDialog>
 		<BaseDialog
 			v-if="showSuccess"
 			:isOpen="showSuccess"
@@ -132,9 +101,12 @@ import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { Skill, SkillSummary, User, UserSummary } from '@/types';
 import api from '@/services/api';
+
+const router = useRouter();
 const userStore = useUserStore();
 const user = ref<User | null>(null);
 const userSkills = ref<Skill[]>([]);
@@ -142,7 +114,7 @@ const summary = ref<UserSummary | null>(null);
 const showReq = ref(false);
 const showSuccess = ref(false);
 const reqSkill = ref<SkillSummary | null>(null);
-const selectedSkill = ref(0)
+
 const reqUser = ref<User | null>(null);
 const reqMsg = ref<string | null>(null);
 onMounted(async() => {
@@ -155,10 +127,14 @@ onMounted(async() => {
 
 async function openReq(skill: SkillSummary) {
 	reqSkill.value = skill
-	selectedSkill.value = skill.skill_id;
 	console.log('Opening request dialog');
 	showReq.value = true;
 } 
+
+function selectedSkill(skill: SkillSummary) {
+	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+	router.push('/feedback/request');
+}
 
 const requestFeedback = async () => {
 	console.log('request feedback called');

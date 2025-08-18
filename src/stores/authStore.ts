@@ -43,11 +43,11 @@ export const useAuthStore = defineStore("auth", {
     async registerSlackUser(code: string) {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
-      if (res.status === 200) {
+      if (res.status === 204 || res.status === 200) {
         this.setupAccount = await res.data; //store this in sessionStorage
         sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
-        return res.data;
       }
+      return res.status;
     },
     async verifyAccount(accountId: number) {
       const res = await api.post("/slack/verify-setup", { account_id: accountId });

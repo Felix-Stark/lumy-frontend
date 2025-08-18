@@ -19,7 +19,10 @@ import lumyLogo from '@/assets/images/lumy.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
-const redirectUri = 'https://app.getlumy.app/slack/callback';
+const redirectUri = import.meta.env.VITE_SLACK_REDIRECT_URI;
+// Construct the Slack OAuth URL
+// This URL is used to redirect users to Slack for authentication
+// It includes the client ID, requested scopes, and redirect URI
 const slackOauthUrl = `https://slack.com/oauth/v2/authorize?client_id=${clientId}&scope=users:read,team:read&redirect_uri=${redirectUri}`
 
 const router = useRouter();

@@ -36,7 +36,7 @@ import { ref } from 'vue';
 
 const showToast = ref(false);
 
-const installLink = 'https://mcfeedface-frontend-production.up.railway.app/slack/login';
+const installLink = import.meta.env.VITE_BASE_URL;
 
 const copyLink = () => {
 	navigator.clipboard.writeText(installLink)

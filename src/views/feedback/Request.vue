@@ -1,12 +1,11 @@
 <template>
-<div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] mt-8 mb-8 md:p-10 md:w-[75vw]">
+<div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw]">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-darkblue">Request feedback to fuel your Superpowers!</h1>
 		</header>
 		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
 		<section>
-			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.skill }}</span></h3>
-			<p class="font-light text-gray-500">{{ reqSkill?.definition }}</p>
+			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<div class="w-1/2">
@@ -22,7 +21,7 @@
                     :offset="4"
                     :portal="true"
                 >
-                    <ComboboxInput class="border border-gray-300" />
+                    <ComboboxInput class="border border-gray-300 w-full rounded" />
                     <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
                         <ChevronDown class="w-4 h-4" />
                     </ComboboxButton>
@@ -38,7 +37,7 @@
                 v-model="message"
                 class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
                 placeholder="Write your feedback here..."
-                rows="6"
+                rows="4"
             ></textarea>
             <BaseButton 
             btnText="Send Feedback Request"
@@ -63,7 +62,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
-import type { Skill, User } from '@/types';
+import type { SkillSummary, User } from '@/types';
 import { ChevronDown } from 'lucide-vue-next';
 
 const router = useRouter();
@@ -71,7 +70,7 @@ const router = useRouter();
 const message = ref('');
 const users = ref<User[]>([]);
 const showSuccess = ref(false);
-const reqSkill = ref<Skill>();
+const reqSkill = ref<SkillSummary>();
 const selectedUsers = ref<User[]>([]);
 
 onMounted(async () => {
@@ -82,7 +81,11 @@ onMounted(async () => {
         }
         console.log('reqSkill: ', reqSkill.value);
         const response = await api.get('/users');
-        users.value = response.data;
+        if(response.status === 200) {
+            users.value = response.data;
+        } else {
+            console.error('Failed to fetch users:', response.statusText);
+        }
     } catch (error) {
         console.error('Error fetching users:', error);
     }
@@ -96,7 +99,7 @@ const sendReq = async () => {
         for (const user of selectedUsers.value) {
             await api.post('/feedback/requests', {
                 recipient_id: user.id,
-                skill_id: reqSkill.value.id,
+                skill_id: reqSkill.value.skill_id,
                 message: message.value,
                 type: 'request'
             });

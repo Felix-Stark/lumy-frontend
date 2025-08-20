@@ -28,8 +28,8 @@
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>
                     </div>
-                    <ComboboxOptions class="absolute w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                        <ComboboxOption v-for="u in users" :key="u.id" :value="u" >
+                    <ComboboxOptions class="absolute w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ComboboxOption v-for="u in users" :key="u.id" :value="u" class="text-lg p-2 hover:bg-purple-50 cursor-pointer">
                             {{ u.name }}
                         </ComboboxOption>
                     </ComboboxOptions>
@@ -65,7 +65,7 @@ import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { SkillSummary, User } from '@/types';
-import { ChevronDown } from 'lucide-vue-next';
+import { ChevronDown, Check } from 'lucide-vue-next';
 
 const router = useRouter();
 

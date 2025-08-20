@@ -11,12 +11,18 @@
 		<div class="w-1/2 relative">
 			<Combobox v-model="selectedUsers" multiple>
                 <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
-                    <li v-for="person in selectedUsers" :key="person.id">
-                        {{ person.name }}
-                    </li>
+                    <div v-for="person in selectedUsers" :key="person.id" class="flex">
+                        <li 
+                        class="bg-lumy-purple text-white px-2 py-1 rounded-full flex items-center gap-2">
+                            {{ person.name }}
+                        </li>
+                        <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="ml-2">
+                            <X class="w-4 h-4 text-white" />
+                        </button>
+                    </div>
                 </ul>
                 <Float
-                    placement="bottom"
+                    placement="bottom"  
                     :flip="true"
                     :offset="4"
                     
@@ -30,7 +36,7 @@
                     </div>
                     <ComboboxOptions class="absolute w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in users" :key="u.id" :value="u" class="text-lg p-2 hover:bg-purple-50 cursor-pointer">
-                            {{ u.name }}
+                            {{ u.name }} <Check v-if="selectedUsers.includes(u)" class="inline-block ml-2 text-lumy-purple" />
                         </ComboboxOption>
                     </ComboboxOptions>
                 </Float>
@@ -65,7 +71,7 @@ import { ref, onMounted } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { SkillSummary, User } from '@/types';
-import { ChevronDown, Check } from 'lucide-vue-next';
+import { ChevronDown, Check, X } from 'lucide-vue-next';
 
 const router = useRouter();
 

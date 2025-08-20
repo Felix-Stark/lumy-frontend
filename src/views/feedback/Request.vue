@@ -8,7 +8,7 @@
 			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
-		<div class="w-1/2">
+		<div class="w-1/2 relative">
 			<Combobox v-model="selectedUsers" multiple>
                 <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                     <li v-for="person in selectedUsers" :key="person.id">
@@ -19,7 +19,7 @@
                     placement="bottom"
                     :flip="true"
                     :offset="4"
-                    :portal="true"
+                    
                     floatingAs="template"
                 >
                     <div class="w-full flex">
@@ -29,7 +29,7 @@
                         </ComboboxButton>
                     </div>
                     <ComboboxOptions class="absolute w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                        <ComboboxOption v-for="u in users" :key="u.id" :value="u">
+                        <ComboboxOption v-for="u in users" :key="u.id" :value="u" >
                             {{ u.name }}
                         </ComboboxOption>
                     </ComboboxOptions>

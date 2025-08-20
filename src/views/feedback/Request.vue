@@ -25,8 +25,7 @@
                     <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
                         <ChevronDown class="w-4 h-4" />
                     </ComboboxButton>
-                    <ComboboxLabel class="sr-only">Select Users</ComboboxLabel>
-                    <ComboboxOptions>
+                    <ComboboxOptions class="absolute w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in users" :key="u.id" :value="u">
                             {{ u.name }}
                         </ComboboxOption>
@@ -83,6 +82,7 @@ onMounted(async () => {
         const response = await api.get('/users');
         if(response.status === 200) {
             users.value = response.data;
+            console.log('Users fetched successfully:', users.value);
         } else {
             console.error('Failed to fetch users:', response.statusText);
         }

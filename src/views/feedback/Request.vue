@@ -20,11 +20,14 @@
                     :flip="true"
                     :offset="4"
                     :portal="true"
+                    floatingAs="template"
                 >
-                    <ComboboxInput class="border border-gray-300 w-full rounded" />
-                    <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
-                        <ChevronDown class="w-4 h-4" />
-                    </ComboboxButton>
+                    <div class="w-full flex">
+                        <ComboboxInput class="border border-gray-300 w-full rounded" />
+                        <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
+                            <ChevronDown class="w-4 h-4" />
+                        </ComboboxButton>
+                    </div>
                     <ComboboxOptions class="absolute w-full h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in users" :key="u.id" :value="u">
                             {{ u.name }}

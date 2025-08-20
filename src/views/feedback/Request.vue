@@ -1,5 +1,5 @@
 <template>
-<div class="flex flex-col items-center p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] mt-8 mb-8 md:p-10 md:w-[75vw]">
+<div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] mt-8 mb-8 md:p-10 md:w-[75vw]">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-darkblue">Request feedback to fuel your Superpowers!</h1>
 		</header>
@@ -9,23 +9,30 @@
 			<p class="font-light text-gray-500">{{ reqSkill?.definition }}</p>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
-		<section>
+		<div class="w-1/2">
 			<Combobox v-model="selectedUsers" multiple>
-                <ul v-if="selectedUsers.length > 0">
-                <li v-for="person in selectedUsers" :key="person.id">
-                    {{ person.name }}
-                </li>
+                <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
+                    <li v-for="person in selectedUsers" :key="person.id">
+                        {{ person.name }}
+                    </li>
                 </ul>
-                <ComboboxInput />
-                <ComboboxButton class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
-                    Select Users
-                </ComboboxButton>
-                <ComboboxLabel class="sr-only">Select Users</ComboboxLabel>
-                <ComboboxOptions>
-                    <ComboboxOption v-for="u in users" :key="u.id" :value="u">
-                        {{ u.name }}
-                    </ComboboxOption>
-                </ComboboxOptions>
+                <Float
+                    placement="bottom"
+                    :flip="true"
+                    :offset="4"
+                    :portal="true"
+                >
+                    <ComboboxInput class="border border-gray-300" />
+                    <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
+                        <ChevronDown class="w-4 h-4" />
+                    </ComboboxButton>
+                    <ComboboxLabel class="sr-only">Select Users</ComboboxLabel>
+                    <ComboboxOptions>
+                        <ComboboxOption v-for="u in users" :key="u.id" :value="u">
+                            {{ u.name }}
+                        </ComboboxOption>
+                    </ComboboxOptions>
+                </Float>
             </Combobox>
             <textarea
                 v-model="message"
@@ -38,19 +45,8 @@
             :disabled="selectedUsers.length === 0"
             :onAction="sendReq"
             />
-		</section>
+		</div>
     </div>
-    <BaseDialog
-			v-if="showSuccess"
-			:isOpen="showSuccess"
-			@close="handleClose"
-			:imgPath="LumySuccess"
-			:imgAlt="'Lumy Success'"
-			title="Feedback Requested"
-			message="Your feedback request has been sent successfully!"
-			btnText="OK"
-		>
-		</BaseDialog>
 </template>
 
 <script setup lang="ts">
@@ -62,13 +58,13 @@ import {
     ComboboxLabel,
     ComboboxButton
   } from '@headlessui/vue'
-import BaseDialog from '@/components/base/BaseDialog.vue';
+import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import { ref, onMounted } from 'vue';
-import LumySuccess from '@/assets/images/lumy_cheering.png';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { Skill, User } from '@/types';
+import { ChevronDown } from 'lucide-vue-next';
 
 const router = useRouter();
 
@@ -84,6 +80,7 @@ onMounted(async () => {
         if (skill) {
             reqSkill.value = JSON.parse(skill);
         }
+        console.log('reqSkill: ', reqSkill.value);
         const response = await api.get('/users');
         users.value = response.data;
     } catch (error) {

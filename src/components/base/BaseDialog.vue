@@ -11,7 +11,7 @@
 				{{ message }}
 				</DialogDescription>
 				<slot />
-				<button v-if="btnText" @click="emit('close')" class="px-4 py-2 bg-lumy-purple text-white rounded">{{ btnText }}</button>
+				<button v-if="btnText" @click="onAction" class="px-4 py-2 bg-lumy-purple text-white rounded">{{ btnText }}</button>
 			</DialogPanel>
 	  </div>
 	</Dialog>
@@ -45,6 +45,10 @@ const props = defineProps({
   btnText: {
 	type: String,
 	default: 'Close'
+  },
+  onAction: {
+	type: Function,
+	default: () => {}
   }
 })
 const emit = defineEmits(['close'])

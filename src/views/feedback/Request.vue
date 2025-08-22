@@ -68,7 +68,7 @@
         title="Feedback Request Sent!"
         message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
         btnText="Back to Dashboard"
-        @close="handleClose"
+        @onAction="handleClose"
     />
 </template>
 

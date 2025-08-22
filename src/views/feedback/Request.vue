@@ -10,14 +10,17 @@
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<div class="w-1/2 relative">
 			<Combobox v-model="selectedUsers" multiple>
-                <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
-                    <li v-for="person in selectedUsers" :key="person.id"
+                <div class="flex">
+                    <p>I want feedback from: </p>
+                    <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
+                        <li v-for="person in selectedUsers" :key="person.id"
                         class="bg-lumy-purple text-white rounded-lg flex items-center gap-2">
                             <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="p-1">
                                 {{ person.name }}
                             </button>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
                 <Float
                     placement="bottom"  
                     :flip="true"

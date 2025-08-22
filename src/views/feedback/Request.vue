@@ -5,17 +5,17 @@
 		</header>
 		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
 		<section>
-			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
+			<h3 class="font-light text-gray-600">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<div class="w-1/2 relative">
             <div class="flex my-4">
-                    <p>Send request(s) to:{{ ' ' }}</p>
+                    <h3 class="font-light text-gray-600">Send request(s) to:{{ +' ' }}</h3>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"
                         class="bg-lumy-purple text-white rounded-lg flex items-center gap-2">
                             <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="p-1">
-                                {{ person.name }}
+                                {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
                             </button>
                         </li>
                     </ul>

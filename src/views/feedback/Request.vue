@@ -11,11 +11,11 @@
 		<div class="w-1/2 relative">
             <div class="flex gap-2 my-4">
                     <div>
-                        <h3 class="font-light text-sm text-gray-600">Send request(s) to:</h3>
+                        <h3 class="font-light text-gray-600">Send request(s) to:</h3>
                     </div>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"
-                        class="bg-lumy-purple text-white rounded-lg flex items-center">
+                        class="bg-lumy-purple text-sm text-white rounded-lg flex items-center">
                             <button :disabled="loading" @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1 cursor-pointer">
                                 {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
                             </button>
@@ -41,7 +41,7 @@
                     </div>
                     <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active }">
-                            <li :class="['flex items-center justify-between text-lg py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
+                            <li :class="['flex items-center justify-between py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
                                 {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />
                             </li>
                         </ComboboxOption>

@@ -10,7 +10,9 @@
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<div class="w-1/2 relative">
             <div class="flex gap-2 my-4">
-                    <h3 class="font-light text-gray-600">Send request(s) to:</h3>
+                    <div>
+                        <h3 class="font-light text-gray-600">Send request(s) to:</h3>
+                    </div>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"
                         class="bg-lumy-purple text-white rounded-lg flex items-center cursor-pointer">
@@ -28,7 +30,8 @@
                     floatingAs="template"
                 >
                     <div class="w-full flex">
-                        <ComboboxInput class="border border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl" placeholder="Search user or pick from list"  @change="query = $event.target.value" />
+                        <ComboboxInput class="border border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl" placeholder="Search user or pick from list"
+                        :displayValue="() => query"  @change="query = $event.target.value" />
                         <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>
@@ -69,7 +72,7 @@ import {
   } from '@headlessui/vue'
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { SkillSummary, User } from '@/types';
@@ -91,6 +94,13 @@ const filteredUsers = computed<User[]>(() => {
         : users.value.filter((user: User) => {
             return user.name.toLowerCase().includes(query.value.toLowerCase());
         });
+});
+
+watch(selectedUsers, (newVal, oldVal) => {
+    if (newVal.length > oldVal.length) {
+        query.value = '';
+        
+    }
 });
 
 onMounted(async () => {

@@ -31,10 +31,10 @@
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>
                     </div>
-                    <ComboboxOptions class="absolute w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                    <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
-                            <li class="text-lg p-2 hover:bg-purple-50 cursor-pointer">
-                                {{ u.name }} <Check v-if="selectedUsers.includes(u)" :class="['inline-block ml-2 text-lumy-purple', { 'bg-purple-50': active }]" />
+                            <li :class="['text-lg p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
+                                {{ u.name }} <Check v-if="selectedUsers.includes(u)" />
                             </li>
                         </ComboboxOption>
                     </ComboboxOptions>

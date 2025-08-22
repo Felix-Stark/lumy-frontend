@@ -15,7 +15,7 @@
                         <div 
                         class="bg-lumy-purple text-white px-2 py-1 rounded-lg flex items-center gap-2 relative">
                             <p>{{ person.name }}</p>
-                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="absolute right-1 -top-1 p-1">
+                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="absolute right-3 -top-2 p-1">
                                 <X class="w-4 h-4 text-gray-400" />
                             </button>
                         </div>

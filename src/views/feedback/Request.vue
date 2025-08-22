@@ -32,8 +32,8 @@
                         </ComboboxButton>
                     </div>
                     <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
-                            <li :class="['text-lg p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
+                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active }">
+                            <li :class="['text-lg py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
                                 {{ u.name }} <Check v-if="selectedUsers.includes(u)" />
                             </li>
                         </ComboboxOption>
@@ -42,9 +42,10 @@
             </Combobox>
             <textarea
                 v-model="message"
+                name="request-message"
                 class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
-                placeholder="Write your feedback here..."
-                rows="4"
+                placeholder="Specify what you would like feedback on, i.e. a scenario, a task, or a specific skill aspect."
+                rows="5"
             ></textarea>
             <BaseButton 
             btnText="Send Feedback Request"

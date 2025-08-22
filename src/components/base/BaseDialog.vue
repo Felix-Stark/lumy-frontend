@@ -41,6 +41,10 @@ const props = defineProps({
   message: {
 	type: String,
 	default: ''
+  },
+  btnText: {
+	type: String,
+	default: 'Close'
   }
 })
 const emit = defineEmits(['close'])

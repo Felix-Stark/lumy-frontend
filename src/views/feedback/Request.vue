@@ -11,14 +11,11 @@
 		<div class="w-1/2 relative">
 			<Combobox v-model="selectedUsers" multiple>
                 <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
-                    <li v-for="person in selectedUsers" :key="person.id">
-                        <div 
-                        class="bg-lumy-purple text-white px-2 py-1 rounded-lg flex items-center gap-2 relative">
-                            <p>{{ person.name }}</p>
-                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="absolute right-3 -top-2 p-1">
-                                <X class="w-4 h-4 text-gray-400" />
+                    <li v-for="person in selectedUsers" :key="person.id"
+                        class="bg-lumy-purple text-white px-2 py-1 rounded-lg flex items-center gap-2">
+                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-1 py-2">
+                                {{ person.name }}
                             </button>
-                        </div>
                     </li>
                 </ul>
                 <Float

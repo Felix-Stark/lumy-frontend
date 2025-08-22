@@ -69,6 +69,7 @@
         message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
         btnText="Back to Dashboard"
         :onAction="handleClose"
+        @="handleClose"
     />
 </template>
 

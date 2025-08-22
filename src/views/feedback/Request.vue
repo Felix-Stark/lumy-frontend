@@ -59,6 +59,14 @@
             />
 		</div>
     </div>
+    <BaseDialog
+        :isOpen="showSuccess"
+        :imgPath="LumySuccess"
+        title="Feedback Request Sent!"
+        message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
+        btnText="Back to Dashboard"
+        @close="handleClose"
+    />
 </template>
 
 <script setup lang="ts">
@@ -72,17 +80,18 @@ import {
   } from '@headlessui/vue'
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseDialog from '@/components/base/BaseDialog.vue';
+import LumySuccess from '@/assets/images/lumy-success.svg';
 import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { SkillSummary, User } from '@/types';
-import { ChevronDown, Check, X } from 'lucide-vue-next';
+import { ChevronDown, Check } from 'lucide-vue-next';
 
 const router = useRouter();
 
 const message = ref('');
 const users = ref<User[]>([]);
-const showList = ref(false);
 const showSuccess = ref(false);
 const reqSkill = ref<SkillSummary>();
 const selectedUsers = ref<User[]>([]);

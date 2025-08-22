@@ -26,7 +26,7 @@
                     floatingAs="template"
                 >
                     <div class="w-full flex">
-                        <ComboboxInput class="border border-gray-300 w-full rounded" @change="query = $event.target.value" />
+                        <ComboboxInput class="border border-gray-300 w-full rounded" placeholder="Search or pick from list" @change="query = $event.target.value" />
                         <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>

@@ -15,14 +15,17 @@
                     </div>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"
-                        class="bg-lumy-purple text-white rounded-lg flex items-center cursor-pointer">
-                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1">
+                        class="bg-lumy-purple text-white rounded-lg flex items-center">
+                            <button :disabled="loading" @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1 cursor-pointer">
                                 {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
                             </button>
                         </li>
                     </ul>
                 </div>
-			<Combobox v-model="selectedUsers" multiple>
+			<Combobox v-model="selectedUsers"
+                multiple
+                :disabled="loading"
+            >
                 <Float
                     placement="bottom"  
                     :flip="true"
@@ -96,6 +99,7 @@ const showSuccess = ref(false);
 const reqSkill = ref<SkillSummary>();
 const selectedUsers = ref<User[]>([]);
 const query = ref('');
+const loading = ref(false);
 
 const filteredUsers = computed<User[]>(() => {
     return query.value === ''
@@ -137,7 +141,7 @@ const sendReq = async () => {
             return;
         }
         for (const user of selectedUsers.value) {
-            await api.post('/feedback/requests', {
+            await api.post('/requests', {
                 recipient_id: user.id,
                 skill_id: reqSkill.value.skill_id,
                 message: message.value,

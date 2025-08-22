@@ -8,7 +8,7 @@
 			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
-		<div class="w-1/2 relative">
+		<div class="w-1/2">
 			<Combobox v-model="selectedUsers" multiple>
                 <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                     <li v-for="person in selectedUsers" :key="person.id"
@@ -22,11 +22,10 @@
                     placement="bottom"  
                     :flip="true"
                     :offset="4"
-                    
                     floatingAs="template"
                 >
                     <div class="w-full flex">
-                        <ComboboxInput class="border border-gray-300 w-full rounded" placeholder="Search or pick from list"  @change="query = $event.target.value" />
+                        <ComboboxInput class="border border-gray-300  outline-lumy-purple w-full rounded" placeholder="Search or pick from list"  @change="query = $event.target.value" />
                         <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>
@@ -43,7 +42,7 @@
             <textarea
                 v-model="message"
                 name="request-message"
-                class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
+                class="w-full h-full p-4 mt-4 border border-gray-300 outline-lumy-purple"
                 placeholder="Specify what you would like feedback on, i.e. a scenario, a task, or a specific skill aspect."
                 rows="5"
             ></textarea>

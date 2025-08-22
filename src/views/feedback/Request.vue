@@ -9,9 +9,8 @@
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
 		<div class="w-1/2 relative">
-			<Combobox v-model="selectedUsers" multiple>
-                <div class="flex">
-                    <p>I want feedback from: </p>
+            <div class="flex my-4">
+                    <p>Send request(s) to:{{ ' ' }}</p>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"
                         class="bg-lumy-purple text-white rounded-lg flex items-center gap-2">
@@ -21,6 +20,7 @@
                         </li>
                     </ul>
                 </div>
+			<Combobox v-model="selectedUsers" multiple>
                 <Float
                     placement="bottom"  
                     :flip="true"
@@ -35,7 +35,7 @@
                     </div>
                     <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active }">
-                            <li :class="['text-lg py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
+                            <li :class="['flex items-center text-lg py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
                                 {{ u.name }} <Check v-if="selectedUsers.includes(u)" />
                             </li>
                         </ComboboxOption>

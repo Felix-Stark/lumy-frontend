@@ -26,13 +26,13 @@
                     floatingAs="template"
                 >
                     <div class="w-full flex">
-                        <ComboboxInput class="border border-gray-300 w-full rounded" placeholder="Search or pick from list" @change="query = $event.target.value" />
+                        <ComboboxInput class="border border-gray-300 w-full rounded" placeholder="Search or pick from list"  @change="query = $event.target.value" />
                         <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-md cursor-pointer">
                             <ChevronDown class="w-4 h-4" />
                         </ComboboxButton>
                     </div>
                     <ComboboxOptions class="absolute w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" class="text-lg p-2 hover:bg-purple-50 cursor-pointer">
+                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" class="text-lg p-2 hover:bg-purple-50 active:bg-purple-50 cursor-pointer">
                             {{ u.name }} <Check v-if="selectedUsers.includes(u)" class="inline-block ml-2 text-lumy-purple" />
                         </ComboboxOption>
                     </ComboboxOptions>
@@ -74,6 +74,7 @@ const router = useRouter();
 
 const message = ref('');
 const users = ref<User[]>([]);
+const showList = ref(false);
 const showSuccess = ref(false);
 const reqSkill = ref<SkillSummary>();
 const selectedUsers = ref<User[]>([]);

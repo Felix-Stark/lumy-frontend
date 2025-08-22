@@ -140,13 +140,13 @@ const sendReq = async () => {
             return;
         }
         for (const user of selectedUsers.value) {
-            await api.post('/requests', {
+            const res = await api.post('/requests', {
                 recipient_id: user.id,
                 skill_id: reqSkill.value.skill_id,
                 message: message.value,
                 type: 'request'
             });
-            console.log(`Feedback request sent to ${user.name}`);
+            console.log('Feedback request sent to:', user.name, 'Response:', res);
         }
         
     } catch (error) {

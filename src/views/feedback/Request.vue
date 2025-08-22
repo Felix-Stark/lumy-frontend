@@ -12,8 +12,8 @@
 			<Combobox v-model="selectedUsers" multiple>
                 <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                     <li v-for="person in selectedUsers" :key="person.id"
-                        class="bg-lumy-purple text-white px-2 py-1 rounded-lg flex items-center gap-2">
-                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-1 py-2">
+                        class="bg-lumy-purple text-white rounded-lg flex items-center gap-2">
+                            <button @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="p-1">
                                 {{ person.name }}
                             </button>
                     </li>

@@ -112,7 +112,6 @@ const filteredUsers = computed<User[]>(() => {
 watch(selectedUsers, (newVal, oldVal) => {
     if (newVal.length > oldVal.length) {
         query.value = '';
-        
     }
 });
 

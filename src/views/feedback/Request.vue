@@ -84,7 +84,7 @@ import {
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
-import LumySuccess from '@/assets/images/lumy-success.svg';
+import LumySuccess from '@/assets/images/lumy_cheering.png';
 import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';

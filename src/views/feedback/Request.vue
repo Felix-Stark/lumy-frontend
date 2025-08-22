@@ -11,7 +11,7 @@
 		<div class="w-1/2 relative">
             <div class="flex gap-2 my-4">
                     <div>
-                        <h3 class="font-light text-gray-600">Send request(s) to:</h3>
+                        <h3 class="font-light text-sm text-gray-600">Send request(s) to:</h3>
                     </div>
                     <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
                         <li v-for="person in selectedUsers" :key="person.id"

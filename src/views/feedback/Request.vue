@@ -1,7 +1,7 @@
 <template>
 <div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw]">
 		<header class="w-full mb-10">
-			<h1 class="font-light text-2xl font-inter text-darkblue">Request feedback to fuel your Superpowers!</h1>
+			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>
 		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
 		<section>

@@ -46,7 +46,7 @@
 					<Float
 						as="div"
 						class="relative"
-						placement="bottom"
+						placement="top"
 						:flip="true"
 						:offset="4"
 						:portal="true"

@@ -1,56 +1,76 @@
 <template>
-<div class="flex flex-col items-center p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] mt-8 mb-8 md:p-10 md:w-[75vw]">
+<div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw]">
 		<header class="w-full mb-10">
-			<h1 class="font-light text-2xl font-inter text-darkblue">Request feedback to fuel your Superpowers!</h1>
+			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>
 		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
 		<section>
-			<h3 class="font-light text-gray-500">Skill: <span class="text-lumy-purple">{{ reqSkill?.skill }}</span></h3>
-			<p class="font-light text-gray-500">{{ reqSkill?.definition }}</p>
+			<h3 class="font-light text-gray-600">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
 		</section>
 		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
-		<section>
-			<Combobox v-model="selectedUsers" multiple>
-                <ul v-if="selectedUsers.length > 0">
-                <li v-for="person in selectedUsers" :key="person.id">
-                    {{ person.name }}
-                </li>
-                </ul>
-                <ComboboxInput />
-                <ComboboxButton class="bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
-                    Select Users
-                </ComboboxButton>
-                <ComboboxLabel class="sr-only">Select Users</ComboboxLabel>
-                <ComboboxOptions>
-                    <ComboboxOption v-for="u in users" :key="u.id" :value="u">
-                        {{ u.name }}
-                    </ComboboxOption>
-                </ComboboxOptions>
+		<div class="w-1/2 relative">
+            <div class="flex gap-2 my-4">
+                    <div>
+                        <h3 class="font-light text-gray-600">Send request(s) to:</h3>
+                    </div>
+                    <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
+                        <li v-for="person in selectedUsers" :key="person.id"
+                        class="bg-lumy-purple text-sm text-white rounded-lg flex items-center">
+                            <button :disabled="loading" @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1 cursor-pointer">
+                                {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+			<Combobox v-model="selectedUsers"
+                multiple
+                :disabled="loading"
+            >
+                <Float
+                    placement="bottom"  
+                    :flip="true"
+                    :offset="4"
+                    floatingAs="template"
+                >
+                    <div class="w-full flex">
+                        <ComboboxInput class="border border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl" placeholder="Search user or pick from list"
+                        :displayValue="() => query"  @change="query = $event.target.value" />
+                        <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
+                            <ChevronDown class="w-4 h-4" />
+                        </ComboboxButton>
+                    </div>
+                    <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active }">
+                            <li :class="['flex items-center justify-between py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-50' : 'hover:bg-purple-50']" >
+                                {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />
+                            </li>
+                        </ComboboxOption>
+                    </ComboboxOptions>
+                </Float>
             </Combobox>
             <textarea
                 v-model="message"
-                class="w-full h-full p-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-lumy-purple"
-                placeholder="Write your feedback here..."
-                rows="6"
+                name="request-message"
+                class="w-full h-full p-4 mt-4 border border-gray-300 outline-lumy-purple"
+                placeholder="Specify what you would like feedback on, i.e. a scenario, a task, or a specific skill aspect."
+                rows="5"
             ></textarea>
             <BaseButton 
             btnText="Send Feedback Request"
             :disabled="selectedUsers.length === 0"
             :onAction="sendReq"
             />
-		</section>
+		</div>
     </div>
     <BaseDialog
-			v-if="showSuccess"
-			:isOpen="showSuccess"
-			@close="handleClose"
-			:imgPath="LumySuccess"
-			:imgAlt="'Lumy Success'"
-			title="Feedback Requested"
-			message="Your feedback request has been sent successfully!"
-			btnText="OK"
-		>
-		</BaseDialog>
+        :isOpen="showSuccess"
+        :imgPath="LumySuccess"
+        title="Feedback Request Sent!"
+        message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
+        btnText="Back to Dashboard"
+        :onAction="handleClose"
+        @close="handleClose"
+    />
 </template>
 
 <script setup lang="ts">
@@ -59,24 +79,41 @@ import {
     ComboboxInput,
     ComboboxOptions,
     ComboboxOption,
-    ComboboxLabel,
     ComboboxButton
   } from '@headlessui/vue'
-import BaseDialog from '@/components/base/BaseDialog.vue';
+import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import { ref, onMounted } from 'vue';
+import BaseDialog from '@/components/base/BaseDialog.vue';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
+import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
-import type { Skill, User } from '@/types';
+import type { SkillSummary, User } from '@/types';
+import { ChevronDown, Check } from 'lucide-vue-next';
 
 const router = useRouter();
 
 const message = ref('');
 const users = ref<User[]>([]);
 const showSuccess = ref(false);
-const reqSkill = ref<Skill>();
+const reqSkill = ref<SkillSummary>();
 const selectedUsers = ref<User[]>([]);
+const query = ref('');
+const loading = ref(false);
+
+const filteredUsers = computed<User[]>(() => {
+    return query.value === ''
+        ? users.value
+        : users.value.filter((user: User) => {
+            return user.name.toLowerCase().includes(query.value.toLowerCase());
+        });
+});
+
+watch(selectedUsers, (newVal, oldVal) => {
+    if (newVal.length > oldVal.length) {
+        query.value = '';
+    }
+});
 
 onMounted(async () => {
     try {
@@ -84,8 +121,14 @@ onMounted(async () => {
         if (skill) {
             reqSkill.value = JSON.parse(skill);
         }
+        console.log('reqSkill: ', reqSkill.value);
         const response = await api.get('/users');
-        users.value = response.data;
+        if(response.status === 200) {
+            users.value = response.data;
+            console.log('Users fetched successfully:', users.value);
+        } else {
+            console.error('Failed to fetch users:', response.statusText);
+        }
     } catch (error) {
         console.error('Error fetching users:', error);
     }
@@ -97,13 +140,13 @@ const sendReq = async () => {
             return;
         }
         for (const user of selectedUsers.value) {
-            await api.post('/feedback/requests', {
+            const res = await api.post('/requests', {
                 recipient_id: user.id,
-                skill_id: reqSkill.value.id,
+                skill_id: reqSkill.value.skill_id,
                 message: message.value,
                 type: 'request'
             });
-            console.log(`Feedback request sent to ${user.name}`);
+            console.log('Feedback request sent to:', user.name, 'Response:', res);
         }
         
     } catch (error) {
@@ -119,7 +162,7 @@ const handleClose = () => {
     showSuccess.value = false;
     message.value = '';
     selectedUsers.value = [];
-    router.push({ name: 'member' });
+    router.push({ name: 'member-dashboard' });
 }
 
 </script>

@@ -73,7 +73,7 @@
                     Your feedback request has been successfully sent.
                     Now just wait for that sweet feedback that will make you even better at {{ reqSkill?.name }}!
 				</DialogDescription>
-				<button @click="handleClose" class="px-4 py-2 bg-lumy-purple text-white rounded">Back to dashboard</button>
+				<button @click="() => handleClose()" class="px-4 py-2 bg-lumy-purple text-white rounded">Back to dashboard</button>
 			</DialogPanel>
             </div>
         </Dialog>

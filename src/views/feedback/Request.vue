@@ -61,16 +61,23 @@
             :onAction="sendReq"
             />
 		</div>
+        <Dialog :open="showSuccess" class="relative z-50">
+		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
+		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
+			<DialogPanel class="w-full flex flex-col gap-6 max-w-md rounded-lg bg-white p-8">
+				<div class="w-full">
+					<img :src="LumySuccess" alt="Lumy Logo" class="min-w-40 h-auto  mb-4" />
+				</div>
+				<DialogTitle class="text-2xl font-semibold">Success!</DialogTitle>
+				<DialogDescription>
+                    Your feedback request has been successfully sent.
+                    Now just wait for that sweet feedback that will make you even better at {{ reqSkill?.name }}!
+				</DialogDescription>
+				<button @click="handleClose" class="px-4 py-2 bg-lumy-purple text-white rounded">Back to dashboard</button>
+			</DialogPanel>
+            </div>
+        </Dialog>
     </div>
-    <BaseDialog
-        :isOpen="showSuccess"
-        :imgPath="LumySuccess"
-        title="Feedback Request Sent!"
-        message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
-        btnText="Back to Dashboard"
-        :onAction="handleClose"
-        @close="handleClose"
-    />
 </template>
 
 <script setup lang="ts">
@@ -79,12 +86,15 @@ import {
     ComboboxInput,
     ComboboxOptions,
     ComboboxOption,
-    ComboboxLabel,
-    ComboboxButton
+    ComboboxButton,
+    Dialog,
+    DialogPanel,
+    DialogTitle,
+    DialogDescription,
   } from '@headlessui/vue'
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import BaseDialog from '@/components/base/BaseDialog.vue';
+
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';

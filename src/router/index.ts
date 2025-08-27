@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import AdminLayout from '@/layouts/admin/AdminLayout.vue'
 
 import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
@@ -74,9 +73,9 @@ const router = createRouter({
     },
     {
       path: '/member',
-      component: () => import('@/layouts/MemberLayout.vue'),
+      component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
-        requiresAuth: true, // This route requires authentication
+        requiresAuth: false, // This route requires authentication
       },
       children: [
         {
@@ -84,11 +83,23 @@ const router = createRouter({
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
+        {
+          path: 'settings',
+          component: () => import('@/layouts/SettingsLayout.vue'),
+          redirect: '/member/settings/integrations',
+          children: [
+            {
+              path: 'integrations',
+              name: 'member-settings-integrations',
+              component: () => import('@/views/member/settings/Integrations.vue'),
+            }
+          ]
+        }
       ]
     },
     {
       path: '/admin',
-      component: AdminLayout,
+      component: import('@/layouts/DashboardLayout.vue'),
       meta: {
         title: 'Admin dashboard',
         requiresAuth: true,
@@ -102,7 +113,7 @@ const router = createRouter({
         // },
         {
           path: 'settings',
-          component: () => import('@/layouts/admin/AdminSettingsLayout.vue'),
+          component: () => import('@/layouts/SettingsLayout.vue'),
           redirect: '/admin/settings/general',
           meta: {
             title: 'Admin Settings',

@@ -21,6 +21,9 @@
 			<li>
 				<router-link to="/member">Profile</router-link>
 			</li>
+			<li>
+				<router-link to="/member/settings">Profile Settings</router-link>
+			</li>
 			<li v-if="role === 'admin'">
 				<router-link to="/admin/settings">Settings</router-link>
 			</li>
@@ -57,8 +60,7 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-
-		<router-link to="/admin/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link to="/member/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>
@@ -76,7 +78,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { UserRound, Settings, Home } from 'lucide-vue-next';
+import { UserRound, Settings, Home, UserRoundCog } from 'lucide-vue-next';
 import { onMounted, onUnmounted, ref } from 'vue';
 import Tooltip from './base/Tooltip.vue';
 
@@ -90,7 +92,7 @@ const role = ref()
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text
-  tooltipX.value = event.clientX + 12 // offset for better positioning
+  tooltipX.value = event.clientX - 12 // offset for better positioning
   tooltipY.value = event.clientY + 12
   showTooltip.value = true
 }

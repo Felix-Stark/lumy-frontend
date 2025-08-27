@@ -4,6 +4,8 @@
 @theme{
 	--color-darkblue: rgba(31, 54, 82, 1);
 	--color-lumy-purple: rgba(150, 45, 255, 1);
+	--color-lumy-green: rgba(32, 191, 107, 1);
+	--color-lumy-danger: rgba(235, 59, 90, 1);
 	--color-lumy-dark: rgba(75, 101, 132, 1);
 	--color-light-gray: rgba(241, 245, 249, 1);
 	--font-inter: 'InterVariable', 'Inter', system-ui, sans-serif;

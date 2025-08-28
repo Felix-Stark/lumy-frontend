@@ -145,9 +145,6 @@ onMounted(async () => {
 })
 
 async function saveSettings() {
-    console.log('selected framework: ', selectedFramework.value)
-    console.log('selected bot: ', selectedBot.value)
-    console.log('new name: ', companyName.value)
     account.value = {...account.value, name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value } as Account;
     try {
         const res = await api.patch('/account', 

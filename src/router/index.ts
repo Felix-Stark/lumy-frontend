@@ -151,7 +151,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.isLoggedIn) {
     next({ name: 'slack-login' })
   } else if (to.meta.isAdmin) {
-    console.log('role in role check: ', role)
       if (role !== 'admin') {
         const errorStore = useErrorStore();
         errorStore.setError({

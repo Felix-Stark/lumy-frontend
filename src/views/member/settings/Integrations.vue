@@ -16,13 +16,13 @@
                 No access to meeting content or private notes
             </p>
         </div>
-        <div class="flex items-center">
-            <Unlink class="w-4 h-4 stroke-3 text-gray-500 mr-1"/>
-            <p class="text-lumy-danger">Not connected</p>
-        </div>
-        <div class="flex">
+        <div v-if="isConnected === true" class="flex">
             <Link class="w-4 h-4 stroke-3 text-gray-500 mr-1" />
             <p class="text-lumy-green">Connected</p>
+        </div>
+        <div v-else class="flex items-center">
+            <Unlink class="w-4 h-4 stroke-3 text-gray-500 mr-1"/>
+            <p class="text-lumy-danger">Not connected</p>
         </div>
         <div class="flex space-x-4 mt-6">
             <button v-if="isConnected === true" class="flex items-center space-x-2 px-4 py-2 bg-lumy-dark opacity-70 text-white text-sm rounded-lg hover:bg-gray-300 transition">

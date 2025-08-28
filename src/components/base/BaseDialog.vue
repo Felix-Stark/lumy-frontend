@@ -11,7 +11,7 @@
 				{{ message }}
 				</DialogDescription>
 				<slot />
-				<button v-if="btnText" @click="onAction()" class="px-4 py-2 bg-lumy-purple text-white rounded">{{ btnText }}</button>
+				<button v-if="btnText" @click="onAction()" class="px-4 py-2 bg-lumy-purple text-white rounded cursor-pointer">{{ btnText }}</button>
 			</DialogPanel>
 	  </div>
 	</Dialog>

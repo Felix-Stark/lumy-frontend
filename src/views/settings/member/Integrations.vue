@@ -50,7 +50,7 @@ onMounted(async () => {
 })
 
 const triggerGoogle = () => {
-    window.open(apiUrl + '/integrations/google/start?state=' + window.location.href,
+    window.open(apiUrl + 'integrations/google/start?state=' + encodeURIComponent(window.location.href),
   '_self');
 }
 

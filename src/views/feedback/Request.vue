@@ -25,7 +25,6 @@
 			<Combobox v-model="selectedUsers"
                 multiple
                 :disabled="loading"
-                v-slot="{ open }"
             >
                 <Float
                     placement="bottom"  
@@ -42,10 +41,10 @@
                         />
                         <ComboboxButton
                         class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
-                            <ChevronDown :class="['w-4 h-4', { 'rotate-180': open}]" />
+                            <ChevronDown :class="['w-4 h-4']" />
                         </ComboboxButton>
                     </div>
-                    <ComboboxOptions v-if="open" class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                    <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
                             <li :class="['flex items-center justify-between p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-100' : 'hover:bg-purple-50', selected ? 'bg-purple-100' : 'hover:bg-purple-50' ]" >
                                 {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />

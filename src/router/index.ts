@@ -83,18 +83,6 @@ const router = createRouter({
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
-        {
-          path: 'settings',
-          component: () => import('@/layouts/SettingsLayout.vue'),
-          redirect: '/member/settings/integrations',
-          children: [
-            {
-              path: 'integrations',
-              name: 'member-settings-integrations',
-              component: () => import('@/views/member/settings/Integrations.vue'),
-            }
-          ]
-        }
       ]
     },  
     {

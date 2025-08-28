@@ -28,7 +28,7 @@
             <button v-if="isConnected === true" class="flex items-center space-x-2 px-4 py-2 bg-lumy-dark opacity-70 text-white text-sm rounded-lg">
                 Disconnect
             </button>
-            <button v-else @click="triggerGoogle" class="flex items-center space-x-2 px-4 py-2 bg-lumy-green text-white text-sm rounded-lg">
+            <button v-else @click="triggerGoogle" class="px-4 py-2 bg-lumy-green text-white text-sm rounded-lg cursor-pointer">
                 Connect
             </button>
         </div>

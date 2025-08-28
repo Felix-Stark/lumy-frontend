@@ -39,7 +39,6 @@
                         placeholder="Search user or pick from list"
                         :displayValue="() => query"
                         @change="query = $event.target.value"
-                        @focus="open"
                         />
                         <ComboboxButton
                         class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
@@ -129,11 +128,9 @@ onMounted(async () => {
         if (skill) {
             reqSkill.value = JSON.parse(skill);
         }
-        console.log('reqSkill: ', reqSkill.value);
         const response = await api.get('/users');
         if(response.status === 200) {
             users.value = response.data;
-            console.log('Users fetched successfully:', users.value);
         } else {
             console.error('Failed to fetch users:', response.statusText);
         }
@@ -154,7 +151,9 @@ const sendReq = async () => {
                 message: message.value,
                 type: 'request'
             });
-            console.log('Feedback request sent to:', user.name, 'Response:', res);
+            if (res.status !== 201) {
+                console.error('Failed to send request to', user.name, ':', res.statusText);
+            }
         }
         
     } catch (error) {

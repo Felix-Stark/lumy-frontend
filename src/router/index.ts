@@ -96,47 +96,35 @@ const router = createRouter({
           ]
         }
       ]
-    },
+    },  
     {
-      path: '/admin',
-      component: import('@/layouts/DashboardLayout.vue'),
+      path: '/settings',
+      redirect: 'settings/member/integrations',
+      component: () => import('@/layouts/SettingsLayout.vue'),
       meta: {
-        title: 'Admin dashboard',
         requiresAuth: true,
-        isAdmin: true, // This route requires admin privileges
       },
       children: [
-        // {
-        //   path: '',
-        //   name: 'admin-dashboard',
-        //   component: () => import('@/views/admin/Dashboard.vue'),
-        // },
         {
-          path: 'settings',
-          component: () => import('@/layouts/SettingsLayout.vue'),
-          redirect: '/admin/settings/general',
-          meta: {
-            title: 'Admin Settings',
-            requiresAuth: true,
-            isAdmin: true, // This route requires admin privileges
-          },
-          children: [
-            {
-              path: 'general',
-              name: 'admin-settings-general',
-              component: () => import('@/views/admin/settings/General.vue'),
-            },
-            {
-              path: 'users',
-              name: 'admin-settings-users',
-              component: () => import('@/views/admin/settings/Users.vue'),
-            }
-          ]
+          path: 'member/integrations',
+          name: 'settings-member-integrations',
+          component: () => import('@/views//settings/member/Integrations.vue'),
         },
+        {
+          path: 'admin/general',
+          name: 'settings-admin-general',
+          component: () => import('@/views/settings/admin/General.vue'),
+          meta: { isAdmin: true }
+        },
+        {
+          path: 'admin/users',
+          name: 'settings-admin-users',
+          component: () => import('@/views/settings/admin/Users.vue'),
+          meta: { isAdmin: true }
+        }
+
       ]
     },
-    
-    
     {
       path: '/feedback',
       redirect: '/feedback/give',

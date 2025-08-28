@@ -36,6 +36,7 @@ export type Account = {
   name: string;
   framework_id: number;
   bot_personality_id: number;
+  nudge_frequency: string;
   created_at: string;
   updated_at: string;
 };

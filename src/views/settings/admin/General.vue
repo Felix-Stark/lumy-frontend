@@ -157,8 +157,8 @@ async function saveSettings() {
     console.log('new name: ', companyName.value)
     try {
         const res = await api.patch('/account', {
-            framework: selectedFramework.value.id,
-            bot_personality: selectedBot.value.id,
+            framework: selectedFramework.value,
+            bot_personality: selectedBot.value,
             name: companyName.value ? companyName.value : account.value?.name
         })
         console.log('saveSettings res: ', res)

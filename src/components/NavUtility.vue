@@ -22,10 +22,7 @@
 				<router-link to="/member">Profile</router-link>
 			</li>
 			<li>
-				<router-link to="/member/settings">Profile Settings</router-link>
-			</li>
-			<li v-if="role === 'admin'">
-				<router-link to="/admin/settings">Settings</router-link>
+				<router-link to="/settings">Profile Settings</router-link>
 			</li>
 		</ul>
 		</div>
@@ -60,7 +57,7 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link to="/member/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link to="/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>

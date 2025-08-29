@@ -68,7 +68,7 @@
 							<td v-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-4 py-2 text-yellow-500">Average</td>
 							<td v-if="skill.average_sentiment === 0" class="px-4 py-2 text-gray-500">No feedback</td>
 							<td v-if="skill.average_sentiment <= 0.40 && skill.average_sentiment > 0" class="px-4 py-2 text-red-500">Needs improvement</td>
-							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
+							<td class="px-4 py-2 text-center">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ skill.last_feedback_received ?  new Date(skill.last_feedback_received).toLocaleDateString() : 'None' }}</td>
 							<td class="px-4 py-2 flex justify-between items-center">
 								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">

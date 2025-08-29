@@ -6,7 +6,6 @@
         :text="toastText"
         :bgClass="toastBg"
         :show="showToast"
-        :duration="3000"
         />
         <div class="flex flex-col justify-center items-center mt-4 font-normal text-sm space-y-1">
             <p>

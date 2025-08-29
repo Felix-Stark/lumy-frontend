@@ -57,8 +57,8 @@ onMounted(async() => {
     if(users === null || users.value.length === 0){
         const status = await userStore.getUsers();
         if(status === 200) {
-            console.error('fetched users: ', users);
-            console.error('fetched account: ', account);
+            console.error('fetched users: ', users.value);
+            console.error('fetched account: ', account.value);
         }
     }
 })

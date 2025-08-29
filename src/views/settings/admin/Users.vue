@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[75vh]">
+    <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[80vh]">
         <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
             <PickUserComp
             v-for="user in users"

@@ -39,6 +39,7 @@ export const useUserStore = defineStore('user', {
 				const res = await api.get('/users');
 				if (res.status === 200) {
 					this.users = res.data; //return status and use userStore.users in components
+					console.log('users', this.users);
 					return res.status
 				}
 			} catch (error: any) {
@@ -60,6 +61,7 @@ export const useUserStore = defineStore('user', {
 			const res = await api.get('/account');
 			if (res.status === 200) {
 				this.account = res.data;
+				console.log('account', this.account);
 			}
 			return res.data as Account;
 		},

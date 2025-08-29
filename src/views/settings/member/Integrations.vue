@@ -2,11 +2,6 @@
     <div class="flex flex-col items-center gap-6 w-full min-h-[60vh] p-8 lg:p-12 bg-white rounded-xl shadow-md">
         <img :src="GoogleCal" alt="Google calendar logo" class="w-48 h-48 mb-4"/>
         <h1 class="font-inter text-2xl">Google Calendar</h1>
-        <BaseToast
-        :text="toastText"
-        :bgClass="toastBg"
-        :show="showToast"
-        />
         <div class="flex flex-col justify-center items-center mt-4 font-normal text-sm space-y-1">
             <p>
                 Use shared meetings to detect collaboration patterns across teams.
@@ -30,13 +25,19 @@
             <p class="text-lumy-danger">Not connected</p>
         </div>
         <div class="flex space-x-4 mt-6">
-            <button v-if="isConnected === true" @click="disconnectGoogle" class="flex items-center space-x-2 px-4 py-2 bg-lumy-dark opacity-70 text-white text-sm rounded-lg">
+            <button v-if="isConnected === true" @click="disconnectGoogle" class="flex items-center space-x-2 px-4 py-2 bg-lumy-dark opacity-70 text-white text-sm rounded-lg cursor-pointer">
                 Disconnect
             </button>
             <button v-else @click="triggerGoogle" class="px-4 py-2 bg-lumy-green text-white text-sm rounded-lg cursor-pointer">
                 Connect
             </button>
         </div>
+        <BaseToast
+        :text="toastText"
+        :bgClass="toastBg"
+        :show="showToast"
+        @close="showToast = false"
+        />
     </div>
 </template>
 <script setup lang="ts">

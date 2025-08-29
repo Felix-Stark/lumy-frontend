@@ -37,30 +37,29 @@
 <script setup lang="ts">
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import type { User } from '@/types';
+import type { User, Account } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import api from '@/services/api';
 import BaseToast from '@/components/base/BaseToast.vue';
 
 const userStore = useUserStore();
-const users = ref<User[]>();
 const account = computed(() => userStore.account);
+const users = computed<User[]>(() => userStore.users);
 const loading = ref(false);
 const success = ref(false);
 
 
 onMounted(async() => {
     if(account === null) {
-        userStore.getAccount();
+        await userStore.getAccount();
+        console.error('fetched account: ', account);
     }
-    try {
-        const res = await api.get('/users');
-        if(res.status === 200) {
-            users.value = res.data
+    if(users === null || users.value.length === 0){
+        const status = await userStore.getUsers();
+        if(status === 200) {
+            console.error('fetched users: ', users.value);
         }
-    } catch(error: any) {
-        console.log('error in mount settings: ', error)
     }
 })
 

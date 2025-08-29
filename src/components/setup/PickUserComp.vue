@@ -26,7 +26,7 @@
 					<Float 
 					floatingAs="template"
 					placement="bottom"
-					:flip="true"
+
 					:offset="4"
 					>
 					<ListboxButton :disabled="!isActive" :class="['border border-gray-300 rounded-md p-2 w-full flex justify-between items-center  bg-white', isActive ? 'cursor-pointer' : 'cursor-not-allowed']">

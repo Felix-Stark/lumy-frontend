@@ -53,12 +53,12 @@ const success = ref(false);
 onMounted(async() => {
     if(account === null) {
         await userStore.getAccount();
-        console.error('fetched account: ', account);
     }
     if(users === null || users.value.length === 0){
         const status = await userStore.getUsers();
         if(status === 200) {
-            console.error('fetched users: ', users.value);
+            console.error('fetched users: ', users);
+            console.error('fetched account: ', account);
         }
     }
 })

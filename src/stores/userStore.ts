@@ -35,10 +35,14 @@ export const useUserStore = defineStore('user', {
 			}
 		},
 		async getUsers() {
-			const res = await api.get('/users');
-			if (res.status === 200) {
-				this.users = res.data; //return status and use userStore.users in components
-				return res.status
+			try {
+				const res = await api.get('/users');
+				if (res.status === 200) {
+					this.users = res.data; //return status and use userStore.users in components
+					return res.status
+				}
+			} catch (error: any) {
+				console.error('error in get users: ', error)
 			}
 			
 		},

@@ -1,5 +1,5 @@
 <template>
-		<header class="grid grid-cols-2 md:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
+		<header class="grid grid-cols-2 lg:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"

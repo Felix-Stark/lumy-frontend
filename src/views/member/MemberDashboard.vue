@@ -24,14 +24,14 @@
 				</svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-1 row-start-2 xl:col-start-3 lg:row-start-1"
+				class="col-start-1 row-start-2 xl:col-start-3 xl:row-start-1"
 				:title="summary?.top_positive_skill || 'N/A'"
 				description="Most mentioned strength"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-2 row-start-2 xl:col-start-4 lg:row-start-1"
+				class="col-start-2 row-start-2 xl:col-start-4 xl:row-start-1"
 				:title="`${summary?.positive_sentiment_percentage + '%'}`"
 				description="Postive feedback given"
 			>

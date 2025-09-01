@@ -69,7 +69,7 @@
 							<td v-if="skill.average_sentiment === 0" class="px-4 py-2 text-gray-500">No feedback</td>
 							<td v-if="skill.average_sentiment <= 0.40 && skill.average_sentiment > 0" class="px-4 py-2 text-red-500">Needs improvement</td>
 							<td class="px-4 py-2 text-center">{{ skill.feedback_count }}</td>
-							<td class="px-4 py-2">{{ skill.last_feedback_received ?  new Date(skill.last_feedback_received) : 'None' }}</td>
+							<td class="px-4 py-2">{{ skill.last_feedback_received ?  formatFeedbackDate(lastFeedback) : 'None' }}</td>
 							<td class="px-4 py-2 flex justify-between items-center">
 								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
@@ -104,7 +104,10 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { Skill, SkillSummary, User, UserSummary } from '@/types';
-import api from '@/services/api';
+import { useDateFormat } from '@/composables/useDateFormat';
+
+const { formatFeedbackDate } = useDateFormat();
+defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const userStore = useUserStore();

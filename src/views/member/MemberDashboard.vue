@@ -158,7 +158,8 @@ const avgSentChart = computed(() => {
   }), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
-				tension: 0.1
+				borderDash: [ 5, 5 ],
+				tension: 0.4
 			}
 		]
 	};

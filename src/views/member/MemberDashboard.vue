@@ -44,7 +44,7 @@
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
-		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 rounded-lg">
+		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
 			<div class="w-4/5">
 				<Line :data="avgSentChart" :options="avgSentOptions" />

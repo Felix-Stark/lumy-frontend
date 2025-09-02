@@ -144,20 +144,7 @@ const avgSentChart = computed(() => {
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data: Object.values({
-					"2024-09": 7.2,
-					"2024-10": 8.8,
-					"2024-11": 6.5,
-					"2024-12": 7.0,
-					"2025-01": 8.5,
-					"2025-02": 7.8,
-					"2025-03": 8.3,
-					"2025-04": 9.0,
-					"2025-05": 7.1,
-					"2025-06": 6.9,
-					"2025-07": 8.4,
-					"2025-08": 8.6
-  }), // e.g. [0.8, 0.85, ...]
+				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				borderDash: [ 5, 5 ],
@@ -182,9 +169,32 @@ const avgSentOptions = {
   }
 };
 
-const avgSentMonths = summary.value?.avg_sentiment || {};
-const avgSentChartLabels = Object.keys(avgSentMonths); // e.g. ["2025-07", "2025-08", ...]
-const avgSentChartData = Object.values(avgSentMonths); // e.g. [0.8, 0.85, ...]
+// const feedBackChart = computed(() => {
+// 	const feedbackGiven = summary.value?.feedback_given || {};
+// 	const feedbackReceived = summary.value?.feedback_received || {};
+// 	const feedbackRequested = summary.value?.feedback_requested || {};
+// 	return {
+// 		labels: Object.keys(feedbackGiven), // e.g. ["2025-07", "2025-08", ...]
+// 		datasets: [
+// 			{
+// 				label: 'Feedback Given',
+// 				data: Object.values(feedbackGiven), // e.g. [5, 10, ...]
+// 				backgroundColor: 'rgba(54, 162, 235, 0.5)'
+// 			},
+// 			{
+// 				label: 'Feedback Received',
+// 				data: Object.values(feedbackReceived), // e.g. [3, 7, ...]
+// 				backgroundColor: 'rgba(75, 192, 192, 0.5)'
+// 			},
+// 			{
+// 				label: 'Feedback Requested',
+// 				data: Object.values(feedbackRequested), // e.g. [2, 4, ...]
+// 				backgroundColor: 'rgba(255, 206, 86, 0.5)'
+// 			}
+// 		]
+// 	}
+// })
+
 
 
 </script>

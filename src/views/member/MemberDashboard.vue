@@ -45,7 +45,11 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
-			<h2 class="font-400 text-xl self-start mb-4">Skills Overview</h2>
+			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
+			<Line :data="avgSentChart" :options="avgSentOptions" />
+		</section>
+		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
+			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
 			<div class="overflow-x-auto">
 				<table class="min-w-full border border-gray-200 rounded-lg">
 					<thead>
@@ -70,12 +74,12 @@
 							<td v-if="skill.average_sentiment <= 0.40 && skill.average_sentiment > 0" class="px-4 py-2 text-red-500">Needs improvement</td>
 							<td class="px-4 py-2 text-center">{{ skill.feedback_count }}</td>
 							<td class="px-4 py-2">{{ skill.last_feedback_received ?  formatFeedbackDate(skill.last_feedback_received) : 'None' }}</td>
-							<td class="px-4 py-2 flex justify-between items-center">
+							<!-- <td class="px-4 py-2 flex justify-between items-center">
 								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronRight />
-							</td>
+							</td> -->
 						</tr>
 					</tbody>
 				</table>
@@ -96,22 +100,26 @@
 
 <script setup lang="ts">
 import { ChevronRight, Heart } from 'lucide-vue-next';
+import { Line } from 'vue-chartjs';
+import { Chart, registerables } from 'chart.js'
 import NavUtility from '@/components/NavUtility.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { Skill, SkillSummary, User, UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
+
+Chart.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const userStore = useUserStore();
-const summary = ref<UserSummary | null>(null);
+const summary = ref<UserSummary | null>();
 const showSuccess = ref(false);
 
 onMounted(async() => {
@@ -122,9 +130,44 @@ onMounted(async() => {
 	console.log('meSummary: ', userStore.meSummary);
 })
 
-function selectedSkill(skill: SkillSummary) {
-	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push('/feedback/request');
-}
+// function selectedSkill(skill: SkillSummary) {
+// 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+// 	router.push('/feedback/request');
+// }
+
+const avgSentChart = computed(() => {
+	const avgSent = summary.value?.avg_sentiment || {};
+	return {
+		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
+		datasets: [
+			{
+				label: 'Average Sentiment',
+				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(150, 45, 255, 1)',
+				tension: 0.1
+			}
+		]
+	};
+})
+const avgSentOptions = {
+  responsive: true,
+  plugins: {
+    legend: { display: false },
+    title: { display: false }
+  },
+  scales: {
+    y: {
+      min: 0,
+      max: 100,
+      ticks: { stepSize: 20 }
+    }
+  }
+};
+
+const avgSentMonths = summary.value?.avg_sentiment || {};
+const avgSentChartLabels = Object.keys(avgSentMonths); // e.g. ["2025-07", "2025-08", ...]
+const avgSentChartData = Object.values(avgSentMonths); // e.g. [0.8, 0.85, ...]
+
 
 </script>

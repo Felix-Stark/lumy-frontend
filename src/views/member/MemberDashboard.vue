@@ -46,7 +46,7 @@
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
-			<div class="w-4/5">
+			<div class="w-4/5 max-h-80">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
 		</section>

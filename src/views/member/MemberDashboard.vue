@@ -159,8 +159,8 @@ const avgSentOptions = {
   scales: {
     y: {
       min: 0,
-      max: 100,
-      ticks: { stepSize: 20 }
+      max: 10,
+      ticks: { stepSize: 2 }
     }
   }
 };

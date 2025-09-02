@@ -40,11 +40,13 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import type { User, Account } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
+import { useAccountStore } from '@/stores/accountStore';
 import api from '@/services/api';
 import BaseToast from '@/components/base/BaseToast.vue';
 
+const accountStore = useAccountStore();
 const userStore = useUserStore();
-const account = computed(() => userStore.account);
+const account = computed(() => accountStore.account);
 const users = computed<User[]>(() => userStore.users);
 const loading = ref(false);
 const success = ref(false);
@@ -52,7 +54,7 @@ const success = ref(false);
 
 onMounted(async() => {
     if(account === null) {
-        await userStore.getAccount();
+        await accountStore.getAccount();
     }
     if(users === null || users.value.length === 0){
         await userStore.getUsers();

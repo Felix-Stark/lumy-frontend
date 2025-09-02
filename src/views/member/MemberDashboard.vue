@@ -142,7 +142,20 @@ const avgSentChart = computed(() => {
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
+				data: Object.values({
+					"2024-09": 7.2,
+					"2024-10": 8.8,
+					"2024-11": 6.5,
+					"2024-12": 7.0,
+					"2025-01": 8.5,
+					"2025-02": 7.8,
+					"2025-03": 8.3,
+					"2025-04": 9.0,
+					"2025-05": 7.1,
+					"2025-06": 6.9,
+					"2025-07": 8.4,
+					"2025-08": 8.6
+  }), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				tension: 0.1
@@ -157,6 +170,13 @@ const avgSentOptions = {
     title: { display: false }
   },
   scales: {
+	x: {
+		display: true,
+		title: {
+			display: true,
+			text: 'Month'
+		}
+	},
     y: {
       min: 0,
       max: 10,

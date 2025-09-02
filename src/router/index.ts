@@ -44,7 +44,7 @@ const router = createRouter({
         },
         {
           path: '/slack/notadmin',
-          name: 'slack-notadmin',
+          name: 'slack-not-admin',
           component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
         }
       ]

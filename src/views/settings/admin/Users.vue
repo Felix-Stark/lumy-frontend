@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[75vh]">
+    <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[80vh]">
         <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
             <PickUserComp
             v-for="user in users"
@@ -37,30 +37,25 @@
 <script setup lang="ts">
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import type { User } from '@/types';
+import type { User, Account } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import api from '@/services/api';
 import BaseToast from '@/components/base/BaseToast.vue';
 
 const userStore = useUserStore();
-const users = ref<User[]>();
 const account = computed(() => userStore.account);
+const users = computed<User[]>(() => userStore.users);
 const loading = ref(false);
 const success = ref(false);
 
 
 onMounted(async() => {
     if(account === null) {
-        userStore.getAccount();
+        await userStore.getAccount();
     }
-    try {
-        const res = await api.get('/users');
-        if(res.status === 200) {
-            users.value = res.data
-        }
-    } catch(error: any) {
-        console.log('error in mount settings: ', error)
+    if(users === null || users.value.length === 0){
+        await userStore.getUsers();
     }
 })
 

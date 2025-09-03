@@ -33,15 +33,20 @@
                     floatingAs="template"
                 >
                     <div class="w-full flex">
-                        <ComboboxInput class="border pl-2 border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl" placeholder="Search user or pick from list"
-                        :displayValue="() => query"  @change="query = $event.target.value" />
-                        <ComboboxButton class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
-                            <ChevronDown class="w-4 h-4" />
+                        <ComboboxInput
+                        class="border pl-2 border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl"
+                        placeholder="Search user or pick from list"
+                        :displayValue="() => query"
+                        @change="query = $event.target.value"
+                        />
+                        <ComboboxButton
+                        class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
+                            <ChevronDown :class="['w-4 h-4']" />
                         </ComboboxButton>
                     </div>
-                    <ComboboxOptions class="w-full p-2 max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                    <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
                         <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
-                            <li :class="['flex items-center justify-between py-2 px-1 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-100' : 'hover:bg-purple-50', selected ? 'bg-purple-100' : 'hover:bg-purple-50' ]" >
+                            <li :class="['flex items-center justify-between p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-100' : 'hover:bg-purple-50', selected ? 'bg-purple-100' : 'hover:bg-purple-50' ]" >
                                 {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />
                             </li>
                         </ComboboxOption>
@@ -122,11 +127,9 @@ onMounted(async () => {
         if (skill) {
             reqSkill.value = JSON.parse(skill);
         }
-        console.log('reqSkill: ', reqSkill.value);
         const response = await api.get('/users');
         if(response.status === 200) {
             users.value = response.data;
-            console.log('Users fetched successfully:', users.value);
         } else {
             console.error('Failed to fetch users:', response.statusText);
         }
@@ -147,7 +150,9 @@ const sendReq = async () => {
                 message: message.value,
                 type: 'request'
             });
-            console.log('Feedback request sent to:', user.name, 'Response:', res);
+            if (res.status !== 201) {
+                console.error('Failed to send request to', user.name, ':', res.statusText);
+            }
         }
         
     } catch (error) {

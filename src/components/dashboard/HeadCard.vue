@@ -1,8 +1,8 @@
 <template>
-      <div class="flex items-center gap-6 w-full bg-white rounded-lg shadow-md p-2 md:p-6">
+      <div class="flex items-center gap-6 w-full bg-white rounded-lg shadow-md p-2 md:p-2 xl:p-6">
         <slot />
-        <div class="flex flex-col min-w-fit w-full justify-between ">
-          <h1 class="text-lg md:text-xl font-semibold text-gray-800">{{ title }}</h1>
+        <div class="flex flex-col w-full justify-between ">
+          <h1 class="2xl:text-xl font-semibold text-gray-800">{{ title }}</h1>
           <p class="text-sm text-gray-500">{{ description }}</p>
         </div>
       </div>

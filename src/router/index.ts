@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import AdminLayout from '@/layouts/admin/AdminLayout.vue'
 
 import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
@@ -45,7 +44,7 @@ const router = createRouter({
         },
         {
           path: '/slack/notadmin',
-          name: 'slack-notadmin',
+          name: 'slack-not-admin',
           component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
         }
       ]
@@ -74,9 +73,9 @@ const router = createRouter({
     },
     {
       path: '/member',
-      component: () => import('@/layouts/MemberLayout.vue'),
+      component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
-        requiresAuth: true, // This route requires authentication
+        requiresAuth: false, // This route requires authentication
       },
       children: [
         {
@@ -85,47 +84,35 @@ const router = createRouter({
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
       ]
-    },
+    },  
     {
-      path: '/admin',
-      component: AdminLayout,
+      path: '/settings',
+      redirect: 'settings/member/integrations',
+      component: () => import('@/layouts/SettingsLayout.vue'),
       meta: {
-        title: 'Admin dashboard',
         requiresAuth: true,
-        isAdmin: true, // This route requires admin privileges
       },
       children: [
-        // {
-        //   path: '',
-        //   name: 'admin-dashboard',
-        //   component: () => import('@/views/admin/Dashboard.vue'),
-        // },
         {
-          path: 'settings',
-          component: () => import('@/layouts/admin/AdminSettingsLayout.vue'),
-          redirect: '/admin/settings/general',
-          meta: {
-            title: 'Admin Settings',
-            requiresAuth: true,
-            isAdmin: true, // This route requires admin privileges
-          },
-          children: [
-            {
-              path: 'general',
-              name: 'admin-settings-general',
-              component: () => import('@/views/admin/settings/General.vue'),
-            },
-            {
-              path: 'users',
-              name: 'admin-settings-users',
-              component: () => import('@/views/admin/settings/Users.vue'),
-            }
-          ]
+          path: 'member/integrations',
+          name: 'settings-member-integrations',
+          component: () => import('@/views//settings/member/Integrations.vue'),
         },
+        {
+          path: 'admin/general',
+          name: 'settings-admin-general',
+          component: () => import('@/views/settings/admin/General.vue'),
+          meta: { isAdmin: true }
+        },
+        {
+          path: 'admin/users',
+          name: 'settings-admin-users',
+          component: () => import('@/views/settings/admin/Users.vue'),
+          meta: { isAdmin: true }
+        }
+
       ]
     },
-    
-    
     {
       path: '/feedback',
       redirect: '/feedback/give',
@@ -164,7 +151,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !store.isLoggedIn) {
     next({ name: 'slack-login' })
   } else if (to.meta.isAdmin) {
-    console.log('role in role check: ', role)
       if (role !== 'admin') {
         const errorStore = useErrorStore();
         errorStore.setError({

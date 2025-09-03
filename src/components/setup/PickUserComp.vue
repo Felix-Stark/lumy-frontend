@@ -23,6 +23,12 @@
 		<div class="flex flex-col gap-2 sm:flex-row items-center justify-end sm:gap-6 ">
 			<Listbox :model-value="role" @update:model-value="emit('update:role', $event)">
 				<div :class="['relative w-[6rem]', isActive === true ? '' : 'opacity-50']">
+					<Float 
+					floatingAs="template"
+					placement="bottom"
+					:flip="true"
+					:offset="4"
+					>
 					<ListboxButton :disabled="!isActive" :class="['border border-gray-300 rounded-md p-2 w-full flex justify-between items-center  bg-white', isActive ? 'cursor-pointer' : 'cursor-not-allowed']">
 						<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
 						<ChevronDown class="ml-2 w-4 h-4" />
@@ -35,6 +41,7 @@
 							Admin
 						</ListboxOption>
 					</ListboxOptions>
+					</Float>
 				</div>
 			</Listbox>
 			<button
@@ -49,6 +56,7 @@
 
 <script setup lang="ts">
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue';
+import { Float } from '@headlessui-float/vue';
 import { ChevronDown } from 'lucide-vue-next';
 
 

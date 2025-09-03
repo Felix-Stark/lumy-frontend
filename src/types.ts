@@ -11,6 +11,8 @@ export type User = {
   is_active: boolean;
 };
 
+export type TimeSeries = Record<string, number>;
+
 export type UserSummary = {
   feedback_received_count: number;
   feedback_given_count: number;
@@ -21,6 +23,10 @@ export type UserSummary = {
     positive: string;
     improvement: string;
   };
+  feedback_received: TimeSeries;
+  feedback_given: TimeSeries;
+  feedback_requested: TimeSeries;
+  avg_sentiment: TimeSeries;
 };
 
 export type SkillSummary = {
@@ -36,6 +42,7 @@ export type Account = {
   name: string;
   framework_id: number;
   bot_personality_id: number;
+  nudge_frequency: string;
   created_at: string;
   updated_at: string;
 };

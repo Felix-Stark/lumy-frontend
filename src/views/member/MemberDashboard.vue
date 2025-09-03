@@ -1,5 +1,5 @@
 <template>
-		<header class="grid grid-cols-2 md:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
+		<header class="grid grid-cols-2 xl:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"
@@ -24,14 +24,14 @@
 				</svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-1 row-start-2 md:col-start-3 md:row-start-1"
+				class="col-start-1 row-start-2 xl:col-start-3 xl:row-start-1"
 				:title="summary?.top_positive_skill || 'N/A'"
 				description="Most mentioned strength"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-2 row-start-2 md:col-start-4 md:row-start-1"
+				class="col-start-2 row-start-2 xl:col-start-4 xl:row-start-1"
 				:title="`${summary?.positive_sentiment_percentage + '%'}`"
 				description="Postive feedback given"
 			>
@@ -44,8 +44,14 @@
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
+		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
+			<div class="w-4/5">
+				<Line :data="avgSentChart" :options="avgSentOptions" />
+			</div>
+		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
-			<h2 class="font-400 text-xl self-start mb-4">Skills Overview</h2>
+			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
 			<div class="overflow-x-auto">
 				<table class="min-w-full border border-gray-200 rounded-lg">
 					<thead>
@@ -68,14 +74,14 @@
 							<td v-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-4 py-2 text-yellow-500">Average</td>
 							<td v-if="skill.average_sentiment === 0" class="px-4 py-2 text-gray-500">No feedback</td>
 							<td v-if="skill.average_sentiment <= 0.40 && skill.average_sentiment > 0" class="px-4 py-2 text-red-500">Needs improvement</td>
-							<td class="px-4 py-2">{{ skill.feedback_count }}</td>
-							<td class="px-4 py-2">{{ skill.last_feedback_received ?  new Date(skill.last_feedback_received).toLocaleDateString() : 'None' }}</td>
-							<td class="px-4 py-2 flex justify-between items-center">
+							<td class="px-4 py-2 text-center">{{ skill.feedback_count }}</td>
+							<td class="px-4 py-2">{{ skill.last_feedback_received ?  formatFeedbackDate(skill.last_feedback_received) : 'None' }}</td>
+							<!-- <td class="px-4 py-2 flex justify-between items-center">
 								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronRight />
-							</td>
+							</td> -->
 						</tr>
 					</tbody>
 				</table>
@@ -96,19 +102,26 @@
 
 <script setup lang="ts">
 import { ChevronRight, Heart } from 'lucide-vue-next';
+import { Line } from 'vue-chartjs';
+import { Chart, registerables } from 'chart.js'
 import NavUtility from '@/components/NavUtility.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { Skill, SkillSummary, User, UserSummary } from '@/types';
-import api from '@/services/api';
+import { useDateFormat } from '@/composables/useDateFormat';
+
+Chart.register(...registerables);
+
+const { formatFeedbackDate } = useDateFormat();
+defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const userStore = useUserStore();
-const summary = ref<UserSummary | null>(null);
+const summary = ref<UserSummary | null>();
 const showSuccess = ref(false);
 
 onMounted(async() => {
@@ -119,9 +132,69 @@ onMounted(async() => {
 	console.log('meSummary: ', userStore.meSummary);
 })
 
-function selectedSkill(skill: SkillSummary) {
-	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push('/feedback/request');
-}
+// function selectedSkill(skill: SkillSummary) {
+// 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+// 	router.push('/feedback/request');
+// }
+
+const avgSentChart = computed(() => {
+	const avgSent = summary.value?.avg_sentiment || {};
+	return {
+		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
+		datasets: [
+			{
+				label: 'Average Sentiment',
+				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(150, 45, 255, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			}
+		]
+	};
+})
+const avgSentOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { display: false },
+    title: { display: false }
+  },
+  scales: {
+    y: {
+      min: 0,
+      max: 10,
+      ticks: { stepSize: 2 }
+    }
+  }
+};
+
+// const feedBackChart = computed(() => {
+// 	const feedbackGiven = summary.value?.feedback_given || {};
+// 	const feedbackReceived = summary.value?.feedback_received || {};
+// 	const feedbackRequested = summary.value?.feedback_requested || {};
+// 	return {
+// 		labels: Object.keys(feedbackGiven), // e.g. ["2025-07", "2025-08", ...]
+// 		datasets: [
+// 			{
+// 				label: 'Feedback Given',
+// 				data: Object.values(feedbackGiven), // e.g. [5, 10, ...]
+// 				backgroundColor: 'rgba(54, 162, 235, 0.5)'
+// 			},
+// 			{
+// 				label: 'Feedback Received',
+// 				data: Object.values(feedbackReceived), // e.g. [3, 7, ...]
+// 				backgroundColor: 'rgba(75, 192, 192, 0.5)'
+// 			},
+// 			{
+// 				label: 'Feedback Requested',
+// 				data: Object.values(feedbackRequested), // e.g. [2, 4, ...]
+// 				backgroundColor: 'rgba(255, 206, 86, 0.5)'
+// 			}
+// 		]
+// 	}
+// })
+
+
 
 </script>

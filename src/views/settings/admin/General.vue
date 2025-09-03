@@ -122,13 +122,6 @@ const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const account = ref<Account>()
 onMounted(async () => {
-    // Uncomment the following lines to use the mock data for testing
-    // account.value = testAccount[0];
-    // companyName.value = account.value?.name || '';
-    // selectedFramework.value = account.value?.framework_id;
-    // selectedBot.value = account.value?.bot_personality_id;
-    // botPersonalities.value = testBots;
-    // frameworks.value = testFrameworks;
     try {
         account.value = await userStore.getAccount();
         companyName.value = account.value?.name || '';
@@ -152,15 +145,11 @@ onMounted(async () => {
 })
 
 async function saveSettings() {
-    console.log('selected framework: ', selectedFramework.value)
-    console.log('selected bot: ', selectedBot.value)
-    console.log('new name: ', companyName.value)
+    account.value = {...account.value, name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value } as Account;
     try {
-        const res = await api.patch('/account', {
-            framework: selectedFramework.value.id,
-            bot_personality: selectedBot.value.id,
-            name: companyName.value ? companyName.value : account.value?.name
-        })
+        const res = await api.patch('/account', 
+            account.value
+        )
         console.log('saveSettings res: ', res)
         if (res.status === 200) {
             toastText.value = 'Settings saved!'

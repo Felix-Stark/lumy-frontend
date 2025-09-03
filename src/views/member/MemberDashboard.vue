@@ -197,6 +197,7 @@ const feedbackChart = computed(() => {
 				data: Object.values(feedbackRequested), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(75, 123, 236, 1)',
+				backgroundColor: 'rgba(75, 123, 236, 1)',
 				borderDash: [ 5, 5 ],
 				tension: 0.4
 			},
@@ -205,6 +206,7 @@ const feedbackChart = computed(() => {
 				data: Object.values(feedbackGiven), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(32, 191, 107, 1)',
+				backgroundColor: 'rgba(32, 191, 107, 1)',
 				borderDash: [ 5, 5 ],
 				tension: 0.4
 			},
@@ -229,6 +231,7 @@ const feedbackChartOptions = {
 		labels: {
 			 usePointStyle: true,
 			 pointStyle: 'circle',
+			 boxWidth: 18,
 			 padding: 10,
 		}
 	 },

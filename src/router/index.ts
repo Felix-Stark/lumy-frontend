@@ -75,7 +75,7 @@ const router = createRouter({
       path: '/member',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
-        requiresAuth: false, // This route requires authentication
+        requiresAuth: true, // This route requires authentication
       },
       children: [
         {
@@ -83,6 +83,11 @@ const router = createRouter({
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
+        {
+          path: 'feedback',
+          name: 'member-feedback',
+          component: () => import('@/views/member/Feedback.vue'),
+        }
       ]
     },  
     {
@@ -130,8 +135,10 @@ const router = createRouter({
         {
           path: '/feedback/request',
           name: 'feedback-request',
-          component: () => import('@/views/feedback/Request.vue')
-        }
+          component: () => import('@/views/feedback/Request.vue'),
+          meta: { requiresAuth: true }
+        },
+        
       ]
     },
     {

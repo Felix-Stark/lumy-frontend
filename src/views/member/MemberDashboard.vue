@@ -49,29 +49,41 @@
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
 			<div class="overflow-x-auto">
-				<table class="min-w-full border border-gray-200 rounded-lg">
+				<table class="min-w-full rounded-lg">
 					<thead>
-						<tr class="bg-gray-100">
-							<th class="px-4 py-2 text-left font-thin text-gray-500">Skill</th>
-							<th class="px-4 py-2 text-left font-thin text-gray-500">Sentiment</th>
-							<th class="px-4 py-2 text-left font-thin text-gray-500"># of feedback</th>
-							<th class="px-4 py-2 text-left font-thin text-gray-500">Last feedback received</th>
-							<th class="px-4 py-2"></th>
+						<tr>
+						<th class="px-6 py-4 text-left font-thin text-gray-500">Skill</th>
+						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
+						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
+						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
+						<th class="px-6 py-4"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr
-							v-for="skill in summary?.skills_summary"
-							:key="skill.skill_id"
-							class="border-b last:border-b-0"
+						v-for="skill in summary?.skills_summary"
+						:key="skill.skill_id"
+						class="hover:bg-gray-50"
 						>
-							<td class="px-4 py-2">{{ skill.name }}</td>
-							<td v-if="skill.average_sentiment >= 0.60" class="px-4 py-2 text-green-500">Strength</td>
-							<td v-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-4 py-2 text-yellow-500">Average</td>
-							<td v-if="skill.average_sentiment === 0" class="px-4 py-2 text-gray-500">No feedback</td>
-							<td v-if="skill.average_sentiment <= 0.40 && skill.average_sentiment > 0" class="px-4 py-2 text-red-500">Needs improvement</td>
-							<td class="px-4 py-2 text-center">{{ skill.feedback_count }}</td>
-							<td class="px-4 py-2">{{ skill.last_feedback_received ?  formatFeedbackDate(skill.last_feedback_received) : 'None' }}</td>
+							<td class="px-6 py-4">{{ skill.name }}</td>
+
+							<td v-if="skill.average_sentiment >= 0.60" class="px-6 py-4 text-green-500">
+								Strength
+							</td>
+							<td v-else-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-6 py-4 text-yellow-500">
+								Average
+							</td>
+							<td v-else-if="skill.average_sentiment === 0" class="px-6 py-4 text-gray-500">
+								No feedback
+							</td>
+							<td v-else class="px-6 py-4 text-red-500">
+								Needs improvement
+							</td>
+
+							<td class="px-6 py-4 text-center">{{ skill.feedback_count }}</td>
+							<td class="px-6 py-4">
+								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
+							</td>
 							<!-- <td class="px-4 py-2 flex justify-between items-center">
 								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request

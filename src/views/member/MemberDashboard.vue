@@ -225,6 +225,9 @@ const feedbackChart = computed(() => {
 const feedbackChartOptions = {
   responsive: true,
   maintainAspectRatio: true,
+  interaction: {
+	intersect: false,
+  },
   plugins: {
     legend: { 
 		display: true,

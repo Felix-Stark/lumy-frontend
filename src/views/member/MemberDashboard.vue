@@ -235,7 +235,6 @@ const feedbackChartOptions = {
 			 usePointStyle: true,
 			 pointStyle: 'circle',
 			 pointStyleWidth: 10,
-			 pointStyleHeight: 10,
 			 padding: 10,
 		}
 	 },

@@ -19,10 +19,10 @@
 				<router-link to="/admin">Admin</router-link>
 			</li> -->
 			<li>
-				<router-link to="/member">Profile</router-link>
+				<router-link to="/member">Overview</router-link>
 			</li>
 			<li>
-				<router-link to="/settings">Profile Settings</router-link>
+				<router-link to="/settings">Settings</router-link>
 			</li>
 		</ul>
 		</div>
@@ -49,7 +49,7 @@
 			]" /> -->
 		<!-- </router-link> -->
 		<router-link to="/member" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Profile')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
 		@mouseleave="handleMouseLeave"
 		>
 			<UserRound :class="[,

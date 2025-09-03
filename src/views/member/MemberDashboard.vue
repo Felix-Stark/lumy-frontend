@@ -228,10 +228,13 @@ const feedbackChartOptions = {
   plugins: {
     legend: { 
 		display: true,
+		
 		labels: {
+			align: "end",
+			position: "top",
 			 usePointStyle: true,
 			 pointStyle: 'circle',
-			 boxWidth: 10,
+			 pointStyleWidth: 10,
 			 padding: 10,
 		}
 	 },

@@ -1,5 +1,5 @@
 <template>
-  <header class="grid grid-cols-2 md:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6 mt-8">
+  <header class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
     <HeadCard
       title="12,000"
       description="Feedback submited"
@@ -31,7 +31,7 @@
   </header>
   <section id="chart-container" class="w-full h-full mt-6">
     <div class="bg-white rounded-xl shadow-md p-6">
-      <p class="text-sm text-gray-500">Feedback submited</p>
+      <p class="text-sm text-gray-500">Feedback submitted</p>
       <div id="chart" class="w-full h-full mt-6">
         <BarChart />
       </div>

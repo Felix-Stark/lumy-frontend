@@ -1,7 +1,6 @@
 <template>
-		<header class="grid grid-cols-2 xl:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
+		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
-				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"
 				description="Feedbacks received"
 			>
@@ -11,7 +10,6 @@
 				/>
 			</HeadCard>
 			<HeadCard
-				class="col-start-2 row-start-1"
 				:title="`${summary?.feedback_given_count ?? 0}`"
 				description="Feedbacks given"
 			>
@@ -24,14 +22,12 @@
 				</svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-1 row-start-2 xl:col-start-3 xl:row-start-1"
 				:title="summary?.top_positive_skill || 'N/A'"
 				description="Most mentioned strength"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
 			<HeadCard
-				class="col-start-2 row-start-2 xl:col-start-4 xl:row-start-1"
 				:title="`${summary?.positive_sentiment_percentage + '%'}`"
 				description="Postive feedback given"
 			>
@@ -45,8 +41,8 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
-			<div class="w-4/5">
+			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+			<div class="w-full">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
 		</section>
@@ -85,6 +81,13 @@
 						</tr>
 					</tbody>
 				</table>
+			</div>
+		</section>
+
+		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
+			<div class="w-full">
+				<Line :data="feedbackChart" :options="feedbackChatOptions" />
 			</div>
 		</section>
 		<BaseDialog
@@ -154,6 +157,57 @@ const avgSentChart = computed(() => {
 	};
 })
 const avgSentOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { display: false },
+    title: { display: false }
+  },
+  scales: {
+    y: {
+      min: 0,
+      max: 10,
+      ticks: { stepSize: 2 }
+    }
+  }
+};
+
+
+const feedbackChart = computed(() => {
+	const feedbackRequested = summary.value?.feedback_requested || {};
+	const feedbackGiven = summary.value?.feedback_given || {};
+	const feedbackReceived = summary.value?.feedback_received || {};
+	return {
+		labels: Object.keys(feedbackRequested), // e.g. ["2025-07", "2025-08", ...]
+		datasets: [
+			{
+				label: 'Feedback Requested',
+				data: Object.values(feedbackRequested), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(75, 123, 236, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			},
+			{
+				label: 'Feedback Given',
+				data: Object.values(feedbackGiven), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(32, 191, 107, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			},
+			{
+				label: 'Feedback Received',
+				data: Object.values(feedbackReceived), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(164, 74, 255, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			}
+		]
+	};
+})
+const feedbackChatOptions = {
   responsive: true,
   maintainAspectRatio: true,
   plugins: {

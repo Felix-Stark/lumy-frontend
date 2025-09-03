@@ -1,5 +1,5 @@
 <template>
-  <header class="grid grid-cols-2 md:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6 mt-8">
+  <header class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
     <HeadCard
       title="12,000"
       description="Feedback submited"

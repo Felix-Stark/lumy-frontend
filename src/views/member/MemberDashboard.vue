@@ -228,7 +228,8 @@ const feedbackChartOptions = {
 		labels: {
 			 usePointStyle: true,
 			 pointStyle: 'circle',
-			 padding: 20
+			 padding: 10,
+			 fill: true
 		}
 	 },
     title: { display: false }

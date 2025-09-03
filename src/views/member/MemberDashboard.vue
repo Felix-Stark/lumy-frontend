@@ -223,7 +223,7 @@ const feedbackChartOptions = {
   responsive: true,
   maintainAspectRatio: true,
   plugins: {
-    legend: { display: true },
+    legend: { display: true, usePointStyle: true, pointStyle: 'circle', padding: 20 },
     title: { display: true }
   },
   scales: {

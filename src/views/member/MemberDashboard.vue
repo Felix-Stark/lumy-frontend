@@ -41,7 +41,7 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-6">Average total sentiment over time</h2>
+			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
 			<div class="w-full">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
@@ -81,6 +81,13 @@
 						</tr>
 					</tbody>
 				</table>
+			</div>
+		</section>
+
+		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
+			<div class="w-full">
+				<Line :data="feedbackChart" :options="feedbackChatOptions" />
 			</div>
 		</section>
 		<BaseDialog
@@ -150,6 +157,57 @@ const avgSentChart = computed(() => {
 	};
 })
 const avgSentOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: { display: false },
+    title: { display: false }
+  },
+  scales: {
+    y: {
+      min: 0,
+      max: 10,
+      ticks: { stepSize: 2 }
+    }
+  }
+};
+
+
+const feedbackChart = computed(() => {
+	const feedbackRequested = summary.value?.feedback_requested || {};
+	const feedbackGiven = summary.value?.feedback_given || {};
+	const feedbackReceived = summary.value?.feedback_received || {};
+	return {
+		labels: Object.keys(feedbackRequested), // e.g. ["2025-07", "2025-08", ...]
+		datasets: [
+			{
+				label: 'Feedback Requested',
+				data: Object.values(feedbackRequested), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(75, 123, 236, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			},
+			{
+				label: 'Feedback Given',
+				data: Object.values(feedbackGiven), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(32, 191, 107, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			},
+			{
+				label: 'Feedback Received',
+				data: Object.values(feedbackReceived), // e.g. [0.8, 0.85, ...]
+				fill: false,
+				borderColor: 'rgba(164, 74, 255, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.4
+			}
+		]
+	};
+})
+const feedbackChatOptions = {
   responsive: true,
   maintainAspectRatio: true,
   plugins: {

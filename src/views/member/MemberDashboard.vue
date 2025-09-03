@@ -1,5 +1,5 @@
 <template>
-		<header class="grid grid-cols-2 xl:grid-cols-4 2xl:mx-8 w-full items-stretch gap-6">
+		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				class="col-start-1 row-start-1"
 				:title="`${summary?.feedback_received_count ?? 0}`"
@@ -45,8 +45,8 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-4">Average sentiment over time</h2>
-			<div class="w-4/5">
+			<h2 class="text-xl self-start mb-6">Average sentiment over time</h2>
+			<div class="w-full">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
 		</section>

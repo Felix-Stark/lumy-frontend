@@ -14,18 +14,17 @@ export const useAccountStore = defineStore("account", () => {
         loading.value = true;
         error.value = null;
     
-        const { data, error: fetchError, loading: fetchLoading } = useApiFetch<Account>({
+        const { data, error: fetchError, run } = useApiFetch<Account>({
         method: "GET",
         url: "/account",
         });
-    
-        if (fetchLoading.value === false) {
-            if (fetchError.value) {
-        		error.value = fetchError.value.message;
-            } else {
-                account.value = data.value;
-            }
+        await run();
+        if (fetchError.value) {
+            error.value = fetchError.value.message;
+        } else {
+            account.value = data.value;
         }
+
         loading.value = false;
     };
 
@@ -33,17 +32,18 @@ export const useAccountStore = defineStore("account", () => {
         loading.value = true;
         error.value = null;
 
-        const { data, error: fetchError, loading: fetchLoading } = useApiFetch<Account>({
+        const { data, error: fetchError, run } = useApiFetch<Account>({
             method: 'PATCH',
             url: '/account',
             body: accountData,
         });
-        if (fetchLoading.value === false) {
-            if (fetchError.value) {
-                error.value = fetchError.value.message;
-            } else {
-                account.value = data.value;
-            }
+
+        await run();
+        
+        if (fetchError.value) {
+            error.value = fetchError.value.message;
+        } else {
+            account.value = data.value;
         }
         loading.value = false;
     };

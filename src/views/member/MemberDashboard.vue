@@ -230,12 +230,11 @@ const feedbackChartOptions = {
 		display: true,
 		
 		labels: {
-			align: "end",
 			position: "top",
-			 usePointStyle: true,
-			 pointStyle: 'circle',
-
-			 padding: 8,
+			usePointStyle: true,
+			align: "end",
+			pointStyle: 'circle',
+			padding: 8,
 		}
 	 },
     title: { display: false }

@@ -41,7 +41,7 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-6">Average sentiment over time</h2>
+			<h2 class="text-xl self-start mb-6">Average total sentiment over time</h2>
 			<div class="w-full">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>

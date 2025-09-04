@@ -11,6 +11,16 @@
                 </span>
             
             </router-link>
+            <router-link v-if="role === 'admin'" to="/settings/admin/intelligence" v-slot="{isExactActive}">
+                <span :class="['px-4 py-2 rounded-lg text-lg',
+                isExactActive
+                    ? 'bg-lumy-dark text-white'
+                    : 'bg-gray-200 text-gray-700'
+                ]">
+                    Intelligence
+                </span>
+
+            </router-link>
             <router-link v-if="role === 'admin'" to="/settings/admin/users" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
@@ -41,9 +51,6 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 
-const userStore = useUserStore();
-const route = useRoute();
-const router = useRouter();
 const role = ref('member');
 
 onMounted(() => {

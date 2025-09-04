@@ -92,7 +92,15 @@ const router = createRouter({
     },  
     {
       path: '/settings',
-      redirect: 'settings/member/integrations',
+      redirect: () => {
+        const raw = sessionStorage.getItem('LumyRole')
+        const role = raw ? JSON.parse(raw) : null;
+        if (role === 'admin') {
+          return '/settings/admin/general';
+        } else {
+          return '/settings/member/integrations';
+        }
+      },
       component: () => import('@/layouts/SettingsLayout.vue'),
       meta: {
         requiresAuth: true,

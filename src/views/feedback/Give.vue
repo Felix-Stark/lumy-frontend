@@ -49,12 +49,13 @@
 				<BaseButton 
 				:onAction="getAiSuggestions"
 				btnText="Improve my feedback!"
+				:secondary="true"
 				:disabled="loadingAiSuggestions || feedback.trim().length < 15"
 				/>
 				<BaseButton
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
-				:secondary="true"
+				:secondary="false"
 				btnText="Send Feedback"
 				:disabled="disablePost"
 				/>

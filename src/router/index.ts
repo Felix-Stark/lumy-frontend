@@ -118,6 +118,12 @@ const router = createRouter({
           meta: { isAdmin: true }
         },
         {
+          path: 'admin/intelligence',
+          name: 'settings-admin-intelligence',
+          component: () => import('@/views/settings/admin/Intelligence.vue'),
+          meta: { isAdmin: true }
+        },
+        {
           path: 'admin/users',
           name: 'settings-admin-users',
           component: () => import('@/views/settings/admin/Users.vue'),

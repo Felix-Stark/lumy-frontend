@@ -6,7 +6,7 @@
                 <p class="font-thin py-2 text-sm">Toggle AI coaching</p>
                 <Switch
                     v-model="toggleCoaching"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
                     :class="toggleCoaching ? 'bg-lumy-green' : 'bg-gray-200'"
                 >
                     <span

@@ -54,6 +54,7 @@
 				<BaseButton
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
+				:secondary="true"
 				btnText="Send Feedback"
 				:disabled="disablePost"
 				/>
@@ -96,7 +97,7 @@
 						:key="suggestion"
 						class="flex flex-col justify-between sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-light-gray">
 							<p class="text-gray-700">{{ suggestion }}</p>
-							<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+							<button @click="addSuggestion(suggestion)" class="bg-lumy-secondary text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 						</div>
 						<div
 						v-else
@@ -109,7 +110,7 @@
 						<h2 class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
 						<div v-if="loadingCoaching" class="flex flex-col w-full justify-center items-center p-8 mt-4">
 							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
-							<p class="text-gray-700">Conferring with the feedback gurus...</p>
+							<p class="text-gray-700">Drawing knowledge from the Lumyverse, might take a sec...</p>
 						</div>
 						<div v-html="coachingSuggestions"></div>
 					</div>

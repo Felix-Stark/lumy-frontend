@@ -43,6 +43,8 @@ export type Account = {
   framework_id: number;
   bot_personality_id: number;
   nudge_frequency: string;
+  intelligence_coach: boolean;
+  intelligence_assistant: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -90,6 +92,8 @@ export type FeedbackRequest = {
   account_id: number;
   status: string;
   framework: FeedbackFramework;
+  intelligence_coach: boolean;
+  intelligence_assistant: boolean;
 }
 
 export type BotPersonality = {

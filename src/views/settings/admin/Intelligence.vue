@@ -6,7 +6,7 @@
                 <p class="font-thin text-sm">Toggle AI coaching</p>
             <Switch
                 v-model="toggleCoaching"
-                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
                 :class="toggleCoaching ? 'bg-lumy-green' : 'bg-gray-200'"
             >
                 <span
@@ -19,7 +19,7 @@
                 <p class="font-thin text-sm">Toggle AI suggestions</p>
                 <Switch
                     v-model="toggleSuggestions"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
                     :class="toggleSuggestions ? 'bg-lumy-green' : 'bg-gray-200'"
                 >
                     <span

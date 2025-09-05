@@ -58,7 +58,12 @@ export const useAuthStore = defineStore("auth", {
       }
     },
     async logout() {
-      sessionStorage.removeItem("LumyLoggedIn");
+      sessionStorage.clear();
+      this.isLoggedIn = false;
+      this.isAdmin = false;
+      this.accountId = null;
+
+      window.location.href = "/"; // Redirect to login page
     },
   },
 });

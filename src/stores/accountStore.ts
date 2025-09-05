@@ -38,7 +38,7 @@ export const useAccountStore = defineStore("account", () => {
         if (!account.value) {
             throw new Error("No account data to update.");
         }
-        const res = await api.patch(`/account/${account.value.id}`, data);
+        const res = await api.patch(`/account`, data);
         if (res.status === 200) {
             account.value = res.data as Account;
             sessionStorage.setItem("LumyAccount", JSON.stringify(res.data));

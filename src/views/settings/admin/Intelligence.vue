@@ -31,7 +31,7 @@
 
         </article>
         <BaseButton
-        btnText="Save settings"
+        :btnText="btnText"
         :onAction="() => saveSettings()"
         >
             <span v-if="accountStore.loading" class="absolute left-3">
@@ -58,7 +58,7 @@
         </svg>
       </span>
       <span :class="{ 'opacity-50': accountStore.loading }">
-        {{ accountStore.loading ? 'Saving...' : 'Save Settings' }}
+        {{ accountStore.loading ? btnText = 'Saving...' : btnText = 'Save Settings' }}
       </span>
         </BaseButton>
         <BaseToast
@@ -77,6 +77,7 @@ import BaseToast from '@/components/base/BaseToast.vue';
 import { ref, onMounted, watch } from 'vue';
 import { Switch } from '@headlessui/vue'
 import { useAccountStore } from '@/stores/accountStore';
+import { buttonNativeTypes } from 'element-plus';
 
 const accountStore = useAccountStore();
 const toggleCoaching = ref(false);
@@ -84,6 +85,7 @@ const toggleSuggestions = ref(false);
 const showToast = ref(false);
 const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
+const btnText = ref('Save Settings');
 
 // Watch for when account data becomes available
 watch(

@@ -205,6 +205,10 @@ const addSuggestion = (suggestion: string) => {
 }
 
 const getAiSuggestions = async () => {
+	if (aiSuggestions.value.length > 0) {
+		activeTab.value = 'ai'
+		return
+	}
 	loadingAiSuggestions.value = true
 	showTabs.value = true
 	activeTab.value = 'ai'

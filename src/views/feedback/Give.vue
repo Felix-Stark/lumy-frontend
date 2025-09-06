@@ -47,13 +47,23 @@
 			</div>
 			<div class="flex justify-between mt-2">
 				<BaseButton 
+				v-if="toggleSuggestions"
 				:onAction="getAiSuggestions"
 				btnText="Improve my feedback!"
+				:secondary="true"
+				:disabled="loadingAiSuggestions || feedback.trim().length < 15"
+				/>
+				<BaseButton 
+				v-if="toggleSuggestions === false && toggleCoaching === true"
+				:onAction="getCoaching"
+				btnText="Improve my feedback!"
+				:secondary="true"
 				:disabled="loadingAiSuggestions || feedback.trim().length < 15"
 				/>
 				<BaseButton
 				v-if="aiSuggestions.length > 1"
 				:onAction="postFeedback"
+				:secondary="false"
 				btnText="Send Feedback"
 				:disabled="disablePost"
 				/>
@@ -63,6 +73,7 @@
 			<div v-if="showTabs" class="flex flex-col w-full mt-4">
 				<div class="bg-light-gray p-2 rounded-t-lg">
 					<button
+					v-if="toggleSuggestions"
 					@click="activeTab = 'ai'"
 					:class="[
 						'px-4 py-2 rounded-t-lg focus:outline-none cursor-pointer',
@@ -72,6 +83,7 @@
 					AI suggestions
 					</button>
 					<button
+					v-if="toggleCoaching"
 					@click="getCoaching"
 					:class="[
 						'px-4 py-2 rounded-t-lg focus:outline-none cursor-pointer',
@@ -83,7 +95,7 @@
 				</div>
 				
 				<div class="bg-white p-4 rounded-b-lg">
-					<div v-if="activeTab === 'ai'">
+					<div v-if="activeTab === 'ai' && toggleSuggestions === true">
 					<!-- AI suggestions content here -->
 						<p v-if="!loadingAiSuggestions" class="font-light text-gray-500">Click on the plus button to insert it into your feedback.</p>
 						<div v-if="loadingAiSuggestions" class="flex flex-col w-full justify-center items-center p-8 mt-4">
@@ -96,7 +108,7 @@
 						:key="suggestion"
 						class="flex flex-col justify-between sm:flex-row w-full sm:items-center p-8 gap-4 mt-4 bg-light-gray">
 							<p class="text-gray-700">{{ suggestion }}</p>
-							<button @click="addSuggestion(suggestion)" class="bg-lumy-purple text-white text-2xl px-4 py-2 cursor-pointer">+</button>
+							<button @click="addSuggestion(suggestion)" class="bg-lumy-secondary text-white text-2xl px-4 py-2 cursor-pointer">+</button>
 						</div>
 						<div
 						v-else
@@ -104,12 +116,12 @@
 							<p class="text-gray-700">AI suggestion not available yet. A minimum of 15 characters are required to generate suggestions.</p>
 						</div>
 					</div>
-					<div v-else>
+					<div v-if="activeTab === 'coaching' && toggleCoaching === true">
 						<!-- Coaching content here -->
 						<h2 class="font-medium text-lg">Coaching Guidance ({{ requestInfo?.framework.name }})</h2>
 						<div v-if="loadingCoaching" class="flex flex-col w-full justify-center items-center p-8 mt-4">
 							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
-							<p class="text-gray-700">Conferring with the feedback gurus...</p>
+							<p class="text-gray-700">Drawing knowledge from the Lumyverse, might take a sec...</p>
 						</div>
 						<div v-html="coachingSuggestions"></div>
 					</div>
@@ -151,6 +163,9 @@ const feedbackSection = ref<HTMLElement | null>(null)
 const activeTab = ref<'ai' | 'coaching'>()
 const showTabs = ref(false)
 
+const toggleCoaching = ref(false)
+const toggleSuggestions = ref(false)
+
 const route = useRoute()
 const router = useRouter()
 const requestUuId = route.query.uuid as string
@@ -161,6 +176,8 @@ onMounted(async () => {
 
 		if(res.status === 200) {
 			requestInfo.value = res.data
+			toggleCoaching.value = requestInfo.value?.intelligence_coach || false
+			toggleSuggestions.value = requestInfo.value?.intelligence_assistant || false
 			console.log('Request info fetched successfully:', requestInfo.value)
 		}
 	} catch (error: any) {
@@ -188,6 +205,10 @@ const addSuggestion = (suggestion: string) => {
 }
 
 const getAiSuggestions = async () => {
+	if (aiSuggestions.value.length > 0) {
+		activeTab.value = 'ai'
+		return
+	}
 	loadingAiSuggestions.value = true
 	showTabs.value = true
 	activeTab.value = 'ai'

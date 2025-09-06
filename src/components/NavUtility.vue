@@ -19,10 +19,10 @@
 				<router-link to="/admin">Admin</router-link>
 			</li> -->
 			<li>
-				<router-link to="/member">Profile</router-link>
+				<router-link to="/member">Overview</router-link>
 			</li>
 			<li>
-				<router-link to="/settings">Profile Settings</router-link>
+				<router-link to="/settings">Settings</router-link>
 			</li>
 		</ul>
 		</div>
@@ -49,7 +49,7 @@
 			]" /> -->
 		<!-- </router-link> -->
 		<router-link to="/member" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Profile')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
 		@mouseleave="handleMouseLeave"
 		>
 			<UserRound :class="[,
@@ -66,6 +66,14 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
+		<button class="cursor-pointer rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
+			<LogOut
+			@click="auth.logout()"
+			:class="['text-gray-500 size-4']"
+			@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Logout')"
+			@mouseleave="handleMouseLeave"
+			/>
+		</button>
 		<Tooltip
 			:text="tooltipText"
 			:x="tooltipX"
@@ -75,9 +83,12 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { UserRound, Settings, Home, UserRoundCog } from 'lucide-vue-next';
+import { UserRound, Settings, Home, UserRoundCog, LogOut } from 'lucide-vue-next';
 import { onMounted, onUnmounted, ref } from 'vue';
 import Tooltip from './base/Tooltip.vue';
+import { useAuthStore } from '@/stores/authStore';
+
+const auth = useAuthStore();
 
 const isSticky = ref(false)
 const menuOpen = ref(false)
@@ -112,5 +123,6 @@ onMounted(() => {
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+
 })
 </script>

@@ -75,7 +75,7 @@ const router = createRouter({
       path: '/member',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
-        requiresAuth: false, // This route requires authentication
+        requiresAuth: true, // This route requires authentication
       },
       children: [
         {
@@ -83,11 +83,24 @@ const router = createRouter({
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
+        {
+          path: 'feedback',
+          name: 'member-feedback',
+          component: () => import('@/views/member/Feedback.vue'),
+        }
       ]
     },  
     {
       path: '/settings',
-      redirect: 'settings/member/integrations',
+      redirect: () => {
+        const raw = sessionStorage.getItem('LumyRole')
+        const role = raw ? JSON.parse(raw) : null;
+        if (role === 'admin') {
+          return '/settings/admin/general';
+        } else {
+          return '/settings/member/integrations';
+        }
+      },
       component: () => import('@/layouts/SettingsLayout.vue'),
       meta: {
         requiresAuth: true,
@@ -102,6 +115,12 @@ const router = createRouter({
           path: 'admin/general',
           name: 'settings-admin-general',
           component: () => import('@/views/settings/admin/General.vue'),
+          meta: { isAdmin: true }
+        },
+        {
+          path: 'admin/intelligence',
+          name: 'settings-admin-intelligence',
+          component: () => import('@/views/settings/admin/Intelligence.vue'),
           meta: { isAdmin: true }
         },
         {
@@ -130,8 +149,10 @@ const router = createRouter({
         {
           path: '/feedback/request',
           name: 'feedback-request',
-          component: () => import('@/views/feedback/Request.vue')
-        }
+          component: () => import('@/views/feedback/Request.vue'),
+          meta: { requiresAuth: true }
+        },
+        
       ]
     },
     {

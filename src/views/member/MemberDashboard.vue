@@ -99,7 +99,7 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
 			<div class="w-full">
-				<Line :data="feedbackChart" :options="feedbackChatOptions" />
+				<Line :data="feedbackChart" :options="feedbackChartOptions" />
 			</div>
 		</section>
 		<BaseDialog
@@ -197,6 +197,7 @@ const feedbackChart = computed(() => {
 				data: Object.values(feedbackRequested), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(75, 123, 236, 1)',
+				backgroundColor: 'rgba(75, 123, 236, 1)',
 				borderDash: [ 5, 5 ],
 				tension: 0.4
 			},
@@ -205,6 +206,7 @@ const feedbackChart = computed(() => {
 				data: Object.values(feedbackGiven), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(32, 191, 107, 1)',
+				backgroundColor: 'rgba(32, 191, 107, 1)',
 				borderDash: [ 5, 5 ],
 				tension: 0.4
 			},
@@ -213,17 +215,31 @@ const feedbackChart = computed(() => {
 				data: Object.values(feedbackReceived), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(164, 74, 255, 1)',
+				backgroundColor: 'rgba(164, 74, 255, 1)',
 				borderDash: [ 5, 5 ],
 				tension: 0.4
 			}
 		]
 	};
 })
-const feedbackChatOptions = {
+const feedbackChartOptions = {
   responsive: true,
   maintainAspectRatio: true,
+  interaction: {
+	intersect: false,
+  },
   plugins: {
-    legend: { display: false },
+    legend: { 
+		display: true,
+		
+		labels: {
+			position: "top",
+			usePointStyle: true,
+			align: "end",
+			pointStyle: 'circle',
+			padding: 8,
+		}
+	 },
     title: { display: false }
   },
   scales: {
@@ -234,33 +250,6 @@ const feedbackChatOptions = {
     }
   }
 };
-
-// const feedBackChart = computed(() => {
-// 	const feedbackGiven = summary.value?.feedback_given || {};
-// 	const feedbackReceived = summary.value?.feedback_received || {};
-// 	const feedbackRequested = summary.value?.feedback_requested || {};
-// 	return {
-// 		labels: Object.keys(feedbackGiven), // e.g. ["2025-07", "2025-08", ...]
-// 		datasets: [
-// 			{
-// 				label: 'Feedback Given',
-// 				data: Object.values(feedbackGiven), // e.g. [5, 10, ...]
-// 				backgroundColor: 'rgba(54, 162, 235, 0.5)'
-// 			},
-// 			{
-// 				label: 'Feedback Received',
-// 				data: Object.values(feedbackReceived), // e.g. [3, 7, ...]
-// 				backgroundColor: 'rgba(75, 192, 192, 0.5)'
-// 			},
-// 			{
-// 				label: 'Feedback Requested',
-// 				data: Object.values(feedbackRequested), // e.g. [2, 4, ...]
-// 				backgroundColor: 'rgba(255, 206, 86, 0.5)'
-// 			}
-// 		]
-// 	}
-// })
-
 
 
 </script>

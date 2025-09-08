@@ -29,18 +29,18 @@
                 </Switch>
             </div>
             <h1 class="font-thin text-2xl text-gray-500">Nudge settings</h1>
-            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
                 <Listbox v-model="selectedFrequency">
                     <div class="relative">
-                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                    <ListboxButton class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
                         <span class="block truncate">{{ frequencies.find(f => f.value === selectedFrequency )?.label || frequencies.find(f => f.value === accountStore.account?.nudge_interval)?.label }}</span>
                         <span class="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronsUpDown class="h-5 w-5 text-gray-400" />
                         </span>
-                    </Listbox.Button>
-                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Listbox.Option
+                    </ListboxButton>
+                    <ListboxOptions class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <ListboxOption
                         v-for="freq in frequencies"
                         :key="freq.value"
                         :value="freq.value"
@@ -53,24 +53,24 @@
                         >
                             <Check class="h-5 w-5" />
                         </span>
-                        </Listbox.Option>
-                    </Listbox.Options>
+                        </ListboxOption>
+                    </ListboxOptions>
                     </div>
                 </Listbox>
 
             </div>
-            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Day</label>
                 <Listbox v-model="selectedDay">
                     <div class="relative">
-                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                    <ListboxButton class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
                         <span class="block truncate">{{ weekdays.find(d => d.value === selectedDay)?.label || weekdays.find(d => d.value === accountStore.account?.nudge_day)?.label }}</span>
                         <span class="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon class="h-5 w-5 text-gray-400" />
                         </span>
-                    </Listbox.Button>
-                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Listbox.Option
+                    </ListboxButton>
+                    <ListboxOptions class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <ListboxOption
                         v-for="day in weekdays"
                         :key="day.value"
                         :value="day.value"
@@ -83,24 +83,24 @@
                         >
                             <CheckIcon class="h-5 w-5" />
                         </span>
-                        </Listbox.Option>
-                    </Listbox.Options>
+                        </ListboxOption>
+                    </ListboxOptions>
                     </div>
                 </Listbox>
 
             </div>
-            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
                 <Listbox v-model="selectedHour">
                     <div class="relative">
-                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                    <ListboxButton class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
                         <span class="block truncate">{{ hours.find(h => h.value === selectedHour)?.label || hours.find(h => h.value === accountStore.account?.nudge_hour)?.label }}</span>
                         <span class="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronsUpDown class="h-5 w-5 text-gray-400" />
                         </span>
-                    </Listbox.Button>
-                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Listbox.Option
+                    </ListboxButton>
+                    <ListboxOptions class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <ListboxOption
                         v-for="hour in hours"
                         :key="hour.value"
                         :value="hour.value"
@@ -113,8 +113,8 @@
                         >
                             <CheckIcon class="h-5 w-5" />
                         </span>
-                        </Listbox.Option>
-                    </Listbox.Options>
+                        </ListboxOption>
+                    </ListboxOptions>
                     </div>
                 </Listbox>
 
@@ -167,7 +167,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 
 import { ref, onMounted, watch } from 'vue';
-import { Switch, Listbox } from '@headlessui/vue'
+import { Switch, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 import { useAccountStore } from '@/stores/accountStore';
 
 const accountStore = useAccountStore();

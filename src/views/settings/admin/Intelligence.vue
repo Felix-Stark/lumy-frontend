@@ -177,7 +177,7 @@
         </svg>
       </span>
       <span :class="{ 'opacity-50': accountStore.loading }">
-        {{ accountStore.loading ? btnText = 'Saving...' : btnText = 'Save Settings' }}
+        {{ accountStore.loading ?'Saving...' : btnText }}
       </span>
         </BaseButton>
         <BaseToast

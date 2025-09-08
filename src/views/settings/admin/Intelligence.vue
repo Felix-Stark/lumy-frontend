@@ -28,6 +28,97 @@
                     />
                 </Switch>
             </div>
+            <h1 class="font-thin text-2xl text-gray-500">Nudge settings</h1>
+            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
+                <Listbox v-model="selectedFrequency">
+                    <div class="relative">
+                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                        <span class="block truncate">{{ frequencies.find(f => f.value === selectedFrequency )?.label || frequencies.find(f => f.value === accountStore.account?.nudge_interval)?.label }}</span>
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ChevronsUpDown class="h-5 w-5 text-gray-400" />
+                        </span>
+                    </Listbox.Button>
+                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Listbox.Option
+                        v-for="freq in frequencies"
+                        :key="freq.value"
+                        :value="freq.value"
+                        class="relative cursor-default select-none py-2 pl-10 pr-4 hover:bg-gray-100"
+                        >
+                        <span class="block truncate">{{ freq.label }}</span>
+                        <span
+                            v-if="selectedFrequency === freq.value"
+                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600"
+                        >
+                            <Check class="h-5 w-5" />
+                        </span>
+                        </Listbox.Option>
+                    </Listbox.Options>
+                    </div>
+                </Listbox>
+
+            </div>
+            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Day</label>
+                <Listbox v-model="selectedDay">
+                    <div class="relative">
+                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                        <span class="block truncate">{{ weekdays.find(d => d.value === selectedDay)?.label || weekdays.find(d => d.value === accountStore.account?.nudge_day)?.label }}</span>
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ChevronUpDownIcon class="h-5 w-5 text-gray-400" />
+                        </span>
+                    </Listbox.Button>
+                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Listbox.Option
+                        v-for="day in weekdays"
+                        :key="day.value"
+                        :value="day.value"
+                        class="relative cursor-default select-none py-2 pl-10 pr-4 hover:bg-gray-100"
+                        >
+                        <span class="block truncate">{{ day.label }}</span>
+                        <span
+                            v-if="selectedDay === day.value"
+                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600"
+                        >
+                            <CheckIcon class="h-5 w-5" />
+                        </span>
+                        </Listbox.Option>
+                    </Listbox.Options>
+                    </div>
+                </Listbox>
+
+            </div>
+            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                <Listbox v-model="selectedHour">
+                    <div class="relative">
+                    <Listbox.Button class="relative w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                        <span class="block truncate">{{ hours.find(h => h.value === selectedHour)?.label || hours.find(h => h.value === accountStore.account?.nudge_hour)?.label }}</span>
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ChevronsUpDown class="h-5 w-5 text-gray-400" />
+                        </span>
+                    </Listbox.Button>
+                    <Listbox.Options class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Listbox.Option
+                        v-for="hour in hours"
+                        :key="hour.value"
+                        :value="hour.value"
+                        class="relative cursor-default select-none py-2 pl-10 pr-4 hover:bg-gray-100"
+                        >
+                        <span class="block truncate">{{ hour.label }}</span>
+                        <span
+                            v-if="selectedHour === hour.value"
+                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600"
+                        >
+                            <CheckIcon class="h-5 w-5" />
+                        </span>
+                        </Listbox.Option>
+                    </Listbox.Options>
+                    </div>
+                </Listbox>
+
+            </div>
 
         </article>
         <BaseButton
@@ -74,10 +165,10 @@
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
+
 import { ref, onMounted, watch } from 'vue';
-import { Switch } from '@headlessui/vue'
+import { Switch, Listbox } from '@headlessui/vue'
 import { useAccountStore } from '@/stores/accountStore';
-import { buttonNativeTypes } from 'element-plus';
 
 const accountStore = useAccountStore();
 const toggleCoaching = ref(false);
@@ -87,21 +178,40 @@ const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
 const btnText = ref('Save Settings');
 
-// Watch for when account data becomes available
-watch(
-  () => accountStore.account,
-  (newAccount) => {
-    if (newAccount) {
-      toggleCoaching.value = newAccount.intelligence_coach;
-      toggleSuggestions.value = newAccount.intelligence_assistant;
-    }
-  },
-  { immediate: true } // run right away in case account is already loaded
-);
 
-onMounted(() => {
-    accountStore.getAccount();
+onMounted(async () => {
+    await accountStore.getAccount();
+    if (accountStore.account) {
+        toggleCoaching.value = accountStore.account.intelligence_coach;
+        toggleSuggestions.value = accountStore.account.intelligence_assistant;
+        selectedFrequency.value = accountStore.account.nudge_interval || 1;
+        selectedDay.value = accountStore.account.nudge_day || 1;
+        selectedHour.value = accountStore.account.nudge_hour || 9;
+    }
 })
+
+const frequencies = [
+  { label: 'Every week', value: 1 },
+  { label: 'Every 2 weeks', value: 2 },
+  { label: 'Every 3 weeks', value: 3 },
+  { label: 'Every 4 weeks', value: 4 },
+]
+
+const weekdays = [
+  { label: 'Monday', value: 1 },
+  { label: 'Tuesday', value: 2 },
+  { label: 'Wednesday', value: 3 },
+  { label: 'Thursday', value: 4 },
+  { label: 'Friday', value: 5 },
+]
+
+const hours = Array.from({ length: 24 }, (_, i) => ({
+  label: `${i}:00`,
+  value: i,
+}))
+const selectedFrequency = ref(0)
+const selectedDay = ref(0)
+const selectedHour = ref(0)
 
 async function saveSettings() {
    if (!accountStore.account) {
@@ -114,7 +224,10 @@ async function saveSettings() {
    const updated = {
     ...accountStore.account,
     intelligence_coach: toggleCoaching.value,
-    intelligence_assistant: toggleSuggestions.value
+    intelligence_assistant: toggleSuggestions.value,
+    nudge_interval: selectedFrequency.value,
+    nudge_day: selectedDay.value,
+    nudge_hour: selectedHour.value,
    };
 
    const res = await accountStore.updateAccount(updated);

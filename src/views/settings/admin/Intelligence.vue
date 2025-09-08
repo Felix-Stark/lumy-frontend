@@ -205,7 +205,7 @@ const toggleSuggestions = ref(false);
 const showToast = ref(false);
 const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
-const btnText = ref('');
+const btnText = ref('Save Settings');
 
 
 onMounted(async () => {

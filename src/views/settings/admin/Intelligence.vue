@@ -29,7 +29,7 @@
                 </Switch>
             </div>
             <h1 class="font-thin text-2xl text-gray-500">Feedback reminders</h1>
-            <p class="font-thin text-sm text-gray-500">Set up automated feedback reminders to ensure consistent and timely feedback within your team.</p>
+
             <!-- <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
                 <Listbox v-model="selectedFrequency">

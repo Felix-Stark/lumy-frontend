@@ -28,13 +28,19 @@
                     />
                 </Switch>
             </div>
-            <h1 class="font-thin text-2xl text-gray-500">Nudge settings</h1>
-            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
+            <h1 class="font-thin text-2xl text-gray-500">Feedback reminders</h1>
+            <p class="font-thin text-sm text-gray-500">Set up automated feedback reminders to ensure consistent and timely feedback within your team.</p>
+            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
                 <Listbox v-model="selectedFrequency">
-                    <ListboxButton class="w-full rounded-lg border py-2 pl-3 pr-10 text-left shadow-sm cursor-default">
+                    <Float
+                    placement="top"
+                    :offset="4"
+                    :flip="true"
+                    >
+                    <ListboxButton class="w-full rounded-lg border px-2 py-1 text-left shadow-sm cursor-default">
                         <span class="block truncate">{{ frequencies.find(f => f.value === selectedFrequency )?.label || frequencies.find(f => f.value === accountStore.account?.nudge_interval)?.label }}</span>
-                        <span class="inset-y-0 right-0 flex items-center pr-2">
+                        <span class="flex items-center pr-2">
                         <ChevronsUpDown class="h-5 w-5 text-gray-400" />
                         </span>
                     </ListboxButton>
@@ -54,6 +60,7 @@
                         </span>
                         </ListboxOption>
                     </ListboxOptions>
+                    </Float>
                 </Listbox>
 
             </div>
@@ -177,7 +184,7 @@ const toggleSuggestions = ref(false);
 const showToast = ref(false);
 const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
-const btnText = ref('Save Settings');
+const btnText = ref('');
 
 
 onMounted(async () => {

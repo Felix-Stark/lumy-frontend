@@ -30,7 +30,7 @@
             </div>
             <h1 class="font-thin text-2xl text-gray-500">Feedback reminders</h1>
             <p class="font-thin text-sm text-gray-500">Set up automated feedback reminders to ensure consistent and timely feedback within your team.</p>
-            <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
+            <!-- <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Frequency</label>
                 <Listbox v-model="selectedFrequency">
                     <Float
@@ -125,6 +125,27 @@
                     </Float>
                 </Listbox>
 
+            </div> -->
+
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
+                <p class="font-thin text-sm text-gray-500">Feedback reminders will be sent out on selected day and time, based on your team's time zone.</p>
+                <div class="flex flex-row w-full ">
+                    <select v-model="selectedFrequency" class="mt-2 mr-2 p-2 border border-gray-300 rounded">
+                        <option v-for="freq in frequencies" :key="freq.value" :value="freq.value">
+                            {{ freq.label }}
+                        </option>
+                    </select>
+                    <select v-model="selectedDay" class="mt-2 mr-2 p-2 border border-gray-300 rounded">
+                        <option v-for="day in weekdays" :key="day.value" :value="day.value">
+                            {{ day.label }}
+                        </option>
+                    </select>
+                    <select v-model="selectedHour" class="mt-2 p-2 border border-gray-300 rounded">
+                        <option v-for="hour in hours" :key="hour.value" :value="hour.value">
+                            {{ hour.label }}
+                        </option>
+                    </select>
+                </div>
             </div>
 
         </article>

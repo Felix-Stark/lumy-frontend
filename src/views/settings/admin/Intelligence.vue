@@ -150,7 +150,6 @@
 
         </article>
         <BaseButton
-        :btnText="btnText"
         :onAction="() => saveSettings()"
         >
             <span v-if="accountStore.loading" class="absolute left-3">
@@ -177,7 +176,7 @@
         </svg>
       </span>
       <span :class="{ 'opacity-50': accountStore.loading }">
-        {{ accountStore.loading ?'Saving...' : btnText }}
+        {{ accountStore.loading ?'Saving...' : 'Save Settings' }}
       </span>
         </BaseButton>
         <BaseToast
@@ -258,7 +257,7 @@ async function saveSettings() {
     nudge_day: selectedDay.value,
     nudge_hour: selectedHour.value,
    };
-
+   console.log('Updated settings to be saved:', updated);
    const res = await accountStore.updateAccount(updated);
    if (res) {
     toastBg.value = 'bg-lumy-green';

@@ -15,7 +15,7 @@ defineProps<{
   secondary?: boolean;
   disabled?: boolean;
   loading?: boolean;
-  btnText: string;
+  btnText?: string;
   onAction: () => void;
 }>();
 </script>

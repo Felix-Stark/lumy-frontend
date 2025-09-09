@@ -33,7 +33,7 @@
 	></div>
 	<div :class="[
       isSticky
-        ? 'fixed top-20 right-8 flex flex-col items-center gap-4 z-50'
+        ? 'fixed top-20 right-8 flex flex-col items-center gap-4'
         : 'absolute top-0 right-0 flex items-center gap-4 mr-12 mt-10',
 		'transition-all duration-300 ease-in-out',
 		'hidden md:flex'
@@ -74,14 +74,12 @@
 			@mouseleave="handleMouseLeave"
 			/>
 		</button>
-		<Teleport to="body">
-			<Tooltip
-			:text="tooltipText"
-			:x="tooltipX"
-			:y="tooltipY"
-			:visible="showTooltip"
-			/>
-		</Teleport>
+		<Tooltip
+		:text="tooltipText"
+		:x="tooltipX"
+		:y="tooltipY"
+		:visible="showTooltip"
+		/>
 	</div>
 </template>
 <script setup lang="ts">

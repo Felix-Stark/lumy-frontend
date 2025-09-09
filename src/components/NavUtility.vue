@@ -74,12 +74,14 @@
 			@mouseleave="handleMouseLeave"
 			/>
 		</button>
-		<Tooltip
+		<Teleport to="body">
+			<Tooltip
 			:text="tooltipText"
 			:x="tooltipX"
 			:y="tooltipY"
 			:visible="showTooltip"
 			/>
+		</Teleport>
 	</div>
 </template>
 <script setup lang="ts">

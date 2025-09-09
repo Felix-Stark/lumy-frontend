@@ -212,9 +212,9 @@ onMounted(async () => {
     if (accountStore.account) {
         toggleCoaching.value = accountStore.account.intelligence_coach;
         toggleSuggestions.value = accountStore.account.intelligence_assistant;
-        selectedFrequency.value = accountStore.account.nudge_interval || 1;
-        selectedDay.value = accountStore.account.nudge_day || 1;
-        selectedHour.value = accountStore.account.nudge_hour || 9;
+        selectedFrequency.value = accountStore.account.nudge_interval_weeks;
+        selectedDay.value = accountStore.account.nudge_weekday;
+        selectedHour.value = accountStore.account.nudge_hour;
     }
 })
 
@@ -226,11 +226,11 @@ const frequencies = [
 ]
 
 const weekdays = [
-  { label: 'Monday', value: 1 },
-  { label: 'Tuesday', value: 2 },
-  { label: 'Wednesday', value: 3 },
-  { label: 'Thursday', value: 4 },
-  { label: 'Friday', value: 5 },
+  { label: 'Monday', value: 0 },
+  { label: 'Tuesday', value: 1 },
+  { label: 'Wednesday', value: 2 },
+  { label: 'Thursday', value: 3 },
+  { label: 'Friday', value: 4 },
 ]
 
 const hours = Array.from({ length: 24 }, (_, i) => ({
@@ -253,8 +253,8 @@ async function saveSettings() {
     ...accountStore.account,
     intelligence_coach: toggleCoaching.value,
     intelligence_assistant: toggleSuggestions.value,
-    nudge_interval: selectedFrequency.value,
-    nudge_day: selectedDay.value,
+    nudge_interval_weeks: selectedFrequency.value,
+    nudge_weekday: selectedDay.value,
     nudge_hour: selectedHour.value,
    };
    console.log('Updated settings to be saved:', updated);

@@ -42,8 +42,8 @@ export type Account = {
   name: string;
   framework_id: number;
   bot_personality_id: number;
-  nudge_interval: number;
-  nudge_day: number; // 1 (Monday) to 5 (Friday)
+  nudge_interval_weeks: number;
+  nudge_weekday: number; // 1 (Monday) to 5 (Friday)
   nudge_hour: number; // 0 to 23
   intelligence_coach: boolean;
   intelligence_assistant: boolean;

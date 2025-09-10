@@ -11,6 +11,7 @@
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.5",
     "@headlessui-float/vue": "^0.15.0",
+    "@headlessui/tailwindcss": "^0.2.2",
     "@headlessui/vue": "^1.7.23",
     "@tailwindcss/vite": "^4.1.7",
     "axios": "^1.9.0",

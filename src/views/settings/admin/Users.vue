@@ -89,7 +89,7 @@ onMounted(async() => {
         await userStore.getAccount();
     }
     if(users === null || users.value.length === 0){
-        await userStore.getUsers();
+        await userStore.getUsers(true);
     }
 })
 

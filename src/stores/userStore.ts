@@ -32,9 +32,9 @@ export const useUserStore = defineStore('user', {
 				return res.status; //return status and use userStore.users in components
 			}
 		},
-		async getUsers() {
+		async getUsers(inactive: boolean) {
 			try {
-				const res = await api.get('/users');
+				const res = await api.get(`/users?include_inactive=${inactive}`);
 				if (res.status === 200) {
 					this.users = res.data; //return status and use userStore.users in components
 					return res.status

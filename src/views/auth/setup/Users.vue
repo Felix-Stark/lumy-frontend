@@ -56,7 +56,7 @@ import api from '@/services/api';
 import { useUserStore } from '@/stores/userStore';
 import type { SetupUser } from '@/types';
 import { useAuthStore } from '@/stores/authStore';
-import mockUsers from '@/test/mockUsers.json';
+
 
 const router = useRouter();
 const userStore = useUserStore();

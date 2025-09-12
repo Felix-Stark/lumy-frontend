@@ -27,5 +27,6 @@ test/
 *.sln
 *.sw?
 .env
+package-lock.json
 
 *.tsbuildinfo

@@ -285,7 +285,7 @@ const feedbackChartOptions = computed<LineChartOptions>(() => ({
         align: 'end',
         usePointStyle: true,
         pointStyle: 'circle',
-        pointStyleWidth: 10,
+
       }
     },
     title: { display: false }

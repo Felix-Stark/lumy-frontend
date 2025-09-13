@@ -6,7 +6,8 @@
 
             </div>
             <div class="bg-white shadow-md rounded-lg p-6 w-full">
-                
+                <p>{{ positiveSentiments }}</p>
+                <button @click="() => console.log('positive sentiment: ', positiveSentiments)">CLICK IT!</button>
 
             </div>
         </section>
@@ -26,10 +27,13 @@ const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
 const feedbackList = ref<FeedbackSubmission[]>([]);
-const avgSentiment = computed(() => {
-    const sentiments = feedbackList.value.map(f => f.sentiment_score);
-    if(sentiments.length === 0) return 0;
-    const positiveSentiments = sentiments.filter(s => s >= 0);
+const positiveSentiments = computed(() => {
+    const positive = feedbackList.value.map((fb) => {
+        if(fb.sentiment === 'positive') {
+            return fb.sentiment_score
+        }
+    });
+    return ((positive.length / feedbackList.value.length) * 100 || 0).toFixed(2);
 })
 
 onMounted(async() => {

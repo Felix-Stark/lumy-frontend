@@ -37,7 +37,7 @@ const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
 const feedbackList = ref<FeedbackSubmission[]>([]);
 const positiveSentiments = computed(() => {
-    const positive = feedbackList.value.map(fb => fb.sentiment === 'positive');
+    const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');
     console.log('positive array: ', positive);
     return (positive.length / feedbackList.value.length);
 })

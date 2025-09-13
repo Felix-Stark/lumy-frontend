@@ -63,7 +63,8 @@ const data = computed(() => {
         data: [positiveSentiments.value, 100 - positiveSentiments.value],
         backgroundColor: ["#22c55e", "#e5e7eb"], // green + gray
         borderWidth: 0,
-        cutout: "70%", // thickness of the arc
+        borderRadius: 5,
+        cutout: "80%", // thickness of the arc
         circumference: 180, // half circle
         rotation: 270, // start at bottom center
       },

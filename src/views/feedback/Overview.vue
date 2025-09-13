@@ -79,6 +79,10 @@ const options = {
     tooltip: { enabled: false },
     legend: { display: false },
   },
+  animation: {
+    animateRotate: false,
+    animateScale: false
+  }
 };
 
 const avgSentChart = computed(() => {

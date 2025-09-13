@@ -33,7 +33,7 @@ const positiveSentiments = computed(() => {
             return fb.sentiment_score
         }
     });
-    return ((positive.length / feedbackList.value.length) * 100 || 0).toFixed(2);
+    return ((positive.length / feedbackList.value.length) * 100 || 0);
 })
 
 onMounted(async() => {

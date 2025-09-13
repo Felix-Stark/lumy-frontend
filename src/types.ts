@@ -97,6 +97,15 @@ export type FeedbackRequest = {
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
 }
+export type FeedbackSubmission =   {
+  id: number;
+  feedback_request_id: string;
+  content: string;
+  sentiment: string;
+  sentiment_score: number;
+  created_at: string; // ISO date string
+  updated_at: string; // ISO date string
+  }
 
 export type BotPersonality = {
   id: number;

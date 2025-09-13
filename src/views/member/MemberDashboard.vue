@@ -137,7 +137,6 @@ const router = useRouter();
 const userStore = useUserStore();
 const summary = ref<UserSummary | null>();
 const showSuccess = ref(false);
-const feedbackChartRange = ref<number>(10);
 
 onMounted(async() => {
 	await userStore.getMeSummary();

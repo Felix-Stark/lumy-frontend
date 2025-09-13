@@ -43,6 +43,7 @@ const positiveSentiments = computed(() => {
             return fb.sentiment_score
         }
     });
+    console.log('positive array: ', positive);
     return ((positive.length / feedbackList.value.length) * 100 || 0);
 })
 

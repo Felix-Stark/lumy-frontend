@@ -39,6 +39,7 @@ const feedbackList = ref<FeedbackSubmission[]>([]);
 const positiveSentiments = computed(() => {
     const positive = feedbackList.value.map((fb) => {
         if(fb.sentiment === 'positive') {
+            console.log('sentiment score: ', fb.sentiment_score);
             return fb.sentiment_score
         }
     });

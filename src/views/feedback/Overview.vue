@@ -44,7 +44,7 @@ const positiveSentiments = computed(() => {
         }
     });
     console.log('positive array: ', positive);
-    return ((positive.length / feedbackList.value.length) * 100 || 0);
+    return (positive.length / feedbackList.value.length);
 })
 
 onMounted(async() => {

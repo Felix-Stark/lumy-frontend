@@ -2,7 +2,16 @@
     <div class="flex flex-col items-center h-full w-full p-4 md:p-8 lg:w-4/5 xl:w-3/4 2xl:w-2/3 mx-auto">
         <section class="flex flex-col md:flex-row w-full gap-6">
             <div class="bg-white shadow-md rounded-lg p-6 w-full flex justify-center items-center">
-                
+                 <div class="relative h-48">
+                    <Doughnut :data="data" :options="options" />
+                    <!-- Center text -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center text-2xl font-bold"
+                        style="margin-top: 40px"
+                    >
+                        {{ positiveSentiments }}%
+                    </div>
+                </div>
 
             </div>
             <div class="bg-white shadow-md rounded-lg p-6 w-full">
@@ -49,6 +58,30 @@ onMounted(async() => {
     console.log('summary: ', summary.value);
 
 });
+
+const data = computed(() => {
+  return {
+    datasets: [
+      {
+        data: [positiveSentiments.value, 100 - positiveSentiments.value],
+        backgroundColor: ["#22c55e", "#e5e7eb"], // green + gray
+        borderWidth: 0,
+        cutout: "70%", // thickness of the arc
+        circumference: 180, // half circle
+        rotation: 270, // start at bottom center
+      },
+    ],
+  };
+});
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    tooltip: { enabled: false },
+    legend: { display: false },
+  },
+};
 
 const avgSentChart = computed(() => {
 	const avgSent = summary.value?.avg_sentiment || {};

@@ -64,7 +64,7 @@ const data = computed(() => {
         backgroundColor: ["#22c55e", "#e5e7eb"], // green + gray
         borderWidth: 0,
         borderRadius: 5,
-        cutout: "80%", // thickness of the arc
+        cutout: "70%", // thickness of the arc
         circumference: 180, // half circle
         rotation: 270, // start at bottom center
       },

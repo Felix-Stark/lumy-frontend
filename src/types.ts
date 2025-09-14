@@ -98,15 +98,35 @@ export type FeedbackRequest = {
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
 }
-export type FeedbackSubmission =   {
+export type FeedbackRequestShort = {
+  id: string;
+  recipient: {
+    id: number;
+    name: string;
+    avatar: string;
+    is_active: boolean;
+  };
+  recipient_id: number;
+  skill: {
+    skill: string;
+    definition: string;
+    theme: string | null;
+  };
+  message: string;
+  account_id: number;
+  status: string;
+};
+
+export type FeedbackSubmission = {
   id: number;
   feedback_request_id: string;
   content: string;
-  sentiment: string;
-  sentiment_score: number;
+  sentiment: string; // e.g. 'positive' | 'neutral' | 'negative'
+  sentiment_score: number; // e.g. 85
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
-  }
+  feedback_request?: FeedbackRequestShort;
+};
 
 export type BotPersonality = {
   id: number;

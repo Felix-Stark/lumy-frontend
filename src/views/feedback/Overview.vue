@@ -21,7 +21,7 @@
                 <div class="text-sm space-y-2">
                     <div class="flex items-center space-x-2">
                         <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-                        <span>Feedback Given <i>({{ feedbackGiven }})</i></span>
+                        <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
                     </div>
                 <!-- <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-blue-300"></span>
@@ -29,7 +29,7 @@
                 </div> -->
                     <div class="flex items-center space-x-2">
                         <span class="w-3 h-3 rounded-full bg-blue-600"></span>
-                        <span>Feedback Received <i>({{ feedbackReceived }})</i></span>
+                        <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
                     </div>
                 </div>
 
@@ -117,43 +117,40 @@ const options = {
   }
 };
 
-// const feedbackRequested = summary.value?.feedback_requested_count;
-const feedbackGiven = summary.value?.feedback_given_count || 0;
-const feedbackReceived = summary.value?.feedback_received_count || 0;
 
-const all = [
-    // feedbackRequested || 0,
-    feedbackGiven || 0,
-    feedbackReceived || 0
-];
-const rawMax = Math.max(...all);
-const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)));
-const roundedMax = Math.ceil(rawMax / magnitude) * magnitude;
+const allTimeData = computed(() => {
+  if (!summary.value) return { datasets: [] }
 
-const allTimeData = {
+// const feedbackRequested = summary.value?.feedback_requested_count || 0;
+  const feedbackGiven = summary.value.feedback_given_count || 0
+  const feedbackReceived = summary.value.feedback_received_count || 0
+  const all = [feedbackGiven, feedbackReceived]
+  const rawMax = Math.max(...all, 10) // avoid 0
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)))
+  const roundedMax = Math.ceil(rawMax / magnitude) * magnitude
+
+  return {
     datasets: [
-        {
-            label: 'Feedback Given',
-            data: [feedbackGiven, roundedMax - feedbackGiven],
-            backgroundColor: ['#9b5cff', '#e5e5e5'],
-            borderWidth: 0,
-            cutout: '75%', // outer ring
-        },
-        // {
-        //      label: 'Feedback Requested',
-        //   data: [feedbackRequested, roundedMax - feedbackRequested],
-        //   backgroundColor: ['#c4d9ff', '#f1f1f1'],
-        //     borderWidth: 0,
-        //     cutout: '55%', // middle ring
-        {
-            label: 'Feedback Received',
-            data: [feedbackReceived, roundedMax - feedbackReceived],
-            backgroundColor: ['#3b82f6', '#f5f5f5'],
-            borderWidth: 0,
-            cutout: '35%', // inner ring
-        }
+      {
+        label: 'Feedback Given',
+        data: [feedbackGiven, roundedMax - feedbackGiven],
+        backgroundColor: ['#9b5cff', '#e5e5e5'],
+        cutout: '75%',
+        borderWidth: 0,
+        weight: 1
+      },
+      {
+        label: 'Feedback Received',
+        data: [feedbackReceived, roundedMax - feedbackReceived],
+        backgroundColor: ['#3b82f6', '#f5f5f5'],
+        cutout: '55%',
+        borderWidth: 0,
+        weight: 1
+      }
     ]
-}
+  }
+})
+
 
 const allTimeOptions = {
     responsive: true,

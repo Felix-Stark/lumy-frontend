@@ -9,14 +9,31 @@
                         class="absolute inset-0 flex items-center justify-center text-2xl font-bold"
                         style="margin-top: 40px"
                     >
-                        {{ positiveSentiments }}%
+                        <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
                     </div>
                 </div>
 
             </div>
             <div class="bg-white shadow-md rounded-lg p-6 w-full">
-                <p>{{ positiveSentiments }}</p>
-                <button @click="() => console.log('positive sentiment: ', positiveSentiments)">CLICK IT!</button>
+                <div class="relative h-64 w-64">
+                    <Doughnut :data="data" :options="options" />
+                </div>
+
+                <!-- Legend -->
+                <div class="text-sm space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                        <span>Feedback Given <i>({{ feedbackGiven }})</i></span>
+                    </div>
+                <!-- <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-blue-300"></span>
+                    <span>Feedback Requested <i>({{ requested }})</i></span>
+                </div> -->
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                        <span>Feedback Received <i>({{ feedbackReceived }})</i></span>
+                    </div>
+                </div>
 
             </div>
         </section>
@@ -42,6 +59,9 @@ const positiveSentiments = computed(() => {
     return (positive.length / feedbackList.value.length) * 100 || 0;
 })
 
+// this will animate from 0 -> targetPercentage
+const currentPercentage = ref(0);
+
 onMounted(async() => {
     if(!summary.value) {
         await userStore.getMeSummary();
@@ -53,6 +73,20 @@ onMounted(async() => {
     }
     console.log('Feedback List:', feedbackList.value);
     console.log('summary: ', summary.value);
+    let progress = 0;
+  const duration = 1000; // 1 second animation
+  const step = 16; // ~60fps
+  const increment = positiveSentiments.value / (duration / step);
+
+  const interval = setInterval(() => {
+    progress += increment;
+    if (progress >= positiveSentiments.value) {
+      currentPercentage.value = positiveSentiments.value;
+      clearInterval(interval);
+    } else {
+      currentPercentage.value = Math.round(progress);
+    }
+  }, step);
 
 });
 
@@ -61,7 +95,7 @@ const data = computed(() => {
     datasets: [
       {
         data: [positiveSentiments.value, 100 - positiveSentiments.value],
-        backgroundColor: ["#22c55e", "#e5e7eb"], // green + gray
+        backgroundColor: ["#7FE47E", "#e5e7eb"], // green + gray
         borderWidth: 0,
         borderRadius: 5,
         cutout: "70%", // thickness of the arc
@@ -85,35 +119,75 @@ const options = {
   }
 };
 
-const avgSentChart = computed(() => {
-	const avgSent = summary.value?.avg_sentiment || {};
-	return {
-		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Average Sentiment',
-				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			}
-		]
-	};
-})
-const avgSentOptions = {
-  responsive: true,
-  maintainAspectRatio: true,
-  plugins: {
-    legend: { display: false },
-    title: { display: false }
+// const feedbackRequested = summary.value?.feedback_requested_count;
+const feedbackGiven = summary.value?.feedback_given_count || 0;
+const feedbackReceived = summary.value?.feedback_received_count || 0;
+
+const all = [
+    // feedbackRequested || 0,
+    feedbackGiven || 0,
+    feedbackReceived || 0
+];
+const rawMax = Math.max(...all);
+const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)));
+const roundedMax = Math.ceil(rawMax / magnitude) * magnitude;
+
+const allTimeData = {
+    labels: ['Given', 'Requested', 'Received'],
+    datasets: [
+        {
+            label: 'Feedback Given',
+            data: [feedbackGiven, roundedMax - feedbackGiven],
+            backgroundColor: ['#9b5cff', '#e5e5e5'],
+            borderWidth: 0,
+            cutout: '75%', // outer ring
+        },
+        // {
+        //      label: 'Feedback Requested',
+        //   data: [feedbackRequested, roundedMax - feedbackRequested],
+        //   backgroundColor: ['#c4d9ff', '#f1f1f1'],
+        //     borderWidth: 0,
+        //     cutout: '55%', // middle ring
+        {
+            label: 'Feedback Received',
+            data: [feedbackReceived, roundedMax - feedbackReceived],
+            backgroundColor: ['#3b82f6', '#f5f5f5'],
+            borderWidth: 0,
+            cutout: '35%', // inner ring
+        }
+    ]
+}
+
+const allTimeOptions = {
+    responsive: true,
+    plugins: {
+    legend: {
+      display: true,
+      position: 'right',
+      labels: {
+        usePointStyle: true,
+        padding: 16,
+        font: {
+          size: 12,
+        },
+      },
+    },
+    tooltip: {
+      enabled: true,
+      callbacks: {
+        label: (ctx: any) => {
+          const label = ctx.dataset.label || ''
+          const value = ctx.dataset.data[0] // only first slice (the filled part)
+          return `${label}: ${value}`
+        },
+      },
+    },
   },
-  scales: {
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
-    }
-  }
-};
+  animation: {
+    animateRotate: true,
+    duration: 1500,
+  },
+}
+
+
 </script>

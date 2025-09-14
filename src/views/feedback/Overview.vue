@@ -131,7 +131,6 @@ const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)));
 const roundedMax = Math.ceil(rawMax / magnitude) * magnitude;
 
 const allTimeData = {
-    labels: ['Given', 'Requested', 'Received'],
     datasets: [
         {
             label: 'Feedback Given',
@@ -160,17 +159,7 @@ const allTimeOptions = {
     responsive: true,
     plugins: {
     legend: {
-      display: true,
-    },
-    tooltip: {
-      enabled: true,
-      callbacks: {
-        label: (ctx: any) => {
-          const label = ctx.dataset.label || ''
-          const value = ctx.dataset.data[0] // only first slice (the filled part)
-          return `${label}: ${value}`
-        },
-      },
+      display: false,
     },
   },
   animation: {

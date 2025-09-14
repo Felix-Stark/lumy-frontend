@@ -16,7 +16,7 @@
             </div>
             <div class="bg-white shadow-md rounded-lg p-6 w-full">
                 <div class="relative h-64 w-64">
-                    <Doughnut :data="data" :options="options" />
+                    <Doughnut :data="allTimeData" :options="allTimeOptions" />
                 </div>
 
                 <!-- Legend -->
@@ -163,14 +163,6 @@ const allTimeOptions = {
     plugins: {
     legend: {
       display: true,
-      position: 'right',
-      labels: {
-        usePointStyle: true,
-        padding: 16,
-        font: {
-          size: 12,
-        },
-      },
     },
     tooltip: {
       enabled: true,

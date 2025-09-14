@@ -15,7 +15,7 @@
                 </div>
 
             </div>
-            <div class="bg-white flex items-center justify-center shadow-md rounded-lg p-6 w-full">
+            <div class="bg-white relative flex items-center justify-center shadow-md rounded-lg p-6 w-full">
                 <Doughnut :data="allTimeData" :options="allTimeOptions" />
                 <!-- Legend -->
                 <div class="text-sm space-y-2">

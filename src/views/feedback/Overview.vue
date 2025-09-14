@@ -10,15 +10,13 @@
                         style="margin-top: 40px"
                     >
                         <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
+                        <p class="text-gray-500 text-sm -mt-1">Positive sentimen</p>
                     </div>
                 </div>
 
             </div>
-            <div class="bg-white shadow-md rounded-lg p-6 w-full">
-                <div class="relative h-64 w-64">
-                    <Doughnut :data="allTimeData" :options="allTimeOptions" />
-                </div>
-
+            <div class="bg-white flex items-center justify-center shadow-md rounded-lg p-6 w-full">
+                <Doughnut :data="allTimeData" :options="allTimeOptions" />
                 <!-- Legend -->
                 <div class="text-sm space-y-2">
                     <div class="flex items-center space-x-2">

@@ -83,6 +83,11 @@ const router = createRouter({
           name: 'member-dashboard',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
+        {
+          path: 'feedback/overview',
+          name: 'feedback-overview',
+          component: () => import('@/views/feedback/Overview.vue'),
+        }
       ]
     },  
     {
@@ -147,13 +152,6 @@ const router = createRouter({
           component: () => import('@/views/feedback/Request.vue'),
           meta: { requiresAuth: true }
         },
-        {
-          path: 'overview',
-          name: 'feedback-overview',
-          component: () => import('@/views/feedback/Overview.vue'),
-          meta: { requiresAuth: true }
-        }
-        
       ]
     },
     {

@@ -16,6 +16,7 @@ export type TimeSeries = Record<string, number>;
 export type UserSummary = {
   feedback_received_count: number;
   feedback_given_count: number;
+  feedback_requested_count: number;
   positive_sentiment_percentage: number;
   top_positive_skill: string;
   skills_summary: SkillSummary[];

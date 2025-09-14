@@ -1,6 +1,6 @@
 <template>
     <section class="flex flex-col md:flex-row w-full gap-6">
-        <div class="bg-white shadow-lg rounded-lg p-6 w-full flex justify-center items-center">
+        <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
             <div class="relative h-48">
                 <Doughnut :data="data" :options="options" />
                 <!-- Center text -->
@@ -11,7 +11,7 @@
             </div>
 
         </div>
-        <div class="bg-white relative flex items-center justify-center gap-6 shadow-md rounded-lg p-6 w-full">
+        <div class="bg-white relative flex items-center justify-center gap-8 shadow-md rounded-lg p-6 w-full">
             <div class="h-48">
                 <Doughnut :data="allTimeData" :options="allTimeOptions" />
 
@@ -55,7 +55,8 @@ const feedbackList = ref<FeedbackSubmission[]>([]);
 const positiveSentiments = computed(() => {
     const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');
     console.log('positive array: ', positive);
-    return (positive.length / feedbackList.value.length) * 100 || 0;
+    const decimal = (positive.length / feedbackList.value.length);
+    return Number(decimal * 100).toFixed(0) as unknown as number;
 })
 
 // this will animate from 0 -> targetPercentage

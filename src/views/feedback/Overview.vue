@@ -19,15 +19,15 @@
             <!-- Legend -->
             <div class="text-sm space-y-2">
                 <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
                     <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-blue-300"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
                     <span>Feedback Requested <i>({{ summary?.feedback_requested_count }})</i></span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-blue-600"></span>
+                    <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
                     <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
                 </div>
             </div>
@@ -125,7 +125,7 @@ const allTimeData = computed(() => {
     const feedbackRequested = summary.value?.feedback_requested_count || 0;
     const feedbackGiven = summary.value.feedback_given_count || 0
     const feedbackReceived = summary.value.feedback_received_count || 0
-    const all = [feedbackGiven, feedbackReceived]
+    const all = [feedbackGiven, feedbackRequested, feedbackReceived]
     const rawMax = Math.max(...all, 10) // avoid 0
     const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)))
     const roundedMax = Math.ceil(rawMax / magnitude) * magnitude
@@ -133,27 +133,29 @@ const allTimeData = computed(() => {
     return {
         datasets: [
             {
-                label: 'Feedback Given',
-                data: [feedbackGiven, roundedMax - feedbackGiven],
-                backgroundColor: ['#9b5cff', '#e5e5e5'],
-                cutout: '75%',
-                borderWidth: 0,
-                weight: 1
-            },
-            {
-                label: 'Feedback Requested',
-                data: [feedbackRequested, roundedMax - feedbackRequested],
-                backgroundColor: ['#c4d9ff', '#f1f1f1'],
-                borderWidth: 0,
-                cutout: '55%', // middle ring
-            },
-            {
-                label: 'Feedback Received',
-                data: [feedbackReceived, roundedMax - feedbackReceived],
-                backgroundColor: ['#3b82f6', '#f5f5f5'],
-                borderWidth: 0,
-                cutout: '35%', // inner ring
-            },
+    label: 'Feedback Given',
+    data: [feedbackGiven, roundedMax - feedbackGiven],
+    backgroundColor: ['#9b5cff', '#e5e5e5'],
+    borderWidth: 0,
+    cutout: '65%',   // controls inner radius
+    radius: '100%', // full size
+  },
+  {
+    label: 'Feedback Requested',
+    data: [feedbackRequested, roundedMax - feedbackRequested],
+    backgroundColor: ['#60a5fa', '#f1f1f1'],
+    borderWidth: 0,
+    cutout: '45%',
+    radius: '80%',
+  },
+  {
+    label: 'Feedback Received',
+    data: [feedbackReceived, roundedMax - feedbackReceived],
+    backgroundColor: ['#2563eb', '#f5f5f5'],
+    borderWidth: 0,
+    cutout: '25%',
+    radius: '60%',
+  }
         ]
     }
 })

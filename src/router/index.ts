@@ -84,7 +84,7 @@ const router = createRouter({
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
         {
-          path: 'feedback/overview',
+          path: 'feedback-overview',
           name: 'feedback-overview',
           component: () => import('@/views/feedback/Overview.vue'),
         }

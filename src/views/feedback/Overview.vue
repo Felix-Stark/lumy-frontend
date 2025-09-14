@@ -4,7 +4,7 @@
             <div class="relative h-48">
                 <Doughnut :data="data" :options="options" />
                 <!-- Center text -->
-                <div class="absolute inset-0 flex flex-col items-center text-2xl font-bold" style="margin-top: 40px">
+                <div class="absolute inset-0 bottom-0 flex flex-col items-center text-2xl font-bold" style="margin-top: 40px">
                     <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
                     <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
                 </div>

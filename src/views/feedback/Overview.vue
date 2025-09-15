@@ -11,7 +11,7 @@
             </div>
 
         </div>
-        <div class="bg-white relative flex items-center justify-center gap-8 shadow-md rounded-lg p-6 w-full">
+        <div class="bg-white relative flex items-center justify-between gap-8 shadow-md rounded-lg p-8 w-full">
             <div class="h-48">
                 <Doughnut :data="allTimeData" :options="allTimeOptions" />
             </div>
@@ -36,17 +36,17 @@
     <section class="flex justify-between items-center">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg p-2">
             <Listbox>
-                <ListboxButton class="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
-                    <span class="block ">
-                         Filter by Skill
-                    </span>
-                    <ChevronDown class="ml-2 size-4"/>
-                </ListboxButton>
                 <Float
                 placement="bottom-start"
                 :flip="true"
                 :offset="4"
                 >
+                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
+                    <span class="block ">
+                         Filter by Skill
+                    </span>
+                    <ChevronDown class="ml-2 size-4"/>
+                </ListboxButton>
                     <ListboxOptions v-model="filteredSkill" class="max-h-60 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
@@ -60,13 +60,13 @@
                 </Float>
             </Listbox>
             <Listbox v-model="filteredSubmitter">
+                <Float>
                 <ListboxButton class="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
                     <span>
                         Filter by Peer
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                <Float>
                     <ListboxOptions>
                         <ListboxOption
                         v-for="submitter in submitters"
@@ -102,19 +102,15 @@
         </div>
 
     </section>
-    <section class="flex flex-col w-full mt-6">
-        <h2 class="text-2xl font-bold mb-4">Recent Feedback</h2>
+    <section class="flex flex-col lg:flex-row lg:flex-wrap w-full mt-6">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else class="space-y-4">
-            <div v-for="feedback in feedbackList" :key="feedback.id" class="bg-white shadow rounded-lg p-4">
-                <p class="text-gray-800">{{ feedback.content }}</p>
-                <div class="mt-2 text-sm text-gray-500 flex justify-between">
-                    <span>Sentiment: <strong :class="feedback.sentiment === 'positive' ? 'text-green-600' : feedback.sentiment === 'negative' ? 'text-red-600' : 'text-yellow-600'">{{ feedback.sentiment }}</strong></span>
-                    <span>{{ new Date(feedback.created_at).toLocaleDateString() }}</span>
-                </div>
+        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="bg-white shadow-md rounded-lg p-8 max-w-2/5">
+            <p class="text-gray-800">{{ feedback.content }}</p>
+            <div class="mt-2 text-sm text-gray-500 flex justify-between">
+                <span>Sentiment: <strong :class="feedback.sentiment === 'positive' ? 'text-green-600' : feedback.sentiment === 'negative' ? 'text-red-600' : 'text-yellow-600'">{{ feedback.sentiment }}</strong></span>
+                <span>{{ new Date(feedback.created_at).toLocaleDateString() }}</span>
             </div>
         </div>
-
     </section>
 </template>
 

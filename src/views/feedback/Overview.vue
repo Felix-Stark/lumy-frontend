@@ -102,7 +102,7 @@
         </div>
 
     </section>
-    <section class="flex flex-col lg:flex-row lg:flex-wrap w-full mt-6">
+    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-evenly w-full mt-6">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="bg-white shadow-md rounded-lg p-8 w-full lg:max-w-2/5">
             <p class="text-gray-800">{{ feedback.content }}</p>

@@ -104,7 +104,7 @@
     </section>
     <section class="flex flex-col lg:flex-row lg:flex-wrap w-full mt-6">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="bg-white shadow-md rounded-lg p-8 max-w-2/5">
+        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="bg-white shadow-md rounded-lg p-8 w-full lg:max-w-2/5">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class="mt-2 text-sm text-gray-500 flex justify-between">
                 <span>Sentiment: <strong :class="feedback.sentiment === 'positive' ? 'text-green-600' : feedback.sentiment === 'negative' ? 'text-red-600' : 'text-yellow-600'">{{ feedback.sentiment }}</strong></span>

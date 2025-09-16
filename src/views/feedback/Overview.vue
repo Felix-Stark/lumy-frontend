@@ -145,11 +145,23 @@
                                 @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
                                 @mouseleave="handleMouseLeave"
                                 />
+                                <Tooltip
+                                :text="tooltipText"
+                                :x="tooltipX"
+                                :y="tooltipY"
+                                :visible="showTooltip"
+                                />
                         </template>
                         <template v-else-if="feedback.sentiment === 'negative'">
                             <Frown class="inline size-6 text-red-600"
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
                             @mouseleave="handleMouseLeave"
+                            />
+                            <Tooltip
+                            :text="tooltipText"
+                            :x="tooltipX"
+                            :y="tooltipY"
+                            :visible="showTooltip"
                             />
                         </template>
                         <template v-else>
@@ -157,18 +169,19 @@
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
                             @mouseleave="handleMouseLeave"
                             />
+                            <Tooltip
+                            :text="tooltipText"
+                            :x="tooltipX"
+                            :y="tooltipY"
+                            :visible="showTooltip"
+                            />
                         </template>
                     </span>
                 </div>
             </div>
         </div>
     </section>
-    <Tooltip
-    :text="tooltipText"
-    :x="tooltipX"
-    :y="tooltipY"
-    :visible="showTooltip"
-    />
+    
 </template>
 
 <script lang="ts" setup>

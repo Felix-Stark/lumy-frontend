@@ -163,6 +163,12 @@
             </div>
         </div>
     </section>
+    <Tooltip
+    :text="tooltipText"
+    :x="tooltipX"
+    :y="tooltipY"
+    :visible="showTooltip"
+    />
 </template>
 
 <script lang="ts" setup>

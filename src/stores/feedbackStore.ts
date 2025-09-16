@@ -9,7 +9,6 @@ export const useFeedbackStore = defineStore("feedback", () => {
 
   async function fetchSubmissions() {
     loading.value = true;
-    console.log("Fetching feedback submissions...");
     try {
       const res = await api.get("/submissions");
       if (res.status === 200) {
@@ -19,7 +18,6 @@ export const useFeedbackStore = defineStore("feedback", () => {
       console.error("Error fetching feedback:", error);
     } finally {
       loading.value = false;
-      console.log('submissions in store: ', submissions.value);
     }
   }
 

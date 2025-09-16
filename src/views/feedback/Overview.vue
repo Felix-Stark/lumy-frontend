@@ -146,10 +146,7 @@ onMounted(async () => {
         await feedbackStore.fetchSubmissions();
         feedbackList.value = feedbackStore.submissions;
     }
-    console.log('Feedback List:', feedbackList.value);
-    console.log('submissions from store: ', feedbackStore.submissions);
 
-    console.log('summary: ', summary.value);
     let progress = 0;
     const duration = 1000; // 1 second animation
     const step = 16; // ~60fps

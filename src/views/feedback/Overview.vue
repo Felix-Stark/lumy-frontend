@@ -41,13 +41,13 @@
                 :flip="true"
                 :offset="2"
                 >
-                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+                <ListboxButton class="flex items-center px-4 py-4 rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                     <span class="block ">
                          Filter by Skill
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white aboslute max-h-60 min-w-full shadow-lg p-2 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 min-w-full shadow-lg p-2 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
                         v-slot="{ active, selected }"
@@ -64,7 +64,7 @@
             </Listbox>
             <Listbox v-model="filteredSubmitter">
                 <Float
-                placement="bottom"
+                placement="bottom-end"
                 :flip="true"
                 :offset="2"
                 >
@@ -74,7 +74,7 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 min-w-full p-2 shadow-lg overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 min-w-full p-4 shadow-lg overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
                         v-slot="{ active, selected }"
@@ -91,7 +91,7 @@
             </Listbox>
             <Listbox v-model="filteredSentiment">
                 <Float
-                placement="bottom"
+                placement="bottom-end"
                 :flip="true"
                 :offset="2"
                 >
@@ -101,7 +101,7 @@
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-whit min-w-full max-h-60 p-2 overflow-y-auto w-full">
+                    <ListboxOptions class="bg-white min-w-full shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-y-auto w-full">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
                         v-slot="{ active, selected }"
@@ -122,8 +122,14 @@
                 Clear Filters
             </button>
         </div>
-
+        
     </section>
+    <div v-if="filter !== feedbackList" class="flex">
+        <p>Filter by: <span v-if="filteredSubmitter">Skill: {{ filteredSkill }}</span>
+            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find(f => f.feedback_request?.recipient_id === filteredSubmitter) }}</span>
+            <span v-if="filteredSentiment">Sentiment: {{ filteredSentiment }}</span>
+        </p>
+    </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-between bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">

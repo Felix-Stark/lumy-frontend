@@ -137,6 +137,33 @@ const feedbackList = ref<FeedbackSubmission[]>([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<Submitter | null>(null);
 const filteredSentiment = ref<string | null>(null);
+onMounted(async () => {
+    if (!summary.value) {
+        await userStore.getMeSummary();
+        summary.value = userStore.meSummary;
+    }
+    if (!feedbackStore.submissions) {
+        await feedbackStore.fetchSubmissions();
+        feedbackList.value = feedbackStore.submissions;
+    }
+    console.log('Feedback List:', feedbackList.value);
+    console.log('summary: ', summary.value);
+    let progress = 0;
+    const duration = 1000; // 1 second animation
+    const step = 16; // ~60fps
+    const increment = positiveSentiments.value / (duration / step);
+
+    const interval = setInterval(() => {
+        progress += increment;
+        if (progress >= positiveSentiments.value) {
+            currentPercentage.value = positiveSentiments.value;
+            clearInterval(interval);
+        } else {
+            currentPercentage.value = Math.round(progress);
+        }
+    }, step);
+
+});
 const submitters = computed(() => {
     return feedbackList.value.map(fb => fb.feedback_request?.recipient) as Submitter[];
 });
@@ -162,34 +189,6 @@ const positiveSentiments = computed(() => {
 
 // this will animate from 0 -> targetPercentage
 const currentPercentage = ref(0);
-
-onMounted(async () => {
-    if (!summary.value) {
-        await userStore.getMeSummary();
-        summary.value = userStore.meSummary;
-    }
-    if (feedbackStore.submissions.length === 0) {
-        await feedbackStore.fetchSubmissions();
-        feedbackList.value = feedbackStore.submissions;
-    }
-    console.log('Feedback List:', feedbackList.value);
-    console.log('summary: ', summary.value);
-    let progress = 0;
-    const duration = 1000; // 1 second animation
-    const step = 16; // ~60fps
-    const increment = positiveSentiments.value / (duration / step);
-
-    const interval = setInterval(() => {
-        progress += increment;
-        if (progress >= positiveSentiments.value) {
-            currentPercentage.value = positiveSentiments.value;
-            clearInterval(interval);
-        } else {
-            currentPercentage.value = Math.round(progress);
-        }
-    }, step);
-
-});
 
 const data = computed(() => {
     return {

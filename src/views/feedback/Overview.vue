@@ -141,13 +141,22 @@
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
                     <span>
                         <template v-if="feedback.sentiment === 'positive'">
-                            <Smile class="inline size-6 text-green-600"/>
+                            <Smile class="inline size-6 text-green-600"
+                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
+                                @mouseleave="handleMouseLeave"
+                                />
                         </template>
                         <template v-else-if="feedback.sentiment === 'negative'">
-                            <Frown class="inline size-6 text-red-600"/>
+                            <Frown class="inline size-6 text-red-600"
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
+                            @mouseleave="handleMouseLeave"
+                            />
                         </template>
                         <template v-else>
-                            <Annoyed class="inline size-6 text-yellow-600"/>
+                            <Annoyed class="inline size-6 text-yellow-600"
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
+                            @mouseleave="handleMouseLeave"
+                            />
                         </template>
                     </span>
                 </div>
@@ -158,6 +167,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue'
+import Tooltip from '@/components/base/Tooltip.vue';
 import { Chart, registerables } from 'chart.js'
 import { Doughnut } from 'vue-chartjs';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
@@ -179,6 +189,20 @@ const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
 
+const showTooltip = ref(false)
+const tooltipText = ref('')
+const tooltipX = ref(0)
+const tooltipY = ref(0)
+
+function handleMouseEnter(event: MouseEvent, text: string) {
+  tooltipText.value = text
+  tooltipX.value = event.clientX - 12 // offset for better positioning
+  tooltipY.value = event.clientY + 12
+  showTooltip.value = true
+}
+function handleMouseLeave() {
+  showTooltip.value = false
+}
 
 
 const formatName = (name: string) => {

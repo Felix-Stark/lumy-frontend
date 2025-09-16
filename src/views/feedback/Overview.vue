@@ -74,7 +74,7 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white absolute max-h-60 w-full p-2 shadow-lg overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 w-full p-2 shadow-lg overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
                         v-slot="{ active, selected }"
@@ -277,26 +277,22 @@ const allTimeData = computed(() => {
     const feedbackGiven = summary.value.feedback_given_count || 0
     const feedbackReceived = summary.value.feedback_received_count || 0
     const all = [feedbackGiven, feedbackRequested, feedbackReceived]
-    const rawMax = Math.max(...all, 10) // avoid 0
-    const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)))
-    const roundedMax = Math.ceil(rawMax / magnitude) * magnitude
+    
     const total = feedbackGiven + feedbackRequested + feedbackReceived;
     console.log('total: ', total);
     return {
         datasets: [
             {
     label: 'Feedback Given',
-    data: [feedbackGiven],
+    data: [feedbackGiven, total - feedbackGiven],
     backgroundColor: ['#9b5cff', '#e5e5e5'],
     borderWidth: 0,
-    min: 0,
-    max: total,
     cutout: '65%',   // controls inner radius
     radius: '100%', // full size
   },
   {
     label: 'Feedback Requested',
-    data: [feedbackRequested, roundedMax - feedbackRequested],
+    data: [feedbackRequested, total - feedbackRequested],
     backgroundColor: ['#60a5fa', '#f1f1f1'],
     borderWidth: 0,
     cutout: '45%',
@@ -304,7 +300,7 @@ const allTimeData = computed(() => {
   },
   {
     label: 'Feedback Received',
-    data: [feedbackReceived, roundedMax - feedbackReceived],
+    data: [feedbackReceived, total - feedbackReceived],
     backgroundColor: ['#2563eb', '#f5f5f5'],
     borderWidth: 0,
     cutout: '25%',

@@ -33,7 +33,7 @@
 
         </div>
     </section>
-    <section class="flex items-center gap-6">
+    <section class="flex items-center justify-start gap-6">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
             <Listbox v-model="filteredSkill" >
                 <Float
@@ -58,7 +58,6 @@
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
                                 {{ s.name }}
                             </span>
-                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
@@ -86,7 +85,6 @@
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
                                 {{ formatName(submitter.name) }}
                             </span>
-                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
@@ -109,12 +107,11 @@
                         v-slot="{ active, selected }"
                         :key="sentiment"
                         :value="sentiment"
-                        class="cursor-pointer text-wrap hover:bg-purple-50"
+                        class="cursor-pointer w-full text-wrap hover:bg-purple-50"
                         >
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
                                 {{ sentiment }}
                             </span>
-                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>

@@ -33,7 +33,7 @@
 
         </div>
     </section>
-    <section class="flex items-center justify-start gap-6">
+    <section class="flex items-center w-full gap-6">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
             <Listbox v-model="filteredSkill" >
                 <Float
@@ -41,13 +41,13 @@
                 :flip="true"
                 :offset="2"
                 >
-                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple cursor-pointer">
+                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                     <span class="block ">
                          Filter by Skill
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 w-full shadow-lg p-2 overflow-y-auto">
+                    <ListboxOptions class="bg-white aboslute max-h-60 w-full shadow-lg p-2 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
                         v-slot="{ active, selected }"
@@ -74,7 +74,7 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 w-full p-2 shadow-lg overflow-y-auto">
+                    <ListboxOptions class="bg-white absolute max-h-60 w-full p-2 shadow-lg overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
                         v-slot="{ active, selected }"

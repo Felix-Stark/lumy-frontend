@@ -1,5 +1,5 @@
 <template>
-    <section class="flex flex-col md:flex-row w-full gap-6">
+    <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
         <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
             <div class="relative h-48">
                 <Doughnut :data="data" :options="options" />
@@ -106,8 +106,12 @@
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-between bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
-            <div class="mt-2 text-sm text-gray-500 flex gap-8">
-                <p class="font-light text-sm text-gray-600">{{ feedback.feedback_request?.recipient.name }} <span>{{ feedback.feedback_request?.skill.skill }}</span> <span class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</span></p>
+            <div class=" flex gap-8">
+                <p class="font-thin text-gray-600">{{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : 'Peer' }}</p>
+                <div>
+                    <p>{{ feedback.feedback_request?.skill.skill }}</p>
+                <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
+                </div>
                 <span>
                     <template v-if="feedback.sentiment === 'positive'">
                         <Smile class="inline size-6 text-green-600"/>
@@ -135,7 +139,6 @@ import { useFeedbackStore } from '@/stores/feedbackStore';
 import type { UserSummary, SkillSummary, FeedbackSubmission } from '@/types.ts';
 import { ChevronDown, Smile, Annoyed, Frown } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
-import { all } from 'axios';
 const { formatFeedbackDate } = useDateFormat();
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
@@ -147,6 +150,11 @@ const feedbackList = ref<FeedbackSubmission[]>([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<Submitter | null>(null);
 const filteredSentiment = ref<string | null>(null);
+
+const formatName = (name: string) => {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
 onMounted(async () => {
     if (!summary.value) {
         await userStore.getMeSummary();
@@ -240,7 +248,7 @@ const allTimeData = computed(() => {
     const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)))
     const roundedMax = Math.ceil(rawMax / magnitude) * magnitude
     const total = feedbackGiven + feedbackRequested + feedbackReceived;
-
+    console.log('total: ', total);
     return {
         datasets: [
             {

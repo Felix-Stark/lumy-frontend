@@ -102,9 +102,9 @@
         </div>
 
     </section>
-    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-evenly w-full gap-8 mt-6 space-y-8">
+    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 mt-6 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-1/2 xl:p-12 ">
+        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-5/12 xl:p-12 ">
             <p class="font-light text-sm text-gray-600">{{ feedback.feedback_request?.recipient.name }} <span class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</span></p>
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class="mt-2 text-sm text-gray-500 flex gap-8">
@@ -139,6 +139,7 @@ import { useFeedbackStore } from '@/stores/feedbackStore';
 import type { UserSummary, SkillSummary, FeedbackSubmission } from '@/types.ts';
 import { ChevronDown, Smile, Annoyed, Frown } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
+import { all } from 'axios';
 const { formatFeedbackDate } = useDateFormat();
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
@@ -242,14 +243,17 @@ const allTimeData = computed(() => {
     const rawMax = Math.max(...all, 10) // avoid 0
     const magnitude = Math.pow(10, Math.floor(Math.log10(rawMax)))
     const roundedMax = Math.ceil(rawMax / magnitude) * magnitude
+    const total = feedbackGiven + feedbackRequested + feedbackReceived;
 
     return {
         datasets: [
             {
     label: 'Feedback Given',
-    data: [feedbackGiven, roundedMax - feedbackGiven],
+    data: [feedbackGiven],
     backgroundColor: ['#9b5cff', '#e5e5e5'],
     borderWidth: 0,
+    min: 0,
+    max: total,
     cutout: '65%',   // controls inner radius
     radius: '100%', // full size
   },

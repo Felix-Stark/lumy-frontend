@@ -41,13 +41,13 @@
                 :flip="true"
                 :offset="4"
                 >
-                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
+                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple cursor-pointer">
                     <span class="block ">
                          Filter by Skill
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60  overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
                         :key="s.skill_id"
@@ -151,6 +151,8 @@ const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
 
+
+
 const formatName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
@@ -181,9 +183,14 @@ onMounted(async () => {
     }, step);
 
 });
-const submitters = computed(() => {
-    return feedbackList.value.map(fb => fb.feedback_request?.recipient) as Submitter[];
-});
+const submitters = computed<Submitter[]>(() => {
+  const map = new Map<number, Submitter>()
+  for (const fb of feedbackList.value) {
+    const r = fb.feedback_request?.recipient
+    if (r && !map.has(r.id)) map.set(r.id, r)
+  }
+  return Array.from(map.values())
+})
 const filter = computed(() => {
   return feedbackList.value.filter(fb => {
     const matchesSkill =

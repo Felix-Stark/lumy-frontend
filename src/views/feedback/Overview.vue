@@ -104,7 +104,7 @@
     </section>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 mt-6 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-7/16 xl:p-12 ">
+        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class="mt-2 text-sm text-gray-500 flex gap-8">
                 <p class="font-light text-sm text-gray-600">{{ feedback.feedback_request?.recipient.name }} <span class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</span></p>

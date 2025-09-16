@@ -215,8 +215,8 @@ const tooltipY = ref(0)
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text
-  tooltipX.value = event.screenX - 12 // offset for better positioning
-  tooltipY.value = event.screenY + 12
+  tooltipX.value = event.clientX - 12 // offset for better positioning
+  tooltipY.value = event.clientY + 12
   showTooltip.value = true
 }
 function handleMouseLeave() {

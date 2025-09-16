@@ -117,16 +117,16 @@
                 </Float>
             </Listbox>
         </div>
-        <div class="bg-white shadow-md rounded-lg">
-            <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 rounded-lg hover:bg-gray-50">
+        <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
+            <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50">
                 Clear Filters
             </button>
         </div>
         
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p>Filter by: <span v-if="filteredSubmitter">Skill: {{ filteredSkill }}</span>
-            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find(f => f.feedback_request?.recipient_id === filteredSubmitter) }}</span>
+        <p>Filter by: <span v-if="filteredSkill">Skill: {{ filteredSkill }}</span>
+            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter )?.feedback_request?.recipient }}</span>
             <span v-if="filteredSentiment">Sentiment: {{ filteredSentiment }}</span>
         </p>
     </div>

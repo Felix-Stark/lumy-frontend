@@ -33,13 +33,13 @@
 
         </div>
     </section>
-    <section class="flex justify-between items-center">
+    <section class="flex items-center gap-6">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
             <Listbox v-model="filteredSkill" >
                 <Float
-                placement="bottom-start"
+                placement="bottom"
                 :flip="true"
-                :offset="4"
+                :offset="2"
                 >
                 <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple cursor-pointer">
                     <span class="block ">
@@ -47,62 +47,87 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60  overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 w-full p-2 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
+                        v-slot="{ active, selected }"
                         :key="s.skill_id"
                         :value="s.name"
                         class="cursor-pointer text-wrap hover:bg-purple-50"
                         >
-                            {{ s.name }}
+                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                                {{ s.name }}
+                            </span>
+                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
             </Listbox>
             <Listbox v-model="filteredSubmitter">
-                <Float>
+                <Float
+                placement="bottom"
+                :flip="true"
+                :offset="2"
+                >
                 <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
                     <span>
                         Filter by Peer
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 w-full overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
+                        v-slot="{ active, selected }"
                         :key="submitter.id"
                         :value="submitter.id"
                         class="cursor-pointer text-wrap hover:bg-purple-50"
                         >
-                            {{ formatName(submitter.name ) }}
+                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                                {{ formatName(submitter.name) }}
+                            </span>
+                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
             </Listbox>
             <Listbox v-model="filteredSentiment">
-                <Float>
+                <Float
+                placement="bottom"
+                :flip="true"
+                :offset="2"
+                >
                     <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
                         <span>
                             Filter by Sentiment
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto w-full">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
+                        v-slot="{ active, selected }"
                         :key="sentiment"
                         :value="sentiment"
                         class="cursor-pointer text-wrap hover:bg-purple-50"
                         >
-                            {{ sentiment }}
+                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                                {{ sentiment }}
+                            </span>
+                            <span v-if="selected" class="text-lumy-purple"><Check /></span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
             </Listbox>
         </div>
+        <div class="bg-white shadow-md rounded-lg">
+            <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 rounded-lg hover:bg-gray-50">
+                Clear Filters
+            </button>
+        </div>
 
     </section>
-    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 mt-6 space-y-8">
+    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-between bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
@@ -137,7 +162,7 @@ import { Float } from '@headlessui-float/vue';
 import { useUserStore } from '@/stores/userStore';
 import { useFeedbackStore } from '@/stores/feedbackStore';
 import type { UserSummary, SkillSummary, FeedbackSubmission } from '@/types.ts';
-import { ChevronDown, Smile, Annoyed, Frown } from 'lucide-vue-next';
+import { ChevronDown, Smile, Annoyed, Frown, Check } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
 const { formatFeedbackDate } = useDateFormat();
 

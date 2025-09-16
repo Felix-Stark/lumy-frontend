@@ -142,7 +142,7 @@ onMounted(async () => {
         await userStore.getMeSummary();
         summary.value = userStore.meSummary;
     }
-    if (!feedbackList.value) {
+    if (feedbackList.value.length < 1) {
         await feedbackStore.fetchSubmissions();
         feedbackList.value = feedbackStore.submissions;
     }

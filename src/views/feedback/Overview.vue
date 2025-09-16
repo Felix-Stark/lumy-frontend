@@ -35,7 +35,7 @@
     </section>
     <section class="flex justify-between items-center">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <Listbox>
+            <Listbox v-model="filteredSkill" >
                 <Float
                 placement="bottom-start"
                 :flip="true"
@@ -47,7 +47,7 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions v-model="filteredSkill" class="max-h-60 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
                         :key="s.skill_id"
@@ -67,27 +67,27 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions>
+                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
                         :key="submitter.id"
-                        :value="submitter"
+                        :value="submitter.id"
                         class="cursor-pointer text-wrap hover:bg-purple-50"
                         >
-                            {{ submitter.name }}
+                            {{ formatName(submitter.name ) }}
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
             </Listbox>
             <Listbox v-model="filteredSentiment">
-                <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
-                    <span>
-                        Filter by Sentiment
-                    </span>
-                    <ChevronDown class="ml-2 size-4"/>
-                </ListboxButton>
                 <Float>
-                    <ListboxOptions>
+                    <ListboxButton class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-lumy-purple">
+                        <span>
+                            Filter by Sentiment
+                        </span>
+                        <ChevronDown class="ml-2 size-4"/>
+                    </ListboxButton>
+                    <ListboxOptions class="bg-white max-h-60 overflow-y-auto">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
                         :key="sentiment"
@@ -108,19 +108,21 @@
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex w-full gap-8">
                 <p class="text-gray-600">{{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
-                <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
-                <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
-                <span>
-                    <template v-if="feedback.sentiment === 'positive'">
-                        <Smile class="inline size-6 text-green-600"/>
-                    </template>
-                    <template v-else-if="feedback.sentiment === 'negative'">
-                        <Frown class="inline size-6 text-red-600"/>
-                    </template>
-                    <template v-else>
-                        <Annoyed class="inline size-6 text-yellow-600"/>
-                    </template>
-                </span>
+                <div class="flex align-center gap-4">
+                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
+                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
+                    <span>
+                        <template v-if="feedback.sentiment === 'positive'">
+                            <Smile class="inline size-6 text-green-600"/>
+                        </template>
+                        <template v-else-if="feedback.sentiment === 'negative'">
+                            <Frown class="inline size-6 text-red-600"/>
+                        </template>
+                        <template v-else>
+                            <Annoyed class="inline size-6 text-yellow-600"/>
+                        </template>
+                    </span>
+                </div>
             </div>
         </div>
     </section>
@@ -146,7 +148,7 @@ const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
 const feedbackList = ref<FeedbackSubmission[]>([]);
 const filteredSkill = ref<string | null>(null);
-const filteredSubmitter = ref<Submitter | null>(null);
+const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
 
 const formatName = (name: string) => {
@@ -183,17 +185,21 @@ const submitters = computed(() => {
     return feedbackList.value.map(fb => fb.feedback_request?.recipient) as Submitter[];
 });
 const filter = computed(() => {
-   switch (true) {
-    case filteredSkill.value !== null:
-        return feedbackList.value.filter(fb => fb.feedback_request?.skill.skill === filteredSkill.value);
-    case filteredSubmitter.value !== null:
-        return feedbackList.value.filter(fb => fb.feedback_request?.recipient.id === filteredSubmitter.value?.id);
-    case filteredSentiment.value !== null:
-        return feedbackList.value.filter(fb => fb.sentiment === filteredSentiment.value);
-    default:
-        return feedbackList.value;
-   }
-})
+  return feedbackList.value.filter(fb => {
+    const matchesSkill =
+      !filteredSkill.value ||
+      fb.feedback_request?.skill.skill === filteredSkill.value;
+
+    const matchesSubmitter =
+      !filteredSubmitter.value ||
+      fb.feedback_request?.recipient.id === filteredSubmitter.value;
+
+    const matchesSentiment =
+      !filteredSentiment.value || fb.sentiment === filteredSentiment.value;
+
+    return matchesSkill && matchesSubmitter && matchesSentiment;
+  });
+});
 
 const positiveSentiments = computed(() => {
     const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');

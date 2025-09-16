@@ -126,7 +126,7 @@
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
         <p>Filter by: <span v-if="filteredSkill">Skill: {{ filteredSkill }}</span>
-            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter )?.feedback_request?.recipient }}</span>
+            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter )?.feedback_request?.recipient.name }}</span>
             <span v-if="filteredSentiment">Sentiment: {{ filteredSentiment }}</span>
         </p>
     </div>

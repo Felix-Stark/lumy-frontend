@@ -105,12 +105,9 @@
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 mt-6 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-5/12 xl:p-12 ">
-            <p class="font-light text-sm text-gray-600">{{ feedback.feedback_request?.recipient.name }} <span class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</span></p>
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class="mt-2 text-sm text-gray-500 flex gap-8">
-                <button class="bg-lumy-purple text-white px-2 py-1 rounded-full text-xs hover:bg-purple-600 transition duration-200 ease-in-out">
-                    {{ feedback.feedback_request?.skill.skill }}
-                </button>
+                <p class="font-light text-sm text-gray-600">{{ feedback.feedback_request?.recipient.name }} <span class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</span></p>
                 <span>{{ formatFeedbackDate(feedback.created_at, { relative: false}) }}</span>
                 <span>
                     <template v-if="feedback.sentiment === 'positive'">

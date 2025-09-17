@@ -74,6 +74,7 @@ const router = createRouter({
     {
       path: '/member',
       name: 'member',
+      redirect: '/member',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresAuth: true, // This route requires authentication

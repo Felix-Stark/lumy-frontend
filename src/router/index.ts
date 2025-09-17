@@ -73,6 +73,7 @@ const router = createRouter({
     },
     {
       path: '/member',
+      name: 'member',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresAuth: true, // This route requires authentication
@@ -92,6 +93,7 @@ const router = createRouter({
     },  
     {
       path: '/settings',
+      name: 'settings',
       redirect: () => {
         const raw = sessionStorage.getItem('LumyRole')
         const role = raw ? JSON.parse(raw) : null;
@@ -109,7 +111,7 @@ const router = createRouter({
         {
           path: 'member/integrations',
           name: 'settings-member-integrations',
-          component: () => import('@/views//settings/member/Integrations.vue'),
+          component: () => import('@/views/settings/member/Integrations.vue'),
         },
         {
           path: 'admin/general',

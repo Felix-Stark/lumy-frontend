@@ -19,13 +19,13 @@
 				<router-link to="/admin">Admin</router-link>
 			</li> -->
 			<li>
-				<router-link to="/member">Overview</router-link>
+				<router-link :to="{name: 'member'}">Overview</router-link>
 			</li>
 			<li>
-				<router-link to="/member/feedback-overview">Feedback</router-link>
+				<router-link :to="{name: 'feedback-overview'}">Feedback</router-link>
 			</li>
 			<li>
-				<router-link to="/settings">Settings</router-link>
+				<router-link :to="{name: 'settings'}">Settings</router-link>
 			</li>
 		</ul>
 		</div>
@@ -51,7 +51,7 @@
 				: 'text-gray-500 size-4'
 			]" /> -->
 		<!-- </router-link> -->
-		<router-link to="/member" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name: 'member'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
 		@mouseleave="handleMouseLeave"
 		>
@@ -60,7 +60,7 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link to="/member/feedback-overview" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{ name: 'feedback-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Feedback')"
 		@mouseleave="handleMouseLeave"
 		>
@@ -69,7 +69,7 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link to="/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name:'settings'}" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>

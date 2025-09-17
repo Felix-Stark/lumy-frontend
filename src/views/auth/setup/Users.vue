@@ -4,7 +4,7 @@
         title="Gotcha! What about users? Does this look good?"
         text="Don't worry, you can change these settings later on as well. This is just to get you set up."
         buttonText="Next"
-        :onAction="updateUsers"
+        :onAction="verifySetup"
         :disabled="loading"
       >
       <Combobox>
@@ -32,9 +32,12 @@
           :id="user.id"
           :avatarUrl="user.avatar"
           :name="user.name"
-          :title="user.title"
+          :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
+          :disabled="patching[user.id] === true || loading === true || user.id === authStore.setupAccount?.id"
+          @update:isActive="val => updateUser(user.id, { is_active: val })"
+          @update:role="val => updateUser(user.id, { role: val })"
         />
       </div>
     </SetupComp>
@@ -89,32 +92,35 @@ const clearQuery = () => {
   query.value = '';
 }
 
-const updateUsers = async () => {
-  loading.value = true;
+const patching = ref<Record<number, boolean>>({}); // store loading state per user
+
+async function updateUser(userId:number, payload: Partial<SetupUser>) {
+  patching.value[userId] = true;
   try {
-    users.value?.forEach(user => {
-    userStore.updateUser(user.id, { ...user, is_active: user.is_active, role: user.role });
-  })
+    await userStore.updateUser(userId, payload);
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {
-    verifySetup()
+    patching.value[userId] = false;
   }
+  
 }
 
-const toggleAllActive = () => {
-  users.value?.forEach(user => {
-    user.is_active = false;
-  });
-  allInactive.value = !allInactive.value;
-  if(allInactive.value === false) {
-    users.value?.forEach(user => {
-      user.is_active = true;
-    });
+const toggleAllActive = async () => {
+  try {
+    await api.patch("/account/users/activation", { "active": !allInactive.value });
+    allInactive.value = !allInactive.value;
+    users.value = users.value.map(user => ({
+      ...user,
+      is_active: allInactive.value
+    }));
+  } catch (error) {
+    console.error("Failed to toggle all active", error);
   }
-}
+};
 
 async function verifySetup() {
+  loading.value = true;
   try {
     const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
     if (res.status === 200) {

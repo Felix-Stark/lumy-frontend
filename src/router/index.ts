@@ -74,15 +74,15 @@ const router = createRouter({
     {
       path: '/member',
       name: 'member',
-      redirect: '/member',
+      redirect: '/member/overview',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresAuth: true, // This route requires authentication
       },
       children: [
         {
-          path: '',
-          name: 'member-dashboard',
+          path: 'overview',
+          name: 'overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
         {

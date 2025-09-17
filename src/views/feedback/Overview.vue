@@ -125,16 +125,16 @@
         
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p>Filter by: <span v-if="filteredSkill">Skill: {{ filteredSkill }}</span>
-            <span v-if="filteredSubmitter">Peer: {{ feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter )?.feedback_request?.recipient.name }}</span>
-            <span v-if="filteredSentiment">Sentiment: {{ filteredSentiment }}</span>
+        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span>
+            <span class="ml-2" v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
+            <span v-if="filteredSentiment">, Sentiment: {{ filteredSentiment }}</span>
         </p>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-between bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
-            <div class=" flex w-full gap-8">
+            <div class=" flex flex-col w-full gap-8">
                 <p class="text-gray-600">{{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
@@ -145,43 +145,48 @@
                                 @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
                                 @mouseleave="handleMouseLeave"
                                 />
-                                <Tooltip
+                                <!-- <Tooltip
                                 :text="tooltipText"
                                 :x="tooltipX"
                                 :y="tooltipY"
                                 :visible="showTooltip"
-                                />
+                                /> -->
                         </template>
                         <template v-else-if="feedback.sentiment === 'negative'">
                             <Frown class="inline size-6 text-red-600"
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
                             @mouseleave="handleMouseLeave"
                             />
-                            <Tooltip
+                            <!-- <Tooltip
                             :text="tooltipText"
                             :x="tooltipX"
                             :y="tooltipY"
                             :visible="showTooltip"
-                            />
+                            /> -->
                         </template>
                         <template v-else>
                             <Annoyed class="inline size-6 text-yellow-600"
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
                             @mouseleave="handleMouseLeave"
                             />
-                            <Tooltip
+                            <!-- <Tooltip
                             :text="tooltipText"
                             :x="tooltipX"
                             :y="tooltipY"
                             :visible="showTooltip"
-                            />
+                            /> -->
                         </template>
                     </span>
                 </div>
             </div>
         </div>
     </section>
-    
+    <Tooltip
+                            :text="tooltipText"
+                            :x="tooltipX"
+                            :y="tooltipY"
+                            :visible="showTooltip"
+                            />
 </template>
 
 <script lang="ts" setup>

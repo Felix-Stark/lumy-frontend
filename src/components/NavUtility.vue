@@ -69,12 +69,12 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link :to="{name:'settings'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name:'settings'}" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>
 			<Settings :class="[,
-				isExactActive ? 'text-lumy-purple size-5'
+				isActive ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>

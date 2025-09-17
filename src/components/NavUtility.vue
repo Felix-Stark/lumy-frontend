@@ -1,7 +1,7 @@
 <template>
 	<button
 	v-if="!menuOpen"
-		class="fixed top-6 right-6 z-50 md:hidden bg-white rounded-full p-2 shadow"
+		class="fixed top-6 right-6 z-50 lg:hidden bg-white rounded-full p-2 shadow"
 		@click="menuOpen = !menuOpen"
 		aria-label="Open navigation"
 	>
@@ -9,7 +9,7 @@
 			<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
 		</svg>
   	</button>
-	<div v-if="menuOpen" class="absolute top-0 right-0 w-64 bg-slate-200 h-full shadow-lg transition-all z-51 p-6 md:hidden">
+	<div v-if="menuOpen" class="absolute top-0 right-0 w-64 bg-slate-200 h-full shadow-lg transition-all z-51 p-6 lg:hidden">
 		<button class="absolute top-6 left-6 transition-all duration-600" @click="menuOpen = false" aria-label="Close navigation">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-icon lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 		</button>
@@ -39,7 +39,7 @@
         ? 'fixed top-20 right-8 flex flex-col items-center gap-4'
         : 'absolute top-0 right-0 flex items-center gap-4 mr-12 mt-10',
 		'transition-all duration-300 ease-in-out',
-		'hidden md:flex'
+		'hidden lg:flex'
     ]"
     style="transition: all 0.3s;">
 		<!-- <router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
@@ -69,12 +69,12 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link :to="{name:'settings'}" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name:'settings'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>
 			<Settings :class="[,
-				isActive ? 'text-lumy-purple size-5'
+				isExactActive ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>

@@ -3,7 +3,7 @@
 	:image="lumyLogo"
 	title="Welcome to Lumy"	
 	:description="`Feedback that actually helps — not hurts.`"
-	buttonText="Sign in or register with Slack"
+	buttonText="Sign in with Slack"
 	:onAction="signInWithSlack"
 	>
 		<template #text>

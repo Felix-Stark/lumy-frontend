@@ -97,7 +97,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'overview',
+          path: '/member/overview',
           name: 'overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },

@@ -125,7 +125,7 @@
         
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span class="ml-2" v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
+        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
             <span v-if="filteredSentiment">, Sentiment: {{ filteredSentiment }}</span>
         </p>
     </div>

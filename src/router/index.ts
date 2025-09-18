@@ -88,7 +88,7 @@ const router = createRouter({
         {
           path: 'feedback-overview',
           name: 'feedback-overview',
-          component: () => import('@/views/feedback/Overview.vue'),
+          component: () => import('@/views/member/FeedbackOverview.vue'),
         },
         {
           path: 'skill-overview',

@@ -24,7 +24,8 @@
             :key="user.id"
             :id="user.id"
             :avatarUrl="user.avatar"
-            :name="user.name"
+            :name="formatName(user.name)"
+            :email="user.email"
             :title="user.title"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
@@ -65,6 +66,7 @@ import type { User, Account } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import BaseToast from '@/components/base/BaseToast.vue';
+import { formatName } from '@/composables/formatName.ts';
 
 const userStore = useUserStore();
 const account = computed(() => userStore.account);

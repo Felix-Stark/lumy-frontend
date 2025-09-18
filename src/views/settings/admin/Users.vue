@@ -14,10 +14,6 @@
           </button>
         </div>
         </Combobox>
-        <button
-            class="self-end text-sm text-gray-500 underline underline-offset-2 hover:text-gray-700 mb-2 cursor-pointer"
-            @click="toggleAllActive"
-            >{{ !allInactive ? 'Deactivate all users' : 'Activate all' }}</button>
         <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
             <PickUserComp
             v-for="user in filteredUsers"
@@ -27,6 +23,7 @@
             :name="formatName(user.name)"
             :email="user.email"
             :title="user.title"
+            :disabled="loading === true || user.id === account?.id"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
             />
@@ -73,7 +70,6 @@ const account = computed(() => userStore.account);
 const users = computed<User[]>(() => userStore.users);
 const loading = ref(false);
 const success = ref(false);
-const allInactive = ref(false);
 const query = ref('');
 const filteredUsers = computed<User[]>(() => {
     return query.value === ''
@@ -94,18 +90,6 @@ onMounted(async() => {
         await userStore.getUsers(true);
     }
 })
-
-const toggleAllActive = () => {
-  users.value?.forEach(user => {
-    user.is_active = false;
-  });
-  allInactive.value = !allInactive.value;
-  if(allInactive.value === false) {
-    users.value?.forEach(user => {
-      user.is_active = true;
-    });
-  }
-}
 
 const updateUsers = async () => {
   loading.value = true;

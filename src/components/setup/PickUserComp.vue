@@ -40,6 +40,9 @@
 						<ListboxOption value="admin" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
 							Admin
 						</ListboxOption>
+						<ListboxOption value="manager" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
+							Manager
+						</ListboxOption>
 					</ListboxOptions>
 					</Float>
 				</div>

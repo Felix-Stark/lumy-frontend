@@ -91,9 +91,9 @@ const router = createRouter({
           component: () => import('@/views/feedback/Overview.vue'),
         },
         {
-          path: 'skills-overview',
-          name: 'skills-overview',
-          component: () => import('@/views/member/SkillsOverview.vue'),
+          path: 'skill-overview',
+          name: 'skill-overview',
+          component: () => import('@/views/member/SkillOverview.vue'),
         }
       ]
     },  

@@ -59,10 +59,7 @@
 				isExactActive === true ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
 			]" />
-			<Activity :class="[,
-				isExactActive === true ? 'text-lumy-purple size-5'
-				: 'text-gray-500 size-4'
-			]" />
+			
 		</router-link>
 		<router-link :to="{ name: 'feedback-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Feedback')"

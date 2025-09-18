@@ -71,6 +71,22 @@ const router = createRouter({
         }
       ]
     },
+    { 
+      path: '/overview',
+      name: 'overview',
+      component: () => import('@/layouts/DashboardLayout.vue'),
+      meta: {
+        requiresRole: true,
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: 'employee',
+          name: 'overview-employee',
+          component: () => import('@/views/Employee.vue'),
+        }
+      ]
+    },
     {
       path: '/member',
       name: 'member',
@@ -189,8 +205,17 @@ router.beforeEach((to, from, next) => {
         } else {
         next()
       }
-    } else {
+    } else if (to.meta.requiresRole) {
+      if (role !== 'admin' && role !== 'manager') {
+        const errorStore = useErrorStore();
+        errorStore.setError({
+          code: 403,
+          detail: 'You do not have permission to access this page.',
+        });
+        next({ name: 'error' })
+      } else {
       next()
+      }
     }
 })
 

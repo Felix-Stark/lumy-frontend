@@ -89,6 +89,11 @@ const router = createRouter({
           path: 'feedback-overview',
           name: 'feedback-overview',
           component: () => import('@/views/feedback/Overview.vue'),
+        },
+        {
+          path: 'skills-overview',
+          name: 'skills-overview',
+          component: () => import('@/views/member/SkillsOverview.vue'),
         }
       ]
     },  

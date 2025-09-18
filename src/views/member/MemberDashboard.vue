@@ -85,7 +85,7 @@
 								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
 							</td>
 							<td class="px-4 py-2 flex justify-between items-center">
-								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
+								<button @click="selectedSkill(skill)" class=" bg-lumy-secondary text-white font-bold py-2 px-4 rounded-md cursor-pointer">
 									Request
 								</button>
 								<ChevronRight />
@@ -145,7 +145,7 @@ onMounted(async() => {
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push('/feedback/request');
+	router.push({ name: 'skill-overview' });
 }
 
 const avgSentChart = computed(() => {

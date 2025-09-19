@@ -73,7 +73,6 @@ const router = createRouter({
     },
     { 
       path: '/overview',
-      name: 'overview',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresRole: true,
@@ -98,7 +97,7 @@ const router = createRouter({
       children: [
         {
           path: '/member/overview',
-          name: 'overview',
+          name: 'member-overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
         {

@@ -51,7 +51,7 @@
 				: 'text-gray-500 size-4'
 			]" /> -->
 		<!-- </router-link> -->
-		<router-link :to="{name: 'overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name: 'member-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
 		@mouseleave="handleMouseLeave"
 		>

@@ -189,33 +189,37 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
-  const raw = sessionStorage.getItem('LumyRole')
+  const errorStore = useErrorStore();
+
+  const raw = sessionStorage.getItem('LumyRole');
   const role = raw ? JSON.parse(raw) : null;
+
+  // 1. Require authentication
   if (to.meta.requiresAuth && !store.isLoggedIn) {
-    next({ name: 'slack-login' })
-  } else if (to.meta.isAdmin) {
-      if (role !== 'admin') {
-        const errorStore = useErrorStore();
-        errorStore.setError({
-          code: 403,
-          detail: 'You do not have permission to access this page.',
-        });
-        next({ name: 'error' })
-        } else {
-        next()
-      }
-    } else if (to.meta.requiresRole) {
-      if (role !== 'admin' && role !== 'manager') {
-        const errorStore = useErrorStore();
-        errorStore.setError({
-          code: 403,
-          detail: 'You do not have permission to access this page.',
-        });
-        next({ name: 'error' })
-      } else {
-      next()
-      }
-    }
-})
+    return next({ name: 'slack-login' });
+  }
+
+  // 2. Require admin
+  if (to.meta.isAdmin && role !== 'admin') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (admin only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // 3. Require manager
+  if (to.meta.isManager && role !== 'manager') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (manager only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // ✅ 4. Allow navigation
+  next();
+});
+
 
 export default router

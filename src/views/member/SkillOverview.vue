@@ -17,6 +17,7 @@ import { ref, computed, onMounted } from 'vue';
 import type { Skill, SkillSummary } from '@/types';
 import { useRouter } from 'vue-router';
 import { formatName } from '@/composables/formatName';
+import api from '@/services/api';
 
 const router = useRouter();
 
@@ -24,9 +25,10 @@ const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
 
-onMounted(() => {
-    if (!activeSkill.value || !activeSkill.value.skill_id) {
-        router.push('/member/skills');
+onMounted(async() => {
+    const res = await api.get(`/me/skill/${activeSkill.value.skill_id}`);
+    if(res.status === 200) {
+        console.log('Skill data: ', res.data);
     }
 });
 </script>

@@ -12,7 +12,7 @@
     </section>
     <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
         <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-        <div class="w-full">
+        <div class="w-full h-12">
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
@@ -26,7 +26,7 @@
                     Negative
                 </p>
                 <div class="flex">
-                    <Frown :class="['text-lumy-danger-light size-4']" />
+                    <Frown :class="['text-lumy-danger-light size-6']" />
                     <p class="font-bold text-lg">{{ skillSent.negSent }}</p>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     Neutral
                 </p>
                 <div class="flex">
-                    <Annoyed :class="['text-lumy-neutral-light size-4']" />
+                    <Annoyed :class="['text-lumy-neutral-light size-6']" />
                     <p class="font-bold text-lg">{{ skillSent.neuSent }}</p>
                 </div>
             </div>
@@ -44,10 +44,17 @@
                     Positive
                 </p>
                 <div class="flex">
-                    <Smile :class="['text-lumy-green-light size-4']" />
+                    <Smile :class="['text-lumy-green-light size-6']" />
                     <p class="font-bold text-lg">{{ skillSent.posSent }}</p>
                 </div>
             </div>
+            <div class="flex flex-col items-center mx-4">
+                <p class="font-thin">
+                    Total
+                </p>
+                <p class="font-bold text-lg">{{ skillSent.posSent }}</p>
+            </div>
+            
         </div>
     </section>
 </template>

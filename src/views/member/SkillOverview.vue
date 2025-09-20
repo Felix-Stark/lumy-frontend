@@ -10,22 +10,61 @@
         <p class="text-xl font-gray-600"></p>
     </section>
     <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-			<div class="w-full">
-				<Line :data="avgSentChart" :options="avgSentOptions" />
-			</div>
-		</section>
+        <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+        <div class="w-full">
+            <Line :data="avgSentChart" :options="avgSentOptions" />
+        </div>
+    </section>
+    <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
+        <div class="w-full">
+            <div :class="[`bg-lumy-danger-light rounded-lg h-10 w-[${skillSentiments.negSent}%]`]"></div>
+            <div :class="[`bg-lumy-neutral-light rounded-lg h-10 w-[${skillSentiments.neuSent}%]`]"></div>
+            <div :class="[`bg-lumy-green-light rounded-lg h-10 w-[${skillSentiments.posSent}%]`]"></div>
+        </div>
+        <div class="flex">
+            <div class="flex flex-col items-center mx-4">
+                <p class="font-thin">
+                    Negative
+                </p>
+                <div class="flex">
+                    <Frown :class="['text-lumy-danger-light size-4']" />
+                    <p class="font-bold text-lg">{{ skillSentiments.negSent }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center mx-4">
+                <p class="font-thin">
+                    Neutral
+                </p>
+                <div class="flex">
+                    <Annoyed :class="['text-lumy-neutral-light size-4']" />
+                    <p class="font-bold text-lg">{{ skillSentiments.neuSent }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center mx-4">
+                <p class="font-thin">
+                    Positive
+                </p>
+                <div class="flex">
+                    <Smile :class="['text-lumy-green-light size-4 rotate-180']" />
+                    <p class="font-bold text-lg">{{ skillSentiments.posSent }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { Skill, SkillSummary, SkillOverview } from '@/types';
-import { Line } from 'vue-chartjs';
+import { Line, Bar } from 'vue-chartjs';
+import { Chart, registerables } from 'chart.js'
 import { useRouter } from 'vue-router';
 import { formatName } from '@/composables/formatName';
 import api from '@/services/api';
+import { Annoyed, Frown, Smile } from 'lucide-vue-next';
 
+Chart.register(...registerables);
 const router = useRouter();
 
 const activeSkill = computed<SkillSummary>(() => {
@@ -54,6 +93,57 @@ onMounted(async() => {
 onUnmounted(() => {
     sessionStorage.removeItem('selectedSkill');
 });
+
+const skillSentiments = computed(() => {
+    const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
+    const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
+    const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
+    return { negSent, neuSent, posSent };
+})
+
+const sentOvData = computed(() => {
+    const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
+    const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
+    const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
+    return {
+        labels: "Sentiment",
+        datasets: [
+            {
+                label: 'Negative',
+                backgroundColor: 'rgba(252, 92, 101, 1)',
+                data: [negSent]
+            },
+            {
+                label: 'Neutral',
+                backgroundColor: 'rgba(255, 195, 110, 1)',
+                data: [neuSent]
+            },
+            {
+                label: 'Positive',
+                backgroundColor: 'rgba(127, 228, 126, 1)',
+                data: [posSent]
+            }
+        ]
+    }
+});
+
+const sentOvOptions = {
+    indexAxis: "y" as const, // horizontal
+  responsive: true,
+  plugins: {
+    legend: { display: false }, // hide default legend
+  },
+  scales: {
+    x: {
+      stacked: true,
+      display: false, // hide axis
+    },
+    y: {
+      stacked: true,
+      display: false, // hide axis
+    },
+  },
+}
 
 const avgSentChart = computed(() => {
 	const labels = skillOv.value?.average_sentiment_over_time.map((item) =>

@@ -17,7 +17,7 @@
         </div>
     </section>
     <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
-        <div class="flex-1 h-12">
+        <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">
@@ -198,6 +198,7 @@ const sentOvData = computed(() => {
 const sentOvOptions: ChartOptions<"bar"> = {
     indexAxis: "y" as const, // horizontal
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: { display: false }, // hide default legend
     tooltip: {

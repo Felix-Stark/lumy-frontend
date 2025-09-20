@@ -200,6 +200,11 @@ const sentOvOptions: ChartOptions<"bar"> = {
   responsive: true,
   plugins: {
     legend: { display: false }, // hide default legend
+    tooltip: {
+      callbacks: {
+        label: (ctx) => `${ctx.raw as number}%`,
+      },
+    },
   },
   scales: {
     x: {

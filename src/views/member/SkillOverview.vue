@@ -6,7 +6,7 @@
             btnText="Request Feedback"
         />
     </section>
-    <section class="w-full p-8 xl:p-12 flex justify-center bg-lumy-danger"><span class="rounded-full border border-white font-bold text-2xl">!</span> It’s been a while since you showed this skill some love — go request some fresh feedback!</section>
+    <section class="w-full p-8 xl:p-12 flex justify-center items-center bg-lumy-danger"><p class="text-white"><span class="rounded-full border border-white font-bold px-2 py-1 text-white text-2xl">!</span>It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>
     <section class="w-full bg-white p-8 xl:p-12 text-gray-800">
         <p class="text-xl font-gray-600">{{ skillOv?.skill_definition }}</p>
     </section>

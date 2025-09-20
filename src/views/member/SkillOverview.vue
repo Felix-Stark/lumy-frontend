@@ -2,7 +2,7 @@
     <section class="flex justify-between items-center mb-6 w-full">
         <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
-            :onAction="() => router.push('/feedback/request')"
+            :onAction="() => router.push({ name: 'feedback-request' })"
             btnText="Request Feedback"
         />
     </section>

@@ -6,17 +6,17 @@
             btnText="Request Feedback"
         />
     </section>
-    <section class="w-full p-8 xl:p-12 flex justify-center items-center bg-lumy-danger"><p class="text-white"><span class="rounded-full border border-white font-bold px-2 py-1 text-white text-2xl">!</span>It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>
-    <section class="w-full bg-white p-8 xl:p-12 text-gray-800">
+    <section class="w-full p-8 xl:p-12 flex justify-center items-center bg-lumy-danger rounded-lg shadow-md"><p class="text-white"><div class="rounded-full border-4 border-white font-bold size-6 text-white text-2xl">!</div>It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>
+    <section class="w-full bg-white p-8 xl:p-12 text-gray-800 rounded-lg shadow-md">
         <p class="text-xl font-gray-600">{{ skillOv?.skill_definition }}</p>
     </section>
-    <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+    <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg shadow-md">
         <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
         <div class="w-full">
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
-    <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
+    <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg shadow-md">
         <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>

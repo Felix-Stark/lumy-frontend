@@ -33,7 +33,7 @@ const skillOv = ref<SkillOverview | null>(null);
 onMounted(async() => {
    try {
         if (activeSkill.value && activeSkill.value.skill_id) {
-            const response = await api.get<SkillOverview>(`/me/skill/${activeSkill.value.skill_id}`);
+            const response = await api.get(`/me/skill/${activeSkill.value.skill_id}`);
             if (response.status === 200) {
                 skillOv.value = response.data;
             } else {
@@ -46,6 +46,7 @@ onMounted(async() => {
         console.error('Error fetching skill overview:', error);
         router.push('/member/overview');
     }
+    console.log('skill overview: ', skillOv.value);
 });
 onUnmounted(() => {
     sessionStorage.removeItem('selectedSkill');

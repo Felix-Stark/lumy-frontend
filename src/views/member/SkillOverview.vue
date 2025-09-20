@@ -6,15 +6,19 @@
             btnText="Request Feedback"
         />
     </section>
-    <section class="w-full bg-white rounded-lg shadow-md p-6 lg:p-8">
-        <p>{{  }}</p>
-    </section>
+    <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+			<div class="w-full">
+				<Line :data="avgSentChart" :options="avgSentOptions" />
+			</div>
+		</section>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { Skill, SkillSummary, SkillOverview } from '@/types';
+import { Line } from 'vue-chartjs';
 import { useRouter } from 'vue-router';
 import { formatName } from '@/composables/formatName';
 import api from '@/services/api';
@@ -39,8 +43,8 @@ onUnmounted(() => {
 const avgSentChart = computed(() => {
 	const labels = skillOv.value?.average_sentiment_over_time.map((item) =>
         new Date(item.month).toLocaleString("default", { month: "short", year: "numeric" })
-    );
-    const data = skillOv.value?.average_sentiment_over_time.map((item) => item.avg_sentiment);
+    ) || ['No data'];
+    const data = skillOv.value?.average_sentiment_over_time.map((item) => item.avg_sentiment) || [0];
 	return {
 		labels, // e.g. ["2025-07", "2025-08", ...]
 		datasets: [

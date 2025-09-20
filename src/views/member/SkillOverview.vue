@@ -12,12 +12,12 @@
     </section>
     <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
         <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-        <div class="w-full h-12">
+        <div class="w-full">
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
     <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
-        <div class="w-full">
+        <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">
@@ -167,35 +167,29 @@ const skillSent = computed(() => {
     return { negSent, neuSent, posSent, total: skillOv.value?.submission_counts.total };
 })
 
-// const skillSentiments = computed(() => {
-//     const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
-//     const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
-//     const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
-//     return { negSent, neuSent, posSent };
-// })
-
 const sentOvData = computed(() => {
-    const negSent = skillOv.value?.submission_counts.by_sentiment.negative || 0;
-    const neuSent = skillOv.value?.submission_counts.by_sentiment.neutral || 0;
-    const posSent = skillOv.value?.submission_counts.by_sentiment.positive || 0;
-    const total = skillOv.value?.submission_counts.total || 1; // avoid division by zero
+    
+
     return {
         labels: ["Sentiments"],
         datasets: [
             {
                 label: 'Negative',
                 backgroundColor: 'rgba(252, 92, 101, 1)',
-                data: [negSent]
+                data: [skillSent.value.negSent],
+                borderRadius: 5
             },
             {
                 label: 'Neutral',
                 backgroundColor: 'rgba(255, 195, 110, 1)',
-                data: [neuSent]
+                data: [skillSent.value.neuSent],
+                borderRadius: 5
             },
             {
                 label: 'Positive',
                 backgroundColor: 'rgba(127, 228, 126, 1)',
-                data: [posSent]
+                data: [skillSent.value.posSent],
+                borderRadius: 5
             }
         ]
     }

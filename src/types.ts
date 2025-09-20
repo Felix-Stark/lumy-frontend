@@ -93,7 +93,7 @@ export type SkillOverview = {
   skill_name: string;
   skill_stale: boolean;
   skill_definition: string;
-  average_sentiment_over_time: TimeSeries;
+  avg_sentiment: TimeSeries;
   feedback_received: {
     id: number;
     content: string;

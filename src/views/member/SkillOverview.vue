@@ -152,7 +152,7 @@ const sentOvOptions = {
 }
 
 const avgSentChart = computed(() => {
-    const avgSent = skillOv.value?.average_sentiment_over_time || {};
+    const avgSent = skillOv.value?.avg_sentiment || {};
 	return {
 		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
 		datasets: [

@@ -23,7 +23,7 @@
             :name="formatName(user.name)"
             :email="user.email"
             :title="user.title"
-            :disabled="loading === true || user.id === account?.id"
+            :disabled="loading"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
             />

@@ -176,19 +176,19 @@ const sentOvData = computed(() => {
             {
                 label: 'Negative',
                 backgroundColor: 'rgba(252, 92, 101, 1)',
-                data: [skillSent.value.negSent],
+                data: [skillSent.value.total ? (skillSent.value.negSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Neutral',
                 backgroundColor: 'rgba(255, 195, 110, 1)',
-                data: [skillSent.value.neuSent],
+                data: [skillSent.value.total ? (skillSent.value.neuSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Positive',
                 backgroundColor: 'rgba(127, 228, 126, 1)',
-                data: [skillSent.value.posSent],
+                data: [skillSent.value.total ? (skillSent.value.posSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             }
         ]
@@ -205,6 +205,8 @@ const sentOvOptions = {
     x: {
       stacked: true,
       display: false, // hide axis
+      min:0,
+      max:100,
     },
     y: {
       stacked: true,

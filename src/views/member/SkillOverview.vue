@@ -1,10 +1,13 @@
 <template>
     <section class="flex justify-between items-center mb-6 w-full">
-        <h1 class="font-thin text-2xl text-lumy-secondary"><span>{{ formatName(activeSkill.name) }}</span></h1>
+        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
             :onAction="() => router.push('/feedback/request')"
             btnText="Request Feedback"
         />
+    </section>
+    <section class="w-full bg-white p-8 xl:p-12 text-gray-800">
+        <p class="text-xl font-gray-600"></p>
     </section>
     <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>

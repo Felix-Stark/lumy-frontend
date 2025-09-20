@@ -17,9 +17,7 @@
     </section>
     <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
         <div class="w-full">
-            <div :class="[`bg-lumy-danger-light rounded-lg h-10 w-[${skillSentiments.negSent}%]`]"></div>
-            <div :class="[`bg-lumy-neutral-light rounded-lg h-10 w-[${skillSentiments.neuSent}%]`]"></div>
-            <div :class="[`bg-lumy-green-light rounded-lg h-10 w-[${skillSentiments.posSent}%]`]"></div>
+            <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">
             <div class="flex flex-col items-center mx-4">
@@ -28,7 +26,7 @@
                 </p>
                 <div class="flex">
                     <Frown :class="['text-lumy-danger-light size-4']" />
-                    <p class="font-bold text-lg">{{ skillSentiments.negSent }}</p>
+                    <p class="font-bold text-lg">{{ skillSent.negSent }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-center mx-4">
@@ -37,7 +35,7 @@
                 </p>
                 <div class="flex">
                     <Annoyed :class="['text-lumy-neutral-light size-4']" />
-                    <p class="font-bold text-lg">{{ skillSentiments.neuSent }}</p>
+                    <p class="font-bold text-lg">{{ skillSent.neuSent }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-center mx-4">
@@ -45,8 +43,8 @@
                     Positive
                 </p>
                 <div class="flex">
-                    <Smile :class="['text-lumy-green-light size-4 rotate-180']" />
-                    <p class="font-bold text-lg">{{ skillSentiments.posSent }}</p>
+                    <Smile :class="['text-lumy-green-light size-4']" />
+                    <p class="font-bold text-lg">{{ skillSent.posSent }}</p>
                 </div>
             </div>
         </div>
@@ -94,19 +92,27 @@ onUnmounted(() => {
     sessionStorage.removeItem('selectedSkill');
 });
 
-const skillSentiments = computed(() => {
-    const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
-    const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
-    const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
-    return { negSent, neuSent, posSent };
+const skillSent = computed(() => {
+    const negSent = skillOv.value?.submission_counts.by_sentiment.negative || 0;
+    const neuSent = skillOv.value?.submission_counts.by_sentiment.neutral || 0;
+    const posSent = skillOv.value?.submission_counts.by_sentiment.positive || 0;
+    return { negSent, neuSent, posSent, total: skillOv.value?.submission_counts.total };
 })
 
+// const skillSentiments = computed(() => {
+//     const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
+//     const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
+//     const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
+//     return { negSent, neuSent, posSent };
+// })
+
 const sentOvData = computed(() => {
-    const negSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'negative').length || 0;
-    const neuSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'neutral').length || 0;
-    const posSent = skillOv.value?.feedback_received?.filter(fb => fb.sentiment === 'positive').length || 0;
+    const negSent = skillOv.value?.submission_counts.by_sentiment.negative || 0;
+    const neuSent = skillOv.value?.submission_counts.by_sentiment.neutral || 0;
+    const posSent = skillOv.value?.submission_counts.by_sentiment.positive || 0;
+    const total = skillOv.value?.submission_counts.total || 1; // avoid division by zero
     return {
-        labels: "Sentiment",
+        labels: ["Sentiments"],
         datasets: [
             {
                 label: 'Negative',

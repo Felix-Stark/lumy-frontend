@@ -31,9 +31,20 @@ const activeSkill = computed<SkillSummary>(() => {
 const skillOv = ref<SkillOverview | null>(null);
 
 onMounted(async() => {
-    const res = await api.get(`/me/skill/${activeSkill.value.skill_id}`);
-    if(res.status === 200) {
-        console.log('Skill data: ', res.data);
+   try {
+        if (activeSkill.value && activeSkill.value.skill_id) {
+            const response = await api.get<SkillOverview>(`/skills/${activeSkill.value.skill_id}/overview`);
+            if (response.status === 200) {
+                skillOv.value = response.data;
+            } else {
+                router.push('/member/overview');
+            }
+        } else {
+            router.push('/member/overview');
+        }
+    } catch (error) {
+        console.error('Error fetching skill overview:', error);
+        router.push('/member/overview');
     }
 });
 onUnmounted(() => {

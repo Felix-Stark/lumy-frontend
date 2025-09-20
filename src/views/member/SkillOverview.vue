@@ -156,9 +156,6 @@ onMounted(async() => {
     }
     console.log('skill overview: ', skillOv.value);
 });
-onUnmounted(() => {
-    sessionStorage.removeItem('selectedSkill');
-});
 
 const skillSent = computed(() => {
     const negSent = skillOv.value?.submission_counts.by_sentiment.negative || 0;

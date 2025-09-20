@@ -33,7 +33,7 @@ const skillOv = ref<SkillOverview | null>(null);
 onMounted(async() => {
    try {
         if (activeSkill.value && activeSkill.value.skill_id) {
-            const response = await api.get<SkillOverview>(`/skills/${activeSkill.value.skill_id}/overview`);
+            const response = await api.get<SkillOverview>(`/me/skill/${activeSkill.value.skill_id}`);
             if (response.status === 200) {
                 skillOv.value = response.data;
             } else {

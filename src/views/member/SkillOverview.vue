@@ -17,7 +17,7 @@
         </div>
     </section>
     <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg">
-        <div class="w-full h-12">
+        <div class="flex-1 h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">

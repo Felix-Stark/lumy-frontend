@@ -152,16 +152,13 @@ const sentOvOptions = {
 }
 
 const avgSentChart = computed(() => {
-	const labels = skillOv.value?.average_sentiment_over_time.map((item) =>
-        new Date(item.month).toLocaleString("default", { month: "short", year: "numeric" })
-    ) || ['No data'];
-    const data = skillOv.value?.average_sentiment_over_time.map((item) => item.avg_sentiment) || [0];
+    const avgSent = skillOv.value?.average_sentiment_over_time || {};
 	return {
-		labels, // e.g. ["2025-07", "2025-08", ...]
+		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data,
+				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				borderDash: [ 5, 5 ],

@@ -91,11 +91,9 @@ export type SkillSummary = {
 
 export type SkillOverview = {
   skill_name: string;
+  skill_stale: boolean;
   skill_definition: string;
-  average_sentiment_over_time: {
-    avg_sentiment: number;
-    month: string; // ISO date string
-  }[];
+  average_sentiment_over_time: TimeSeries;
   feedback_received: {
     id: number;
     content: string;
@@ -138,6 +136,7 @@ export type FeedbackRequest = {
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
 }
+
 export type FeedbackRequestShort = {
   id: string;
   recipient: {

@@ -165,6 +165,7 @@ export type FeedbackSubmission = {
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
   feedback_request?: FeedbackRequestShort;
+  constructiveness_score?: number; // e.g. 70
 };
 
 export type FeedbackFramework = {

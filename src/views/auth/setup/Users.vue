@@ -95,6 +95,7 @@ const clearQuery = () => {
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
 async function updateUser(userId:number, payload: Partial<SetupUser>) {
+  console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
     users.value = await userStore.updateUser(userId, payload);

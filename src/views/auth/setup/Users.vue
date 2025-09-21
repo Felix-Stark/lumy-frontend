@@ -124,7 +124,7 @@ async function verifySetup() {
   try {
     const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
     if (res.status === 200) {
-      router.push('/setup/complete');
+      router.push({name: 'setup-complete'});
       loading.value = false
     }
   } catch (error: any) {

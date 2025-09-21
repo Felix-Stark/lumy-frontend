@@ -56,7 +56,6 @@
 						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
 						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
 						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
-						<th class="px-6 py-4"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -64,6 +63,7 @@
 						v-for="skill in summary?.skills_summary"
 						:key="skill.skill_id"
 						class="hover:bg-gray-50"
+						@click="selectedSkill(skill)"
 						>
 							<td class="px-6 py-4">{{ skill.name }}</td>
 
@@ -84,10 +84,7 @@
 							<td class="px-6 py-4">
 								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
 							</td>
-							<td class="px-4 py-2 flex justify-between items-center">
-								<button @click="selectedSkill(skill)" class=" bg-lumy-secondary text-white font-bold py-2 px-4 rounded-md cursor-pointer">
-									Request
-								</button>
+							<td class="px-6 py-4 text-right">
 								<ChevronRight />
 							</td>
 						</tr>

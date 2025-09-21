@@ -24,7 +24,7 @@
       <button
         class="self-end text-sm text-gray-500 underline underline-offset-2 hover:text-gray-700 mb-2 cursor-pointer"
         @click="toggleAllActive"
-      >{{ allInactive === false ? 'Deactivate all users' : 'Activate all' }}</button>
+      >{{ allActive === true ? 'Deactivate all users' : 'Activate all' }}</button>
       <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
         <PickUserComp
           v-for="user in filteredUsers"
@@ -66,7 +66,7 @@ const userStore = useUserStore();
 const authStore = useAuthStore();
 const loading = ref(false);
 const users = ref<SetupUser[]>([]);
-const allInactive = ref(false);
+const allActive = ref(true);
 const query = ref('');
 const filteredUsers = computed<SetupUser[]>(() => {
     return query.value === ''
@@ -109,10 +109,9 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
 
 const toggleAllActive = async () => {
   try {
-    const res = await api.post("/account/users/activation", { "active": !allInactive.value });
-    allInactive.value = !allInactive.value;
-    console.log('toggle res: ', res)
-    users.value = await res.data;
+    const res = await api.post("/account/users/activation", { "active": !allActive.value });
+    allActive.value = !allActive.value;
+    users.value.map(user => user.is_active = allActive.value);
   } catch (error) {
     console.error("Failed to toggle all active", error);
   }

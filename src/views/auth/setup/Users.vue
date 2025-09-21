@@ -111,7 +111,10 @@ const toggleAllActive = async () => {
   try {
     const res = await api.post("/account/users/activation", { "active": !allActive.value });
     allActive.value = !allActive.value;
-    users.value.map(user => user.is_active = allActive.value);
+    users.value.map(user => {
+      user.id !== authStore.setupAccount?.id ? user.is_active = allActive.value : null;
+      return user;
+    });
   } catch (error) {
     console.error("Failed to toggle all active", error);
   }

@@ -97,7 +97,8 @@ const patching = ref<Record<number, boolean>>({}); // store loading state per us
 async function updateUser(userId:number, payload: Partial<SetupUser>) {
   patching.value[userId] = true;
   try {
-    await userStore.updateUser(userId, payload);
+    users.value = await userStore.updateUser(userId, payload);
+    
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {

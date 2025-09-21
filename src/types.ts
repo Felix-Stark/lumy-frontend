@@ -94,15 +94,7 @@ export type SkillOverview = {
   skill_stale: boolean;
   skill_definition: string;
   avg_sentiment: TimeSeries;
-  feedback_received: {
-    id: number;
-    content: string;
-    sentiment: string; // e.g. 'positive' | 'neutral' | 'negative'
-    sentiment_score: number; // e.g. 85
-    created_at: string; // ISO date string
-    feedback_request_id: string;
-    constructiveness_score: number; // e.g. 70
-  } [];
+  feedback_received:  FeedbackOnSkill[];
   submission_counts: {
     by_sentiment: {
       positive?: number;
@@ -112,6 +104,21 @@ export type SkillOverview = {
     total: number;
   }
 }
+
+export type FeedbackOnSkill = {
+    id: number;
+    content: string;
+    sentiment: string; // e.g. 'positive' | 'neutral' | 'negative'
+    sentiment_score: number; // e.g. 85
+    created_at: string; // ISO date string
+    updated_at: string; // ISO date string
+    feedback_request_id: string;
+    constructiveness_score: number; // e.g. 70
+    recipient_id: number; // sender user id
+    recipient_name: string; // sender user name
+    skill_id: number;
+    skill_name: string;
+  }
 
 // FEEDBACK TYPES
 

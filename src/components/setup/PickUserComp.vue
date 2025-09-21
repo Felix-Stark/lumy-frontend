@@ -69,11 +69,14 @@ defineProps<{
 	name?: string;
 	email?: string;
 	avatarUrl?: string;
-	isActive?: boolean;
+	isActive: boolean;
 	title?: string;
 	role: string;
 	disabled?: boolean;
 }>();
-const emit = defineEmits(['update:role', 'update:isActive']);
+const emit = defineEmits<{
+	(e: 'update:role', value: string): void;
+	(e: 'update:isActive', value: boolean): void;
+}>();
 
 </script>

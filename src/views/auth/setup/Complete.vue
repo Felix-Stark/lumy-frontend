@@ -5,7 +5,7 @@
     text="Now, check out what I sent you in Slack."
 	:image="lumyHappy"
 	button-text="Or go to your dashboard"
-	:onAction="() => router.push({ name: 'member-overview'})"
+	:onAction="() => {router.push({ name: 'member-overview'})}"
 	/>
 </template>
 
@@ -14,4 +14,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 import lumyHappy from '@/assets/images/lumy_cheering.png';
+import { onMounted } from 'vue';
+onMounted(() => {
+	sessionStorage.setItem("loggedin", JSON.stringify(true));
+})
 </script>

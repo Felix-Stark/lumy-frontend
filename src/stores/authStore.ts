@@ -5,7 +5,7 @@ import type { SetupAccount } from "@/types";
 import { useErrorStore } from "./errorStore";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    isLoggedIn: setLoggedIn(),
+    isLoggedIn: loadLoggedIn(),
     isAdmin: false,
     accountId: null as string | null,
     setupAccount: loadSetupAccount(),
@@ -78,7 +78,7 @@ function loadSetupAccount(): SetupAccount | null {
     return null;
   }
 }
-function setLoggedIn(): boolean | null {
+function loadLoggedIn(): boolean | null {
   const raw = sessionStorage.getItem("loggedin");
   try {
     return raw ? JSON.parse(raw) : null;

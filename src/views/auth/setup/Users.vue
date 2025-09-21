@@ -111,6 +111,7 @@ const toggleAllActive = async () => {
   try {
     const res = await api.post("/account/users/activation", { "active": !allInactive.value });
     allInactive.value = !allInactive.value;
+    console.log('toggle res: ', res)
     users.value = await res.data;
   } catch (error) {
     console.error("Failed to toggle all active", error);

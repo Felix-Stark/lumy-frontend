@@ -52,7 +52,7 @@
                 <p class="font-thin">
                     Total
                 </p>
-                <p class="font-bold text-lg text-gray-800">{{ skillSent.posSent }}</p>
+                <p class="font-bold text-lg text-gray-800">{{ skillSent.total }}</p>
             </div>
             
         </div>

@@ -62,9 +62,9 @@
         <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] min-h-60 xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? '-'+formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                <p class="text-gray-600 italic">{{ feedback.recipient_name ? '-'+formatName(feedback.recipient_name) : '' }}</p>
                 <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
+                    <p class="font-thin text-gray-600">{{ feedback.skill_name }}</p>
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
                     <span>
                         <template v-if="feedback.sentiment === 'positive'">
@@ -102,7 +102,7 @@
 import BaseButton from '@/components/base/BaseButton.vue';
 import Tooltip from '@/components/base/Tooltip.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import type { Skill, SkillSummary, SkillOverview, FeedbackSubmission } from '@/types';
+import type { Skill, SkillSummary, SkillOverview, FeedbackSubmission, FeedbackOnSkill } from '@/types';
 import { Line, Bar } from 'vue-chartjs';
 import { Chart, registerables, type ChartOptions } from 'chart.js'
 import { useRouter } from 'vue-router';
@@ -110,6 +110,8 @@ import { formatName } from '@/composables/formatName';
 import api from '@/services/api';
 import { Annoyed, Frown, Smile } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
+import { useErrorStore } from '@/stores/errorStore';
+const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
 Chart.register(...registerables);
 const router = useRouter();
@@ -133,7 +135,7 @@ function handleMouseLeave() {
 const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
-const feedbackList = ref<FeedbackSubmission[]>();
+const feedbackList = ref<FeedbackOnSkill[]>();
 
 const skillOv = ref<SkillOverview | null>(null);
 
@@ -145,10 +147,11 @@ onMounted(async() => {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
             } else {
-                router.push('/member/overview');
+                errorStore.setError({ code: response.status, detail: response.statusText || 'Failed to fetch skill overview' });
+                router.push({name:'error'});
             }
         } else {
-            router.push('/member/overview');
+            router.push({name:'member-overview'});
         }
     } catch (error) {
         console.error('Error fetching skill overview:', error);

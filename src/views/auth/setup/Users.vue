@@ -98,8 +98,7 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
   console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
-    const res = await userStore.updateUser(userId, payload);
-    console.log('res in updateUser fn: ', res);
+    await userStore.updateUser(userId, payload);
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {
@@ -127,6 +126,7 @@ async function verifySetup() {
     const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
     if (res.status === 200) {
 	    sessionStorage.setItem("loggedin", "true");
+      sessionStorage.setItem("LumyRole", JSON.stringify("admin"));
 
       router.push({name: 'setup-complete'});
       loading.value = false

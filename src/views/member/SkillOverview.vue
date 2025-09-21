@@ -27,7 +27,7 @@
                 </p>
                 <div class="flex">
                     <Frown :class="['text-lumy-danger-light size-6']" />
-                    <p class="font-bold text-lg text-gray-800">{{ skillSent.negSent }}</p>
+                    <p class="font-bold text-lg text-gray ml-2">{{ skillSent.negSent }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-center mx-4">
@@ -36,7 +36,7 @@
                 </p>
                 <div class="flex">
                     <Annoyed :class="['text-lumy-neutral-light size-6']" />
-                    <p class="font-bold text-lg text-gray-800">{{ skillSent.neuSent }}</p>
+                    <p class="font-bold text-lg text-gray ml-2">{{ skillSent.neuSent }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-center mx-4">
@@ -45,14 +45,14 @@
                 </p>
                 <div class="flex">
                     <Smile :class="['text-lumy-green-light size-6']" />
-                    <p class="font-bold text-lg text-gray-800">{{ skillSent.posSent }}</p>
+                    <p class="font-bold text-lg text-gray ml-2">{{ skillSent.posSent }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-center mx-4">
                 <p class="font-thin">
                     Total
                 </p>
-                <p class="font-bold text-lg text-gray-800">{{ skillSent.total }}</p>
+                <p class="font-bold text-lg text-gray">{{ skillSent.total }}</p>
             </div>
             
         </div>

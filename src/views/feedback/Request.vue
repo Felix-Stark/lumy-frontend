@@ -168,7 +168,7 @@ const handleClose = () => {
     showSuccess.value = false;
     message.value = '';
     selectedUsers.value = [];
-    router.push({ name: 'member-dashboard' });
+    router.push({ name: 'member-overview' });
 }
 
 </script>

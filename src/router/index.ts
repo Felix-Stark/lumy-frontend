@@ -71,27 +71,50 @@ const router = createRouter({
         }
       ]
     },
+    { 
+      path: '/overview',
+      component: () => import('@/layouts/DashboardLayout.vue'),
+      meta: {
+        requiresRole: true,
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: 'employee',
+          name: 'overview-employee',
+          component: () => import('@/views/admin/Employee.vue'),
+        }
+      ]
+    },
     {
       path: '/member',
+      name: 'member',
+      redirect: '/member/overview',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresAuth: true, // This route requires authentication
       },
       children: [
         {
-          path: '',
-          name: 'member-dashboard',
+          path: '/member/overview',
+          name: 'member-overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
         {
-          path: 'feedback',
-          name: 'member-feedback',
-          component: () => import('@/views/member/Feedback.vue'),
+          path: 'feedback-overview',
+          name: 'feedback-overview',
+          component: () => import('@/views/member/FeedbackOverview.vue'),
+        },
+        {
+          path: 'skill-overview',
+          name: 'skill-overview',
+          component: () => import('@/views/member/SkillOverview.vue'),
         }
       ]
     },  
     {
       path: '/settings',
+      name: 'settings',
       redirect: () => {
         const raw = sessionStorage.getItem('LumyRole')
         const role = raw ? JSON.parse(raw) : null;
@@ -109,7 +132,7 @@ const router = createRouter({
         {
           path: 'member/integrations',
           name: 'settings-member-integrations',
-          component: () => import('@/views//settings/member/Integrations.vue'),
+          component: () => import('@/views/settings/member/Integrations.vue'),
         },
         {
           path: 'admin/general',
@@ -152,7 +175,6 @@ const router = createRouter({
           component: () => import('@/views/feedback/Request.vue'),
           meta: { requiresAuth: true }
         },
-        
       ]
     },
     {
@@ -167,24 +189,37 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
-  const raw = sessionStorage.getItem('LumyRole')
+  const errorStore = useErrorStore();
+
+  const raw = sessionStorage.getItem('LumyRole');
   const role = raw ? JSON.parse(raw) : null;
+
+  // 1. Require authentication
   if (to.meta.requiresAuth && !store.isLoggedIn) {
-    next({ name: 'slack-login' })
-  } else if (to.meta.isAdmin) {
-      if (role !== 'admin') {
-        const errorStore = useErrorStore();
-        errorStore.setError({
-          code: 403,
-          detail: 'You do not have permission to access this page.',
-        });
-        next({ name: 'error' })
-        } else {
-        next()
-      }
-    } else {
-      next()
-    }
-})
+    return next({ name: 'slack-login' });
+  }
+
+  // 2. Require admin
+  if (to.meta.isAdmin && role !== 'admin') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (admin only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // 3. Require manager
+  if (to.meta.isManager && role !== 'manager') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (manager only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // ✅ 4. Allow navigation
+  next();
+});
+
 
 export default router

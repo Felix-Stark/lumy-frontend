@@ -5,7 +5,7 @@
     text="Now, check out what I sent you in Slack."
 	:image="lumyHappy"
 	button-text="Or go to your dashboard"
-	:onAction="() => router.push('/member')"
+	:onAction="() => router.push({ name: 'member-overview'})"
 	/>
 </template>
 

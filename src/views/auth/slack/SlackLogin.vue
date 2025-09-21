@@ -3,7 +3,7 @@
 	:image="lumyLogo"
 	title="Welcome to Lumy"	
 	:description="`Feedback that actually helps — not hurts.`"
-	buttonText="Sign in with Slack"
+	buttonText="Continue with Slack"
 	:onAction="signInWithSlack"
 	>
 		<template #text>
@@ -14,6 +14,7 @@
 
 
 <script setup lang="ts">
+console.log('SLACK LOGIN VIEW');
 import { useRouter } from 'vue-router';
 import lumyLogo from '@/assets/images/lumy.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';

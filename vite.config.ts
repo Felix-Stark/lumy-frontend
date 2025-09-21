@@ -16,5 +16,8 @@ export default defineConfig({
     "import.meta.env.VITE_SLACK_CLIENT_ID": JSON.stringify(
       process.env.VITE_SLACK_CLIENT_ID
     ),
+    "import.meta.env.VITE_BASE_URL": JSON.stringify(
+      process.env.VITE_BASE_URL
+    ),
   },
 });

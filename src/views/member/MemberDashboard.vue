@@ -138,7 +138,6 @@ const showSuccess = ref(false);
 onMounted(async() => {
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
-	console.log('User summary:', summary.value);
 })
 
 function selectedSkill(skill: SkillSummary) {

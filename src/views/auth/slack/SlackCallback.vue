@@ -21,7 +21,6 @@ const authStore = useAuthStore();
 const code = route.query.code;
 
 onMounted( async () => {
-	console.log('slack callback mounted');
 	try {
 		if(code) {
 		const path = await authStore.loginSlack(code as string);

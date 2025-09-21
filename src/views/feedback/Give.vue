@@ -178,7 +178,6 @@ onMounted(async () => {
 			requestInfo.value = res.data
 			toggleCoaching.value = requestInfo.value?.intelligence_coach || false
 			toggleSuggestions.value = requestInfo.value?.intelligence_assistant || false
-			console.log('Request info fetched successfully:', requestInfo.value)
 		}
 	} catch (error: any) {
 		console.error('Error fetching request info:', error);

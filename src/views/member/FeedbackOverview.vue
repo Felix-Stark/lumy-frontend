@@ -267,7 +267,6 @@ const filter = computed(() => {
 
 const positiveSentiments = computed(() => {
     const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');
-    console.log('positive array: ', positive);
     const decimal = (positive.length / feedbackList.value.length);
     return Number(decimal * 100).toFixed(0) as unknown as number;
 })
@@ -314,7 +313,6 @@ const allTimeData = computed(() => {
     const all = [feedbackGiven, feedbackRequested, feedbackReceived]
     
     const total = feedbackGiven + feedbackRequested + feedbackReceived;
-    console.log('total: ', total);
     return {
         datasets: [
             {

@@ -132,7 +132,6 @@ onMounted(() => {
   if (raw) {
 	role.value = JSON.parse(raw)
   }
-  console.log('Role from sessionStorage:', role.value)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)

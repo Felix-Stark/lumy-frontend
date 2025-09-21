@@ -257,7 +257,6 @@ async function saveSettings() {
     nudge_weekday: selectedDay.value,
     nudge_hour: selectedHour.value,
    };
-   console.log('Updated settings to be saved:', updated);
    const res = await accountStore.updateAccount(updated);
    if (res) {
     toastBg.value = 'bg-lumy-green';

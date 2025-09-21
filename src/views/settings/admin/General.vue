@@ -150,7 +150,6 @@ async function saveSettings() {
         const res = await api.patch('/account', 
             account.value
         )
-        console.log('saveSettings res: ', res)
         if (res.status === 200) {
             toastText.value = 'Settings saved!'
             toastBg.value = 'bg-green-500'

@@ -157,7 +157,6 @@ onMounted(async() => {
         console.error('Error fetching skill overview:', error);
         router.push('/member/overview');
     }
-    console.log('skill overview: ', skillOv.value);
 });
 
 const skillSent = computed(() => {

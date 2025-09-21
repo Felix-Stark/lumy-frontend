@@ -14,7 +14,6 @@
 
 
 <script setup lang="ts">
-console.log('SLACK LOGIN VIEW');
 import { useRouter } from 'vue-router';
 import lumyLogo from '@/assets/images/lumy.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';

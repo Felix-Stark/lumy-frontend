@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-console.log('App.vue loaded')
+console.log('Welcome to Lumy')
 </script>
 
 <template>

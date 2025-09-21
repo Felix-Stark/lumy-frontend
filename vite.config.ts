@@ -6,6 +6,7 @@ import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/',
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {
@@ -15,9 +16,6 @@ export default defineConfig({
   define: {
     "import.meta.env.VITE_SLACK_CLIENT_ID": JSON.stringify(
       process.env.VITE_SLACK_CLIENT_ID
-    ),
-    "import.meta.env.VITE_BASE_URL": JSON.stringify(
-      process.env.VITE_BASE_URL
     ),
   },
 });

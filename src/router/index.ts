@@ -7,7 +7,7 @@ import { useErrorStore } from '@/stores/errorStore';
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.VITE_BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -18,32 +18,32 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/slack/login',
+          path: 'slack/login',
           name: 'slack-login',
           component: SlackLogin,
         },
         {
-          path: '/slack/callback',
+          path: 'slack/callback',
           name: 'slack-callback',
           component: () => import('@/views/auth/slack/SlackCallback.vue'),
         },
         {
-          path: '/slack/register',
+          path: 'slack/register',
           name: 'slack-register',
           component: () => import('@/views/auth/slack/SlackRegister.vue'),
         },
         {
-          path: '/slack/install-redirect',
+          path: 'slack/install-redirect',
           name: 'slack-install-redirect',
           component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
         },
         {
-          path: '/slack/install-success',
+          path: 'slack/install-success',
           name: 'slack-install-success',
           component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
         },
         {
-          path: '/slack/notadmin',
+          path: 'slack/notadmin',
           name: 'slack-not-admin',
           component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
         }
@@ -96,7 +96,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/member/overview',
+          path: 'overview',
           name: 'member-overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
@@ -160,17 +160,17 @@ const router = createRouter({
       redirect: '/feedback/give',
       children: [
         {
-          path: '/feedback/give',
+          path: 'give',
           name: 'feedback-give',
           component: () => import('@/views/feedback/Give.vue')
         },
         {
-          path: '/feedback/give/success',
+          path: 'give/success',
           name: 'feedback-give-success',
           component: () => import('@/views/feedback/GiveSuccess.vue')
         },
         {
-          path: '/feedback/request',
+          path: 'request',
           name: 'feedback-request',
           component: () => import('@/views/feedback/Request.vue'),
           meta: { requiresAuth: true }

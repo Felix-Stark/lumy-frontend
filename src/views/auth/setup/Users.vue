@@ -110,7 +110,7 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
 
 const toggleAllActive = async () => {
   try {
-    const res = await api.post("/account/users/activation", { "active": !allActive.value });
+    await api.post("/account/users/activation", { "active": !allActive.value });
     allActive.value = !allActive.value;
     users.value.map(user => {
       user.id !== authStore.setupAccount?.id ? user.is_active = allActive.value : null;
@@ -126,6 +126,8 @@ async function verifySetup() {
   try {
     const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
     if (res.status === 200) {
+	    sessionStorage.setItem("loggedin", "true");
+
       router.push({name: 'setup-complete'});
       loading.value = false
     }

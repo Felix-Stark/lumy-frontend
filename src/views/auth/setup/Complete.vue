@@ -14,8 +14,4 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 import lumyHappy from '@/assets/images/lumy_cheering.png';
-import { onMounted } from 'vue';
-onMounted(() => {
-	sessionStorage.setItem("loggedin", JSON.stringify(true));
-})
 </script>

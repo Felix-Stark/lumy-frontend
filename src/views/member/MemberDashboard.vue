@@ -62,7 +62,7 @@
 						<tr
 						v-for="skill in summary?.skills_summary"
 						:key="skill.skill_id"
-						class="hover:bg-gray-50"
+						class="hover:bg-gray-50 cursor-pointer"
 						@click="selectedSkill(skill)"
 						>
 							<td class="px-6 py-4">{{ skill.name }}</td>

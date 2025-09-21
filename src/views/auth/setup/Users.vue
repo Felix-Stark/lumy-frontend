@@ -109,7 +109,7 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
 
 const toggleAllActive = async () => {
   try {
-    const res = await api.patch("/account/users/activation", { "active": !allInactive.value });
+    const res = await api.post("/account/users/activation", { "active": !allInactive.value });
     allInactive.value = !allInactive.value;
     users.value = await res.data;
   } catch (error) {

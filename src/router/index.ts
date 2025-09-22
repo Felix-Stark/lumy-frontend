@@ -195,7 +195,7 @@ router.beforeEach((to, from, next) => {
   const role = raw ? JSON.parse(raw) : null;
 
   // 1. Require authentication
-  if (to.meta.requiresAuth && !store.isLoggedIn) {
+  if (to.meta.requiresAuth && !store.authenticated) {
     return next({ name: 'slack-login' });
   }
 

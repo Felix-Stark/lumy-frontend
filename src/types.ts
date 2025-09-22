@@ -27,6 +27,7 @@ export type Account = {
   nudge_interval_weeks: number;
   nudge_weekday: number; // 1 (Monday) to 5 (Friday)
   nudge_hour: number; // 0 to 23
+  nudge_grace_period: number;
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
   created_at: string;

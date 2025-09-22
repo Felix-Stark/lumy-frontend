@@ -3,6 +3,7 @@ import type { User, Skill, UserSummary, SetupUser } from '../types';
 import { useApiFetch } from '@/composables/useApiFetch';
 import { ref } from 'vue';
 
+<<<<<<< HEAD
 export const useUserStore = defineStore("user", () => {
   // state
   const me = ref<User | null>(null);
@@ -29,6 +30,67 @@ export const useUserStore = defineStore("user", () => {
 		} else {
 			me.value = data.value;
 		}
+=======
+export const useUserStore = defineStore('user', {
+	state: () => ({
+		me: {} as User | null,
+		meSummary: {} as UserSummary | null,
+		userSkills: [] as Skill[] | null,
+		users: [] as User[],
+		account: {} as Account | null,
+	}),
+	actions: {
+		async getMe() {
+			const res = await api.get('/me');
+			if (res.status === 200) {
+				this.me = res.data;
+			}
+			return res.status;
+		},
+		async getMeSummary() {
+			const res = await api.get('/me/summary');
+			if (res.status === 200) {
+				this.meSummary = res.data; //return status and use userStore.me in components
+				return res.status; //return status and use userStore.me in components
+			}
+		},
+		async getUserSkills(userId: number) {
+			const res = await api.get(`/users/${userId}/skills`);
+			if (res.status === 200) {
+				this.userSkills = res.data; //return status and use userStore.userSkills in components
+				return res.status; //return status and use userStore.users in components
+			}
+		},
+		async getUsers(inactive: boolean) {
+			try {
+				const res = await api.get(`/users?include_inactive=${inactive}`);
+				if (res.status === 200) {
+					this.users = res.data; //return status and use userStore.users in components
+					return res.status
+				}
+			} catch (error: any) {
+				console.error('error in get users: ', error)
+			}
+			
+		},
+		async updateUser(userId: number, userData: Partial<SetupUser>) {
+			try {
+				const res = await api.patch(`/users/${userId}`, userData);
+				if(res.status === 200) {
+					return res.data;
+				}
+			} catch (error: any) {
+				console.error('error in update user: ', error)
+			}
+		},
+		async getAccount() {
+			const res = await api.get('/account');
+			if (res.status === 200) {
+				this.account = res.data;
+			}
+			return res.data as Account;
+		},
+>>>>>>> main
 	}
     loading.value = false;
   };

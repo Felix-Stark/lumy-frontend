@@ -13,10 +13,10 @@
 			</div>
 			<div class="flex flex-col justify-start h-full">
 				<p v-if="name" class="text-lg font-medium text-gray-800">
-					{{ name }}
+					{{ name }} <span v-if="title" class="text-sm font-normal text-gray-500"> - <i>({{ title }}</i>)</span>
 				</p>
-				<p v-if="title" class="text-sm font-medium italic text-gray-800">
-					{{ title }}
+				<p v-if="email" class="text-sm font-medium italic text-gray-800">
+					{{ email }}
 				</p>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 					:flip="true"
 					:offset="4"
 					>
-					<ListboxButton :disabled="!isActive" :class="['border border-gray-300 rounded-md p-2 w-full flex justify-between items-center  bg-white', isActive ? 'cursor-pointer' : 'cursor-not-allowed']">
+					<ListboxButton :disabled="disabled || !isActive" :class="['border border-gray-300 rounded-md p-2 w-full flex justify-between items-center  bg-white', isActive ? 'cursor-pointer' : 'cursor-not-allowed']">
 						<span>{{ role.charAt(0).toUpperCase() + role.slice(1) }}</span>
 						<ChevronDown class="ml-2 w-4 h-4" />
 					</ListboxButton>
@@ -40,11 +40,15 @@
 						<ListboxOption value="admin" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
 							Admin
 						</ListboxOption>
+						<ListboxOption value="manager" class="cursor-pointer select-none px-4 py-2 hover:bg-gray-200">
+							Manager
+						</ListboxOption>
 					</ListboxOptions>
 					</Float>
 				</div>
 			</Listbox>
 			<button
+			:disabled="disabled"
 			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8']" 
 			@click="emit('update:isActive', !isActive)"
 			>
@@ -65,10 +69,14 @@ defineProps<{
 	name?: string;
 	email?: string;
 	avatarUrl?: string;
-	isActive?: boolean;
+	isActive: boolean;
 	title?: string;
 	role: string;
+	disabled?: boolean;
 }>();
-const emit = defineEmits(['update:role', 'update:isActive']);
+const emit = defineEmits<{
+	(e: 'update:role', value: string): void;
+	(e: 'update:isActive', value: boolean): void;
+}>();
 
 </script>

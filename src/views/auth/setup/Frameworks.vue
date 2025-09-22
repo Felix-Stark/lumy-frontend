@@ -151,7 +151,7 @@ const saveSettings = async () => {
 		const res = await api.patch('/account', { framework_id: selectedFramework.value, bot_personality_id: selectedBot.value, name: companyName.value });
 		if (res.status === 200) {
 
-			router.push('/setup/users');
+			router.push({name: 'setup-users'});
 		} else {
 			console.error('Error setting framework:', res);
 		}

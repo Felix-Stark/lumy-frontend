@@ -56,14 +56,14 @@
 						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
 						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
 						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
-						<th class="px-6 py-4"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr
 						v-for="skill in summary?.skills_summary"
 						:key="skill.skill_id"
-						class="hover:bg-gray-50"
+						class="hover:bg-gray-50 cursor-pointer"
+						@click="selectedSkill(skill)"
 						>
 							<td class="px-6 py-4">{{ skill.name }}</td>
 
@@ -84,12 +84,9 @@
 							<td class="px-6 py-4">
 								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
 							</td>
-							<!-- <td class="px-4 py-2 flex justify-between items-center">
-								<button @click="selectedSkill(skill)" class=" bg-lumy-purple text-white font-bold py-2 px-4 rounded-md cursor-pointer">
-									Request
-								</button>
+							<td class="px-6 py-4 text-right">
 								<ChevronRight />
-							</td> -->
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -111,15 +108,14 @@
 			title="Feedback Requested"
 			message="Your feedback request has been sent successfully!"
 			btnText="OK"
-		>
-		</BaseDialog>
+		/>
 </template>
 
 <script setup lang="ts">
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
-import NavUtility from '@/components/NavUtility.vue';
+import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
@@ -140,17 +136,14 @@ const summary = ref<UserSummary | null>();
 const showSuccess = ref(false);
 
 onMounted(async() => {
-	await userStore.getUsers();
 	await userStore.getMeSummary();
 	summary.value = userStore.meSummary;
-	console.log('users: ', userStore.users);
-	console.log('meSummary: ', userStore.meSummary);
 })
 
-// function selectedSkill(skill: SkillSummary) {
-// 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-// 	router.push('/feedback/request');
-// }
+function selectedSkill(skill: SkillSummary) {
+	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+	router.push({ name: 'skill-overview' });
+}
 
 const avgSentChart = computed(() => {
 	const avgSent = summary.value?.avg_sentiment || {};
@@ -186,70 +179,119 @@ const avgSentOptions = {
 
 
 const feedbackChart = computed(() => {
-	const feedbackRequested = summary.value?.feedback_requested || {};
-	const feedbackGiven = summary.value?.feedback_given || {};
-	const feedbackReceived = summary.value?.feedback_received || {};
-	return {
-		labels: Object.keys(feedbackRequested), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Feedback Requested',
-				data: Object.values(feedbackRequested), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(75, 123, 236, 1)',
-				backgroundColor: 'rgba(75, 123, 236, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			},
-			{
-				label: 'Feedback Given',
-				data: Object.values(feedbackGiven), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(32, 191, 107, 1)',
-				backgroundColor: 'rgba(32, 191, 107, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			},
-			{
-				label: 'Feedback Received',
-				data: Object.values(feedbackReceived), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(164, 74, 255, 1)',
-				backgroundColor: 'rgba(164, 74, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			}
-		]
-	};
+  const feedbackRequested = summary.value?.feedback_requested || {};
+  const feedbackGiven = summary.value?.feedback_given || {};
+  const feedbackReceived = summary.value?.feedback_received || {};
+
+  // union of all keys and sort chronologically (expects YYYY-MM or ISO-like keys)
+  const allKeys = Array.from(
+    new Set([
+      ...Object.keys(feedbackRequested),
+      ...Object.keys(feedbackGiven),
+      ...Object.keys(feedbackReceived)
+    ])
+  ).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());
+
+  const mapSeries = (series: Record<string, any>) =>
+    allKeys.map(k => Number(series[k] ?? 0));
+
+  const valuesRequested = mapSeries(feedbackRequested);
+  const valuesGiven = mapSeries(feedbackGiven);
+  const valuesReceived = mapSeries(feedbackReceived);
+
+  return {
+    labels: allKeys,
+    datasets: [
+      {
+        label: 'Feedback Requested',
+        data: valuesRequested,
+        fill: false,
+        borderColor: 'rgba(75, 123, 236, 1)',
+        backgroundColor: 'rgba(75, 123, 236, 1)',
+        borderDash: [5, 5],
+        tension: 0.4
+      },
+      {
+        label: 'Feedback Given',
+        data: valuesGiven,
+        fill: false,
+        borderColor: 'rgba(32, 191, 107, 1)',
+        backgroundColor: 'rgba(32, 191, 107, 1)',
+        borderDash: [5, 5],
+        tension: 0.4
+      },
+      {
+        label: 'Feedback Received',
+        data: valuesReceived,
+        fill: false,
+        borderColor: 'rgba(164, 74, 255, 1)',
+        backgroundColor: 'rgba(164, 74, 255, 1)',
+        borderDash: [5, 5],
+        tension: 0.4
+      }
+    ]
+  };
+});
+
+
+// dynamic y max based on all dataset values
+const feedbackYMax = computed(() => {
+  const feedbackRequested = summary.value?.feedback_requested || {};
+  const feedbackGiven = summary.value?.feedback_given || {};
+  const feedbackReceived = summary.value?.feedback_received || {};
+
+  const all = [
+    ...Object.values(feedbackRequested).map(Number),
+    ...Object.values(feedbackGiven).map(Number),
+    ...Object.values(feedbackReceived).map(Number)
+  ].filter(v => !Number.isNaN(v));
+
+  if (!all.length) return 10;
+  // find max and round up to nearest sensible step
+  const rawMax = Math.max(...all);
+  // sensible step choices
+  const step = rawMax <= 10 ? 1 : rawMax <= 50 ? 5 : 10;
+  return Math.ceil(rawMax / step) * step;
+});
+
+const feedbackStep = computed(() => {
+	switch (true) {
+		case feedbackYMax.value <= 10:
+			return 2;
+		case feedbackYMax.value <= 50:
+			return 5;
+		default:
+			return 10;
+	}
 })
-const feedbackChartOptions = {
+
+type LineChartOptions = ChartOptions<'line'>
+
+const feedbackChartOptions = computed<LineChartOptions>(() => ({
   responsive: true,
   maintainAspectRatio: true,
-  interaction: {
-	intersect: false,
-  },
+  interaction: { intersect: false },
   plugins: {
-    legend: { 
-		display: true,
-		
-		labels: {
-			position: "top",
-			usePointStyle: true,
-			align: "end",
-			pointStyle: 'circle',
-			padding: 8,
-		}
-	 },
+    legend: {
+      display: true,
+      position: 'top', // legend above chart
+      labels: {
+        align: 'end',
+        usePointStyle: true,
+        pointStyle: 'circle',
+
+      }
+    },
     title: { display: false }
   },
   scales: {
     y: {
       min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
+      max: feedbackYMax.value,
+      ticks: {
+        stepSize: feedbackStep.value
+      }
     }
   }
-};
-
-
+}));
 </script>

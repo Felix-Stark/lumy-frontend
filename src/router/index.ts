@@ -7,7 +7,7 @@ import { useErrorStore } from '@/stores/errorStore';
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -18,32 +18,32 @@ const router = createRouter({
       },
       children: [
         {
-          path: '/slack/login',
+          path: 'slack/login',
           name: 'slack-login',
           component: SlackLogin,
         },
         {
-          path: '/slack/callback',
+          path: 'slack/callback',
           name: 'slack-callback',
           component: () => import('@/views/auth/slack/SlackCallback.vue'),
         },
         {
-          path: '/slack/register',
+          path: 'slack/register',
           name: 'slack-register',
           component: () => import('@/views/auth/slack/SlackRegister.vue'),
         },
         {
-          path: '/slack/install-redirect',
+          path: 'slack/install-redirect',
           name: 'slack-install-redirect',
           component: () => import('@/views/auth/slack/SlackInstallRedirect.vue'),
         },
         {
-          path: '/slack/install-success',
+          path: 'slack/install-success',
           name: 'slack-install-success',
           component: () => import('@/views/auth/slack/SlackInstallSuccess.vue'),
         },
         {
-          path: '/slack/notadmin',
+          path: 'slack/notadmin',
           name: 'slack-not-admin',
           component: () => import('@/views/auth/slack/SlackNotAdmin.vue'),
         }
@@ -71,28 +71,59 @@ const router = createRouter({
         }
       ]
     },
+    { 
+      path: '/overview',
+      component: () => import('@/layouts/DashboardLayout.vue'),
+      meta: {
+        requiresRole: true,
+        requiresAuth: true,
+      },
+      children: [
+        {
+          path: 'employee',
+          name: 'overview-employee',
+          component: () => import('@/views/admin/Employee.vue'),
+        }
+      ]
+    },
     {
       path: '/member',
+      name: 'member',
+      redirect: '/member/overview',
       component: () => import('@/layouts/DashboardLayout.vue'),
       meta: {
         requiresAuth: true, // This route requires authentication
       },
       children: [
         {
-          path: '',
-          name: 'member-dashboard',
+          path: 'overview',
+          name: 'member-overview',
           component: () => import('@/views/member/MemberDashboard.vue'),
         },
         {
-          path: 'feedback',
-          name: 'member-feedback',
-          component: () => import('@/views/member/Feedback.vue'),
+          path: 'feedback-overview',
+          name: 'feedback-overview',
+          component: () => import('@/views/member/FeedbackOverview.vue'),
+        },
+        {
+          path: 'skill-overview',
+          name: 'skill-overview',
+          component: () => import('@/views/member/SkillOverview.vue'),
         }
       ]
     },  
     {
       path: '/settings',
-      redirect: 'settings/member/integrations',
+      name: 'settings',
+      redirect: () => {
+        const raw = sessionStorage.getItem('LumyRole')
+        const role = raw ? JSON.parse(raw) : null;
+        if (role === 'admin') {
+          return '/settings/admin/general';
+        } else {
+          return '/settings/member/integrations';
+        }
+      },
       component: () => import('@/layouts/SettingsLayout.vue'),
       meta: {
         requiresAuth: true,
@@ -101,12 +132,18 @@ const router = createRouter({
         {
           path: 'member/integrations',
           name: 'settings-member-integrations',
-          component: () => import('@/views//settings/member/Integrations.vue'),
+          component: () => import('@/views/settings/member/Integrations.vue'),
         },
         {
           path: 'admin/general',
           name: 'settings-admin-general',
           component: () => import('@/views/settings/admin/General.vue'),
+          meta: { isAdmin: true }
+        },
+        {
+          path: 'admin/intelligence',
+          name: 'settings-admin-intelligence',
+          component: () => import('@/views/settings/admin/Intelligence.vue'),
           meta: { isAdmin: true }
         },
         {
@@ -123,22 +160,21 @@ const router = createRouter({
       redirect: '/feedback/give',
       children: [
         {
-          path: '/feedback/give',
+          path: 'give',
           name: 'feedback-give',
           component: () => import('@/views/feedback/Give.vue')
         },
         {
-          path: '/feedback/give/success',
+          path: 'give/success',
           name: 'feedback-give-success',
           component: () => import('@/views/feedback/GiveSuccess.vue')
         },
         {
-          path: '/feedback/request',
+          path: 'request',
           name: 'feedback-request',
           component: () => import('@/views/feedback/Request.vue'),
           meta: { requiresAuth: true }
         },
-        
       ]
     },
     {
@@ -153,24 +189,37 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
-  const raw = sessionStorage.getItem('LumyRole')
+  const errorStore = useErrorStore();
+
+  const raw = sessionStorage.getItem('LumyRole');
   const role = raw ? JSON.parse(raw) : null;
+
+  // 1. Require authentication
   if (to.meta.requiresAuth && !store.isLoggedIn) {
-    next({ name: 'slack-login' })
-  } else if (to.meta.isAdmin) {
-      if (role !== 'admin') {
-        const errorStore = useErrorStore();
-        errorStore.setError({
-          code: 403,
-          detail: 'You do not have permission to access this page.',
-        });
-        next({ name: 'error' })
-        } else {
-        next()
-      }
-    } else {
-      next()
-    }
-})
+    return next({ name: 'slack-login' });
+  }
+
+  // 2. Require admin
+  if (to.meta.isAdmin && role !== 'admin') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (admin only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // 3. Require manager
+  if (to.meta.isManager && role !== 'manager') {
+    errorStore.setError({
+      code: 403,
+      detail: 'You do not have permission to access this page (manager only).',
+    });
+    return next({ name: 'error' });
+  }
+
+  // ✅ 4. Allow navigation
+  next();
+});
+
 
 export default router

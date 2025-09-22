@@ -4,7 +4,7 @@
 	description="Your account has been connected."
 	:image="lumyHappy"
 	button-text="Let's configure your account"
-	:onAction="() => router.push('/setup/framework')"
+	:onAction="() => router.push({name: 'setup-frameworks'})"
 	/>
 </template>
 

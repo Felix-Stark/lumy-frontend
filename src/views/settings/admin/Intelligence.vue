@@ -32,17 +32,17 @@
             <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin text-sm text-gray-500">Feedback reminders will be sent out on selected day and time, based on your team's time zone.</p>
                 <div class="flex flex-row w-full ">
-                    <select v-model="selectedFrequency" class="mt-2 mr-2 p-2 border border-gray-300 rounded">
+                    <select v-model="selectedFrequency" class="mt-2 mr-2 p-2 border border-gray-300 rounded outline-lumy-secondary">
                         <option v-for="freq in frequencies" :key="freq.value" :value="freq.value">
                             {{ freq.label }}
                         </option>
                     </select>
-                    <select v-model="selectedDay" class="mt-2 mr-2 p-2 border border-gray-300 rounded">
+                    <select v-model="selectedDay" class="mt-2 mr-2 p-2 border border-gray-300 rounded outline-lumy-secondary">
                         <option v-for="day in weekdays" :key="day.value" :value="day.value">
                             {{ day.label }}
                         </option>
                     </select>
-                    <select v-model="selectedHour" class="mt-2 p-2 border border-gray-300 rounded">
+                    <select v-model="selectedHour" class="mt-2 p-2 border border-gray-300 rounded outline-lumy-secondary">
                         <option v-for="hour in hours" :key="hour.value" :value="hour.value">
                             {{ hour.label }}
                         </option>
@@ -50,9 +50,9 @@
                 </div>
             </div>
             <h1 class="font-thin text-2xl text-gray-500">Nudge Grace Period</h1>
-            <div class="flex flex-col w-full pl-8 pb-6 border-l">
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin text-sm text-gray-500">Number of minimum days between each intelligent nudge being sent to users (i.e. based on integrations)</p>
-                <input v-model.number="ngp" type="number" :min="1" :max="10" :value="ngp" name="Nudge-grace-period" id="ngp" />
+                <input v-model.number="ngp" type="number" :min="1" :max="10" :value="ngp" name="Nudge-grace-period" id="ngp" class="w-12 text-center outline-lumy-secondary" />
             </div>
         </article>
         <BaseButton

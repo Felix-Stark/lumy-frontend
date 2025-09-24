@@ -266,7 +266,7 @@ async function postFeedback() {
 		content: feedback.value,
 	})
 	if (res.status === 200) {
-		router.push('/feedback/give/success')
+		router.push({name: 'feedback-give-success'})
 		feedback.value = ''
 	} else{
 		console.error('Error posting feedback:', res.data)

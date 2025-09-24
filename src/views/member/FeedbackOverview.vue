@@ -110,7 +110,7 @@
                         class="cursor-pointer w-full text-wrap hover:bg-purple-50"
                         >
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
-                                {{ sentiment }}
+                                {{ formatName(sentiment) }}
                             </span>
                         </ListboxOption>
                     </ListboxOptions>
@@ -122,11 +122,15 @@
                 Clear Filters
             </button>
         </div>
-        
+        <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
+            <button class="cursor-pointer">
+                Requests
+            </button>
+        </div>
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
         <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
-            <span v-if="filteredSentiment">, Sentiment: {{ filteredSentiment }}</span>
+            <span v-if="filteredSentiment">, Sentiment: {{ formatName(filteredSentiment) }}</span>
         </p>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">

@@ -147,13 +147,12 @@ onMounted(async () => {
 })
 
 async function saveSettings() {
+    account.value = {...account.value, name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value } as Account;
     try {
-        const res = await api.patch('/account', 
-            { name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value }
+        const res = await accountStore.updateAccount( 
+            account.value
         )
-        console.log('res.data: ', res.data)
-        console.log('new info: ', { name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value })
-        if (res.status === 200) {
+        if (res) {
             toastText.value = 'Settings saved!'
             toastBg.value = 'bg-green-500'
             showToast.value = true

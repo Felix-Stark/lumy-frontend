@@ -193,12 +193,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
   const errorStore = useErrorStore();
-
+  const rawLoggedIn = sessionStorage.getItem('loggedin')
   const raw = sessionStorage.getItem('LumyRole');
   const role = raw ? JSON.parse(raw) : null;
+  const loggedIn = rawLoggedIn ? JSON.parse(rawLoggedIn) : null;
 
   // 1. Require authentication
-  if (to.meta.requiresAuth && !store.isLoggedIn) {
+  if (to.meta.requiresAuth && !loggedIn) {
     return next({ name: 'slack-login' });
   }
 

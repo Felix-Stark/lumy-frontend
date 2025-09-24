@@ -23,7 +23,7 @@
             :name="formatName(user.name)"
             :email="user.email"
             :title="user.title"
-            :disabled="patching[user.id] === true || loading === true || user.id === account?.id"
+            :disabled="patching[user.id] === true || loading === true || user.id === userStore.me?.id"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
             @update:isActive="val => updateUser(user.id, { is_active: val })"
@@ -88,6 +88,7 @@ onMounted(async() => {
     if(users === null || users.value.length === 0){
         await userStore.getUsers(true);
     }
+    await userStore.getMe();
 })
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 

@@ -122,21 +122,21 @@ const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
-const account = ref<Account>()
+
 
 onMounted(async () => {
     try {
-        account.value = await accountStore.getAccount();
-        companyName.value = account.value?.name || '';
+        await accountStore.getAccount();
+        companyName.value = accountStore.account?.name || '';
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
             botPersonalities.value = res.data;
-            selectedBot.value = account.value?.bot_personality_id;
+            selectedBot.value = accountStore.account?.bot_personality_id;
         }
         const resFrameworks = await api.get('/frameworks');
         if (resFrameworks.status === 200) {
             frameworks.value = resFrameworks.data;
-            selectedFramework.value = account.value?.framework_id;
+            selectedFramework.value = accountStore.account?.framework_id;
         }
     } catch (error: any) {
         console.error('Error fetching data: ', error);
@@ -147,23 +147,22 @@ onMounted(async () => {
 })
 
 async function saveSettings() {
-    account.value = {...account.value, name: companyName.value, framework_id: selectedFramework.value, bot_personality_id: selectedBot.value } as Account;
     try {
-        const res = await accountStore.updateAccount( 
-            account.value
-        )
-        if (res) {
-            toastText.value = 'Settings saved!'
-            toastBg.value = 'bg-green-500'
-            showToast.value = true
+       const updated = await accountStore.updateAccount({
+            name: companyName.value,
+            framework_id: selectedFramework.value,
+            bot_personality_id: selectedBot.value
+        });
+        if(updated) {
+            toastText.value = 'Settings saved!';
+            toastBg.value = 'bg-lumy-green';
+            showToast.value = true;
         }
     } catch (error: any) {
         console.log('failed to save settings: ', error)
         toastText.value = error?.response?.data?.detail || 'Could not save settings'
         toastBg.value = 'bg-red-500'
         showToast.value = true
-    } finally {
-        account.value = await accountStore.getAccount(); // Refresh account data
     }
 }
 

@@ -66,7 +66,7 @@ import { useAccountStore } from '@/stores/accountStore';
 const accountStore = useAccountStore();
 const userStore = useUserStore();
 const account = computed(() => accountStore.account);
-const users = computed<User[]>(() => userStore.users);
+const users = computed<User[]>(() => userStore.sortedUsers);
 const loading = ref(false);
 const success = ref(false);
 const query = ref('');

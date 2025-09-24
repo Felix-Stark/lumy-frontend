@@ -105,6 +105,7 @@ import { Switch, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@
 import { useAccountStore } from '@/stores/accountStore';
 
 const accountStore = useAccountStore();
+
 const toggleCoaching = ref(false);
 const toggleSuggestions = ref(false);
 const showToast = ref(false);
@@ -164,11 +165,19 @@ async function saveSettings() {
     nudge_interval_weeks: selectedFrequency.value,
     nudge_weekday: selectedDay.value,
     nudge_hour: selectedHour.value,
+    nudge_grace_period: ngp.value,
    };
    const res = await accountStore.updateAccount(updated);
    if (res) {
     toastBg.value = 'bg-lumy-green';
     toastText.value = 'Settings saved successfully!';
+        toggleCoaching.value = res.intelligence_coach;
+        toggleSuggestions.value = res.intelligence_assistant;
+        selectedFrequency.value = res.nudge_interval_weeks;
+        selectedDay.value = res.nudge_weekday;
+        selectedHour.value = res.nudge_hour;
+        ngp.value = res.nudge_grace_period;
+    
    } else {
         toastBg.value = 'bg-red-500';
         toastText.value = 'Failed to save settings. Please try again.';

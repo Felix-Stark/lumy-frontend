@@ -44,11 +44,15 @@ export const useUserStore = defineStore('user', {
 			}
 			
 		},
-		async updateUser(userId: number, userData: Partial<SetupUser>) {
+		async updateUser(userId: number, userData: Partial<SetupUser>, path: string) {
 			try {
 				const res = await api.patch(`/users/${userId}`, userData);
 				if(res.status === 200) {
-					return res.data;
+					if(path === 'setup') {
+						return res.data;
+					} else {
+						this.getUsers(true)
+					}
 				}
 			} catch (error: any) {
 				console.error('error in update user: ', error)

@@ -50,10 +50,11 @@ export type User = {
   avatar: string; // Slack URL to avatar image
   role: string;
   title?: string;
-  slack_user_id: string; // Slack user ID
-  slack_team_id: string; // Slack team ID
+  slack_user_id?: string; // Slack user ID
+  slack_team_id?: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
   is_active: boolean;
+  manager_id?: number;
 };
 
 export type UserSummary = {

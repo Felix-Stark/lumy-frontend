@@ -23,7 +23,7 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
-                    <span>Feedback Requested <i>({{ summary?.feedback_requested_count }})</i></span>
+                    <span>Feedback Requested <i>({{ summary?.feedback_requested_count || 0 }})</i></span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>

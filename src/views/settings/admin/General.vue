@@ -106,11 +106,13 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { CheckIcon, ChevronDown } from 'lucide-vue-next';
 import { useUserStore } from '@/stores/userStore';
+import { useAccountStore } from '@/stores/accountStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
 // import testBots from '@/test/mockBotFrameworks.json';
 // import testFrameworks from '@/test/mockFeedbackFrameworks.json';
 // import testAccount from '@/test/mockAccount.json';
+const accountStore = useAccountStore();
 const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
@@ -121,9 +123,10 @@ const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const account = ref<Account>()
+
 onMounted(async () => {
     try {
-        account.value = await userStore.getAccount();
+        account.value = await accountStore.getAccount();
         companyName.value = account.value?.name || '';
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
@@ -141,7 +144,6 @@ onMounted(async () => {
         toastBg.value = 'bg-red-500';
         showToast.value = true;
     }
-    
 })
 
 async function saveSettings() {
@@ -161,7 +163,7 @@ async function saveSettings() {
         toastBg.value = 'bg-red-500'
         showToast.value = true
     } finally {
-        account.value = await userStore.getAccount(); // Refresh account data
+        account.value = await accountStore.getAccount(); // Refresh account data
     }
 }
 

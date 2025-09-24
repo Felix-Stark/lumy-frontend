@@ -52,7 +52,7 @@
             <h1 class="font-thin text-2xl text-gray-500">Nudge Grace Period</h1>
             <div class="flex flex-col gap-2 w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin text-sm text-gray-500">Number of minimum days between each intelligent nudge being sent to users (i.e. based on integrations)</p>
-                <input v-model.number="ngp" type="number" :min="1" :max="10" :value="ngp" name="Nudge-grace-period" id="ngp" class="w-12 text-center  outline-lumy-secondary p-2 border-gray-300" />
+                <input v-model.number="ngp" type="number" :min="1" :max="10" :value="ngp" name="Nudge-grace-period" id="ngp" class="w-12 text-center  outline-lumy-secondary p-2 border border-gray-300" />
             </div>
         </article>
         <BaseButton

@@ -156,11 +156,11 @@
                         <span class="text-gray-500">No Image</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
+                <div v-if="currentFilter !== 'given'" class="flex items-center gap-4">
                     <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? 'From: ' + formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
                     <img
-                        v-if="feedback.feedback_request?.sender.avatar"
-                        :src="feedback.feedback_request?.sender.avatar"
+                        v-if="feedback.feedback_request?.recipient.avatar"
+                        :src="feedback.feedback_request?.recipient.avatar"
                         alt="User Avatar"
                         class="w-10 h-10 rounded-full object-cover"
                     />

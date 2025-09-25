@@ -16,7 +16,7 @@
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
-    <section class="flex items-center w-full  bg-white p-8 xl:p-12 rounded-lg shadow-md">
+    <section class="flex items-center w-full 2xl:flex-col bg-white p-8 xl:p-12 rounded-lg shadow-md">
         <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
@@ -198,7 +198,7 @@ const sentOvData = computed(() => {
 const sentOvOptions: ChartOptions<"bar"> = {
     indexAxis: "y" as const, // horizontal
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: { display: false }, // hide default legend
     tooltip: {

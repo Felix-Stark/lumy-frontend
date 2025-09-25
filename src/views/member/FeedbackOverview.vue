@@ -145,7 +145,6 @@
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div v-if="currentFilter === 'given'" class="flex items-center gap-4">
-                    <p class="text-gray-600 italic">To: </p>
                     <img
                         v-if="feedback.feedback_request?.sender.avatar"
                         :src="feedback.feedback_request?.sender.avatar"
@@ -155,10 +154,9 @@
                     <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
                         <span class="text-gray-500">No Image</span>
                     </div>
-                    <p class="text-gray-600 italic">{{ feedback.feedback_request?.sender.name ? formatName(feedback.feedback_request?.sender.name) : '' }}</p>
+                    <p class="text-gray-600 italic">To: {{ feedback.feedback_request?.sender.name ? formatName(feedback.feedback_request?.sender.name) : '' }}</p>
                 </div>
                 <div v-if="currentFilter !== 'given'" class="flex items-center gap-4">
-                    <p class="text-gray-600 italic">From:</p>
                     <img
                         v-if="feedback.feedback_request?.recipient.avatar"
                         :src="feedback.feedback_request?.recipient.avatar"
@@ -168,7 +166,7 @@
                     <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
                         <span class="text-gray-500">No Image</span>
                     </div>
-                    <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                    <p class="text-gray-600 italic">From: {{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
                 </div>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>

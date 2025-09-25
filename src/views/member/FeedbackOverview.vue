@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button class="cursor-pointer p-2" @click="setFilter('received')">
+            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('received')">
                 Received
             </button>
-            <button class="cursor-pointer p-2" @click="setFilter('given')">
+            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('given')">
                 Given
             </button>
-            <button class="cursor-pointer p-2" @click="setFilter('requests')">
+            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -141,10 +141,10 @@
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+        <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? '-'+formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? currentFilter === 'given' ? 'To: ' : '-'+formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
@@ -171,34 +171,11 @@
                 </div>
             </div>
         </div>
-        <div v-if="currentFilter === 'given'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-            <p class="text-gray-800">{{ feedback.content }}</p>
+        <div v-if="currentFilter === 'given'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+            <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
             <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request?.sender.name) : '' }}</p>
-                <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
-                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
-                    <span>
-                        <template v-if="feedback.sentiment === 'positive'">
-                            <Smile class="inline size-6 text-green-600"
-                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
-                                @mouseleave="handleMouseLeave"
-                                />
-                        </template>
-                        <template v-else-if="feedback.sentiment === 'negative'">
-                            <Frown class="inline size-6 text-red-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                        <template v-else>
-                            <Annoyed class="inline size-6 text-yellow-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                    </span>
-                </div>
+                <p class="text-gray-600 italic">{{ req.recipient.name ? 'To: '+formatName(req.recipient.name) : '' }}</p>
+                <p class="text-gray-600 text-sm">Status: {{ req.status }}</p>
             </div>
         </div>
     </section>

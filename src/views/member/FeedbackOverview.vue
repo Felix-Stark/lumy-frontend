@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'received' ? 'bg-gray-400' : '']" @click="setFilter('received')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'received' ? 'bg-gray-200' : '']" @click="setFilter('received')">
                 Received
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'given' ? 'bg-gray-400' : '']" @click="setFilter('given')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'given' ? 'bg-gray-300' : '']" @click="setFilter('given')">
                 Given
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'requests' ? 'bg-gray-400' : '']" @click="setFilter('requests')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -148,7 +148,7 @@
         :name="feedback.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request?.recipient.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
-        :sentiment="formatFeedbackDate(feedback.created_at)"
+        :sentiment="formatFeedbackDate(feedback.created_at, {relative: true})"
         />
         <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
         :id="feedback.id"
@@ -157,7 +157,7 @@
         :name="feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request?.sender.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
-        :sentiment="formatFeedbackDate(feedback.created_at)"
+        :sentiment="formatFeedbackDate(feedback.created_at, {relative: true})"
         />
         <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
         :id="req.id"
@@ -166,7 +166,7 @@
         :name="req.recipient.name ? ('To: '+req.recipient.name) : ''"
         :skill="req.skill.skill"
         :created_at="req.created_at"
-        :sentiment="formatFeedbackDate(req.created_at)"
+        :sentiment="formatFeedbackDate(req.created_at, {relative: true})"
         />
         <!-- <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>

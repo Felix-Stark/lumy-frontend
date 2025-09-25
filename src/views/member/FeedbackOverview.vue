@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'received' ? 'bg-gray-200' : '']" @click="setFilter('received')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'received' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('received')">
                 Received
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'given' ? 'bg-gray-300' : '']" @click="setFilter('given')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'given' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('given')">
                 Given
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -163,7 +163,7 @@
         :id="req.id"
         :content="req.message"
         :img="req.recipient.avatar"
-        :name="req.recipient.name ? ('To: '+req.recipient.name) : ''"
+        :name="req.recipient.name ? formatName('To: '+req.recipient.name) : ''"
         :skill="req.skill.skill"
         :created_at="req.created_at"
         :sentiment="formatFeedbackDate(req.created_at, {relative: true})"

@@ -33,7 +33,7 @@
 
         </div>
     </section>
-    <section class="flex items-center w-full gap-6">
+    <section class="flex items-center w-full justify-between">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
             <Listbox v-model="filteredSkill" >
                 <Float
@@ -116,14 +116,20 @@
                     </ListboxOptions>
                 </Float>
             </Listbox>
-        </div>
-        <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
-            <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
-                Clear Filters
-            </button>
+            <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
+                <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
+                    Clear Filters
+                </button>
+            </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button class="cursor-pointer">
+            <button class="cursor-pointer p-2" @click="setFilter('received')">
+                Received
+            </button>
+            <button class="cursor-pointer p-2" @click="setFilter('given')">
+                Given
+            </button>
+            <button class="cursor-pointer p-2" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -139,6 +145,36 @@
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? '-'+formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                <div class="flex align-center gap-4">
+                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
+                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
+                    <span>
+                        <template v-if="feedback.sentiment === 'positive'">
+                            <Smile class="inline size-6 text-green-600"
+                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
+                                @mouseleave="handleMouseLeave"
+                                />
+                        </template>
+                        <template v-else-if="feedback.sentiment === 'negative'">
+                            <Frown class="inline size-6 text-red-600"
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
+                            @mouseleave="handleMouseLeave"
+                            />
+                        </template>
+                        <template v-else>
+                            <Annoyed class="inline size-6 text-yellow-600"
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
+                            @mouseleave="handleMouseLeave"
+                            />
+                        </template>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div v-if="currentFilter === 'given'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+            <p class="text-gray-800">{{ feedback.content }}</p>
+            <div class=" flex flex-col w-full gap-8">
+                <p class="text-gray-600 italic">{{ feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request?.sender.name) : '' }}</p>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
@@ -183,7 +219,7 @@ import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headless
 import { Float } from '@headlessui-float/vue';
 import { useUserStore } from '@/stores/userStore';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import type { UserSummary, SkillSummary, FeedbackSubmission } from '@/types.ts';
+import { type UserSummary, type SkillSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequest, type FeedbackRequestEmbedded } from '@/types.ts';
 import { ChevronDown, Smile, Annoyed, Frown, Check } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
 const { formatFeedbackDate } = useDateFormat();
@@ -193,10 +229,27 @@ Chart.register(...registerables);
 const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
-const feedbackList = ref<FeedbackSubmission[]>([]);
+const feedbackList = ref<FeedbackSubmission[] | FeedbackSubmissionFull[]>([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
+const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
+const feedbackReq = ref<FeedbackRequestEmbedded[]>([]);
+
+const currentFilter = ref<'received' | 'given' | 'requests'>('received');
+const setFilter = async(filter: 'received' | 'given' | 'requests') => {
+    currentFilter.value = filter;
+    if (filter === 'received') {
+        feedbackList.value = feedbackStore.submissions;
+    }
+    if (filter === 'given') {
+        feedbackList.value = feedbackStore.subsGiven;
+    }
+    if (filter === 'requests') {
+        // Optionally handle requests filter
+        feedbackList.value = [];
+    }
+}
 
 const showTooltip = ref(false)
 const tooltipText = ref('')
@@ -226,7 +279,11 @@ onMounted(async () => {
     if (feedbackList.value.length < 1) {
         await feedbackStore.fetchSubmissions();
         feedbackList.value = feedbackStore.submissions;
+        feedbackReq.value = feedbackStore.submissions.flatMap(sub => sub.feedback_request) as FeedbackRequestEmbedded[]
     }
+    if (feedbackGiven.value.length < 1) {
+        await feedbackStore.getSubmissionsGiven();
+    } 
 
     let progress = 0;
     const duration = 1000; // 1 second animation

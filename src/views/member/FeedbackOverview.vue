@@ -141,7 +141,34 @@
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+        <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
+        :id="feedback.id"
+        :content="feedback.content"
+        :img="feedback.feedback_request?.sender.avatar"
+        :name="feedback.feedback_request?.sender.name ? 'From: '+formatName(feedback.feedback_request?.sender.name) : ''"
+        :skill="feedback.feedback_request?.skill.skill"
+        :created_at="feedback.created_at"
+        :sentiment="formatFeedbackDate(feedback.created_at)"
+        />
+        <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
+        :id="feedback.id"
+        :content="feedback.content"
+        :img="feedback.feedback_request?.recipient.avatar"
+        :name="feedback.feedback_request?.recipient.name ? 'To: '+formatName(feedback.feedback_request?.recipient.name) : ''"
+        :skill="feedback.feedback_request?.skill.skill"
+        :created_at="feedback.created_at"
+        :sentiment="formatFeedbackDate(feedback.created_at)"
+        />
+        <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
+        :id="req.id"
+        :content="req.message"
+        :img="req.recipient.avatar"
+        :name="req.recipient.name ? ('To: '+req.recipient.name) : ''"
+        :skill="req.skill.skill"
+        :created_at="req.created_at"
+        :sentiment="formatFeedbackDate(req.created_at)"
+        />
+        <!-- <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div v-if="currentFilter === 'given'" class="flex items-center gap-4">
@@ -193,8 +220,8 @@
                     </span>
                 </div>
             </div>
-        </div>
-        <div v-if="currentFilter === 'requests'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+        </div> -->
+        <!-- <div v-if="currentFilter === 'requests'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div class="flex items-center gap-4">
@@ -214,7 +241,7 @@
                     <p class="font-thin text-sm">{{ formatFeedbackDate(req.created_at, { relative: true }) }}</p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
     <Tooltip
     :text="tooltipText"
@@ -227,6 +254,7 @@
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue'
 import Tooltip from '@/components/base/Tooltip.vue';
+import Card from '@/components/feedback/Card.vue';
 import { Chart, registerables } from 'chart.js'
 import { Doughnut } from 'vue-chartjs';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'

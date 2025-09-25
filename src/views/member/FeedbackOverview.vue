@@ -171,7 +171,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="currentFilter === 'given'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
+        <div v-if="currentFilter === 'requests'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <p class="text-gray-600 italic">{{ req.recipient.name ? 'To: '+formatName(req.recipient.name) : '' }}</p>
@@ -224,7 +224,7 @@ const setFilter = async(filter: 'received' | 'given' | 'requests') => {
     }
     if (filter === 'requests') {
         // Optionally handle requests filter
-        feedbackList.value = [];
+
     }
 }
 
@@ -304,7 +304,7 @@ const filter = computed(() => {
 });
 
 const positiveSentiments = computed(() => {
-    const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');
+    const positive = feedbackStore.submissions?.filter(fb => fb.sentiment === 'positive');
     const decimal = (positive.length / feedbackList.value.length);
     return Number(decimal * 100).toFixed(0) as unknown as number;
 })

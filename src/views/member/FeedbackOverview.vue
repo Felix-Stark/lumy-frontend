@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('received')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'received' ? 'bg-lumy-secondary' : '']" @click="setFilter('received')">
                 Received
             </button>
-            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('given')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'given' ? 'bg-lumy-secondary' : '']" @click="setFilter('given')">
                 Given
             </button>
-            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('requests')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'requests' ? 'bg-lumy-secondary' : '']" @click="setFilter('requests')">
                 Requests
             </button>
         </div>

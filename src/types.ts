@@ -171,6 +171,8 @@ export type FeedbackRequestEmbedded = {
   message: string;
   account_id: number;
   status: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export type FeedbackRequestShort = {

@@ -18,10 +18,6 @@
             <!-- Legend -->
             <div class="text-sm space-y-2">
                 <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
-                    <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
-                </div>
-                <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
                     <span>Feedback Requested <i>({{ summary?.feedback_requested_count || 0 }})</i></span>
                 </div>
@@ -29,8 +25,11 @@
                     <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
                     <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
                 </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
+                    <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
+                </div>
             </div>
-
         </div>
     </section>
     <section class="flex items-center w-full justify-between">
@@ -321,29 +320,29 @@ const allTimeData = computed(() => {
     return {
         datasets: [
             {
-    label: 'Feedback Given',
-    data: [feedbackGiven, total - feedbackGiven],
-    backgroundColor: ['#9b5cff', '#e5e5e5'],
-    borderWidth: 0,
-    cutout: '65%',   // controls inner radius
-    radius: '100%', // full size
-  },
-  {
-    label: 'Feedback Requested',
-    data: [feedbackRequested, total - feedbackRequested],
-    backgroundColor: ['#60a5fa', '#f1f1f1'],
-    borderWidth: 0,
-    cutout: '45%',
-    radius: '80%',
-  },
-  {
-    label: 'Feedback Received',
-    data: [feedbackReceived, total - feedbackReceived],
-    backgroundColor: ['#2563eb', '#f5f5f5'],
-    borderWidth: 0,
-    cutout: '25%',
-    radius: '60%',
-  }
+                label: 'Feedback Requested',
+                data: [feedbackRequested, total - feedbackRequested],
+                backgroundColor: ['#60a5fa', '#f1f1f1'],
+                borderWidth: 0,
+                cutout: '45%',
+                radius: '80%',
+            },
+            {
+                label: 'Feedback Received',
+                data: [feedbackReceived, total - feedbackReceived],
+                backgroundColor: ['#2563eb', '#f5f5f5'],
+                borderWidth: 0,
+                cutout: '25%',
+                radius: '60%',
+            },
+            {
+                label: 'Feedback Given',
+                data: [feedbackGiven, total - feedbackGiven],
+                backgroundColor: ['#9b5cff', '#e5e5e5'],
+                borderWidth: 0,
+                cutout: '65%',   // controls inner radius
+                radius: '100%', // full size
+            },
         ]
     }
 })

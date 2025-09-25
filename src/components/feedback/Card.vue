@@ -15,7 +15,7 @@
                 </div>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ skill }}</p>
-                    <p class="font-thin text-sm ml-6">{{ created_at }}</p>
+                    <p class="font-thin text-sm ml-6">{{ created_at ? formatFeedbackDate(created_at, { relative: true }) : '' }}</p>
                     <span>
                         <template v-if="sentiment === 'positive'">
                             <Smile class="inline size-6 text-green-600"
@@ -51,7 +51,7 @@ import Tooltip from '../base/Tooltip.vue';
 import { ref } from 'vue';
 import { Smile, Annoyed, Frown } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
-const formatDate = useDateFormat();
+const { formatFeedbackDate } = useDateFormat();
 
 defineProps<{
     id: string | number;

@@ -145,115 +145,33 @@
         :id="feedback.id"
         :content="feedback.content"
         :img="feedback.feedback_request?.recipient.avatar"
-        :name="feedback.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request?.recipient.name) : ''"
+        :name="feedback.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
-        :sentiment="formatFeedbackDate(feedback.created_at, {relative: true})"
+        :sentiment="feedback.sentiment"
         />
         <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
         :id="feedback.id"
         :content="feedback.content"
         :img="feedback.feedback_request?.sender.avatar"
-        :name="feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request?.sender.name) : ''"
+        :name="feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
-        :sentiment="formatFeedbackDate(feedback.created_at, {relative: true})"
+        :sentiment="feedback.sentiment"
         />
         <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
         :id="req.id"
         :content="req.message"
         :img="req.recipient.avatar"
-        :name="req.recipient.name ? formatName('To: '+req.recipient.name) : ''"
+        :name="formatName('To: '+req.recipient.name)"
         :skill="req.skill.skill"
         :created_at="req.created_at"
-        :sentiment="formatFeedbackDate(req.created_at, {relative: true})"
         />
-        <!-- <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-            <p class="text-gray-800">{{ feedback.content }}</p>
-            <div class=" flex flex-col w-full gap-8">
-                <div v-if="currentFilter === 'given'" class="flex items-center gap-4">
-                    <img
-                        v-if="feedback.feedback_request?.sender.avatar"
-                        :src="feedback.feedback_request?.sender.avatar"
-                        alt="User Avatar"
-                        class="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span class="text-gray-500">No Image</span>
-                    </div>
-                    <p class="text-gray-600 italic">To: {{ feedback.feedback_request?.sender.name ? formatName(feedback.feedback_request?.sender.name) : '' }}</p>
-                </div>
-                <div v-if="currentFilter !== 'given'" class="flex items-center gap-4">
-                    <img
-                        v-if="feedback.feedback_request?.recipient.avatar"
-                        :src="feedback.feedback_request?.recipient.avatar"
-                        alt="User Avatar"
-                        class="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span class="text-gray-500">No Image</span>
-                    </div>
-                    <p class="text-gray-600 italic">From: {{ feedback.feedback_request?.recipient.name ? formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
-                </div>
-                <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
-                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
-                    <span>
-                        <template v-if="feedback.sentiment === 'positive'">
-                            <Smile class="inline size-6 text-green-600"
-                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
-                                @mouseleave="handleMouseLeave"
-                                />
-                        </template>
-                        <template v-else-if="feedback.sentiment === 'negative'">
-                            <Frown class="inline size-6 text-red-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                        <template v-else>
-                            <Annoyed class="inline size-6 text-yellow-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                    </span>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div v-if="currentFilter === 'requests'" v-for="req in feedbackReq" :key="req.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-            <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
-            <div class=" flex flex-col w-full gap-8">
-                <div class="flex items-center gap-4">
-                    <img
-                        v-if="req.recipient.avatar"
-                        :src="req.recipient.avatar"
-                        alt="User Avatar"
-                        class="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span class="text-gray-500">No Image</span>
-                    </div>
-                    <p class="text-gray-600 italic">To: {{ req.recipient.name }}</p>
-                </div>
-                <div class="flex items-center gap-4">
-                    <p class="text-gray-600 text-sm">Status: {{ req.status }}</p>
-                    <p class="font-thin text-sm">{{ formatFeedbackDate(req.created_at, { relative: true }) }}</p>
-                </div>
-            </div>
-        </div> -->
     </section>
-    <Tooltip
-    :text="tooltipText"
-    :x="tooltipX"
-    :y="tooltipY"
-    :visible="showTooltip"
-    />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue'
-import Tooltip from '@/components/base/Tooltip.vue';
 import Card from '@/components/feedback/Card.vue';
 import { Chart, registerables } from 'chart.js'
 import { Doughnut } from 'vue-chartjs';
@@ -261,10 +179,8 @@ import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headless
 import { Float } from '@headlessui-float/vue';
 import { useUserStore } from '@/stores/userStore';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import { type UserSummary, type SkillSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequest, type FeedbackRequestEmbedded } from '@/types.ts';
-import { ChevronDown, Smile, Annoyed, Frown, Check } from 'lucide-vue-next';
-import { useDateFormat } from '@/composables/useDateFormat';
-const { formatFeedbackDate } = useDateFormat();
+import { type UserSummary, type SkillSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequestEmbedded } from '@/types.ts';
+import { ChevronDown } from 'lucide-vue-next';
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
 Chart.register(...registerables);
@@ -291,21 +207,6 @@ const setFilter = async(filter: 'received' | 'given' | 'requests') => {
         // Optionally handle requests filter
 
     }
-}
-
-const showTooltip = ref(false)
-const tooltipText = ref('')
-const tooltipX = ref(0)
-const tooltipY = ref(0)
-
-function handleMouseEnter(event: MouseEvent, text: string) {
-  tooltipText.value = text
-  tooltipX.value = event.clientX - 12 // offset for better positioning
-  tooltipY.value = event.clientY + 12
-  showTooltip.value = true
-}
-function handleMouseLeave() {
-  showTooltip.value = false
 }
 
 

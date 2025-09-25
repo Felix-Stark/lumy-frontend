@@ -49,6 +49,9 @@
 <script setup lang="ts">
 import Tooltip from '../base/Tooltip.vue';
 import { ref } from 'vue';
+import { Smile, Annoyed, Frown } from 'lucide-vue-next';
+import { useDateFormat } from '@/composables/useDateFormat';
+const formatDate = useDateFormat();
 
 defineProps<{
     id: string | number;

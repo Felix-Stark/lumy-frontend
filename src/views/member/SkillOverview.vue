@@ -62,6 +62,18 @@
         <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] min-h-60 xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
+                <!-- <div class="flex items-center gap-4">
+                    <p class="text-gray-600 italic">{{ 'To: ' + formatName(feedback.recipient_name) }}</p>
+                    <img
+                        v-if="feedback."
+                        :src="feedback.feedback_request?.sender.avatar"
+                        alt="User Avatar"
+                        class="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-500">No Image</span>
+                    </div>
+                </div> -->
                 <p class="text-gray-600 italic">{{ feedback.recipient_name ? '-'+formatName(feedback.recipient_name) : '' }}</p>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.skill_name }}</p>
@@ -146,6 +158,7 @@ onMounted(async() => {
             if (response.status === 200) {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
+                console.log('skill overview data: ', response.data);
             } else {
                 errorStore.setError({ code: response.status, detail: response.statusText || 'Failed to fetch skill overview' });
                 router.push({name:'error'});

@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'received' ? 'bg-lumy-secondary' : '']" @click="setFilter('received')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'received' ? 'bg-gray-400' : '']" @click="setFilter('received')">
                 Received
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'given' ? 'bg-lumy-secondary' : '']" @click="setFilter('given')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'given' ? 'bg-gray-400' : '']" @click="setFilter('given')">
                 Given
             </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-50', currentFilter === 'requests' ? 'bg-lumy-secondary' : '']" @click="setFilter('requests')">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 rounded-lg', currentFilter === 'requests' ? 'bg-gray-400' : '']" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -144,8 +144,8 @@
         <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
         :id="feedback.id"
         :content="feedback.content"
-        :img="feedback.feedback_request?.sender.avatar"
-        :name="feedback.feedback_request?.sender.name ? 'From: '+formatName(feedback.feedback_request?.sender.name) : ''"
+        :img="feedback.feedback_request?.recipient.avatar"
+        :name="feedback.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request?.recipient.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
         :sentiment="formatFeedbackDate(feedback.created_at)"
@@ -153,8 +153,8 @@
         <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
         :id="feedback.id"
         :content="feedback.content"
-        :img="feedback.feedback_request?.recipient.avatar"
-        :name="feedback.feedback_request?.recipient.name ? 'To: '+formatName(feedback.feedback_request?.recipient.name) : ''"
+        :img="feedback.feedback_request?.sender.avatar"
+        :name="feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request?.sender.name) : ''"
         :skill="feedback.feedback_request?.skill.skill"
         :created_at="feedback.created_at"
         :sentiment="formatFeedbackDate(feedback.created_at)"

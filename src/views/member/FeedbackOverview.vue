@@ -144,7 +144,7 @@
         <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? currentFilter === 'given' ? 'To: ' + formatName(feedback.feedback_request?.recipient.name): '-' + formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? currentFilter === 'given' ? 'To: ' + formatName(feedback.feedback_request?.sender.name) : 'From: ' + formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>

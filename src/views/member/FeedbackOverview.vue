@@ -324,24 +324,24 @@ const allTimeData = computed(() => {
                 data: [feedbackRequested, total - feedbackRequested],
                 backgroundColor: ['#60a5fa', '#f1f1f1'],
                 borderWidth: 0,
-                cutout: '45%',
-                radius: '80%',
+                cutout: '65%',
+                radius: '100%',
             },
             {
                 label: 'Feedback Received',
                 data: [feedbackReceived, total - feedbackReceived],
                 backgroundColor: ['#2563eb', '#f5f5f5'],
                 borderWidth: 0,
-                cutout: '25%',
-                radius: '60%',
+                cutout: '45%',
+                radius: '80%',
             },
             {
                 label: 'Feedback Given',
                 data: [feedbackGiven, total - feedbackGiven],
                 backgroundColor: ['#9b5cff', '#e5e5e5'],
                 borderWidth: 0,
-                cutout: '65%',   // controls inner radius
-                radius: '100%', // full size
+                cutout: '25%',   // controls inner radius
+                radius: '60%', // full size
             },
         ]
     }

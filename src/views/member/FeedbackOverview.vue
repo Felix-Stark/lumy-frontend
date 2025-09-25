@@ -144,7 +144,18 @@
         <div v-else-if="currentFilter !== 'requests'" v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
             <p class="text-gray-800">{{ feedback.content }}</p>
             <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? currentFilter === 'given' ? 'To: ' + formatName(feedback.feedback_request?.sender.name) : 'From: ' + formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                <div class="flex items-center">
+                    <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? currentFilter === 'given' ? 'To: ' + formatName(feedback.feedback_request?.sender.name) : 'From: ' + formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
+                    <img
+                        v-if="feedback.feedback_request?.recipient.avatar"
+                        :src="feedback.feedback_request?.recipient.avatar"
+                        alt="User Avatar"
+                        class="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-500">No Image</span>
+                    </div>
+                </div>
                 <div class="flex align-center gap-4">
                     <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
                     <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
@@ -175,7 +186,7 @@
             <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div class="flex items-center gap-4">
-                    <p>To: {{ req.recipient.name }}</p>
+                    <p class="text-gray-600 italic">To: {{ req.recipient.name }}</p>
                     <img
                         v-if="req.recipient.avatar"
                         :src="req.recipient.avatar"

@@ -95,6 +95,7 @@ const clearQuery = () => {
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
 async function updateUser(userId:number, payload: Partial<SetupUser>) {
+  console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
     users.value = await userStore.updateUser(userId, payload, 'setup');
@@ -109,7 +110,7 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
 
 const toggleAllActive = async () => {
   try {
-    const res = await api.post("/account/users/activation", { "active": !allActive.value });
+    await api.post("/account/users/activation", { "active": !allActive.value });
     allActive.value = !allActive.value;
     users.value.map(user => {
       user.id !== authStore.setupAccount?.id ? user.is_active = allActive.value : null;
@@ -125,6 +126,9 @@ async function verifySetup() {
   try {
     const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
     if (res.status === 200) {
+	    sessionStorage.setItem("loggedin", "true");
+      sessionStorage.setItem("LumyRole", JSON.stringify("admin"));
+
       router.push({name: 'setup-complete'});
       loading.value = false
     }

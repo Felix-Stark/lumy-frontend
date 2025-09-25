@@ -167,6 +167,7 @@ export type FeedbackRequestEmbedded = {
     definition: string;
     theme: string;
   };
+  type?: string;
   message: string;
   account_id: number;
   status: string;

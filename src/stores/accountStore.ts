@@ -33,11 +33,12 @@ export const useAccountStore = defineStore("account", () => {
     }
   }
 
-  async function updateAccount(data: Account) {
+  async function updateAccount(data: Partial<Account>) {
     try {
         if (!account.value) {
             throw new Error("No account data to update.");
         }
+        loading.value = true;
         const res = await api.patch(`/account`, data);
         if (res.status === 200) {
             account.value = res.data as Account;

@@ -3,7 +3,10 @@ import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
 
 import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
-
+import SettingsLayout from '@/layouts/SettingsLayout.vue';
+import DashboardLayout from '@/layouts/DashboardLayout.vue';
+import SetupLayout from '@/layouts/SetupLayout.vue';
+import SlackLayout from '@/layouts/SlackLayout.vue';
 
 
 const router = createRouter({
@@ -11,7 +14,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/layouts/SlackLayout.vue'),
+      component: SlackLayout,
       redirect: '/slack/login',
       meta: {
         title: 'Slack Login',
@@ -51,7 +54,7 @@ const router = createRouter({
     },
     {
       path: '/setup',
-      component: () => import('@/layouts/SetupLayout.vue'),
+      component: SetupLayout,
       redirect: '/setup/frameworks',
       children: [
         {
@@ -73,7 +76,7 @@ const router = createRouter({
     },
     { 
       path: '/overview',
-      component: () => import('@/layouts/DashboardLayout.vue'),
+      component: DashboardLayout,
       meta: {
         requiresRole: true,
         requiresAuth: true,
@@ -90,7 +93,7 @@ const router = createRouter({
       path: '/member',
       name: 'member',
       redirect: '/member/overview',
-      component: () => import('@/layouts/DashboardLayout.vue'),
+      component: DashboardLayout,
       meta: {
         requiresAuth: true, // This route requires authentication
       },
@@ -124,7 +127,7 @@ const router = createRouter({
           return '/settings/member/integrations';
         }
       },
-      component: () => import('@/layouts/SettingsLayout.vue'),
+      component: SettingsLayout,
       meta: {
         requiresAuth: true,
       },
@@ -190,12 +193,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useAuthStore();
   const errorStore = useErrorStore();
-
+  const rawLoggedIn = sessionStorage.getItem('loggedin')
   const raw = sessionStorage.getItem('LumyRole');
   const role = raw ? JSON.parse(raw) : null;
+  const loggedIn = rawLoggedIn ? JSON.parse(rawLoggedIn) : null;
 
   // 1. Require authentication
-  if (to.meta.requiresAuth && !store.isLoggedIn) {
+  if (to.meta.requiresAuth && !loggedIn) {
     return next({ name: 'slack-login' });
   }
 

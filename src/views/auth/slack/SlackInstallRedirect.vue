@@ -26,9 +26,9 @@ onMounted( async () => {
 		const status = await authStore.registerSlackUser(code as string);
 		if (status === 200) {
 			router.push({ name: 'slack-install-success' });
-		} else {
+		}
+	} else {
 			router.push({ name: 'slack-not-admin' });
 		}
-	}
 });
 </script>

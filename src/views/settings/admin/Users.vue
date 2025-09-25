@@ -23,17 +23,14 @@
             :name="formatName(user.name)"
             :email="user.email"
             :title="user.title"
-            :disabled="loading"
+            :disabled="patching[user.id] === true || loading === true || user.id === userStore.me?.id"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
+            @update:isActive="val => updateUser(user.id, { is_active: val })"
+            @update:role="val => updateUser(user.id, { role: val })"
             />
         </div>
         </div>
-        <BaseButton
-            :disabled="loading"
-            :onAction="updateUsers"
-            btnText="Save changes"
-        />
     </div>
     <BaseToast
         v-if="loading"
@@ -59,15 +56,17 @@ import {
 import { XCircleIcon } from 'lucide-vue-next';
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import type { User, Account } from '@/types';
+import type { User, Account, SetupUser } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { formatName } from '@/composables/formatName.ts';
+import { useAccountStore } from '@/stores/accountStore';
 
+const accountStore = useAccountStore();
 const userStore = useUserStore();
-const account = computed(() => userStore.account);
-const users = computed<User[]>(() => userStore.users);
+const account = computed(() => accountStore.account);
+const users = computed<User[]>(() => userStore.sortedUsers);
 const loading = ref(false);
 const success = ref(false);
 const query = ref('');
@@ -84,24 +83,24 @@ const clearQuery = () => {
 
 onMounted(async() => {
     if(account === null) {
-        await userStore.getAccount();
+        await accountStore.getAccount();
     }
     if(users === null || users.value.length === 0){
         await userStore.getUsers(true);
     }
+    await userStore.getMe();
 })
+const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
-const updateUsers = async () => {
-  loading.value = true;
+const updateUser = async (userId: number, payload: Partial<User>) => {
+  patching.value[userId] = true;
   try {
-    users.value?.forEach(user => {
-        userStore.updateUser(user.id, { ...user, is_active: user.is_active, role: user.role });
-    });
+    await userStore.updateUser(userId, payload, 'settings');
+    console.log('updated user: ', payload);
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {
-    loading.value = false;
-    success.value = true;
+    patching.value[userId] = false;
   }
 }
 </script>

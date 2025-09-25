@@ -27,6 +27,7 @@ export type Account = {
   nudge_interval_weeks: number;
   nudge_weekday: number; // 1 (Monday) to 5 (Friday)
   nudge_hour: number; // 0 to 23
+  nudge_grace_period: number;
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
   created_at: string;
@@ -49,10 +50,11 @@ export type User = {
   avatar: string; // Slack URL to avatar image
   role: string;
   title?: string;
-  slack_user_id: string; // Slack user ID
-  slack_team_id: string; // Slack team ID
+  slack_user_id?: string; // Slack user ID
+  slack_team_id?: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
   is_active: boolean;
+  manager_id?: number;
 };
 
 export type UserSummary = {
@@ -144,6 +146,35 @@ export type FeedbackRequest = {
   intelligence_assistant: boolean;
 }
 
+export type FeedbackRequestEmbedded = {
+  id: string;
+  recipient: {
+    id: number;
+    name: string;
+    avatar: string;
+    is_active: boolean;
+  };
+  recipient_id: number;
+  sender: {
+    id: number;
+    name: string;
+    avatar: string;
+    is_active: boolean;
+  };
+  sender_id: number;
+  skill: {
+    skill: string;
+    definition: string;
+    theme: string;
+  };
+  type?: string;
+  message: string;
+  account_id: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type FeedbackRequestShort = {
   id: string;
   recipient: {
@@ -171,7 +202,8 @@ export type FeedbackSubmission = {
   sentiment_score: number; // e.g. 85
   created_at: string; // ISO date string
   updated_at: string; // ISO date string
-  feedback_request?: FeedbackRequestShort;
+  actions: FeedbackAction[];
+  feedback_request?: FeedbackRequestEmbedded;
   constructiveness_score?: number; // e.g. 70
 };
 
@@ -183,3 +215,47 @@ export type FeedbackFramework = {
   created_at: string;
   updated_at: string;
 }
+
+export type FeedbackAction = {
+  id: string;
+  action_type: string; //coffee / meeting
+  status: string; // pending, planned
+  note: string;
+}
+
+export type FeedbackSubmissionFull = {
+  id: number;
+  feedback_request_id: string;
+  content: string;
+  sentiment: string;
+  sentiment_score: number;
+  created_at: string;
+  updated_at: string;
+  actions: FeedbackAction[];
+  feedback_request: {
+    id: string;
+    recipient: {
+      id: number;
+      name: string;
+      avatar: string;
+      is_active: boolean;
+    };
+    recipient_id: number;
+    sender: {
+      id: number;
+      name: string;
+      avatar: string;
+      is_active: boolean;
+    };
+    sender_id: number;
+    skill: {
+      skill: string;
+      definition: string;
+      theme: string | null;
+    };
+    message: string;
+    account_id: number;
+    status: string;
+  };
+};
+//

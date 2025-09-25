@@ -98,7 +98,8 @@ async function updateUser(userId:number, payload: Partial<SetupUser>) {
   console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
-    await userStore.updateUser(userId, payload);
+    users.value = await userStore.updateUser(userId, payload, 'setup');
+    
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {

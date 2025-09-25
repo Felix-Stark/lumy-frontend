@@ -26,7 +26,7 @@ RUN echo "VITE_SLACK_CLIENT_ID=$VITE_SLACK_CLIENT_ID" > .env.production && \
 RUN npm run build
 
 # Serve with Caddy
-FROM caddy:alpine
+FROM caddy:2
 
 COPY --from=builder /app/dist /srv
 COPY Caddyfile /etc/caddy/Caddyfile

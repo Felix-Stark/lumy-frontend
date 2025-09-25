@@ -1,65 +1,102 @@
-import {defineStore} from 'pinia';
-import api from '../services/api';
-import type { User, Account, Skill, UserSummary, SetupUser } from '../types';
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import api from '../services/api'
+import type { User, Account, Skill, UserSummary, SetupUser } from '../types'
 
-export const useUserStore = defineStore('user', {
-	state: () => ({
-		me: {} as User | null,
-		meSummary: {} as UserSummary | null,
-		userSkills: [] as Skill[] | null,
-		users: [] as User[],
-		account: {} as Account | null,
-	}),
-	actions: {
-		async getMe() {
-			const res = await api.get('/me');
-			if (res.status === 200) {
-				this.me = res.data;
-			}
-			return res.status;
-		},
-		async getMeSummary() {
-			const res = await api.get('/me/summary');
-			if (res.status === 200) {
-				this.meSummary = res.data; //return status and use userStore.me in components
-				return res.status; //return status and use userStore.me in components
-			}
-		},
-		async getUserSkills(userId: number) {
-			const res = await api.get(`/users/${userId}/skills`);
-			if (res.status === 200) {
-				this.userSkills = res.data; //return status and use userStore.userSkills in components
-				return res.status; //return status and use userStore.users in components
-			}
-		},
-		async getUsers(inactive: boolean) {
-			try {
-				const res = await api.get(`/users?include_inactive=${inactive}`);
-				if (res.status === 200) {
-					this.users = res.data; //return status and use userStore.users in components
-					return res.status
-				}
-			} catch (error: any) {
-				console.error('error in get users: ', error)
-			}
-			
-		},
-		async updateUser(userId: number, userData: Partial<SetupUser>) {
-			try {
-				const res = await api.patch(`/users/${userId}`, userData);
-				if(res.status === 200) {
-					return res.data;
-				}
-			} catch (error: any) {
-				console.error('error in update user: ', error)
-			}
-		},
-		async getAccount() {
-			const res = await api.get('/account');
-			if (res.status === 200) {
-				this.account = res.data;
-			}
-			return res.data as Account;
-		},
-	}
+export const useUserStore = defineStore('user', () => {
+  const me = ref<User | null>(null);
+  const meSummary = ref<UserSummary | null>(null);
+  const userSkills = ref<Skill[] | null>(null);
+  const users = ref<User[]>([]);
+
+  async function getMe() {
+    const res = await api.get('/me')
+    if (res.status === 200) {
+      me.value = res.data
+    }
+    return res.status
+  }
+
+  async function getMeSummary() {
+    const res = await api.get('/me/summary')
+    if (res.status === 200) {
+      meSummary.value = res.data
+      return res.status
+    }
+  }
+
+  async function getUserSkills(userId: number) {
+    const res = await api.get(`/users/${userId}/skills`)
+    if (res.status === 200) {
+      userSkills.value = res.data
+      return res.status
+    }
+  }
+
+  async function getUsers(inactive: boolean) {
+    try {
+      const res = await api.get(`/users?include_inactive=${inactive}`)
+      if (res.status === 200) {
+        users.value = res.data
+        return res.status
+      }
+    } catch (error: any) {
+      console.error('error in get users: ', error)
+    }
+  }
+
+  async function updateUser(
+    userId: number,
+    userData: Partial<SetupUser>,
+    path: string
+  ) {
+    try {
+      const res = await api.patch(`/users/${userId}`, userData)
+      if (res.status === 200) {
+        if (path === 'setup') {
+          return res.data
+        } else {
+          getUsers(true)
+        }
+      }
+    } catch (error: any) {
+      console.error('error in update user: ', error)
+    }
+  }
+
+    const roleOrder: Record<User['role'], number> = {
+    admin: 0,
+    manager: 1,
+    member: 2,
+  }
+
+  // Sorted list of users
+  const sortedUsers = computed(() => {
+    return [...users.value].sort((a, b) => {
+      if (a.is_active !== b.is_active) {
+        return a.is_active ? -1 : 1
+      }
+
+      const roleDiff = roleOrder[a.role] - roleOrder[b.role]
+      if (roleDiff !== 0) return roleDiff
+
+      return a.name.localeCompare(b.name)
+    })
+  })
+
+
+  return {
+    // state
+    me,
+    meSummary,
+    userSkills,
+    users,
+	sortedUsers,
+    // actions
+    getMe,
+    getMeSummary,
+    getUserSkills,
+    getUsers,
+    updateUser
+  }
 })

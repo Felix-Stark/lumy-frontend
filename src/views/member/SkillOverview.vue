@@ -16,7 +16,7 @@
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
-    <section class="flex items-center w-full bg-white p-8 xl:p-12 rounded-lg shadow-md">
+    <section class="flex items-center w-full 2xl:flex-col bg-white p-8 xl:p-12 rounded-lg shadow-md">
         <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
@@ -146,6 +146,7 @@ onMounted(async() => {
             if (response.status === 200) {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
+                console.log('skill overview data: ', response.data);
             } else {
                 errorStore.setError({ code: response.status, detail: response.statusText || 'Failed to fetch skill overview' });
                 router.push({name:'error'});

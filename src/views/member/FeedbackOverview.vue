@@ -18,22 +18,21 @@
             <!-- Legend -->
             <div class="text-sm space-y-2">
                 <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
-                    <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
-                </div>
-                <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
-                    <span>Feedback Requested <i>({{ summary?.feedback_requested_count }})</i></span>
+                    <span>Feedback Requested <i>({{ summary?.feedback_requested_count || 0 }})</i></span>
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
                     <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
                 </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
+                    <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
+                </div>
             </div>
-
         </div>
     </section>
-    <section class="flex items-center w-full gap-6">
+    <section class="flex items-center w-full justify-between">
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
             <Listbox v-model="filteredSkill" >
                 <Float
@@ -110,103 +109,103 @@
                         class="cursor-pointer w-full text-wrap hover:bg-purple-50"
                         >
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
-                                {{ sentiment }}
+                                {{ formatName(sentiment) }}
                             </span>
                         </ListboxOption>
                     </ListboxOptions>
                 </Float>
             </Listbox>
+            <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
+                <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
+                    Clear Filters
+                </button>
+            </div>
         </div>
-        <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
-            <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
-                Clear Filters
+        <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'received' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('received')">
+                Received
+            </button>
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'given' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('given')">
+                Given
+            </button>
+            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
+                Requests
             </button>
         </div>
-        
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
-            <span v-if="filteredSentiment">, Sentiment: {{ filteredSentiment }}</span>
+        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
+            <span v-if="filteredSentiment">, Sentiment: {{ formatName(filteredSentiment) }}</span>
         </p>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in filter" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-            <p class="text-gray-800">{{ feedback.content }}</p>
-            <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.feedback_request?.recipient.name ? '-'+formatName(feedback.feedback_request?.recipient.name) : '' }}</p>
-                <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ feedback.feedback_request?.skill.skill }}</p>
-                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
-                    <span>
-                        <template v-if="feedback.sentiment === 'positive'">
-                            <Smile class="inline size-6 text-green-600"
-                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
-                                @mouseleave="handleMouseLeave"
-                                />
-                        </template>
-                        <template v-else-if="feedback.sentiment === 'negative'">
-                            <Frown class="inline size-6 text-red-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                        <template v-else>
-                            <Annoyed class="inline size-6 text-yellow-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
+        :id="feedback?.id"
+        :content="feedback?.content"
+        :img="feedback?.feedback_request?.recipient.avatar"
+        :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
+        :skill="feedback?.feedback_request?.skill.skill"
+        :created_at="feedback?.created_at"
+        :sentiment="feedback?.sentiment"
+        />
+        <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
+        :id="feedback?.id"
+        :content="feedback?.content"
+        :img="feedback?.feedback_request?.sender.avatar"
+        :name="feedback?.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
+        :skill="feedback?.feedback_request?.skill.skill"
+        :created_at="feedback?.created_at"
+        :sentiment="feedback?.sentiment"
+        />
+        <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
+        :id="req.id"
+        :content="req.message"
+        :img="req.recipient.avatar"
+        :name="'To: '+formatName(req.recipient.name)"
+        :skill="req.skill.skill"
+        :created_at="req.created_at"
+        />
     </section>
-    <Tooltip
-    :text="tooltipText"
-    :x="tooltipX"
-    :y="tooltipY"
-    :visible="showTooltip"
-    />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue'
-import Tooltip from '@/components/base/Tooltip.vue';
+import Card from '@/components/feedback/Card.vue';
 import { Chart, registerables } from 'chart.js'
 import { Doughnut } from 'vue-chartjs';
 import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 import { Float } from '@headlessui-float/vue';
 import { useUserStore } from '@/stores/userStore';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import type { UserSummary, SkillSummary, FeedbackSubmission } from '@/types.ts';
-import { ChevronDown, Smile, Annoyed, Frown, Check } from 'lucide-vue-next';
-import { useDateFormat } from '@/composables/useDateFormat';
-const { formatFeedbackDate } = useDateFormat();
+import { type UserSummary, type SkillSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequestEmbedded } from '@/types.ts';
+import { ChevronDown } from 'lucide-vue-next';
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
 Chart.register(...registerables);
 const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
-const feedbackList = ref<FeedbackSubmission[]>([]);
+const feedbackList = ref<Partial <FeedbackSubmission[]> | FeedbackSubmissionFull[] >([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
+const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
+const feedbackReq = ref<FeedbackRequestEmbedded[]>([]);
 
-const showTooltip = ref(false)
-const tooltipText = ref('')
-const tooltipX = ref(0)
-const tooltipY = ref(0)
+const currentFilter = ref<'received' | 'given' | 'requests'>('received');
+const setFilter = async(filter: 'received' | 'given' | 'requests') => {
+    currentFilter.value = filter;
+    if (filter === 'received') {
+        feedbackList.value = feedbackStore.submissions;
+    }
+    if (filter === 'given') {
+        feedbackList.value = feedbackStore.subsGiven;
+    }
+    if (filter === 'requests') {
+        // Optionally handle requests filter
 
-function handleMouseEnter(event: MouseEvent, text: string) {
-  tooltipText.value = text
-  tooltipX.value = event.clientX - 12 // offset for better positioning
-  tooltipY.value = event.clientY + 12
-  showTooltip.value = true
-}
-function handleMouseLeave() {
-  showTooltip.value = false
+    }
 }
 
 
@@ -222,7 +221,12 @@ onMounted(async () => {
     if (feedbackList.value.length < 1) {
         await feedbackStore.fetchSubmissions();
         feedbackList.value = feedbackStore.submissions;
+        const feedbackReqRaw = feedbackStore.submissions.flatMap((sub) => sub.feedback_request) as FeedbackRequestEmbedded[]
+        feedbackReq.value = feedbackReqRaw.filter((req) => req.type !== 'give')
     }
+    if (feedbackGiven.value.length < 1) {
+        await feedbackStore.getSubmissionsGiven();
+    } 
 
     let progress = 0;
     const duration = 1000; // 1 second animation
@@ -243,7 +247,7 @@ onMounted(async () => {
 const submitters = computed<Submitter[]>(() => {
   const map = new Map<number, Submitter>()
   for (const fb of feedbackList.value) {
-    const r = fb.feedback_request?.recipient
+    const r = fb?.feedback_request?.recipient
     if (r && !map.has(r.id)) map.set(r.id, r)
   }
   return Array.from(map.values())
@@ -252,22 +256,22 @@ const filter = computed(() => {
   return feedbackList.value.filter(fb => {
     const matchesSkill =
       !filteredSkill.value ||
-      fb.feedback_request?.skill.skill === filteredSkill.value;
+      fb?.feedback_request?.skill.skill === filteredSkill.value;
 
     const matchesSubmitter =
       !filteredSubmitter.value ||
-      fb.feedback_request?.recipient.id === filteredSubmitter.value;
+      fb?.feedback_request?.recipient.id === filteredSubmitter.value;
 
     const matchesSentiment =
-      !filteredSentiment.value || fb.sentiment === filteredSentiment.value;
+      !filteredSentiment.value || fb?.sentiment === filteredSentiment.value;
 
     return matchesSkill && matchesSubmitter && matchesSentiment;
   });
 });
 
 const positiveSentiments = computed(() => {
-    const positive = feedbackList.value.filter(fb => fb.sentiment === 'positive');
-    const decimal = (positive.length / feedbackList.value.length);
+    const positive = feedbackStore.submissions?.filter(fb => fb.sentiment === 'positive');
+    const decimal = (positive.length / feedbackStore.submissions.length);
     return Number(decimal * 100).toFixed(0) as unknown as number;
 })
 
@@ -316,29 +320,29 @@ const allTimeData = computed(() => {
     return {
         datasets: [
             {
-    label: 'Feedback Given',
-    data: [feedbackGiven, total - feedbackGiven],
-    backgroundColor: ['#9b5cff', '#e5e5e5'],
-    borderWidth: 0,
-    cutout: '65%',   // controls inner radius
-    radius: '100%', // full size
-  },
-  {
-    label: 'Feedback Requested',
-    data: [feedbackRequested, total - feedbackRequested],
-    backgroundColor: ['#60a5fa', '#f1f1f1'],
-    borderWidth: 0,
-    cutout: '45%',
-    radius: '80%',
-  },
-  {
-    label: 'Feedback Received',
-    data: [feedbackReceived, total - feedbackReceived],
-    backgroundColor: ['#2563eb', '#f5f5f5'],
-    borderWidth: 0,
-    cutout: '25%',
-    radius: '60%',
-  }
+                label: 'Feedback Requested',
+                data: [feedbackRequested, total - feedbackRequested],
+                backgroundColor: ['#60a5fa', '#f1f1f1'],
+                borderWidth: 0,
+                cutout: '65%',
+                radius: '100%',
+            },
+            {
+                label: 'Feedback Received',
+                data: [feedbackReceived, total - feedbackReceived],
+                backgroundColor: ['#2563eb', '#f5f5f5'],
+                borderWidth: 0,
+                cutout: '45%',
+                radius: '80%',
+            },
+            {
+                label: 'Feedback Given',
+                data: [feedbackGiven, total - feedbackGiven],
+                backgroundColor: ['#9b5cff', '#e5e5e5'],
+                borderWidth: 0,
+                cutout: '25%',   // controls inner radius
+                radius: '60%', // full size
+            },
         ]
     }
 })

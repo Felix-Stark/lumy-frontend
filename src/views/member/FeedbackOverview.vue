@@ -317,7 +317,7 @@ const filter = computed(() => {
 
 const positiveSentiments = computed(() => {
     const positive = feedbackStore.submissions?.filter(fb => fb.sentiment === 'positive');
-    const decimal = (positive.length / feedbackList.value.length);
+    const decimal = (positive.length / feedbackStore.submissions.length);
     return Number(decimal * 100).toFixed(0) as unknown as number;
 })
 

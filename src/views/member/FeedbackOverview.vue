@@ -123,13 +123,13 @@
             </div>
         </div>
         <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('received')">
+            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('received')">
                 Received
             </button>
-            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('given')">
+            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('given')">
                 Given
             </button>
-            <button class="cursor-pointer px-4 py-2 hover:bg-gray-50" @click="setFilter('requests')">
+            <button class="cursor-pointer px-4 py-2 text-sm hover:bg-gray-50" @click="setFilter('requests')">
                 Requests
             </button>
         </div>
@@ -175,16 +175,16 @@
             <p class="text-gray-800">{{ req.message ? req.message : '' }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div class="flex items-center gap-4">
+                    <p>To: {{ req.recipient.name }}</p>
                     <img
                         v-if="req.recipient.avatar"
                         :src="req.recipient.avatar"
                         alt="User Avatar"
-                        class="w-12 h-12 rounded-full object-cover"
+                        class="w-10 h-10 rounded-full object-cover"
                     />
-			<div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-				<span class="text-gray-500">No Image</span>
-			</div>
-
+                    <div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-500">No Image</span>
+                    </div>
                 </div>
                 <p class="text-gray-600 text-sm">Status: {{ req.status }}</p>
             </div>

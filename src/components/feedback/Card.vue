@@ -54,7 +54,7 @@ import { useDateFormat } from '@/composables/useDateFormat';
 const { formatFeedbackDate } = useDateFormat();
 
 defineProps<{
-    id: string | number;
+    id?: string | number;
     content?: string;
     img?: string; //image url
     name?: string;

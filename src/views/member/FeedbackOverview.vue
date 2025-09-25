@@ -134,29 +134,29 @@
         </div>
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
+        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
             <span v-if="filteredSentiment">, Sentiment: {{ formatName(filteredSentiment) }}</span>
         </p>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
         <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
-        :id="feedback.id"
-        :content="feedback.content"
-        :img="feedback.feedback_request?.recipient.avatar"
-        :name="feedback.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
-        :skill="feedback.feedback_request?.skill.skill"
-        :created_at="feedback.created_at"
-        :sentiment="feedback.sentiment"
+        :id="feedback?.id"
+        :content="feedback?.content"
+        :img="feedback?.feedback_request?.recipient.avatar"
+        :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
+        :skill="feedback?.feedback_request?.skill.skill"
+        :created_at="feedback?.created_at"
+        :sentiment="feedback?.sentiment"
         />
         <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
-        :id="feedback.id"
-        :content="feedback.content"
-        :img="feedback.feedback_request?.sender.avatar"
-        :name="feedback.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
-        :skill="feedback.feedback_request?.skill.skill"
-        :created_at="feedback.created_at"
-        :sentiment="feedback.sentiment"
+        :id="feedback?.id"
+        :content="feedback?.content"
+        :img="feedback?.feedback_request?.sender.avatar"
+        :name="feedback?.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
+        :skill="feedback?.feedback_request?.skill.skill"
+        :created_at="feedback?.created_at"
+        :sentiment="feedback?.sentiment"
         />
         <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
         :id="req.id"
@@ -186,7 +186,7 @@ Chart.register(...registerables);
 const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
-const feedbackList = ref<FeedbackSubmission[] | FeedbackSubmissionFull[]>([]);
+const feedbackList = ref<Partial <FeedbackSubmission[]> | FeedbackSubmissionFull[] >([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
@@ -247,7 +247,7 @@ onMounted(async () => {
 const submitters = computed<Submitter[]>(() => {
   const map = new Map<number, Submitter>()
   for (const fb of feedbackList.value) {
-    const r = fb.feedback_request?.recipient
+    const r = fb?.feedback_request?.recipient
     if (r && !map.has(r.id)) map.set(r.id, r)
   }
   return Array.from(map.values())
@@ -256,14 +256,14 @@ const filter = computed(() => {
   return feedbackList.value.filter(fb => {
     const matchesSkill =
       !filteredSkill.value ||
-      fb.feedback_request?.skill.skill === filteredSkill.value;
+      fb?.feedback_request?.skill.skill === filteredSkill.value;
 
     const matchesSubmitter =
       !filteredSubmitter.value ||
-      fb.feedback_request?.recipient.id === filteredSubmitter.value;
+      fb?.feedback_request?.recipient.id === filteredSubmitter.value;
 
     const matchesSentiment =
-      !filteredSentiment.value || fb.sentiment === filteredSentiment.value;
+      !filteredSentiment.value || fb?.sentiment === filteredSentiment.value;
 
     return matchesSkill && matchesSubmitter && matchesSentiment;
   });

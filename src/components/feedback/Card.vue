@@ -17,19 +17,19 @@
                     <p class="font-thin text-gray-600">{{ skill }}</p>
                     <p class="font-thin text-sm ml-6">{{ created_at ? formatFeedbackDate(created_at, { relative: true }) : '' }}</p>
                     <span>
-                        <template v-if="sentiment === 'positive'">
+                        <template v-if="sentiment && sentiment === 'positive'">
                             <Smile class="inline size-6 text-green-600"
                                 @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
                                 @mouseleave="handleMouseLeave"
                                 />
                         </template>
-                        <template v-else-if="sentiment === 'negative'">
+                        <template v-if="sentiment && sentiment === 'negative'">
                             <Frown class="inline size-6 text-red-600"
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
                             @mouseleave="handleMouseLeave"
                             />
                         </template>
-                        <template v-else>
+                        <template v-if="sentiment && sentiment === 'neutral'">
                             <Annoyed class="inline size-6 text-yellow-600"
                             @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
                             @mouseleave="handleMouseLeave"

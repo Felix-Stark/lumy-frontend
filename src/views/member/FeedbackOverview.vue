@@ -163,7 +163,7 @@
         :id="req.id"
         :content="req.message"
         :img="req.recipient.avatar"
-        :name="formatName('To: '+req.recipient.name)"
+        :name="'To: '+formatName(req.recipient.name)"
         :skill="req.skill.skill"
         :created_at="req.created_at"
         />

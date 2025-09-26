@@ -1,5 +1,5 @@
 <template>
-    <section class="flex flex-col w-full h-full xl:flex-row xl:flex-wrap xl:gap-8">
+    <section class="flex flex-col w-full h-full lg:flex-row lg:flex-wrap gap-8">
         <IntegrationCard
         :img="GoogleCal"
         title="Google"
@@ -11,7 +11,7 @@
             <p>Skip users who are marked as OOO automatically</p>
             <p>No access to meeting content or private notes</p>
         </IntegrationCard>
-        <IntegrationCard
+        <!-- <IntegrationCard
         :img="AsanaImg"
         title="Asana"
         :connected="asanaConnected"
@@ -21,7 +21,7 @@
             <p>Trigger feedback automatically when tasks or projects are finished</p>
             <p>Identify strong collaborators from assignees, followers, and project members</p>
             <p>No access to task descriptions or private comments</p>
-        </IntegrationCard>
+        </IntegrationCard> -->
     </section>
     <BaseToast
     :text="toastText"

@@ -165,6 +165,8 @@
         :name="'To: '+formatName(req.recipient.name)"
         :skill="req.skill.skill"
         :created_at="req.created_at"
+        :updated_at="req.updated_at"
+        :status="req.status"
         />
     </section>
 </template>
@@ -178,7 +180,7 @@ import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headless
 import { Float } from '@headlessui-float/vue';
 import { useUserStore } from '@/stores/userStore';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import { type UserSummary, type SkillSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequestEmbedded } from '@/types.ts';
+import { type UserSummary, type FeedbackSubmission, type FeedbackSubmissionFull, type FeedbackRequest } from '@/types.ts';
 import { ChevronDown } from 'lucide-vue-next';
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
@@ -186,12 +188,12 @@ Chart.register(...registerables);
 const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
-const feedbackList = ref<Partial <FeedbackSubmission[]> | FeedbackSubmissionFull[] >([]);
+const feedbackList = ref<Partial <FeedbackSubmission[]> | FeedbackSubmissionFull[]>([]);
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
 const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
-const feedbackReq = ref<FeedbackRequestEmbedded[]>([]);
+const feedbackReq = ref<FeedbackRequest[]>([]);
 
 const currentFilter = ref<'received' | 'given' | 'requests'>('received');
 const setFilter = async(filter: 'received' | 'given' | 'requests') => {
@@ -203,10 +205,9 @@ const setFilter = async(filter: 'received' | 'given' | 'requests') => {
         feedbackList.value = feedbackStore.subsGiven;
     }
     if (filter === 'requests') {
-        feedbackList.value = feedbackStore.requests
+        feedbackReq.value = feedbackStore.requests
     }
 }
-
 
 const formatName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
@@ -220,12 +221,15 @@ onMounted(async () => {
     if (feedbackList.value.length < 1) {
         await feedbackStore.fetchSubmissions();
         feedbackList.value = feedbackStore.submissions;
-        const feedbackReqRaw = feedbackStore.submissions.flatMap((sub) => sub.feedback_request) as FeedbackRequestEmbedded[]
-        feedbackReq.value = feedbackReqRaw.filter((req) => req.type !== 'give')
     }
     if (feedbackGiven.value.length < 1) {
         await feedbackStore.getSubmissionsGiven();
-    } 
+        feedbackList.value = feedbackStore.subsGiven;
+    }
+    if(feedbackReq.value.length < 1) {
+        await feedbackStore.getRequests();
+        feedbackReq.value = feedbackStore.requests;
+    }
 
     let progress = 0;
     const duration = 1000; // 1 second animation
@@ -241,8 +245,8 @@ onMounted(async () => {
             currentPercentage.value = Math.round(progress);
         }
     }, step);
-
 });
+
 const submitters = computed<Submitter[]>(() => {
   const map = new Map<number, Submitter>()
   for (const fb of feedbackList.value) {

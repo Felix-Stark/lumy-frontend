@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import api from "../services/api.ts";
-import type { FeedbackSubmission, FeedbackSubmissionFull } from "../types.ts";
+import { type FeedbackRequest, type FeedbackSubmission, type FeedbackSubmissionFull } from "../types.ts";
 
 export const useFeedbackStore = defineStore("feedback", () => {
   const submissions = ref<FeedbackSubmission[]>([]);
   const subsGiven = ref<FeedbackSubmissionFull[]>([]);
-  const requests = ref([]);
+  const requests = ref<FeedbackRequest[]>([]);
   const loading = ref(false);
 
   async function fetchSubmissions() {

@@ -1,6 +1,7 @@
 <template>
     <div class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-            <p class="text-gray-800">{{ content }}</p>
+        <p v-if="status" class="text-gray-600">Status: {{ status }}</p>
+        <p class="text-gray-800">{{ content }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div class="flex items-center gap-4">
                     <img v-if="img"
@@ -13,10 +14,20 @@
                     </div>
                     <p class="text-gray-600 italic">{{ name }}</p>
                 </div>
-                <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ skill }}</p>
-                    <p class="font-thin text-sm ml-6">{{ created_at ? formatFeedbackDate(created_at, { relative: true }) : '' }}</p>
-                    <span>
+                <div class="flex align-start gap-4">
+                    <div class="flex flex-col">
+                        <p class="font-thin text-gray-600">{{ skill }}</p>
+                        <p class="font-thin text-sm ml-6"
+                        @mouseenter="(e: MouseEvent) => handleMouseEnter(e, formatFeedbackDate(created_at || '', {relative: false}))"
+                        @mouseleave="(e: MouseEvent) => handleMouseLeave()"
+                        >Created at: {{ created_at ? formatFeedbackDate(created_at, { relative: true }) : '' }}</p>
+                        <p v-if="updated_at" class="font-thin text-sm ml-6"
+                        @mouseenter="(e: MouseEvent) => handleMouseEnter(e, formatFeedbackDate(updated_at || '', {relative: false}))"
+                        @mouseleave="(e: MouseEvent) => handleMouseLeave()"
+                        >Updated at: {{ updated_at ? formatFeedbackDate(updated_at, { relative: true }) : '' }}</p>
+                    </div>
+                    <p v-if="status" class="text-gray-600">Status: {{ status }}</p>
+                    <span v-if="sentiment">
                         <template v-if="sentiment && sentiment === 'positive'">
                             <Smile class="inline size-6 text-green-600"
                                 @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
@@ -61,7 +72,8 @@ defineProps<{
     skill?: string;
     sentiment?: string;
     created_at?: string;
-
+    updated_at?: string;
+    status?: string;
 }>();
 
 const showTooltip = ref(false)

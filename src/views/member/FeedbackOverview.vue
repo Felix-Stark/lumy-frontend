@@ -220,14 +220,13 @@ const filteredSentiment = ref<string | null>(null);
 const filteredStatus = ref<string | null>(null)
 const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
 const feedbackReq = ref<FeedbackRequest[]>([]);
-let filtering = ['']
 const formatName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 const submitters = computed<Submitter[]>(() => {
   const map = new Map<number, Submitter>()
-  for (const fb of feedbackList.value) {
-    const r = fb?.feedback_request?.recipient
+  for (const fb of  feedbackList.value) {
+    const r = currentFilter.value === 'given' ? fb?.feedback_request?.sender : fb?.feedback_request?.recipient
     if (r && !map.has(r.id)) map.set(r.id, r)
   }
   return Array.from(map.values())
@@ -288,7 +287,7 @@ const reqFilter = computed(() => {
 
     const matchesSubmitter =
       !filteredSubmitter.value ||
-      fb?.recipient.id === filteredSubmitter.value;
+      fb?.sender.id === filteredSubmitter.value;
 
     const matchesStatus =
       !filteredStatus.value || fb?.status === filteredStatus.value;

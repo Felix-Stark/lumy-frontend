@@ -211,7 +211,7 @@ const avgSentOptions = {
     x: {
       min: 0,
       max: 10,
-      ticks: { stepSize: 20 }
+      ticks: { stepSize: 1 }
     }
   }
 };

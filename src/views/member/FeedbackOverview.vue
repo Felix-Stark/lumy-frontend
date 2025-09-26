@@ -158,7 +158,7 @@
         :created_at="feedback?.created_at"
         :sentiment="feedback?.sentiment"
         />
-        <Card v-if="currentFilter === 'requests'" v-for="req in feedbackReq"
+        <Card v-if="currentFilter === 'requests'" v-for="req in reqFilter"
         :id="req.id"
         :content="req.message"
         :img="req.recipient.avatar"
@@ -192,26 +192,21 @@ const feedbackList = ref<Partial <FeedbackSubmission[]> | FeedbackSubmissionFull
 const filteredSkill = ref<string | null>(null);
 const filteredSubmitter = ref<number | null>(null);
 const filteredSentiment = ref<string | null>(null);
+const filteredStatus = ref<string | null>(null)
 const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
 const feedbackReq = ref<FeedbackRequest[]>([]);
-
-const currentFilter = ref<'received' | 'given' | 'requests'>('received');
-const setFilter = async(filter: 'received' | 'given' | 'requests') => {
-    currentFilter.value = filter;
-    if (filter === 'received') {
-        feedbackList.value = feedbackStore.submissions;
-    }
-    if (filter === 'given') {
-        feedbackList.value = feedbackStore.subsGiven;
-    }
-    if (filter === 'requests') {
-        feedbackReq.value = feedbackStore.requests
-    }
-}
 
 const formatName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
+const submitters = computed<Submitter[]>(() => {
+  const map = new Map<number, Submitter>()
+  for (const fb of feedbackList.value) {
+    const r = fb?.feedback_request?.recipient
+    if (r && !map.has(r.id)) map.set(r.id, r)
+  }
+  return Array.from(map.values())
+});
 
 onMounted(async () => {
     if (!summary.value) {
@@ -246,16 +241,43 @@ onMounted(async () => {
     }, step);
 });
 
-const submitters = computed<Submitter[]>(() => {
-  const map = new Map<number, Submitter>()
-  for (const fb of feedbackList.value) {
-    const r = fb?.feedback_request?.recipient
-    if (r && !map.has(r.id)) map.set(r.id, r)
-  }
-  return Array.from(map.values())
-})
+const currentFilter = ref<'received' | 'given' | 'requests'>('received');
+const setFilter = async(filter: 'received' | 'given' | 'requests') => {
+    currentFilter.value = filter;
+    if (filter === 'received') {
+        feedbackList.value = feedbackStore.submissions;
+    }
+    if (filter === 'given') {
+        feedbackList.value = feedbackStore.subsGiven;
+    }
+    if (filter === 'requests') {
+        feedbackReq.value = feedbackStore.requests
+    }
+}
+
+const reqFilter = computed(() => {
+  const results = feedbackReq.value.filter(fb => {
+    const matchesSkill =
+      !filteredSkill.value ||
+      fb?.skill.skill === filteredSkill.value;
+
+    const matchesSubmitter =
+      !filteredSubmitter.value ||
+      fb?.recipient.id === filteredSubmitter.value;
+
+    const matchesStatus =
+      !filteredStatus.value || fb?.status === filteredStatus.value;
+
+    return matchesSkill && matchesSubmitter && matchesStatus;
+  });
+  return results.slice().sort((a, b) => {
+    const aTime = a?.created_at ? new Date(a.created_at).getTime() : 0;
+    const bTime = b?.created_at ? new Date(b.created_at).getTime() : 0;
+    return bTime - aTime;
+  });
+});
 const filter = computed(() => {
-  return feedbackList.value.filter(fb => {
+  const results = feedbackList.value.filter(fb => {
     const matchesSkill =
       !filteredSkill.value ||
       fb?.feedback_request?.skill.skill === filteredSkill.value;
@@ -268,6 +290,11 @@ const filter = computed(() => {
       !filteredSentiment.value || fb?.sentiment === filteredSentiment.value;
 
     return matchesSkill && matchesSubmitter && matchesSentiment;
+  });
+  return results.slice().sort((a, b) => {
+    const aTime = a?.created_at ? new Date(a.created_at).getTime() : 0;
+    const bTime = b?.created_at ? new Date(b.created_at).getTime() : 0;
+    return bTime - aTime;
   });
 });
 

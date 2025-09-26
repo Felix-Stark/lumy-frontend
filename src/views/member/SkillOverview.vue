@@ -16,8 +16,8 @@
             <Line :data="avgSentChart" :options="avgSentOptions" />
         </div>
     </section>
-    <section class="flex items-center w-full 2xl:flex-col bg-white p-8 xl:p-12 rounded-lg shadow-md">
-        <div class="w-full h-12">
+    <section class="flex flex-col justify-center items-center gap-4 w-full 2xl:flex-row bg-white p-8 xl:p-12 rounded-lg shadow-md">
+        <div class="w-full min-h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">
@@ -59,50 +59,22 @@
     </section>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList?.length === 0" class="text-gray-500">No feedback available.</div>
-        <div v-else v-for="feedback in feedbackList" :key="feedback.id" class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] min-h-60 xl:p-12 ">
-            <p class="text-gray-800">{{ feedback.content }}</p>
-            <div class=" flex flex-col w-full gap-8">
-                <p class="text-gray-600 italic">{{ feedback.recipient_name ? '-'+formatName(feedback.recipient_name) : '' }}</p>
-                <div class="flex align-center gap-4">
-                    <p class="font-thin text-gray-600">{{ feedback.skill_name }}</p>
-                    <p class="font-thin text-sm ml-6">{{ formatFeedbackDate(feedback.created_at, { relative: true }) }}</p>
-                    <span>
-                        <template v-if="feedback.sentiment === 'positive'">
-                            <Smile class="inline size-6 text-green-600"
-                                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Positive sentiment')"
-                                @mouseleave="handleMouseLeave"
-                                />
-                        </template>
-                        <template v-else-if="feedback.sentiment === 'negative'">
-                            <Frown class="inline size-6 text-red-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Negative sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                        <template v-else>
-                            <Annoyed class="inline size-6 text-yellow-600"
-                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Neutral sentiment')"
-                            @mouseleave="handleMouseLeave"
-                            />
-                        </template>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <Card v-else v-for="feedback in feedbackList"
+        :id="feedback?.id"
+        :content="feedback?.content"
+        :img="feedback?.feedback_request?.recipient.avatar"
+        :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
+        :skill="feedback?.feedback_request?.skill.skill"
+        :created_at="feedback?.created_at"
+        :sentiment="feedback?.sentiment"
+        />
     </section>
-    <Tooltip
-    :text="tooltipText"
-    :x="tooltipX"
-    :y="tooltipY"
-    :visible="showTooltip"
-    />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
-import Tooltip from '@/components/base/Tooltip.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import type { Skill, SkillSummary, SkillOverview, FeedbackSubmission, FeedbackOnSkill } from '@/types';
+import type { SkillSummary, SkillOverview, FeedbackSubmission } from '@/types';
 import { Line, Bar } from 'vue-chartjs';
 import { Chart, registerables, type ChartOptions } from 'chart.js'
 import { useRouter } from 'vue-router';
@@ -111,31 +83,17 @@ import api from '@/services/api';
 import { Annoyed, Frown, Smile } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useErrorStore } from '@/stores/errorStore';
+import Card from '@/components/feedback/Card.vue';
+
 const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
 Chart.register(...registerables);
 const router = useRouter();
 
-const showTooltip = ref(false)
-const tooltipText = ref('')
-const tooltipX = ref(0)
-const tooltipY = ref(0)
-
-function handleMouseEnter(event: MouseEvent, text: string) {
-  tooltipText.value = text
-  tooltipX.value = event.clientX - 12 // offset for better positioning
-  tooltipY.value = event.clientY + 12
-  showTooltip.value = true
-}
-function handleMouseLeave() {
-  showTooltip.value = false
-}
-
-
 const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
-const feedbackList = ref<FeedbackOnSkill[]>();
+const feedbackList = ref<FeedbackSubmission[]>();
 
 const skillOv = ref<SkillOverview | null>(null);
 

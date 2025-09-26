@@ -13,6 +13,7 @@ import General from '@/views/settings/admin/General.vue';
 import Intelligence from '@/views/settings/admin/Intelligence.vue';
 import Users from '@/views/settings/admin/Users.vue';
 import Integrations from '@/views/settings/member/Integrations.vue';
+import SkillOverview from '@/views/member/SkillOverview.vue';
 
 const router = createRouter({
   history: createWebHistory(),

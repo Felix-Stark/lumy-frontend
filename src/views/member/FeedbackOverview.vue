@@ -94,7 +94,7 @@
                 :flip="true"
                 :offset="2"
                 >
-                    <ListboxButton class="flex items-center w-full px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+                    <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                         <span class="block">
                             Filter by Sentiment
                         </span>

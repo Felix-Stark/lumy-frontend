@@ -160,9 +160,8 @@
             </button>
         </div>
     </section>
-    <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p class="text-sm">Filter by: <span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Sentiment: {{ formatName(filteredStatus) }}</span>
-        </p>
+    <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex gap-2 w-full">
+        <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredStatus) }}</span>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>

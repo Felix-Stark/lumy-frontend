@@ -46,15 +46,15 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 min-w-full shadow-lg p-2 overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 shadow-lg rounded-bl-lg rounded-br-lg p-2 overflow-y-auto">
                         <ListboxOption
                         v-for="s in summary?.skills_summary"
                         v-slot="{ active, selected }"
                         :key="s.skill_id"
                         :value="s.name"
-                        class="cursor-pointer text-wrap hover:bg-purple-50"
+                        class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
                         >
-                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
                                 {{ s.name }}
                             </span>
                         </ListboxOption>
@@ -73,15 +73,15 @@
                     </span>
                     <ChevronDown class="ml-2 size-4"/>
                 </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 min-w-full p-4 shadow-lg overflow-y-auto">
+                    <ListboxOptions class="bg-white max-h-60 p-2 shadow-lg rounded-bl-lg rounded-br-lg overflow-y-auto">
                         <ListboxOption
                         v-for="submitter in submitters"
                         v-slot="{ active, selected }"
                         :key="submitter.id"
                         :value="submitter.id"
-                        class="cursor-pointer text-wrap hover:bg-purple-50"
+                        class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
                         >
-                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
                                 {{ formatName(submitter.name) }}
                             </span>
                         </ListboxOption>
@@ -100,15 +100,15 @@
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-auto w-full">
+                    <ListboxOptions class="bg-white bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-auto">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
                         v-slot="{ active, selected }"
                         :key="sentiment"
                         :value="sentiment"
-                        class="cursor-pointer w-full text-wrap hover:bg-purple-50"
+                        class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
                         >
-                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
                                 {{ formatName(sentiment) }}
                             </span>
                         </ListboxOption>
@@ -127,13 +127,13 @@
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white min-w-full shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-y-auto w-full">
+                    <ListboxOptions class="bg-white shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-y-auto w-full">
                         <ListboxOption
                         v-for="status in ['answered', 'pending']"
                         v-slot="{ active, selected }"
                         :key="status"
                         :value="status"
-                        class="cursor-pointer w-full text-wrap hover:bg-purple-50"
+                        class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
                         >
                             <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
                                 {{ formatName(status) }}

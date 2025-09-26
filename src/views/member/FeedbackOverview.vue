@@ -224,7 +224,6 @@ onMounted(async () => {
     }
     if (feedbackGiven.value.length < 1) {
         await feedbackStore.getSubmissionsGiven();
-        feedbackList.value = feedbackStore.subsGiven;
     }
     if(feedbackReq.value.length < 1) {
         await feedbackStore.getRequests();

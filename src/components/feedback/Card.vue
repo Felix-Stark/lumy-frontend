@@ -1,6 +1,5 @@
 <template>
     <div class="flex flex-col justify-evenly bg-white shadow-md rounded-lg p-8 w-full gap-8 lg:max-w-[48%] xl:p-12 ">
-        <p v-if="status" class="text-gray-600 text-sm">Status: {{ status }}</p>
         <p class="text-gray-800">{{ content }}</p>
             <div class=" flex flex-col w-full gap-8">
                 <div class="flex items-center gap-4">
@@ -15,9 +14,9 @@
                     <p class="text-gray-600 italic">{{ name }}</p>
                 </div>
                 <div class="flex align-start gap-4">
-                    <div class="flex flex-col gap-2">
+                    <div class="flex flex-col">
                         <p class="font-thin text-gray-600">Skill: {{ skill }}</p>
-                        <p class="font-thin text-sm"
+                        <p class="font-thin text-sm mt-2"
                         @mouseenter="(e: MouseEvent) => handleMouseEnter(e, formatFeedbackDate(created_at || '', {relative: false}))"
                         @mouseleave="(e: MouseEvent) => handleMouseLeave()"
                         >Created at: {{ created_at ? formatFeedbackDate(created_at, { relative: true }) : '' }}</p>

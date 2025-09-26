@@ -24,7 +24,7 @@
     </div>
 </template>
 <script setup lang="ts">
-
+import { Link, Unlink } from 'lucide-vue-next';
 defineProps<{
     img: string; // image src
     title: string;

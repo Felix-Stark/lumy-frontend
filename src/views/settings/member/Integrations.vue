@@ -3,13 +3,24 @@
         <IntegrationCard
         :img="GoogleCal"
         title="Google"
-        :connected="isConnected"
+        :connected="googleConnected"
         @connect="triggerGoogle()"
         @disconnect="disconnectGoogle()"
         >
             <p>Trigger feedback after regular meeting interactions</p>
             <p>Skip users who are marked as OOO automatically</p>
             <p>No access to meeting content or private notes</p>
+        </IntegrationCard>
+        <IntegrationCard
+        :img="AsanaImg"
+        title="Asana"
+        :connected="asanaConnected"
+        @connect="triggerGoogle()"
+        @disconnect="disconnectGoogle()"
+        >
+            <p>Trigger feedback automatically when tasks or projects are finished</p>
+            <p>Identify strong collaborators from assignees, followers, and project members</p>
+            <p>No access to task descriptions or private comments</p>
         </IntegrationCard>
     </section>
     <BaseToast
@@ -21,9 +32,9 @@
 </template>
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';
+import AsanaImg from '@/assets/images/asana.png';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { Link, Unlink } from 'lucide-vue-next';
 import BaseToast from '@/components/base/BaseToast.vue';
 import IntegrationCard from '@/components/settings/IntegrationCard.vue';
 import api from '@/services/api.ts';
@@ -35,6 +46,8 @@ const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
+const googleConnected = ref(false);
+const asanaConnected = ref(false);
 
 onMounted(async () => {
     try {
@@ -49,8 +62,10 @@ onMounted(async () => {
         showToast.value = true;
         
     }
-    const res = await api.get('/integrations/google')
-    isConnected.value = res.data.connected;
+    const googleRes = await api.get('/integrations/google');
+    googleConnected.value = await googleRes.data.connected;
+    // const asanaRes = await api.get('/integrations/asana');
+    // asanaConnected.value = await asanaRes.data.connected;
     } catch (error) {
         console.error('Error fetching Google Calendar status:', error);
         toastText.value = 'There was an error connecting Google Calendar';

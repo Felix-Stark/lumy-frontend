@@ -203,8 +203,7 @@ const setFilter = async(filter: 'received' | 'given' | 'requests') => {
         feedbackList.value = feedbackStore.subsGiven;
     }
     if (filter === 'requests') {
-        // Optionally handle requests filter
-
+        feedbackList.value = feedbackStore.requests
     }
 }
 

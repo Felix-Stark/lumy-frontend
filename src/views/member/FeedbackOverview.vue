@@ -88,19 +88,15 @@
                     </ListboxOptions>
                 </Float>
             </Listbox>
-            <Listbox v-model="filteredSentiment">
-                <Float
-                placement="bottom-end"
-                :flip="true"
-                :offset="2"
-                >
-                    <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+            <Listbox v-if="currentFilter !== 'requests'" v-model="filteredSentiment">
+                <div class="relative">
+                    <ListboxButton class="flex items-center w-full px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                         <span class="block">
                             Filter by Sentiment
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white min-w-full shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-y-auto w-full">
+                    <ListboxOptions class="bg-white aboslute bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-auto w-full">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
                         v-slot="{ active, selected }"
@@ -113,10 +109,37 @@
                             </span>
                         </ListboxOption>
                     </ListboxOptions>
+                </div>
+            </Listbox>
+            <Listbox v-if="currentFilter === 'requests'" v-model="filteredStatus">
+                <Float
+                placement="bottom-end"
+                :flip="true"
+                :offset="2"
+                >
+                    <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+                        <span class="block">
+                            Filter by Status
+                        </span>
+                        <ChevronDown class="ml-2 size-4"/>
+                    </ListboxButton>
+                    <ListboxOptions class="bg-white min-w-full shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-y-auto w-full">
+                        <ListboxOption
+                        v-for="status in ['answered', 'pending']"
+                        v-slot="{ active, selected }"
+                        :key="status"
+                        :value="status"
+                        class="cursor-pointer w-full text-wrap hover:bg-purple-50"
+                        >
+                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                                {{ formatName(status) }}
+                            </span>
+                        </ListboxOption>
+                    </ListboxOptions>
                 </Float>
             </Listbox>
-            <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white shadow-md rounded-lg">
-                <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
+            <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white rounded-lg">
+                <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null; filteredStatus = null;" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
                     Clear Filters
                 </button>
             </div>

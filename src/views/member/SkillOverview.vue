@@ -17,7 +17,7 @@
         </div>
     </section>
     <section class="flex flex-col justify-center items-center gap-4 w-full 2xl:flex-row bg-white p-8 xl:p-12 rounded-lg shadow-md">
-        <div class="w-full min-h-12">
+        <div class="w-full h-12">
             <Bar :data="sentOvData" :options="sentOvOptions" />
         </div>
         <div class="flex">
@@ -134,19 +134,19 @@ const sentOvData = computed(() => {
             {
                 label: 'Negative',
                 backgroundColor: 'rgba(252, 92, 101, 1)',
-                data: [skillSent.value.total ? (skillSent.value.negSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? Math.floor(skillSent.value.negSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Neutral',
                 backgroundColor: 'rgba(255, 195, 110, 1)',
-                data: [skillSent.value.total ? (skillSent.value.neuSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? Math.floor(skillSent.value.neuSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Positive',
                 backgroundColor: 'rgba(127, 228, 126, 1)',
-                data: [skillSent.value.total ? (skillSent.value.posSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? Math.floor(skillSent.value.posSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             }
         ]

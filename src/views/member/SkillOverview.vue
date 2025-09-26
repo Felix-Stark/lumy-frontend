@@ -119,10 +119,11 @@ onMounted(async() => {
 });
 
 const skillSent = computed(() => {
+    const total = skillOv.value?.submission_counts.total || 0;
     const negSent = skillOv.value?.submission_counts.by_sentiment.negative || 0;
     const neuSent = skillOv.value?.submission_counts.by_sentiment.neutral || 0;
     const posSent = skillOv.value?.submission_counts.by_sentiment.positive || 0;
-    return { negSent, neuSent, posSent, total: skillOv.value?.submission_counts.total };
+    return { negSent, neuSent, posSent, total };
 })
 
 const sentOvData = computed(() => {
@@ -134,19 +135,19 @@ const sentOvData = computed(() => {
             {
                 label: 'Negative',
                 backgroundColor: 'rgba(252, 92, 101, 1)',
-                data: [skillSent.value.total ? Math.floor(skillSent.value.negSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? (skillSent.value.negSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Neutral',
                 backgroundColor: 'rgba(255, 195, 110, 1)',
-                data: [skillSent.value.total ? Math.floor(skillSent.value.neuSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? (skillSent.value.neuSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             },
             {
                 label: 'Positive',
                 backgroundColor: 'rgba(127, 228, 126, 1)',
-                data: [skillSent.value.total ? Math.floor(skillSent.value.posSent / skillSent.value.total) * 100 : 0],
+                data: [skillSent.value.total ? (skillSent.value.posSent / skillSent.value.total) * 100 : 0],
                 borderRadius: 5
             }
         ]

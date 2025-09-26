@@ -89,14 +89,13 @@
                 </Float>
             </Listbox>
             <Listbox v-if="currentFilter !== 'requests'" v-model="filteredSentiment">
-                <div class="relative">
                     <ListboxButton class="flex items-center w-full px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                         <span class="block">
                             Filter by Sentiment
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white aboslute bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-auto w-full">
+                    <ListboxOptions class="bg-white bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-4 overflow-auto w-full">
                         <ListboxOption
                         v-for="sentiment in ['positive', 'neutral', 'negative']"
                         v-slot="{ active, selected }"
@@ -109,7 +108,7 @@
                             </span>
                         </ListboxOption>
                     </ListboxOptions>
-                </div>
+
             </Listbox>
             <Listbox v-if="currentFilter === 'requests'" v-model="filteredStatus">
                 <Float
@@ -157,8 +156,8 @@
         </div>
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex w-full">
-        <p class="text-sm">Filter by: <span class="ml-2" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter">, Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
-            <span v-if="filteredSentiment">, Sentiment: {{ formatName(filteredSentiment) }}</span>
+        <p class="text-sm">Filter by: <span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient_id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span>
+            <span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">, Sentiment: {{ formatName(filteredSentiment) }}</span>
         </p>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
@@ -218,7 +217,7 @@ const filteredSentiment = ref<string | null>(null);
 const filteredStatus = ref<string | null>(null)
 const feedbackGiven = ref<FeedbackSubmissionFull[]>([]);
 const feedbackReq = ref<FeedbackRequest[]>([]);
-
+let filtering = ['']
 const formatName = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
@@ -263,7 +262,7 @@ onMounted(async () => {
         }
     }, step);
 });
-
+// FILTERS
 const currentFilter = ref<'received' | 'given' | 'requests'>('received');
 const setFilter = async(filter: 'received' | 'given' | 'requests') => {
     currentFilter.value = filter;

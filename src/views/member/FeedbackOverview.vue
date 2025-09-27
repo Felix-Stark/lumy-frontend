@@ -225,9 +225,21 @@ const formatName = (name: string) => {
 }
 const submitters = computed<Submitter[]>(() => {
   const map = new Map<number, Submitter>()
-  for (const fb of  feedbackList.value) {
-    const r = currentFilter.value === 'given' ? fb?.feedback_request?.sender : fb?.feedback_request?.recipient
+  if (currentFilter.value === 'received') {
+    for (const fb of feedbackList.value) {
+    const r = fb?.feedback_request?.recipient
     if (r && !map.has(r.id)) map.set(r.id, r)
+    }
+  } else if (currentFilter.value === 'given') {
+    for (const fb of feedbackList.value) {
+        const r = fb?.feedback_request?.sender
+        if (r && !map.has(r.id)) map.set(r.id, r)
+    }
+  } else if (currentFilter.value === 'requests') {
+    for (const fb of feedbackReq.value) {
+        const r = fb?.recipient
+        if (r && !map.has(r.id)) map.set(r.id, r)
+    }
   }
   return Array.from(map.values())
 });

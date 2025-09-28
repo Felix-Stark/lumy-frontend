@@ -161,7 +161,7 @@
         </div>
     </section>
     <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex gap-2 w-full">
-        <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ formatName(feedbackList.find((f) => f?.feedback_request?.recipient.id === filteredSubmitter)?.feedback_request?.recipient.name ?? '') }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Status: {{ formatName(filteredStatus) }}</span>
+        <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ filterPeersList }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Status: {{ formatName(filteredStatus) }}</span>
     </div>
     <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
         <div v-if="feedbackList.length === 0" class="text-gray-500">No feedback available.</div>
@@ -245,6 +245,19 @@ const submitters = computed<Submitter[]>(() => {
   }
   return Array.from(map.values())
 });
+
+const filterPeersList = computed(() => {
+    if (currentFilter.value === 'given') {
+        return formatName(feedbackStore.subsGiven.find((f) => f?.feedback_request?.recipient.id === filteredSubmitter.value)?.feedback_request?.recipient.name ?? '')
+    }
+    if (currentFilter.value === 'received') {
+        return formatName(feedbackList.value.find((f) => f?.feedback_request?.recipient.id === filteredSubmitter.value)?.feedback_request?.recipient.name ?? '');
+    };
+    if (currentFilter.value === 'requests') {
+        return formatName(feedbackReq.value.find((f) => f?.recipient.id === filteredSubmitter.value)?.recipient.name ?? '');
+    };
+})
+
 onMounted(async () => {
     if (!summary.value) {
         await userStore.getMeSummary();

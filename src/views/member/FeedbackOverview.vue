@@ -174,7 +174,7 @@
         :created_at="feedback?.created_at"
         :sentiment="feedback?.sentiment"
         />
-        <Card v-if="currentFilter === 'given'" v-for="feedback in filter"
+        <Card v-if="currentFilter === 'given'" v-for="feedback in peerFilter"
         :id="feedback?.id"
         :content="feedback?.content"
         :img="feedback?.feedback_request?.sender.avatar"
@@ -245,11 +245,6 @@ const submitters = computed<Submitter[]>(() => {
   }
   return Array.from(map.values())
 });
-const peerFilter = computed (() => {
-    if (currentFilter.value === 'given') {
-        feedbackList.value.find((f) => f?.feedback_request?.sender.id === filteredSubmitter.value)?.feedback_request?.sender.name
-    } 
-})
 onMounted(async () => {
     if (!summary.value) {
         await userStore.getMeSummary();
@@ -327,6 +322,27 @@ const filter = computed(() => {
     const matchesSubmitter =
       !filteredSubmitter.value ||
       fb?.feedback_request?.recipient.id === filteredSubmitter.value;
+
+    const matchesSentiment =
+      !filteredSentiment.value || fb?.sentiment === filteredSentiment.value;
+
+    return matchesSkill && matchesSubmitter && matchesSentiment;
+  });
+  return results.slice().sort((a, b) => {
+    const aTime = a?.created_at ? new Date(a.created_at).getTime() : 0;
+    const bTime = b?.created_at ? new Date(b.created_at).getTime() : 0;
+    return bTime - aTime;
+  });
+});
+const peerFilter = computed(() => {
+  const results = feedbackStore.subsGiven.filter(fb => {
+    const matchesSkill =
+      !filteredSkill.value ||
+      fb?.feedback_request?.skill.skill === filteredSkill.value;
+
+    const matchesSubmitter =
+      !filteredSubmitter.value ||
+      fb?.feedback_request?.sender.id === filteredSubmitter.value;
 
     const matchesSentiment =
       !filteredSentiment.value || fb?.sentiment === filteredSentiment.value;

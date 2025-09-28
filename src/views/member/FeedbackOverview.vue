@@ -248,7 +248,7 @@ const submitters = computed<Submitter[]>(() => {
 
 const filterPeersList = computed(() => {
     if (currentFilter.value === 'given') {
-        return formatName(feedbackStore.subsGiven.find((f) => f?.feedback_request?.recipient.id === filteredSubmitter.value)?.feedback_request?.recipient.name ?? '')
+        return formatName(feedbackStore.subsGiven.find((f) => f?.feedback_request?.sender.id === filteredSubmitter.value)?.feedback_request?.sender.name ?? '')
     }
     if (currentFilter.value === 'received') {
         return formatName(feedbackList.value.find((f) => f?.feedback_request?.recipient.id === filteredSubmitter.value)?.feedback_request?.recipient.name ?? '');

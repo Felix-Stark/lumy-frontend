@@ -5,7 +5,7 @@
 		</div>
 		<h1 class="text-4xl font-bold text-lumy-purple mb-4">Oh no!</h1>
 		<p class="text-lg text-gray-700 mb-8">Something went wrong.</p>
-		<p class="text-sm text-gray-500 mb-4">Error: {{ errorStore.error?.code }} {{ errorStore.error?.detail }}</p>
+		<p class="text-sm text-gray-500 mb-4">Error: {{ errorStore.error?.code }} {{ errorStore.error?.detail ?? 'Unexpected error has occurred' }}</p>
 		<p class="text-sm text-gray-500 mb-4">Please try again later or contact support.</p>
 		
 	</div>

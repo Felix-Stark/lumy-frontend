@@ -231,7 +231,7 @@ const submitters = computed<Submitter[]>(() => {
     if (r && !map.has(r.id)) map.set(r.id, r)
     }
   } else if (currentFilter.value === 'given') {
-    for (const fb of feedbackList.value) {
+    for (const fb of feedbackGiven.value) {
         const r = fb?.feedback_request?.sender
         if (r && !map.has(r.id)) map.set(r.id, r)
     }
@@ -240,6 +240,8 @@ const submitters = computed<Submitter[]>(() => {
         const r = fb?.recipient
         if (r && !map.has(r.id)) map.set(r.id, r)
     }
+  } else {
+    return Array.from(map.values());
   }
   return Array.from(map.values())
 });

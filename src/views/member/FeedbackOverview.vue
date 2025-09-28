@@ -232,7 +232,7 @@ const submitters = computed<Submitter[]>(() => {
     }
   }
   if (currentFilter.value === 'given') {
-    for (const fb of feedbackGiven.value) {
+    for (const fb of feedbackStore.subsGiven) {
         const r = fb?.feedback_request?.sender
         if (r && !map.has(r.id)) map.set(r.id, r)
     }
@@ -248,7 +248,7 @@ const submitters = computed<Submitter[]>(() => {
 const peerFilter = computed (() => {
     if (currentFilter.value === 'given') {
         feedbackList.value.find((f) => f?.feedback_request?.sender.id === filteredSubmitter.value)?.feedback_request?.sender.name
-    }
+    } 
 })
 onMounted(async () => {
     if (!summary.value) {

@@ -44,4 +44,12 @@
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import BarChart from '@/components/charts/BarChart.vue';
 import { CircleAlert, Heart, Laugh, Settings } from 'lucide-vue-next';
+import { ref, computed, onMounted } from 'vue';
+import { useAdminStore } from '@/stores/adminStore';
+
+const adminStore = useAdminStore();
+
+onMounted(async() => {
+  await adminStore.getTeamSummary();
+})
 </script>

@@ -91,8 +91,8 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'admin',
-          name: 'overview',
+          path: '/admin',
+          name: 'overview-admin',
           component: Overview
         },
         {

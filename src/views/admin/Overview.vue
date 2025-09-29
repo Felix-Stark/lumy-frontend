@@ -46,7 +46,7 @@ const sentScoreData = computed(() => {
         backgroundColor: ["#7FE47E", "#e5e7eb"],
         borderWidth: 0,
         borderRadius: 5,
-        cutout: "70%", // thickness of the arc
+        cutout: "80%", // thickness of the arc
         circumference: 180, // half circle
         rotation: 270, // start at bottom center
       }

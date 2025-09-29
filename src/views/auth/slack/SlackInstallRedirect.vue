@@ -13,6 +13,7 @@ import { useAuthStore } from '@/stores/authStore';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
 import lumyWaiting from '@/assets/images/lumy_connecting.png';
 import { onMounted } from 'vue';
+import api from '@/services/api';
 
 const authStore = useAuthStore();
 const route = useRoute();

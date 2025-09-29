@@ -32,7 +32,6 @@ import { storeToRefs } from 'pinia';
 
 Chart.register(...registerables);
 const adminStore = useAdminStore();
-const teamSummary = storeToRefs(adminStore)
 const constructiveAverageRounded = computed(() =>
   Math.round(adminStore.teamSummary?.constructive_feedback_average ?? 0)
 )

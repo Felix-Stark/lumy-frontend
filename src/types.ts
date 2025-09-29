@@ -132,18 +132,27 @@ export type FeedbackRequest = {
     avatar: string;
     is_active: boolean;
   };
+  recipient: {
+    id: number;
+    name: string;
+    avatar: string;
+    is_active: boolean;
+  }
   recipient_id: number;
   skill: {
-    skill: number;
+    skill: string;
     definition: string;
     theme: string;
   }
-  message: number;
+  message: string;
   account_id: number;
   status: string;
   framework: FeedbackFramework;
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
+  type?: string;
+  created_at?: string; //ISO timestamp
+  updated_at?: string; // ISO timestamp
 }
 
 export type FeedbackRequestEmbedded = {

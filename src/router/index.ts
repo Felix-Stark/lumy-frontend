@@ -7,7 +7,13 @@ import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import SetupLayout from '@/layouts/SetupLayout.vue';
 import SlackLayout from '@/layouts/SlackLayout.vue';
-
+import FeedbackOverview from '@/views/member/FeedbackOverview.vue';
+import MemberDashboard from '@/views/member/MemberDashboard.vue';
+import General from '@/views/settings/admin/General.vue';
+import Intelligence from '@/views/settings/admin/Intelligence.vue';
+import Users from '@/views/settings/admin/Users.vue';
+import Integrations from '@/views/settings/member/Integrations.vue';
+import SkillOverview from '@/views/member/SkillOverview.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -101,12 +107,12 @@ const router = createRouter({
         {
           path: 'overview',
           name: 'member-overview',
-          component: () => import('@/views/member/MemberDashboard.vue'),
+          component: MemberDashboard,
         },
         {
           path: 'feedback-overview',
           name: 'feedback-overview',
-          component: () => import('@/views/member/FeedbackOverview.vue'),
+          component: FeedbackOverview,
         },
         {
           path: 'skill-overview',
@@ -135,24 +141,24 @@ const router = createRouter({
         {
           path: 'member/integrations',
           name: 'settings-member-integrations',
-          component: () => import('@/views/settings/member/Integrations.vue'),
+          component: Integrations,
         },
         {
           path: 'admin/general',
           name: 'settings-admin-general',
-          component: () => import('@/views/settings/admin/General.vue'),
+          component: General,
           meta: { isAdmin: true }
         },
         {
           path: 'admin/intelligence',
           name: 'settings-admin-intelligence',
-          component: () => import('@/views/settings/admin/Intelligence.vue'),
+          component: Intelligence,
           meta: { isAdmin: true }
         },
         {
           path: 'admin/users',
           name: 'settings-admin-users',
-          component: () => import('@/views/settings/admin/Users.vue'),
+          component: Users,
           meta: { isAdmin: true }
         }
 

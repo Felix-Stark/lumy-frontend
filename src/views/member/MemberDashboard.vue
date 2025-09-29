@@ -250,18 +250,17 @@ const feedbackYMax = computed(() => {
   // find max and round up to nearest sensible step
   const rawMax = Math.max(...all);
   // sensible step choices
-  const step = rawMax <= 10 ? 1 : rawMax <= 50 ? 5 : 10;
-  return Math.ceil(rawMax / step) * step;
+  return Math.ceil(rawMax + 10);
 });
 
 const feedbackStep = computed(() => {
 	switch (true) {
-		case feedbackYMax.value <= 10:
+		case feedbackYMax.value >= 10:
 			return 2;
-		case feedbackYMax.value <= 50:
+		case feedbackYMax.value >= 50:
 			return 5;
 		default:
-			return 10;
+			return 1;
 	}
 })
 

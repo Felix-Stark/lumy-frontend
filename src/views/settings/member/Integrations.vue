@@ -1,51 +1,42 @@
 <template>
-    <div class="flex flex-col items-center gap-6 w-full min-h-[60vh] p-8 lg:p-12 bg-white rounded-xl shadow-md">
-        <img :src="GoogleCal" alt="Google calendar logo" class="w-48 h-48 mb-4"/>
-        <h1 class="font-inter text-2xl">Google Calendar</h1>
-        <div class="flex flex-col justify-center items-center mt-4 font-normal text-sm space-y-1">
-            <p>
-                Use shared meetings to detect collaboration patterns across teams.
-            </p>
-            <p>
-                Trigger feedback after regular meeting interactions
-            </p>
-            <p>
-                Skip users who are marked as OOO automatically
-            </p>
-            <p>
-                No access to meeting content or private notes
-            </p>
-        </div>
-        <div v-if="isConnected === true" class="flex">
-            <Link class="w-4 h-4 stroke-3 text-gray-500 mr-1" />
-            <p class="text-lumy-green">Connected</p>
-        </div>
-        <div v-else class="flex items-center">
-            <Unlink class="w-4 h-4 stroke-3 text-gray-500 mr-1"/>
-            <p class="text-lumy-danger">Not connected</p>
-        </div>
-        <div class="flex space-x-4 mt-6">
-            <button v-if="isConnected === true" @click="disconnectGoogle" class="flex items-center space-x-2 px-4 py-2 bg-lumy-dark opacity-70 text-white text-sm rounded-lg cursor-pointer">
-                Disconnect
-            </button>
-            <button v-else @click="triggerGoogle" class="px-4 py-2 bg-lumy-green text-white text-sm rounded-lg cursor-pointer">
-                Connect
-            </button>
-        </div>
-        <BaseToast
-        :text="toastText"
-        :bgClass="toastBg"
-        :show="showToast"
-        @close="showToast = false"
-        />
-    </div>
+    <section class="flex flex-col w-full h-full lg:flex-row lg:flex-wrap gap-8">
+        <IntegrationCard
+        :img="GoogleCal"
+        title="Google"
+        :connected="googleConnected"
+        @connect="triggerGoogle()"
+        @disconnect="disconnectGoogle()"
+        >
+            <p>Trigger feedback after regular meeting interactions</p>
+            <p>Skip users who are marked as OOO automatically</p>
+            <p>No access to meeting content or private notes</p>
+        </IntegrationCard>
+        <!-- <IntegrationCard
+        :img="AsanaImg"
+        title="Asana"
+        :connected="asanaConnected"
+        @connect="triggerGoogle()"
+        @disconnect="disconnectGoogle()"
+        >
+            <p>Trigger feedback automatically when tasks or projects are finished</p>
+            <p>Identify strong collaborators from assignees, followers, and project members</p>
+            <p>No access to task descriptions or private comments</p>
+        </IntegrationCard> -->
+    </section>
+    <BaseToast
+    :text="toastText"
+    :bgClass="toastBg"
+    :show="showToast"
+    @close="showToast = false"
+    />
 </template>
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';
+import AsanaImg from '@/assets/images/asana.png';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { Link, Unlink } from 'lucide-vue-next';
 import BaseToast from '@/components/base/BaseToast.vue';
+import IntegrationCard from '@/components/settings/IntegrationCard.vue';
 import api from '@/services/api.ts';
 
 const route = useRoute();
@@ -55,6 +46,8 @@ const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
+const googleConnected = ref(false);
+const asanaConnected = ref(false);
 
 onMounted(async () => {
     try {
@@ -69,8 +62,10 @@ onMounted(async () => {
         showToast.value = true;
         
     }
-    const res = await api.get('/integrations/google')
-    isConnected.value = res.data.connected;
+    const googleRes = await api.get('/integrations/google');
+    googleConnected.value = await googleRes.data.connected;
+    // const asanaRes = await api.get('/integrations/asana');
+    // asanaConnected.value = await asanaRes.data.connected;
     } catch (error) {
         console.error('Error fetching Google Calendar status:', error);
         toastText.value = 'There was an error connecting Google Calendar';

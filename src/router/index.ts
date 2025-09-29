@@ -84,14 +84,14 @@ const router = createRouter({
     { 
       path: '/overview',
       component: DashboardLayout,
-      redirect: '/overview',
+      redirect: '/overview/admin',
       meta: {
         requiresRole: true,
         requiresAuth: true,
       },
       children: [
         {
-          path: '',
+          path: 'admin',
           name: 'overview',
           component: Overview
         },

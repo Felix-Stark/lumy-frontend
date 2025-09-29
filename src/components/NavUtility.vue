@@ -40,17 +40,17 @@
         : 'absolute top-0 right-0 flex items-center gap-4 mr-12 mt-10',
 		'transition-all duration-300 ease-in-out',
 		'hidden lg:flex'
-    ]"
-    style="transition: all 0.3s;">
-		<!-- <router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		]"
+		style="transition: all 0.3s;">
+		<router-link v-if="role.value === 'admin'" to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
 		@mouseleave="handleMouseLeave"
-		> -->
-			<!-- <Home :class="[,
+		>
+			<Home :class="[,
 				isExactActive === true ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
-			]" /> -->
-		<!-- </router-link> -->
+			]" />
+		</router-link>
 		<router-link :to="{name: 'member-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
 		@mouseleave="handleMouseLeave"

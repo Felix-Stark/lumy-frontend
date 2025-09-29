@@ -14,6 +14,7 @@ import Intelligence from '@/views/settings/admin/Intelligence.vue';
 import Users from '@/views/settings/admin/Users.vue';
 import Integrations from '@/views/settings/member/Integrations.vue';
 import SkillOverview from '@/views/member/SkillOverview.vue';
+import Overview from '@/views/admin/Overview.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -89,6 +90,11 @@ const router = createRouter({
       },
       children: [
         {
+          path: '',
+          name: 'overview',
+          component: Overview
+        },
+        {
           path: 'employee',
           name: 'overview-employee',
           component: () => import('@/views/admin/Employee.vue'),
@@ -117,7 +123,7 @@ const router = createRouter({
         {
           path: 'skill-overview',
           name: 'skill-overview',
-          component: () => import('@/views/member/SkillOverview.vue'),
+          component: SkillOverview,
         }
       ]
     },  

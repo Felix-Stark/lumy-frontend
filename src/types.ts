@@ -267,4 +267,26 @@ export type FeedbackSubmissionFull = {
     status: string;
   };
 };
-//
+
+// TEAM ADMIN/MANAGER
+
+export type TeamOverview = {
+  feedback_submitted_total: number;
+  feedback_requested_total: number;
+  positive_feedback_percentage: number;
+  constructive_feedback_average: number;
+  submitted_per_month: {
+    month: string;
+    count: number;
+  } [];
+  average_sentiment_score: number;
+};
+
+//GET /team.users
+export type TeamUser = {
+  user_id: number;
+  name: string;
+  avatar: string;
+  average_sentiment_word: string;
+  manager_summary: string | null;
+}

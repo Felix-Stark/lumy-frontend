@@ -10,8 +10,8 @@ const errorStore = useErrorStore();
 const router = useRouter();
 
 export const useAdminStore = defineStore("admin", () => {
-    const teamSummary = ref<TeamOverview>();
-    const teamUsers = ref<TeamUser[]>();
+    const teamSummary = ref<TeamOverview | null>(null);
+    const teamUsers = ref<TeamUser[] | null>(null);
 
     async function getTeamSummary() {
         teamSummary.value = await apiRequest(api.get('/overview'))

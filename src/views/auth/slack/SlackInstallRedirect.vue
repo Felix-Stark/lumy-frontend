@@ -18,19 +18,18 @@ const authStore = useAuthStore();
 const route = useRoute();
 const router = useRouter();
 const code = route.query.code;
-const state = route.query.state;
-const error = route.query.error;
-onMounted( async () => {
 
-	if (code) {
-		const status = await authStore.registerSlackUser(code as string);
-		if (status === 200) {
-			router.push({ name: 'slack-install-success' });
-		} else if (status === 403) {
-			router.push({name: 'slack-not-admin'})
-		} else {
-			router.push({name: 'error'})
+onMounted( async () => {
+	try {
+		const res = await api.post("/slack/account", { code });
+      	console.log("register data: ", res.data);
+		if (res.status === 200) {
+			authStore.setupAccount = await res.data; //store this in sessionStorage
+			sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
 		}
+	} catch (err: any) {
+		console.error('Error in Register: ', err);
+		router.push({name: 'slack-not-admin'});
 	}
 });
 </script>

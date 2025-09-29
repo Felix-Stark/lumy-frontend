@@ -211,19 +211,21 @@ router.beforeEach((to, from, next) => {
 
   // 2. Require admin
   if (to.meta.isAdmin && role !== 'admin') {
-    errorStore.setError({
-      code: 403,
-      detail: 'You do not have permission to access this page (admin only).',
-    });
+    const message = 'You do not have permission to access this page (admin only).'
+    const code = 403;
+    errorStore.setError(
+      message, code
+    );
     return next({ name: 'error' });
   }
 
   // 3. Require manager
   if (to.meta.isManager && role !== 'manager') {
-    errorStore.setError({
-      code: 403,
-      detail: 'You do not have permission to access this page (manager only).',
-    });
+    const message = 'You do not have permission to access this page (manager only).'
+    const code = 403;
+    errorStore.setError(
+      message, code
+    );
     return next({ name: 'error' });
   }
 

@@ -86,7 +86,7 @@ const router = createRouter({
       component: DashboardLayout,
       redirect: '/overview/admin',
       meta: {
-        requiresRole: true,
+        isAdmin: true,
         requiresAuth: true,
       },
       children: [

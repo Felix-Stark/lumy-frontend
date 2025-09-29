@@ -13,12 +13,18 @@ export const useAdminStore = defineStore("admin", () => {
     const teamUsers = ref<TeamUser[]>([]);
 
     async function getTeamSummary() {
-        teamSummary.value = await apiRequest(api.get('/overview'))
-        console.log('teamSummary: ', teamSummary.value);
+        try {
+            const res = await api.get('/overview');
+            if(res.status === 200) {
+                teamSummary.value = res.data;
+            }
+        } catch (err: any) {
+            console.error('Error in getTeamSummary: ', err);
+        }
     };
 
     async function getTeamUsers() {
-        teamUsers.value = await apiRequest(api.get('/team'))
+        // teamUsers.value = await apiRequest(api.get('/team'))
     };
 
     return {

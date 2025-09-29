@@ -2,7 +2,6 @@ import api, { apiRequest } from '@/services/apiWrapper';
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { type TeamOverview, type TeamUser } from "@/types";
-import type { AxiosError } from "axios";
 import { useRouter } from "vue-router";
 import { useErrorStore } from "./errorStore";
 
@@ -10,8 +9,8 @@ const errorStore = useErrorStore();
 const router = useRouter();
 
 export const useAdminStore = defineStore("admin", () => {
-    const teamSummary = ref<TeamOverview | null>(null);
-    const teamUsers = ref<TeamUser[] | null>(null);
+    const teamSummary = ref<TeamOverview>({} as TeamOverview);
+    const teamUsers = ref<TeamUser[]>([]);
 
     async function getTeamSummary() {
         teamSummary.value = await apiRequest(api.get('/overview'))

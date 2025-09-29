@@ -1,15 +1,15 @@
 <template>
   <header class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
-    <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total ?? 0" description="Total feedback submitted">
+    <HeadCard :title="adminStore?.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
     </HeadCard>
     <HeadCard title="92" description="Coaching alerts">
       <CircleAlert class="text-[#304cee] min-w-10 h-auto" stroke="white" fill="currentColor" />
     </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total ?? 0" description="Total feedback requested">
+    <HeadCard :title="adminStore?.teamSummary?.feedback_requested_total || 0" description="Total feedback requested">
       <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
-    <HeadCard :title="constructiveAverageRounded ?? 0" description="Constructive feedback">
+    <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
@@ -28,9 +28,11 @@ import { Chart, registerables } from 'chart.js';
 import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
 import { useAdminStore } from '@/stores/adminStore';
+import { storeToRefs } from 'pinia';
 
 Chart.register(...registerables);
 const adminStore = useAdminStore();
+const teamSummary = storeToRefs(adminStore)
 const constructiveAverageRounded = computed(() =>
   Math.round(adminStore.teamSummary?.constructive_feedback_average ?? 0)
 )

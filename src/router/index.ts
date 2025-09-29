@@ -84,6 +84,7 @@ const router = createRouter({
     { 
       path: '/overview',
       component: DashboardLayout,
+      redirect: '/overview',
       meta: {
         requiresRole: true,
         requiresAuth: true,

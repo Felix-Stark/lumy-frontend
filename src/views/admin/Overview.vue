@@ -15,7 +15,7 @@
   </header>
   <section id="chart-container" class="w-2/3 mt-6">
     <div class="bg-white rounded-xl shadow-md p-6">
-      <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
+      <!-- <Doughnut :data="sentScoreData" :options="sentScoreOptions" /> -->
     </div>
 
   </section>

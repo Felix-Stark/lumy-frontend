@@ -10,7 +10,7 @@ const errorStore = useErrorStore();
 const router = useRouter();
 
 export const useAdminStore = defineStore("admin", () => {
-    const teamSummary = ref<TeamOverview[]>();
+    const teamSummary = ref<TeamOverview>();
     const teamUsers = ref<TeamUser[]>();
 
     async function getTeamSummary() {

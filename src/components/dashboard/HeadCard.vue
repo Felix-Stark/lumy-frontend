@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
 defineProps<{
-  title?: string
+  title?: string | number;
   description?: string
   onAction?: () => void
 }>();

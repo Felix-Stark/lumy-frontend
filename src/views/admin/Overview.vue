@@ -15,7 +15,7 @@
   </header>
   <section id="chart-container" class="w-2/3 mt-6">
     <div class="bg-white rounded-xl shadow-md p-6">
-      <!-- <Doughnut :data="sentScoreData" :options="sentScoreOptions" /> -->
+      <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
     </div>
 
   </section>
@@ -28,7 +28,7 @@ import { Chart, registerables } from 'chart.js';
 import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
 import { useAdminStore } from '@/stores/adminStore';
-import { storeToRefs } from 'pinia';
+
 
 Chart.register(...registerables);
 const adminStore = useAdminStore();
@@ -43,7 +43,7 @@ const sentScoreData = computed(() => {
   return {
     datasets: [
       {
-        data: [adminStore.teamSummary?.positive_feedback_percentage || 0],
+        data: [adminStore.teamSummary?.positive_feedback_percentage ?? 0, 100 - (adminStore.teamSummary?.positive_feedback_percentage ?? 0)],
         backgroundColor: ["#7FE47E", "#e5e7eb"],
         borderWidth: 0,
         borderRadius: 5,

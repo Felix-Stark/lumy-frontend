@@ -2,14 +2,10 @@ import api from "@/services/api";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { type TeamOverview, type TeamUser } from "@/types";
-import { useRouter } from "vue-router";
-import { useErrorStore } from "./errorStore";
 
-const errorStore = useErrorStore();
-const router = useRouter();
 
 export const useAdminStore = defineStore("admin", () => {
-    const teamSummary = ref<TeamOverview>({} as TeamOverview);
+    const teamSummary = ref<TeamOverview | null>(null);
     const teamUsers = ref<TeamUser[]>([]);
 
     async function getTeamSummary() {

@@ -24,12 +24,13 @@ export const useAdminStore = defineStore("admin", () => {
     };
 
     async function getTeamUsers() {
-        // teamUsers.value = await apiRequest(api.get('/team'))
+        teamUsers.value = await apiRequest(api.get('/team'))
     };
 
     return {
         teamSummary,
         teamUsers,
         getTeamSummary,
+        getTeamUsers
     }
 })

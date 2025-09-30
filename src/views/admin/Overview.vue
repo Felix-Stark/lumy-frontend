@@ -61,16 +61,17 @@ const lineData = computed(() => {
     ],
   };
 });
-const counts = adminStore.teamSummary?.submitted_per_month?.map(m => m.count) || [];
-const maxY = Math.max(...counts, 0);
-const lineOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: true },
-    tooltip: { enabled: true },
-  },
-  scales: {
+const lineOptions = computed(() => {
+  const counts = adminStore.teamSummary?.submitted_per_month?.map(m => m.count) || [];
+  const maxY = Math.max(...counts, 0);
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true },
+      tooltip: { enabled: true },
+    },
+    scales: {
     y: {
       beginAtZero: true,
       min: 0,
@@ -80,7 +81,8 @@ const lineOptions = {
       },
     },
   },
-};
+  }
+});
 
 const sentScoreData = computed(() => {
   return {

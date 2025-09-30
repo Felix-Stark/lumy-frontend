@@ -54,6 +54,7 @@ const constructiveAverageRounded = computed(() =>
 )
 onMounted(async () => {
   await adminStore.getTeamSummary();
+  await adminStore.getTeamUsers();
 })
 
 const lineData = computed(() => {

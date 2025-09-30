@@ -45,6 +45,7 @@ onMounted(async () => {
 const lineData = computed(() => {
   const months = adminStore.teamSummary?.submitted_per_month.map(m => m.month) || [];
   const counts = adminStore.teamSummary?.submitted_per_month.map(m => m.count) || [];
+  console.log('months + counts: ', months, counts)
   return {
     labels: months,
     datasets: [

@@ -129,6 +129,7 @@ const handleScroll = () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   role.value = sessionStorage.getItem('LumyRole')
+  console.log('role in nav: ', role.value);
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)

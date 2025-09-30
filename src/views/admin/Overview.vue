@@ -13,7 +13,7 @@
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
-  <section id="chart-container" class="w-full flex items-center mt-6">
+  <section class="w-full flex items-center mt-6">
     <div class="w-2/3 bg-white rounded-xl shadow-lg">
       <Line :data="lineData" :options="lineOptions" />
     </div>
@@ -66,7 +66,7 @@ const lineOptions = computed(() => {
   const maxY = Math.max(...counts, 0);
   return {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       legend: { display: true },
       tooltip: { enabled: true },
@@ -90,9 +90,10 @@ const sentScoreData = computed(() => {
       {
         data: [adminStore.teamSummary?.positive_feedback_percentage ?? 0, 100 - (adminStore.teamSummary?.positive_feedback_percentage ?? 0)],
         backgroundColor: ["#7FE47E", "#e5e7eb"],
-        borderWidth: 0,
+        borderWidth: 1,
         borderRadius: 5,
-        cutout: "80%", // thickness of the arc
+        borderColor: '#FFFFF',
+        cutout: "90%", // thickness of the arc
         circumference: 180, // half circle
         rotation: 270, // start at bottom center
       }

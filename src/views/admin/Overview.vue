@@ -31,7 +31,7 @@
     :id="u.user_id"
     :avatarUrl="u.avatar"
     :name="u.name"
-    :sentSum?="u.manager_summary"
+    :sentSum="u.manager_summary"
     :avgSent="u.average_sentiment_word"
     />
   </section>
@@ -55,6 +55,7 @@ const constructiveAverageRounded = computed(() =>
 onMounted(async () => {
   await adminStore.getTeamSummary();
   await adminStore.getTeamUsers();
+  console.log('teamUsers: ', adminStore.teamUsers)
 })
 
 const lineData = computed(() => {

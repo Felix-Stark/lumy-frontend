@@ -24,12 +24,22 @@
           <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
       </div>
     </div>
-
+  </section>
+  <section class="flex flex-col items-center w-full p-8">
+    <DashUser
+    v-for="u in adminStore.teamUsers"
+    :id="u.user_id"
+    :avatarUrl="u.avatar"
+    :name="u.name"
+    :sentSum?="u.manager_summary"
+    :avgSent="u.average_sentiment_word"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
 import HeadCard from '@/components/dashboard/HeadCard.vue';
+import DashUser from '@/components/base/DashUser.vue';
 import { Doughnut, Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js';
 import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';

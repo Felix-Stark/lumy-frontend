@@ -43,7 +43,6 @@ export const useFeedbackStore = defineStore("feedback", () => {
       const res = await api.get('/requests');
       if(res.status === 200) {
         requests.value = await res.data;
-        console.log('requests: ', requests.value)
       }
     } catch(err:any) {
       console.error('Error in getRequests: ', err)

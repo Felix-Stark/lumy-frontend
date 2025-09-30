@@ -14,11 +14,15 @@
     </HeadCard>
   </header>
   <section class="w-full flex items-center gap-8 mt-6">
-    <div class="w-2/3 bg-white rounded-xl shadow-lg">
+    <div class="w-full bg-white rounded-xl shadow-lg p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white flex-1 rounded-xl shadow-md p-6">
+    <div class="bg-white relative flex-1 rounded-xl shadow-md p-6">
       <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
+      <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
+          <h2 class="font-bold text-5xl text-gray-700 ">{{ adminStore.teamSummary?.positive_feedback_percentage }}%</h2>
+          <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
+      </div>
     </div>
 
   </section>

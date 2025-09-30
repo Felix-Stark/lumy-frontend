@@ -23,7 +23,7 @@ export const useAdminStore = defineStore("admin", () => {
         try {
             const res = await api.get('/team');
             if(res.status === 200) {
-                teamUsers.value = res.data;
+                teamUsers.value = res.data.users;
             }
         } catch (err: any) {
             console.error('Error in getTeamUsers: ', err)

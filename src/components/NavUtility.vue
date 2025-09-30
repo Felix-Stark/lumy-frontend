@@ -46,6 +46,7 @@
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
 		@mouseleave="handleMouseLeave"
 		>
+		{{ role }}
 			<Home :class="[,
 				isExactActive === true ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
@@ -109,7 +110,7 @@ const showTooltip = ref(false)
 const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
-const role = ref()
+const role = ref<string | null>()
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text

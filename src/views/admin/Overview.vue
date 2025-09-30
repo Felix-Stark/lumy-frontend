@@ -13,7 +13,7 @@
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
-  <section id="chart-container" class="w-full mt-6">
+  <section id="chart-container" class="w-full flex items-center mt-6">
     <div class="w-2/3 bg-white rounded-xl shadow-lg">
       <Line :data="lineData" :options="lineOptions" />
     </div>

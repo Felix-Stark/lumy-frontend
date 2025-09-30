@@ -13,11 +13,11 @@
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
-  <section class="w-full flex items-center mt-6">
+  <section class="w-full flex items-center gap-8 mt-6">
     <div class="w-2/3 bg-white rounded-xl shadow-lg">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white rounded-xl shadow-md p-6">
+    <div class="bg-white flex-1 rounded-xl shadow-md p-6">
       <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
     </div>
 
@@ -75,7 +75,7 @@ const lineOptions = computed(() => {
     y: {
       beginAtZero: true,
       min: 0,
-      max: maxY,
+      max: maxY + 10,
       ticks: {
         stepSize: 1, // since count is usually whole numbers
       },

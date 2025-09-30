@@ -15,9 +15,9 @@
 		</button>
 
 		<ul class="flex flex-col gap-4 text-gray-700 text-lg font-semibold pt-8">
-			<!-- <li v-if="role === 'admin'">
-				<router-link to="/admin">Admin</router-link>
-			</li> -->
+			<li v-if="role === 'admin'">
+				<router-link :to="{name: 'overview-admin'}">Admin</router-link>
+			</li>
 			<li>
 				<router-link :to="{name: 'member'}">Overview</router-link>
 			</li>
@@ -127,12 +127,12 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  role.value = sessionStorage.getItem('LumyRole')
+  window.addEventListener('scroll', handleScroll);
+  role.value = sessionStorage.getItem('LumyRole');
   console.log('role in nav: ', role.value);
 })
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('scroll', handleScroll);
 
 })
 </script>

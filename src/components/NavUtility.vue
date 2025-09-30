@@ -42,7 +42,7 @@
 		'hidden lg:flex'
 		]"
 		style="transition: all 0.3s;">
-		<router-link v-if="role === 'admin'" :to="{name: 'overview-admin'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{name: 'overview-admin'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
 		@mouseleave="handleMouseLeave"
 		>

@@ -13,7 +13,10 @@
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
-  <section id="chart-container" class="w-2/3 mt-6">
+  <section id="chart-container" class="w-full mt-6">
+    <div class="w-2/3 bg-white rounded-xl shadow-lg">
+      <Line :data="lineData" :options="lineOptions" />
+    </div>
     <div class="bg-white rounded-xl shadow-md p-6">
       <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
     </div>
@@ -38,6 +41,45 @@ const constructiveAverageRounded = computed(() =>
 onMounted(async () => {
   await adminStore.getTeamSummary();
 })
+
+const lineData = computed(() => {
+  const months = adminStore.teamSummary?.submitted_per_month.map(m => m.month) || [];
+  const counts = adminStore.teamSummary?.submitted_per_month.map(m => m.count) || [];
+  return {
+    labels: months,
+    datasets: [
+      {
+        label: "Feedback submitted",
+        data: counts,
+        borderColor: "#7c3aed", // lumy-purple
+        backgroundColor: "rgba(124, 58, 237, 0.2)",
+        tension: 0.3, // smooth curve
+        fill: true,
+        pointBackgroundColor: "#7c3aed",
+      },
+    ],
+  };
+});
+const counts = adminStore.teamSummary?.submitted_per_month?.map(m => m.count) || [];
+const maxY = Math.max(...counts, 0);
+const lineOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { display: true },
+    tooltip: { enabled: true },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      min: 0,
+      max: maxY,
+      ticks: {
+        stepSize: 1, // since count is usually whole numbers
+      },
+    },
+  },
+};
 
 const sentScoreData = computed(() => {
   return {

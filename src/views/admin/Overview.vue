@@ -17,8 +17,8 @@
     <div class="w-full bg-white rounded-xl shadow-lg p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
-        <div class="relative w-1/3 max-h-48">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-1/3 flex justify-center items-center">
+        <div class="relative">
             <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
             <!-- Center text -->
             <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">

@@ -18,16 +18,15 @@
       <Line :data="lineData" :options="lineOptions" />
     </div>
     <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
-            <div class="relative h-48">
-                <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
-                <!-- Center text -->
-                <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
-                    <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
-                    <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
-                </div>
+        <div class="relative w-1/3 max-h-48">
+            <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
+            <!-- Center text -->
+            <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
+                <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
+                <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
             </div>
-
         </div>
+    </div>
   </section>
   <section class="flex flex-col items-center gap-4 w-full p-8">
     <DashUser

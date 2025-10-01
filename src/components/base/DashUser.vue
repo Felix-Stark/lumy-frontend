@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center w-full p-4 bg-white rounded-full shadow-lg">
+    <div class="flex items-center justify-between w-full p-4 bg-white rounded-full shadow-lg">
         <div :class="['flex items-center gap-4 p-2']">
             <!-- Avatar and Name Section -->
             <img
@@ -19,8 +19,8 @@
                 {{ email }}
                 </p>
             </div>
+            <p class="text-sm text-wrap text-gray-700">{{ sentSum }}</p>
         </div>
-        <p class="text-sm text-wrap text-gray-700">{{ sentSum }}</p>
         <div :class="['px-4 py-2 rounded-full', avgSent === 'positive' ? 'bg-lumy-green' : avgSent === 'mixed' || 'neutral' ? 'bg-lumy-neutral-light' : 'bg-lumy-danger']">
             <p class="text-white text-sm">{{ avgSent }}</p>
         </div>

@@ -4,7 +4,7 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-general'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg text-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     General
@@ -14,7 +14,7 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-intelligence'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg text-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Intelligence
@@ -24,7 +24,7 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-users'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Users
@@ -34,7 +34,7 @@
             <router-link :to="{name: 'settings-member-integrations'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Integrations

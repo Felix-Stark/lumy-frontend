@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
+import AdminDashboardLayout from '@/layouts/AdminDashboardLayout.vue';
 import SetupLayout from '@/layouts/SetupLayout.vue';
 import SlackLayout from '@/layouts/SlackLayout.vue';
 import FeedbackOverview from '@/views/member/FeedbackOverview.vue';
@@ -83,7 +84,7 @@ const router = createRouter({
     },
     { 
       path: '/overview',
-      component: DashboardLayout,
+      component: AdminDashboardLayout,
       redirect: '/overview/admin',
       meta: {
         isAdmin: true,

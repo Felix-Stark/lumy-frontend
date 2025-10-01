@@ -57,7 +57,7 @@ const constructiveAverageRounded = computed(() =>
   Math.round(adminStore.teamSummary?.constructive_feedback_average ?? 0)
 );
 const currentPercentage = ref(0);
-const positiveSentiments = ref(0);
+const positiveSentiments = computed(() => adminStore.teamSummary?.positive_feedback_percentage || 0);
 onMounted(async () => {
   await adminStore.getTeamSummary();
   await adminStore.getTeamUsers();

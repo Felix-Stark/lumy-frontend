@@ -9,7 +9,7 @@
             :displayValue="() => query"
             @change="query = $event.target.value"
           />
-          <button @click="clearQuery" class="rounded-full absolute right-2 top-2 p-1 cursor-pointer">
+          <button @click="clearQuery" class="rounded-full absolute right-2 mt-[10px] cursor-pointer">
             <XCircleIcon class="text-gray-500" />
           </button>
         </div>

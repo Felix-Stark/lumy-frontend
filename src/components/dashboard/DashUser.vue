@@ -1,6 +1,6 @@
 <template>
-    <div class="flex items-center justify-between w-full p-4 bg-white rounded-full shadow-lg">
-        <div :class="['flex items-center gap-4 p-2']">
+    <div class="flex items-center justify-between w-full p-6 bg-white rounded-full shadow-lg">
+        <div :class="['flex items-center gap-4']">
             <!-- Avatar and Name Section -->
             <img
                 v-if="avatarUrl"

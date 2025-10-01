@@ -6,7 +6,7 @@
     <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Total feedback requested">
       <CircleAlert class="text-[#304cee] min-w-10 h-auto" stroke="white" fill="currentColor" />
     </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total+'%' || 0" description="Positive feedback">
+    <HeadCard :title="adminStore.teamSummary?.positive_feedback_percentage+'%' || 0" description="Positive feedback">
       <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
     <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">
@@ -14,19 +14,18 @@
     </HeadCard>
   </header>
   <section class="w-full flex  items-center gap-8 mt-6">
-    <div class="w-full bg-white rounded-xl shadow-lg self-stretch max-h-100 p-6">
+    <div class="w-full bg-white rounded-xl shadow-lg self-stretch max-h-150 p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white shadow-lg rounded-lg p-8  w-1/3">
+    <!-- <div class="bg-white shadow-lg rounded-lg p-8  w-1/3">
         <div class="relative">
             <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
-            <!-- Center text -->
             <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold">
                 <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
                 <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
             </div>
         </div>
-    </div>
+    </div> -->
   </section>
   <section class="flex flex-col items-center gap-6 w-full p-8">
     <DashUser

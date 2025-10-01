@@ -17,13 +17,17 @@
     <div class="w-full bg-white rounded-xl shadow-lg p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white relative flex-1 rounded-xl shadow-md p-6">
-      <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
-      <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
-          <h2 class="font-bold text-5xl text-gray-700 ">{{ adminStore.teamSummary?.positive_feedback_percentage }}%</h2>
-          <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
-      </div>
-    </div>
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
+            <div class="relative h-48">
+                <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
+                <!-- Center text -->
+                <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
+                    <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
+                    <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
+                </div>
+            </div>
+
+        </div>
   </section>
   <section class="flex flex-col items-center w-full p-8">
     <DashUser
@@ -51,11 +55,28 @@ Chart.register(...registerables);
 const adminStore = useAdminStore();
 const constructiveAverageRounded = computed(() =>
   Math.round(adminStore.teamSummary?.constructive_feedback_average ?? 0)
-)
+);
+const currentPercentage = ref(0);
+const positiveSentiments = ref(0);
 onMounted(async () => {
   await adminStore.getTeamSummary();
   await adminStore.getTeamUsers();
   console.log('teamUsers: ', adminStore.teamUsers)
+
+  let progress = 0;
+    const duration = 1000; // 1 second animation
+    const step = 16; // ~60fps
+    const increment = positiveSentiments.value / (duration / step);
+
+    const interval = setInterval(() => {
+        progress += increment;
+        if (progress >= positiveSentiments.value) {
+            currentPercentage.value = positiveSentiments.value;
+            clearInterval(interval);
+        } else {
+            currentPercentage.value = Math.round(progress);
+        }
+    }, step);
 })
 
 const lineData = computed(() => {

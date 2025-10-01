@@ -10,7 +10,7 @@ export const useAdminStore = defineStore("admin", () => {
 
     async function getTeamSummary() {
         try {
-            const res = await api.get('/overview');
+            const res = await api.get('/team/overview');
             if(res.status === 200) {
                 teamSummary.value = res.data;
             }
@@ -21,7 +21,7 @@ export const useAdminStore = defineStore("admin", () => {
 
     async function getTeamUsers() {
         try {
-            const res = await api.get('/team');
+            const res = await api.get('/team/members');
             if(res.status === 200) {
                 teamUsers.value = res.data.users;
             }

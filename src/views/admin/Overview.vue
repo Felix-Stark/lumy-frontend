@@ -29,14 +29,14 @@
   </section>
   <section class="flex flex-col items-center gap-8 w-full">
     <Combobox>
-      <div class="relative w-full px-8 pb-4">
+      <div class="relative w-full px-8">
         <ComboboxInput
           class="border p-2 border-gray-300 outline-lumy-purple w-full rounded-lg"
           placeholder="Search user or pick from list"
           :displayValue="() => query"
           @change="query = $event.target.value"
         />
-        <button @click="clearQuery" class="rounded-full absolute right-2 mt-[10px] cursor-pointer">
+        <button @click="clearQuery" class="rounded-full absolute right-8 mt-[10px] cursor-pointer">
           <XCircleIcon class="text-gray-500" />
         </button>
       </div>

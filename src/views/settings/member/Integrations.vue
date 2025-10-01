@@ -11,7 +11,7 @@
             <p>Skip users who are marked as OOO automatically</p>
             <p>No access to meeting content or private notes</p>
         </IntegrationCard>
-        <!-- <IntegrationCard
+        <IntegrationCard
         :img="AsanaImg"
         title="Asana"
         :connected="asanaConnected"
@@ -21,7 +21,7 @@
             <p>Trigger feedback automatically when tasks or projects are finished</p>
             <p>Identify strong collaborators from assignees, followers, and project members</p>
             <p>No access to task descriptions or private comments</p>
-        </IntegrationCard> -->
+        </IntegrationCard>
     </section>
     <BaseToast
     :text="toastText"
@@ -64,20 +64,28 @@ onMounted(async () => {
     }
     const googleRes = await api.get('/integrations/google');
     googleConnected.value = await googleRes.data.connected;
-    // const asanaRes = await api.get('/integrations/asana');
-    // asanaConnected.value = await asanaRes.data.connected;
+
+    const asanaRes = await api.get('/integrations/asana');
+    asanaConnected.value = await asanaRes.data.connected;
     } catch (error) {
         console.error('Error fetching Google Calendar status:', error);
         toastText.value = 'There was an error connecting Google Calendar';
         toastBg.value = 'bg-lumy-danger';
         showToast.value = true;
     }
-})
+});
+
+const triggerAsana = () => {
+    window.open(apiUrl + 'integrations/asana/oauth/start', '_self');
+};
+const disconnectAsana = async () => {
+    const res = await api.post('/integrations/asana/disconnect');
+}
 
 const triggerGoogle = () => {
     window.open(apiUrl + 'integrations/google/start',
   '_self');
-}
+};
 
 const disconnectGoogle = async () => {
     try {

@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import HeadCard from '@/components/dashboard/HeadCard.vue';
-import DashUser from '@/components/base/DashUser.vue';
+import DashUser from '@/components/dashboard/DashUser.vue';
 import { Doughnut, Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js';
 import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';

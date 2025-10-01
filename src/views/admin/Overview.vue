@@ -27,11 +27,11 @@
         </div>
     </div> -->
   </section>
-  <section class="flex flex-col items-center gap-6 w-full p-8">
+  <section class="flex flex-col items-center gap-8 w-full">
     <Combobox>
       <div class="relative w-full">
         <ComboboxInput
-          class="border p-2 border-gray-300  outline-lumy-purple w-full rounded-lg"
+          class="border p-2 border-gray-300 mx-8 outline-lumy-purple w-full rounded-lg"
           placeholder="Search user or pick from list"
           :displayValue="() => query"
           @change="query = $event.target.value"
@@ -41,7 +41,7 @@
         </button>
       </div>
     </Combobox>
-    <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full">
+    <div v-if="users" class="flex flex-col gap-8 items-center mt-3 w-full">
       <DashUser
       v-for="u in filteredUsers"
       :id="u.user_id"
@@ -58,7 +58,8 @@
 import {
     Combobox,
     ComboboxInput,
-  } from '@headlessui/vue'
+  } from '@headlessui/vue';
+import { XCircleIcon } from 'lucide-vue-next';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';
 import { Doughnut, Line } from 'vue-chartjs';

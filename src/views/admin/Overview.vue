@@ -17,7 +17,7 @@
     <div class="w-full bg-white rounded-xl shadow-lg self-stretch max-h-100 p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white shadow-lg rounded-lg p-8  w-1/3 flex justify-center items-center">
+    <div class="bg-white shadow-lg rounded-lg p-8  w-1/3">
         <div class="relative">
             <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
             <!-- Center text -->

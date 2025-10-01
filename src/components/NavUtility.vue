@@ -52,7 +52,7 @@
 			]" />
 		</router-link>
 		<router-link :to="{name: 'member-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Your Overview')"
 		@mouseleave="handleMouseLeave"
 		>
 			<UserRound :class="[,
@@ -62,7 +62,7 @@
 			
 		</router-link>
 		<router-link :to="{ name: 'feedback-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Feedback')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Your Feedback')"
 		@mouseleave="handleMouseLeave"
 		>
 			<MessageSquareText :class="[,

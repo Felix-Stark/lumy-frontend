@@ -36,12 +36,12 @@
           :displayValue="() => query"
           @change="query = $event.target.value"
         />
-        <button @click="clearQuery" class="rounded-full absolute right-8 mt-[10px] cursor-pointer">
+        <button @click="clearQuery" class="rounded-full absolute right-10 mt-[10px] cursor-pointer">
           <XCircleIcon class="text-gray-500" />
         </button>
       </div>
     </Combobox>
-    <div v-if="users" class="flex flex-col gap-8 items-center mt-3 w-full">
+    <div v-if="users" class="flex flex-col gap-8 items-center w-full">
       <DashUser
       v-for="u in filteredUsers"
       :id="u.user_id"

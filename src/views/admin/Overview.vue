@@ -3,10 +3,10 @@
     <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
     </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Coaching alerts">
+    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Total feedback requested">
       <CircleAlert class="text-[#304cee] min-w-10 h-auto" stroke="white" fill="currentColor" />
     </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total || 0" description="Total feedback requested">
+    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total+'%' || 0" description="Positive feedback">
       <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
     <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">

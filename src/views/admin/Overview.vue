@@ -13,12 +13,12 @@
       <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
   </header>
-  <section class="w-full flex items-center gap-8 mt-6">
+  <section class="w-full flex  items-center gap-8 mt-6">
     <div class="w-full bg-white rounded-xl shadow-lg p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
-    <div class="bg-white shadow-lg rounded-lg p-8 w-1/3 flex justify-center items-center">
-        <div class="relative">
+    <div class="bg-white shadow-lg rounded-lg p-8  w-1/3 flex justify-center items-center">
+        <div class="relative max-h-100">
             <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
             <!-- Center text -->
             <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
@@ -28,7 +28,7 @@
         </div>
     </div>
   </section>
-  <section class="flex flex-col items-center gap-4 w-full p-8">
+  <section class="flex flex-col items-center gap-6 w-full p-8">
     <DashUser
     v-for="u in adminStore.teamUsers"
     :id="u.user_id"

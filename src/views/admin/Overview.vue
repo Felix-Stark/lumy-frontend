@@ -21,7 +21,7 @@
         <div class="relative">
             <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
             <!-- Center text -->
-            <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
+            <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold">
                 <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
                 <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
             </div>
@@ -102,7 +102,7 @@ const lineOptions = computed(() => {
   const maxY = Math.max(...counts, 0);
   return {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true },
       tooltip: { enabled: true },

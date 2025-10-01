@@ -140,8 +140,7 @@ const lineOptions = computed(() => {
     scales: {
     y: {
       beginAtZero: true,
-      min: 0,
-      max: maxY + 10,
+      max: Math.ceil(maxY * 1.2),
       ticks: {
         stepSize: 1, // since count is usually whole numbers
       },

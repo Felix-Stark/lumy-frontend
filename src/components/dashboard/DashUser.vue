@@ -12,14 +12,14 @@
                 <span class="text-gray-500">No Image</span>
             </div>
             <div class="flex flex-col justify-start h-full">
-                <p v-if="name" class="flex text-lg font-medium text-gray-800">
+                <p v-if="name" class="flex text-lg text-nowrap font-medium text-gray-800">
                 {{ name }} <span v-if="title" class="text-sm font-normal text-gray-500"> - <i>({{ title }}</i>)</span>
                 </p>
                 <p v-if="email" class="text-sm font-medium italic text-gray-800">
                 {{ email }}
                 </p>
+                <p v-if="sentSum" class="text-sm text-wrap text-gray-700">{{ sentSum }}</p>
             </div>
-            <p class="text-sm text-wrap text-gray-700">{{ sentSum }}</p>
         </div>
         <div v-if="avgSent" :class="['px-4 py-2 rounded-full', avgSent === 'positive' ? 'bg-lumy-green' : avgSent === 'mixed' || 'neutral' ? 'bg-lumy-neutral-light' : 'bg-lumy-danger']">
             <p class="text-white text-sm">{{ avgSent }}</p>

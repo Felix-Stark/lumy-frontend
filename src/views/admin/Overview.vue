@@ -29,7 +29,7 @@
 
         </div>
   </section>
-  <section class="flex flex-col items-center w-full p-8">
+  <section class="flex flex-col items-center gap-4 w-full p-8">
     <DashUser
     v-for="u in adminStore.teamUsers"
     :id="u.user_id"

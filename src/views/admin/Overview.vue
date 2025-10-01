@@ -1,12 +1,12 @@
 <template>
   <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
-    <HeadCard :title="adminStore?.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
+    <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
     </HeadCard>
-    <HeadCard title="92" description="Coaching alerts">
+    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Coaching alerts">
       <CircleAlert class="text-[#304cee] min-w-10 h-auto" stroke="white" fill="currentColor" />
     </HeadCard>
-    <HeadCard :title="adminStore?.teamSummary?.feedback_requested_total || 0" description="Total feedback requested">
+    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total || 0" description="Total feedback requested">
       <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
     </HeadCard>
     <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">

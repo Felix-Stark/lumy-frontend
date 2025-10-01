@@ -106,7 +106,7 @@ const sentScoreData = computed(() => {
       {
         data: [adminStore.teamSummary?.positive_feedback_percentage ?? 0, 100 - (adminStore.teamSummary?.positive_feedback_percentage ?? 0)],
         backgroundColor: ["#7FE47E", "#e5e7eb"],
-        borderWidth: 1,
+        borderWidth: 0,
         borderRadius: 5,
         borderColor: '#FFFFF',
         cutout: "90%", // thickness of the arc

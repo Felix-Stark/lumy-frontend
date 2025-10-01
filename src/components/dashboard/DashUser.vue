@@ -12,7 +12,7 @@
                 <span class="text-gray-500">No Image</span>
             </div>
             <div class="flex flex-col justify-start h-full">
-                <p v-if="name" class="text-lg font-medium text-gray-800">
+                <p v-if="name" class="flex text-lg font-medium text-gray-800">
                 {{ name }} <span v-if="title" class="text-sm font-normal text-gray-500"> - <i>({{ title }}</i>)</span>
                 </p>
                 <p v-if="email" class="text-sm font-medium italic text-gray-800">

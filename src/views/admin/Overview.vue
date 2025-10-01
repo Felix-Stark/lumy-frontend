@@ -29,9 +29,9 @@
   </section>
   <section class="flex flex-col items-center gap-8 w-full">
     <Combobox>
-      <div class="relative w-full">
+      <div class="relative w-full px-8 pb-4">
         <ComboboxInput
-          class="border p-2 border-gray-300 mx-8 outline-lumy-purple w-full rounded-lg"
+          class="border p-2 border-gray-300 outline-lumy-purple w-full rounded-lg"
           placeholder="Search user or pick from list"
           :displayValue="() => query"
           @change="query = $event.target.value"

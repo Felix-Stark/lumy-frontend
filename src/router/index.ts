@@ -83,9 +83,9 @@ const router = createRouter({
       ]
     },
     { 
-      path: '/overview',
+      path: '/admin',
       component: AdminDashboardLayout,
-      redirect: '/overview/admin',
+      redirect: '/admin/overview',
       meta: {
         isAdmin: true,
         requiresAuth: true,
@@ -93,11 +93,11 @@ const router = createRouter({
       children: [
         {
           path: 'admin',
-          name: 'overview-admin',
+          name: 'admin-overview',
           component: Overview
         },
         {
-          path: 'employee',
+          path: 'overview/employee',
           name: 'overview-employee',
           component: () => import('@/views/admin/Employee.vue'),
         }

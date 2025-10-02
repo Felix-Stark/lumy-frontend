@@ -107,7 +107,7 @@ const findManager = (id: number) => {
 async function assign(id: number) {
     loading.value = true;
     try {
-        const res = await api.patch(`/users/${id}/manager`, { manager_id: selectedManager.value?.id});
+        const res = await api.patch(`/users/${id}/manager`, { "manager_id": selectedManager.value?.id});
         if (res.status === 200) {
             await userStore.getUsers(false);
         }
@@ -120,7 +120,7 @@ async function assign(id: number) {
 async function unAssign(id: number) {
     loading.value = true;
     try {
-        const res = await api.patch(`/users/${id}/manager`, { manager_id: null });
+        const res = await api.patch(`/users/${id}/manager`, { "manager_id": null });
         if (res.status === 200) {
             await userStore.getUsers(false);
             success.value = true;

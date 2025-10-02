@@ -92,7 +92,7 @@ const router = createRouter({
       },
       children: [
         {
-          path: 'admin',
+          path: 'overview',
           name: 'admin-overview',
           component: Overview
         },

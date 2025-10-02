@@ -20,8 +20,7 @@ export const useAuthStore = defineStore("auth", {
           const role = res.data.role;
           sessionStorage.setItem("LumyRole", JSON.stringify(role));
           sessionStorage.setItem("loggedin", "true")
-          // path = `/${role}`; set path based on role
-          path = "/member";
+          path = `/${role}`; //set path based on role
           this.isLoggedIn = true;
         } else if (res.status === 204) {
           this.isLoggedIn = false;
@@ -29,10 +28,10 @@ export const useAuthStore = defineStore("auth", {
         } else {
           this.isLoggedIn = false;
           path = "/error";
-          useErrorStore().setError({
-            code: res.status,
-            detail: res.statusText || "Login failed. Please try again.",
-          });
+          useErrorStore().setError(
+            res.status,
+            res.statusText || "Login failed. Please try again.",
+          );
         }
         return path;
       } catch (error: any) {

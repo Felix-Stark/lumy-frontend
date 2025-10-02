@@ -3,10 +3,10 @@ import { defineStore } from "pinia";
 import { ref } from 'vue'
 
 export const useErrorStore = defineStore('error', () => {
-  const error = ref<{ code?: number; message: string } | null>(null)
+  const error = ref<{ code?: number; message?: string } | null>(null)
 
-  function setError(message: string, code?: number) {
-    error.value = { message, code }
+  function setError( code?: number, message?: string) {
+    error.value = { code, message }
   }
 
   function clearError() {

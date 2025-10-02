@@ -1,12 +1,17 @@
 import api from "@/services/api";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { type TeamOverview, type TeamUser } from "@/types";
+import { type TeamOverview, type TeamUser, type User } from "@/types";
 
+interface Manager {
+    manager: User,
+    employees: User[]
+}
 
 export const useAdminStore = defineStore("admin", () => {
     const teamSummary = ref<TeamOverview | null>(null);
     const teamUsers = ref<TeamUser[]>([]);
+    const managers = ref<Manager[] | null>(null)
 
     async function getTeamSummary() {
         try {
@@ -28,12 +33,19 @@ export const useAdminStore = defineStore("admin", () => {
         } catch (err: any) {
             console.error('Error in getTeamUsers: ', err)
         }
-
     };
+    async function getManagers() {
+        const res = await api.get('/org/managers');
+        if(res.status === 200) {
+            managers.value = res.data.managers;
+        }
+    }
 
     return {
         teamSummary,
         teamUsers,
+        managers,
+        getManagers,
         getTeamSummary,
         getTeamUsers
     }

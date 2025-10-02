@@ -31,6 +31,16 @@
                 </span>
             
             </router-link>
+            <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-teams'}" v-slot="{isExactActive}">
+                <span :class="['px-4 py-2 rounded-lg',
+                isExactActive
+                    ? 'bg-lumy-secondary text-white'
+                    : 'bg-gray-200 text-gray-700'
+                ]">
+                    Teams
+                </span>
+            
+            </router-link>
             <router-link :to="{name: 'settings-member-integrations'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
@@ -48,8 +58,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore';
 
 const role = ref('member');
 

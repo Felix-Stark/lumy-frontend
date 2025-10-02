@@ -54,7 +54,7 @@ export type User = {
   slack_team_id?: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
   is_active: boolean;
-  manager_id?: number;
+  manager_id: number | null;
 };
 
 export type UserSummary = {

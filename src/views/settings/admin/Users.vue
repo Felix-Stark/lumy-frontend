@@ -1,18 +1,18 @@
 <template>
     <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[80vh]">
-        <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
-            <Combobox>
-        <div class="relative w-full">
-          <ComboboxInput
-            class="border p-2 border-gray-300  outline-lumy-purple w-full rounded-lg"
-            placeholder="Search user or pick from list"
-            :displayValue="() => query"
-            @change="query = $event.target.value"
-          />
-          <button @click="clearQuery" class="rounded-full absolute right-2 mt-[10px] cursor-pointer">
-            <XCircleIcon class="text-gray-500" />
-          </button>
-        </div>
+      <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
+        <Combobox>
+          <div class="relative w-full">
+            <ComboboxInput
+              class="border p-2 border-gray-300  outline-lumy-purple w-full rounded-lg"
+              placeholder="Search user or pick from list"
+              :displayValue="() => query"
+              @change="query = $event.target.value"
+            />
+            <button @click="clearQuery" class="rounded-full absolute right-2 mt-[10px] cursor-pointer">
+              <XCircleIcon class="text-gray-500" />
+            </button>
+          </div>
         </Combobox>
         <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
             <PickUserComp
@@ -30,7 +30,7 @@
             @update:role="val => updateUser(user.id, { role: val })"
             />
         </div>
-        </div>
+      </div>
     </div>
     <BaseToast
         v-if="loading"

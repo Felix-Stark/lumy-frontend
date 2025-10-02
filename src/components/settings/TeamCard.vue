@@ -13,7 +13,7 @@
             <h2 class="text-lg">{{ teamLead }}</h2>
             <p class="text-thin text-sm">{{ role }}</p>
         </div>
-        <p class="text-gray-600 text-thin"><span>{{ numberOfDR }} </span>{{ directReports }}</p>
+        <p class="text-gray-600 text-thin"><span>{{ numberOfDR }} </span>direct reports</p>
         <button @click="$emit('manage-team')" class="px-4 py-2 bg-lumy-secondary-light rounded-lg">{{ btnText }}</button>
     </div>
 </template>
@@ -21,11 +21,11 @@
 <script setup lang="ts">
 defineProps<{
     avatar?: string;
-    teamLead: string;
-    role: string;
-    numberOfDR: number;
-    directReports: string[];
-    btnText: string;
+    teamLead?: string;
+    role?: string;
+    numberOfDR?: number;
+    directReports?: string[];
+    btnText?: string;
 }>();
 
 defineEmits<{

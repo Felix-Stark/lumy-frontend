@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center gap-6 self-stretch h-100 p-8 lg:p-12 bg-white rounded-xl shadow-lg">
+    <div class="flex flex-col items-center gap-6 self-stretch p-8 lg:p-12 bg-white rounded-xl shadow-lg">
         <img :src="img" alt="Google calendar logo" class="w-38 h-38 mb-4"/>
         <h1 class="font-inter text-2xl">{{ title }}</h1>
         <div class="flex flex-col justify-center items-center mt-4 font-normal text-sm space-y-1">

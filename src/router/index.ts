@@ -16,6 +16,7 @@ import Users from '@/views/settings/admin/Users.vue';
 import Integrations from '@/views/settings/member/Integrations.vue';
 import SkillOverview from '@/views/member/SkillOverview.vue';
 import Overview from '@/views/admin/Overview.vue';
+import Teams from '@/views/settings/admin/Teams.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -98,7 +99,7 @@ const router = createRouter({
         },
         {
           path: 'overview/employee',
-          name: 'overview-employee',
+          name: 'admin-overview-employee',
           component: () => import('@/views/admin/Employee.vue'),
         }
       ]
@@ -167,6 +168,12 @@ const router = createRouter({
           path: 'admin/users',
           name: 'settings-admin-users',
           component: Users,
+          meta: { isAdmin: true }
+        },
+        {
+          path: 'admin/teams',
+          name: 'settings-admin-teams',
+          component: Teams,
           meta: { isAdmin: true }
         }
 

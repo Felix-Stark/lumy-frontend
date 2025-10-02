@@ -16,7 +16,7 @@
 
 		<ul class="flex flex-col gap-4 text-gray-700 text-lg font-semibold pt-8">
 			<li v-if="role === 'admin'">
-				<router-link :to="{name: 'overview-admin'}">Admin</router-link>
+				<router-link :to="{name: 'admin-overview'}">Admin</router-link>
 			</li>
 			<li>
 				<router-link :to="{name: 'member'}">Overview</router-link>
@@ -42,7 +42,7 @@
 		'hidden lg:flex'
 		]"
 		style="transition: all 0.3s;">
-		<router-link v-if="role === 'admin'" :to="{name: 'overview-admin'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link v-if="role === 'admin'" :to="{name: 'admin-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
 		@mouseleave="handleMouseLeave"
 		>

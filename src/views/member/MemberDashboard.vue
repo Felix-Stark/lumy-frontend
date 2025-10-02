@@ -42,7 +42,7 @@
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-			<div class="w-full">
+			<div class="w-full h-100">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
 		</section>
@@ -95,7 +95,7 @@
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
-			<div class="w-full">
+			<div class="w-full h-100">
 				<Line :data="feedbackChart" :options="feedbackChartOptions" />
 			</div>
 		</section>

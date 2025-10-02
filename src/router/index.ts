@@ -222,7 +222,7 @@ router.beforeEach((to, from, next) => {
     const message = 'You do not have permission to access this page (admin only).'
     const code = 403;
     errorStore.setError(
-      message, code
+      code, message
     );
     return next({ name: 'error' });
   }
@@ -232,11 +232,16 @@ router.beforeEach((to, from, next) => {
     const message = 'You do not have permission to access this page (manager only).'
     const code = 403;
     errorStore.setError(
-      message, code
+      code, message
     );
     return next({ name: 'error' });
   }
-
+  if(to.path === null) {
+    const code = 404;
+    const message = 'Page not found!'
+    errorStore.setError(code, message);
+    return next({ name: 'error' })
+  }
   // ✅ 4. Allow navigation
   next();
 });

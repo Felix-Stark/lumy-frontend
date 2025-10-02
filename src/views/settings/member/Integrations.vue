@@ -1,5 +1,5 @@
 <template>
-    <section class="flex flex-col w-full h-full lg:flex-row lg:flex-wrap gap-8">
+    <section class="grid grid-cols-2 auto-rows-fr w-full gap-8">
         <IntegrationCard
         :img="GoogleCal"
         title="Google"

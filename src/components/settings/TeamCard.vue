@@ -14,7 +14,7 @@
             <p class="text-thin text-sm">{{ role }}</p>
         </div>
         <p class="text-gray-600 text-thin"><span>{{ numberOfDR+' ' }} </span>direct reports</p>
-        <button @click="$emit('manage-team')" class="px-4 py-2 text-white bg-lumy-secondary-light rounded-lg">{{ btnText }}</button>
+        <button @click="$emit('manage-team')" class="px-4 py-2 text-white bg-lumy-secondary-light rounded-lg cursor-pointer">{{ btnText }}</button>
     </div>
 </template>
 

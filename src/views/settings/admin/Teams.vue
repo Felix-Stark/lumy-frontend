@@ -10,7 +10,7 @@
         @manage-team="triggerModal(m.manager)"
         />
     </div>
-    <Dialog v-show="isOpen" class="relative z-50">
+    <Dialog :open="isOpen" class="relative z-50">
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
 			<DialogPanel class="w-full flex flex-col gap-6 max-w-md rounded-lg bg-white p-8">
@@ -36,8 +36,8 @@
                     <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
                         <p class="text-thin">Current manager: {{ findManager(u.manager_id || 0) }}</p>
-                        <button v-if="u.manager_id" @click="unAssign(u.id)" class="bg-lumy-danger px-4 py-2 text-white rounded-lg">Remove</button>
-                        <button class="bg-lumy-green px-4 py-2 text-white">Assign</button>
+                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u.id)" class="bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
+                        <button :disabled="loading" class="bg-lumy-green px-4 py-2 text-white cursor-pointer">Assign</button>
                     </div>
                     <BaseToast
                         text="Changes saved successfully!"
@@ -75,6 +75,7 @@ const selectedManager = ref<User>();
 const isOpen = ref(false)
 const query = ref('');
 const success = ref(false);
+const loading = ref(false)
 const users = computed<User[]>(() => userStore.users)
 const filteredUsers = computed<User[]>(() => {
     return query.value === ''
@@ -93,6 +94,7 @@ onMounted( async() => {
 
 function triggerModal(manager: User) {
     selectedManager.value = manager;
+    isOpen.value = true
 }
 
 const findManager = (id: number) => {
@@ -103,6 +105,7 @@ const findManager = (id: number) => {
 };
 
 async function assign(id: number) {
+    loading.value = true;
     try {
         const res = await api.patch(`/users/${id}/manager`, { manager_id: selectedManager.value?.id});
         if (res.status === 200) {
@@ -110,9 +113,12 @@ async function assign(id: number) {
         }
     } catch(err: any) {
         console.error('Unable to assign employee: ', err);
+    } finally {
+        loading.value = false
     }
 }
 async function unAssign(id: number) {
+    loading.value = true;
     try {
         const res = await api.patch(`/users/${id}/manager`, { manager_id: null });
         if (res.status === 200) {
@@ -121,6 +127,8 @@ async function unAssign(id: number) {
         }
     } catch(err:any) {
         console.error('Unable to unassign employee: ', err);
+    } finally {
+        loading.value = false;
     }
 }
 </script>

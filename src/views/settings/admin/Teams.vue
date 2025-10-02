@@ -10,15 +10,15 @@
         @manage-team="triggerModal(m.manager)"
         />
     </div>
-    <Dialog :open="isOpen" class="relative z-50">
+    <Dialog :open="isOpen" @close="() => isOpen = false" class="relative z-50">
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
-			<DialogPanel class="w-full flex flex-col gap-6 max-w-md rounded-lg bg-white p-8">
+			<DialogPanel class="w-full flex flex-col gap-6 max-w-lg max-h-150 overflow-auto rounded-lg bg-white p-8">
 				<DialogTitle class="text-2xl font-semibold">Manage direct reports for: {{ selectedManager?.name }}</DialogTitle>
 				<DialogDescription>
 				    Set which employees report to this manager
 				</DialogDescription>
-                <hr class="w-full border-2 border-gray-300"/>
+                <hr class="w-full border border-gray-300"/>
                 <div class="flex flex-col gap-6 w-full">
                     <Combobox>
                         <div class="relative w-full">
@@ -35,9 +35,9 @@
                     </Combobox>
                     <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
-                        <p class="text-thin">Current manager: {{ findManager(u.manager_id || 0) }}</p>
-                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u.id)" class="bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
-                        <button :disabled="loading" class="bg-lumy-green px-4 py-2 text-white cursor-pointer">Assign</button>
+                        <p class="text-thin text-gray-600">Current manager: {{ findManager(u.manager_id || 0) }}</p>
+                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u.id)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
+                        <button v-else :disabled="loading" @click="assign(u.id)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">Assign</button>
                     </div>
                     <BaseToast
                         text="Changes saved successfully!"

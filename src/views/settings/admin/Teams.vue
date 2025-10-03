@@ -33,11 +33,17 @@
                             </button>
                         </div>
                     </Combobox>
-                    <div v-for="u in sortedEmployees" class="flex items-center justify-between w-full">
+                    <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
-                        <p class="text-thin text-gray-600">Current manager: {{ findManager(u.manager_id || 0) }}</p>
-                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
-                        <button v-else :disabled="loading" @click="assign(u)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">Assign</button>
+                        <p class="text-thin text-gray-600">
+                            Current manager: {{ findManager(u.manager_id || 0) }}
+                        </p>
+                        <button :disabled="loading" v-if="u.manager_id === selectedManager?.id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">
+                            Remove
+                        </button>
+                        <button v-else :disabled="loading" @click="assign(u)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">
+                            Assign
+                        </button>
                     </div>
                     <BaseToast
                         text="Changes saved successfully!"
@@ -78,9 +84,10 @@ const success = ref(false);
 const loading = ref(false)
 const users = computed<User[]>(() => userStore.users)
 const filteredUsers = computed<User[]>(() => {
+    const employees = sortedEmployees.value ?? [];
     return query.value === ''
-        ? users.value
-        : users.value.filter((user: User) => {
+        ? employees
+        : employees.filter((user: User) => {
             return user.name.toLowerCase().includes(query.value.toLowerCase());
         });
 });

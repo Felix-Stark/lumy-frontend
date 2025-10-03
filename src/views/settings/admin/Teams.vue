@@ -33,7 +33,7 @@
                             </button>
                         </div>
                     </Combobox>
-                    <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
+                    <div v-for="u in sortedEmployees" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
                         <p class="text-thin text-gray-600">Current manager: {{ findManager(u.manager_id || 0) }}</p>
                         <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
@@ -71,7 +71,7 @@ import api from '@/services/api';
 
 const userStore = useUserStore();
 const adminStore = useAdminStore();
-const selectedManager = ref<User>();
+const selectedManager = ref<User | null>();
 const isOpen = ref(false)
 const query = ref('');
 const success = ref(false);
@@ -84,6 +84,32 @@ const filteredUsers = computed<User[]>(() => {
             return user.name.toLowerCase().includes(query.value.toLowerCase());
         });
 });
+
+const sortedEmployees = computed(() => {
+    if(selectedManager.value) {
+       return sortEmployees(userStore.users, selectedManager.value.id)
+    }
+});
+
+function sortEmployees(employees: User[], selectedManagerId: number | null) {
+  return employees.slice().sort((a, b) => {
+    // helper to rank employee
+    function rank(emp: User) {
+      if (emp.manager_id === selectedManagerId) return 0;  // top
+      if (!emp.manager_id) return 1;                       // unassigned
+      return 2;                                           // belongs to other manager
+    }
+
+    const rankA = rank(a);
+    const rankB = rank(b);
+
+    if (rankA !== rankB) return rankA - rankB;
+
+    // optional secondary sort (e.g. alphabetically by name)
+    return a.name.localeCompare(b.name);
+  });
+}
+
 const clearQuery = () => {
   query.value = '';
 };

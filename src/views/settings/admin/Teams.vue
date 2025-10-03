@@ -106,13 +106,15 @@ const findManager = (id: number) => {
 
 async function assign(id: number) {
     loading.value = true;
+        console.log('id: ', id);
     try {
         const res = await api.patch(`/users/${id}/manager`, { "manager_id": selectedManager.value?.id});
+        console.log('assign res: ', res);
+
         if (res.status === 200) {
             await userStore.getUsers(false);
         }
-        console.log('assign res: ', res);
-        console.log('id: ', id);
+        
         console.log('manager id: ', selectedManager.value?.id);
     } catch(err: any) {
         console.error('Unable to assign employee: ', err);
@@ -122,6 +124,7 @@ async function assign(id: number) {
 }
 async function unAssign(id: number) {
     loading.value = true;
+    console.log('id: ', id);
     try {
         const res = await api.patch(`/users/${id}/manager`, { "manager_id": null });
         if (res.status === 200) {

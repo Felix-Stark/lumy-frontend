@@ -109,7 +109,7 @@ async function assign(user: User) {
     console.log('user id: ', user.id);
     console.log('manager id: ', selectedManager.value?.id)
     try {
-        const res = await api.patch(`/org/users/${user.id}/manager`, {
+        const res = await api.patch(`/org/${user.id}/manager`, {
             ...user,
             manager_id: selectedManager.value?.id
         });
@@ -132,7 +132,7 @@ async function unAssign(user: User) {
     console.log('manager id: ', selectedManager.value?.id)
 
     try {
-        const res = await api.patch(`/org/users/${user.id}/manager`, {
+        const res = await api.patch(`/org/${user.id}/manager`, {
              ...user,
             manager_id: null
         });

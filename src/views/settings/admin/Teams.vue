@@ -106,6 +106,8 @@ const findManager = (id: number) => {
 
 async function assign(user: User) {
     loading.value = true;
+    console.log('user id: ', user.id);
+    console.log('manager id: ', selectedManager.value?.id)
     try {
         const res = await api.patch(`/users/${user.id}/manager`, {
             ...user,
@@ -126,6 +128,8 @@ async function assign(user: User) {
 }
 async function unAssign(user: User) {
     loading.value = true;
+    console.log('user id: ', user.id);
+    console.log('manager id: ', selectedManager.value?.id)
 
     try {
         const res = await api.patch(`/users/${user.id}/manager`, {

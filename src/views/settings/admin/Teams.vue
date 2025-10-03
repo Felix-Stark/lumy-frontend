@@ -111,6 +111,9 @@ async function assign(id: number) {
         if (res.status === 200) {
             await userStore.getUsers(false);
         }
+        console.log('assign res: ', res);
+        console.log('id: ', id);
+        console.log('manager id: ', selectedManager.value?.id);
     } catch(err: any) {
         console.error('Unable to assign employee: ', err);
     } finally {

@@ -36,8 +36,8 @@
                     <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
                         <p class="text-thin text-gray-600">Current manager: {{ findManager(u.manager_id || 0) }}</p>
-                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u.id)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
-                        <button v-else :disabled="loading" @click="assign(u.id)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">Assign</button>
+                        <button :disabled="loading" v-if="u.manager_id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">Remove</button>
+                        <button v-else :disabled="loading" @click="assign(u)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">Assign</button>
                     </div>
                     <BaseToast
                         text="Changes saved successfully!"
@@ -104,11 +104,13 @@ const findManager = (id: number) => {
     } else { return 'Not assigned'}
 };
 
-async function assign(id: number) {
+async function assign(user: User) {
     loading.value = true;
-        console.log('id: ', id);
     try {
-        const res = await api.patch(`/users/${id}/manager`, { "manager_id": selectedManager.value?.id});
+        const res = await api.patch(`/users/${user.id}/manager`, {
+            ...user,
+            manager_id: selectedManager.value?.id
+        });
         console.log('assign res: ', res);
 
         if (res.status === 200) {
@@ -122,11 +124,14 @@ async function assign(id: number) {
         loading.value = false
     }
 }
-async function unAssign(id: number) {
+async function unAssign(user: User) {
     loading.value = true;
-    console.log('id: ', id);
+
     try {
-        const res = await api.patch(`/users/${id}/manager`, { "manager_id": null });
+        const res = await api.patch(`/users/${user.id}/manager`, {
+             ...user,
+            manager_id: null
+        });
         if (res.status === 200) {
             await userStore.getUsers(false);
             success.value = true;

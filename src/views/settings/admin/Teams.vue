@@ -146,8 +146,11 @@ async function assign(user: User) {
         
         if (res.status === 200) {
             console.log('assign res: ', res.data);
-            await userStore.getUsers(false);
-            await adminStore.getManagers();
+            const oldUser = userStore.users.find(u => u.id === user.id);
+            if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}
+
+            const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
+            if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) } 
             success.value = true;
         }
         
@@ -169,8 +172,11 @@ async function unAssign(user: User) {
             manager_id: null
         });
         if (res.status === 200) {
-            await userStore.getUsers(false);
-            await adminStore.getManagers();
+            const oldUser = userStore.users.find(u => u.id === user.id);
+            if(oldUser && selectedManager.value) { oldUser.manager_id = null };
+
+            const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
+            if(oldManager && selectedManager.value) { oldManager.employees.filter(e => e.id !== user.id) } 
             console.log('unassigned res: ', res.data);
             success.value = true;
         }

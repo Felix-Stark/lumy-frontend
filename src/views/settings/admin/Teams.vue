@@ -34,14 +34,18 @@
                         </div>
                     </Combobox>
                     <div v-for="u in sortedFilteredUsers" class="flex items-center justify-between w-full">
-                        <p>{{ u.name }}</p>
+                        <p>{{ formatName(u.name) }}</p>
+
+                        <p v-if="u.id !== selectedManager?.manager_id" class="text-thin text-red-600">
+                            Manager of {{ u.name }}
+                        </p>
                         <p class="text-thin text-gray-600">
                             Current manager: {{ findManager(u.manager_id || 0) }}
                         </p>
                         <button :disabled="loading" v-if="u.manager_id === selectedManager?.id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">
                             Remove
                         </button>
-                        <button v-else :disabled="loading" @click="assign(u)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">
+                        <button v-if="u.manager_id !== selectedManager?.id && u.id !== selectedManager?.manager_id" :disabled="loading" @click="assign(u)" class="text-sm bg-lumy-green px-4 py-2 text-white rounded-lg cursor-pointer">
                             Assign
                         </button>
                     </div>
@@ -74,6 +78,7 @@ import { useAdminStore } from '@/stores/adminStore';
 import { useUserStore } from '@/stores/userStore';
 import type { User } from '@/types';
 import api from '@/services/api';
+import { formatName } from '@/composables/formatName';
 
 const userStore = useUserStore();
 const adminStore = useAdminStore();

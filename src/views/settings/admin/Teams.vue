@@ -36,10 +36,10 @@
                     <div v-for="u in sortedFilteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ formatName(u.name) }}</p>
 
-                        <p v-if="u.id !== selectedManager?.manager_id" class="text-thin text-red-600">
+                        <p v-if="u.id === selectedManager?.manager_id" class="text-thin text-red-600">
                             Manager of {{ u.name }}
                         </p>
-                        <p class="text-thin text-gray-600">
+                        <p v-else class="text-thin text-gray-600">
                             Current manager: {{ findManager(u.manager_id || 0) }}
                         </p>
                         <button :disabled="loading" v-if="u.manager_id === selectedManager?.id" @click="unAssign(u)" class="text-sm bg-lumy-danger px-4 py-2 text-white rounded-lg cursor-pointer">

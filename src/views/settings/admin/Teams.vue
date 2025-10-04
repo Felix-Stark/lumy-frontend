@@ -33,7 +33,7 @@
                             </button>
                         </div>
                     </Combobox>
-                    <div v-for="u in filteredUsers" class="flex items-center justify-between w-full">
+                    <div v-for="u in sortedFilteredUsers" class="flex items-center justify-between w-full">
                         <p>{{ u.name }}</p>
                         <p class="text-thin text-gray-600">
                             Current manager: {{ findManager(u.manager_id || 0) }}
@@ -83,39 +83,33 @@ const query = ref('');
 const success = ref(false);
 const loading = ref(false)
 const users = computed<User[]>(() => userStore.users)
-const filteredUsers = computed<User[]>(() => {
-    const employees = sortedEmployees.value ?? [];
-    return query.value === ''
-        ? employees
-        : employees.filter((user: User) => {
-            return user.name.toLowerCase().includes(query.value.toLowerCase());
-        });
-});
 
-const sortedEmployees = computed(() => {
-    if(selectedManager.value) {
-       return sortEmployees(userStore.users, selectedManager.value.id)
-    }
-});
+const sortedFilteredUsers = computed<User[]>(() => {
+  if (!selectedManager.value) return [];
 
-function sortEmployees(employees: User[], selectedManagerId: number | null) {
-  return employees.slice().sort((a, b) => {
-    // helper to rank employee
-    function rank(emp: User) {
-      if (emp.manager_id === selectedManagerId) return 0;  // top
-      if (!emp.manager_id) return 1;                       // unassigned
-      return 2;                                           // belongs to other manager
-    }
+  // First filter by query
+  const filtered = query.value === ''
+    ? users.value
+    : users.value.filter((user: User) =>
+        user.name.toLowerCase().includes(query.value.toLowerCase())
+      );
 
-    const rankA = rank(a);
-    const rankB = rank(b);
+  // Then sort
+  return [...filtered].sort((a, b) => {
+    const group = (user: User) => {
+      if (user.manager_id === selectedManager.value!.id) return 0; // assigned to this manager
+      if (user.manager_id === null) return 1; // unassigned
+      return 2; // assigned to another manager
+    };
 
-    if (rankA !== rankB) return rankA - rankB;
+    const groupDiff = group(a) - group(b);
+    if (groupDiff !== 0) return groupDiff;
 
-    // optional secondary sort (e.g. alphabetically by name)
     return a.name.localeCompare(b.name);
   });
-}
+});
+
+
 
 const clearQuery = () => {
   query.value = '';

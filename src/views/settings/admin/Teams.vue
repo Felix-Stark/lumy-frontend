@@ -67,7 +67,7 @@ import {
       Combobox,
       ComboboxInput
 	} from '@headlessui/vue'
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import TeamCard from '@/components/settings/TeamCard.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { useAdminStore } from '@/stores/adminStore';
@@ -83,6 +83,11 @@ const query = ref('');
 const success = ref(false);
 const loading = ref(false)
 const users = computed<User[]>(() => userStore.users)
+
+onMounted( async() => {
+    await adminStore.getManagers();
+    await userStore.getUsers(false);
+})
 
 const sortedFilteredUsers = computed<User[]>(() => {
   if (!selectedManager.value) return [];
@@ -115,10 +120,7 @@ const sortedFilteredUsers = computed<User[]>(() => {
 const clearQuery = () => {
   query.value = '';
 };
-onMounted( async() => {
-    await adminStore.getManagers();
-    await userStore.getUsers(false);
-})
+
 
 function triggerModal(manager: User) {
     selectedManager.value = manager;
@@ -141,10 +143,12 @@ async function assign(user: User) {
             ...user,
             manager_id: selectedManager.value?.id
         });
-        console.log('assign res: ', res);
-
+        
         if (res.status === 200) {
+            console.log('assign res: ', res.data);
             await userStore.getUsers(false);
+            await adminStore.getManagers();
+            success.value = true;
         }
         
         console.log('manager id: ', selectedManager.value?.id);
@@ -166,6 +170,8 @@ async function unAssign(user: User) {
         });
         if (res.status === 200) {
             await userStore.getUsers(false);
+            await adminStore.getManagers();
+            console.log('unassigned res: ', res.data);
             success.value = true;
         }
     } catch(err:any) {

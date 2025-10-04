@@ -157,7 +157,7 @@ async function assign(user: User) {
             if(user.manager_id !== selectedManager.value?.id) {
                 const diffManager = adminStore.managers?.find(m => m.manager.id === user.manager_id);
                 if(diffManager) {
-                    diffManager.employees = diffManager.employees = diffManager.employees.filter(e => e.manager_id !== diffManager.manager.id)
+                    diffManager.employees = diffManager.employees = diffManager.employees.filter(e => e.manager_id !== user.id)
                 }
             }
             if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}

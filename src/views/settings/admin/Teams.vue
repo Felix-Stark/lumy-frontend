@@ -37,7 +37,7 @@
                         <p>{{ formatName(u.name) }}</p>
 
                         <p v-if="u.id === selectedManager?.manager_id" class="text-thin text-red-600">
-                            Manager of {{ u.name }}
+                            Manager of {{ formatName(selectedManager?.name) }}
                         </p>
                         <p v-else class="text-thin text-gray-600">
                             Current manager: {{ findManager(u.manager_id || 0) }}

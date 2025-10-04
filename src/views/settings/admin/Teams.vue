@@ -181,7 +181,7 @@ async function unAssign(user: User) {
             if(oldUser && selectedManager.value) { oldUser.manager_id = null };
 
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
-            if(oldManager && selectedManager.value) { oldManager.employees.filter(e => e.id !== user.id) } 
+            if(oldManager && selectedManager.value) { oldManager.employees = oldManager.employees.filter(e => e.id !== user.id) } 
             console.log('unassigned res: ', res.data);
             success.value = true;
         }

@@ -244,12 +244,6 @@ router.beforeEach((to, from, next) => {
     return next({ name: 'error' });
   }
 
-  if (from.name === 'slack-callback' && role !== 'member') {
-    return next({ name: 'admin-overview' });
-  }
-  if (from.name === 'slack-callback' && role === 'member') {
-    return next({ name: 'member' });
-  }
 
 
   if(to.path === null) {

@@ -21,7 +21,12 @@ export const useAuthStore = defineStore("auth", {
           sessionStorage.setItem("LumyRole", JSON.stringify(role));
           sessionStorage.setItem("loggedin", "true")
           this.isLoggedIn = true;
-          path = '/member'
+          if(role === 'admin' || path === 'manager') {
+            path = '/admin/overview'
+          }
+          if(role === 'member') {
+            path = '/member/overview'
+          }
         } else if (res.status === 204) {
           this.isLoggedIn = false;
           path = "/slack/register";

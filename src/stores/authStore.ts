@@ -38,6 +38,7 @@ export const useAuthStore = defineStore("auth", {
             res.statusText || "Login failed. Please try again.",
           );
         }
+        return path;
       } catch (error: any) {
         console.error("Login error:", error);
       }

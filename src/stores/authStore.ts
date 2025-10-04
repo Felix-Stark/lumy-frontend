@@ -20,8 +20,8 @@ export const useAuthStore = defineStore("auth", {
           const role = res.data.role;
           sessionStorage.setItem("LumyRole", JSON.stringify(role));
           sessionStorage.setItem("loggedin", "true")
-          role === 'admin' || 'manager' ? path = 'admin' : path = 'member'
           this.isLoggedIn = true;
+          path = '/member'
         } else if (res.status === 204) {
           this.isLoggedIn = false;
           path = "/slack/register";
@@ -33,7 +33,6 @@ export const useAuthStore = defineStore("auth", {
             res.statusText || "Login failed. Please try again.",
           );
         }
-        return path;
       } catch (error: any) {
         console.error("Login error:", error);
       }

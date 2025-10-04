@@ -11,7 +11,8 @@ interface Manager {
 export const useAdminStore = defineStore("admin", () => {
     const teamSummary = ref<TeamOverview | null>(null);
     const teamUsers = ref<TeamUser[]>([]);
-    const managers = ref<Manager[] | null>(null)
+    const managers = ref<Manager[] | null>(null);
+    const employeeSummary = ref<User | null>(null);
 
     async function getTeamSummary() {
         try {
@@ -35,9 +36,23 @@ export const useAdminStore = defineStore("admin", () => {
         }
     };
     async function getManagers() {
-        const res = await api.get('/org/managers');
-        if(res.status === 200) {
-            managers.value = res.data.managers;
+        try {
+            const res = await api.get('/org/managers');
+            if(res.status === 200) {
+                managers.value = res.data.managers;
+            }
+        } catch (err: any) {
+            console.error('Error in getEmployeeSummary: ', err)
+        }
+    };
+    async function getEmployeeSummary(userId: number) {
+        try {
+            const res = await api.get('/me/summary?user_id='+userId);
+            if(res.status === 200) {
+                employeeSummary.value = res.data;
+            }
+        } catch (err: any) {
+            console.error('Error in getEmployeeSummary: ', err)
         }
     }
 
@@ -45,6 +60,8 @@ export const useAdminStore = defineStore("admin", () => {
         teamSummary,
         teamUsers,
         managers,
+        employeeSummary,
+        getEmployeeSummary,
         getManagers,
         getTeamSummary,
         getTeamUsers

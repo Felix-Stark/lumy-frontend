@@ -88,11 +88,12 @@ const sortedFilteredUsers = computed<User[]>(() => {
   if (!selectedManager.value) return [];
 
   // First filter by query
-  const filtered = query.value === ''
+  const filtered = (query.value === ''
     ? users.value
     : users.value.filter((user: User) =>
         user.name.toLowerCase().includes(query.value.toLowerCase())
-      );
+      )
+    ).filter((user: User) => user.id !== selectedManager.value!.id);
 
   // Then sort
   return [...filtered].sort((a, b) => {

@@ -21,7 +21,7 @@
                 <p v-if="sentSum" class="text-sm text-wrap text-gray-700">{{ sentSum }}</p>
             </div>
         </div>
-        <div class="flex">
+        <div class="flex items-center">
             <div v-if="avgSent" :class="['px-4 py-2 rounded-full', avgSent === 'positive' ? 'bg-lumy-green' : avgSent === 'mixed' || 'neutral' ? 'bg-lumy-neutral-light' : 'bg-lumy-danger']">
                 <p class="text-white text-sm">{{ avgSent }}</p>
             </div>

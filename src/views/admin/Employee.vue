@@ -101,9 +101,6 @@
 							<td class="px-6 py-4">
 								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
 							</td>
-							<td class="px-6 py-4 text-right">
-								<ChevronRight />
-							</td>
 						</tr>
 					</tbody>
 				</table>

@@ -225,7 +225,7 @@ router.beforeEach((to, from, next) => {
   }
 
   // 2. Require admin
-  if (to.meta.isAdmin && role !== 'admin') {
+  if (to.meta.isAdmin && role !== 'admin' || role !== 'manager') {
     const message = 'You do not have permission to access this page (admin only).'
     const code = 403;
     errorStore.setError(

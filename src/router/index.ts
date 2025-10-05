@@ -88,8 +88,7 @@ const router = createRouter({
       component: AdminDashboardLayout,
       redirect: '/admin/overview',
       meta: {
-        isAdmin: true,
-        requiresAuth: true,
+        roles: ["manager", "admin"]
       },
       children: [
         {
@@ -110,7 +109,7 @@ const router = createRouter({
       redirect: '/member/overview',
       component: DashboardLayout,
       meta: {
-        requiresAuth: true, // This route requires authentication
+        roles: ["member", "manager", "admin"]
       },
       children: [
         {
@@ -151,30 +150,31 @@ const router = createRouter({
           path: 'member/integrations',
           name: 'settings-member-integrations',
           component: Integrations,
+          meta: { roles: ["member", "manager", "admin"] }
         },
         {
           path: 'admin/general',
           name: 'settings-admin-general',
           component: General,
-          meta: { isAdmin: true }
+          meta: { roles: ["manager", "admin"] }
         },
         {
           path: 'admin/intelligence',
           name: 'settings-admin-intelligence',
           component: Intelligence,
-          meta: { isAdmin: true }
+          meta: { roles: ["manager", "admin"] }
         },
         {
           path: 'admin/users',
           name: 'settings-admin-users',
           component: Users,
-          meta: { isAdmin: true }
+          meta: { roles: ["manager", "admin"] }
         },
         {
           path: 'admin/teams',
           name: 'settings-admin-teams',
           component: Teams,
-          meta: { isAdmin: true }
+          meta: { roles: ["manager", "admin"] }
         }
 
       ]
@@ -197,7 +197,7 @@ const router = createRouter({
           path: 'request',
           name: 'feedback-request',
           component: () => import('@/views/feedback/Request.vue'),
-          meta: { requiresAuth: true }
+          meta: { roles: ["member", "manager", "admin"] }
         },
       ]
     },
@@ -216,16 +216,23 @@ router.beforeEach((to, from, next) => {
   const errorStore = useErrorStore();
   const rawLoggedIn = sessionStorage.getItem('loggedin')
   const raw = sessionStorage.getItem('LumyRole');
-  const role = raw ? JSON.parse(raw) : null;
-  const loggedIn = rawLoggedIn ? JSON.parse(rawLoggedIn) : null;
+  const role: string = raw ? JSON.parse(raw) : null;
+  const allowedRoles = to.meta.roles as string[] | undefined;
 
-  // 1. Require authentication
-  if (to.meta.requiresAuth && !loggedIn) {
-    return next({ name: 'slack-login' });
+  if (!allowedRoles) {
+    return next(); // unrestricted route
   }
 
-  // 2. Require admin
-  if (to.meta.isAdmin && role !== 'admin' || role !== 'manager') {
+    // fallback: redirect member to their dashboard
+  if (role === "member") {
+    return next({ name: "member-overview" });
+  }
+
+  if (allowedRoles.includes(role)) {
+    return next(); // user is allowed
+  }
+
+  if(!allowedRoles.includes(role)) {
     const message = 'You do not have permission to access this page (admin only).'
     const code = 403;
     errorStore.setError(
@@ -234,15 +241,6 @@ router.beforeEach((to, from, next) => {
     return next({ name: 'error' });
   }
 
-  // 3. Require manager
-  if (to.meta.isManager && role !== 'manager') {
-    const message = 'You do not have permission to access this page (manager only).'
-    const code = 403;
-    errorStore.setError(
-      code, message
-    );
-    return next({ name: 'error' });
-  }
 
 
 

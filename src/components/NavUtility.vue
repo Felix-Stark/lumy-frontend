@@ -15,14 +15,14 @@
 		</button>
 
 		<ul class="flex flex-col gap-4 text-gray-700 text-lg font-semibold pt-8">
-			<!-- <li v-if="role === 'admin'">
-				<router-link to="/admin">Admin</router-link>
-			</li> -->
-			<li>
-				<router-link :to="{name: 'member'}">Overview</router-link>
+			<li v-if="role === 'admin' || role === 'manager'">
+				<router-link :to="{name: 'admin-overview'}">Team Overview</router-link>
 			</li>
 			<li>
-				<router-link :to="{name: 'feedback-overview'}">Feedback</router-link>
+				<router-link :to="{name: 'member'}">Your Overview</router-link>
+			</li>
+			<li>
+				<router-link :to="{name: 'feedback-overview'}">Your Feedback</router-link>
 			</li>
 			<li>
 				<router-link :to="{name: 'settings'}">Settings</router-link>
@@ -40,19 +40,19 @@
         : 'absolute top-0 right-0 flex items-center gap-4 mr-12 mt-10',
 		'transition-all duration-300 ease-in-out',
 		'hidden lg:flex'
-    ]"
-    style="transition: all 0.3s;">
-		<!-- <router-link to="/admin" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Admin Home')"
+		]"
+		style="transition: all 0.3s;">
+		<router-link v-if="role === 'admin' || role === 'manager'" :to="{name: 'admin-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Team Overview')"
 		@mouseleave="handleMouseLeave"
-		> -->
-			<!-- <Home :class="[,
+		>
+			<Home :class="[,
 				isExactActive === true ? 'text-lumy-purple size-5'
 				: 'text-gray-500 size-4'
-			]" /> -->
-		<!-- </router-link> -->
+			]" />
+		</router-link>
 		<router-link :to="{name: 'member-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Overview')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Your Overview')"
 		@mouseleave="handleMouseLeave"
 		>
 			<UserRound :class="[,
@@ -62,7 +62,7 @@
 			
 		</router-link>
 		<router-link :to="{ name: 'feedback-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
-		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Feedback')"
+		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Your Feedback')"
 		@mouseleave="handleMouseLeave"
 		>
 			<MessageSquareText :class="[,
@@ -109,7 +109,7 @@ const showTooltip = ref(false)
 const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
-const role = ref()
+const role = ref<string | null>(null)
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text
@@ -127,14 +127,14 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll)
-  const raw = sessionStorage.getItem('LumyRole')
+  window.addEventListener('scroll', handleScroll);
+   const raw = sessionStorage.getItem('LumyRole')
   if (raw) {
 	role.value = JSON.parse(raw)
   }
 })
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('scroll', handleScroll);
 
 })
 </script>

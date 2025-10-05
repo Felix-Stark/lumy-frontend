@@ -4,7 +4,7 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-general'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg text-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     General
@@ -14,7 +14,7 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-intelligence'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg text-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Intelligence
@@ -24,17 +24,27 @@
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-users'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Users
                 </span>
             
             </router-link>
+            <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-teams'}" v-slot="{isExactActive}">
+                <span :class="['px-4 py-2 rounded-lg',
+                isExactActive
+                    ? 'bg-lumy-secondary text-white'
+                    : 'bg-gray-200 text-gray-700'
+                ]">
+                    Teams
+                </span>
+            
+            </router-link>
             <router-link :to="{name: 'settings-member-integrations'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg',
                 isExactActive
-                    ? 'bg-lumy-dark text-white'
+                    ? 'bg-lumy-secondary text-white'
                     : 'bg-gray-200 text-gray-700'
                 ]">
                     Integrations
@@ -48,8 +58,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore';
 
 const role = ref('member');
 

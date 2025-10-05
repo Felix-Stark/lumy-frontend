@@ -1,15 +1,17 @@
 import { defineStore } from "pinia";
 
-export const useErrorStore = defineStore("error", {
-  state: () => ({
-    error: null as { code: number, detail: string } | null,
-  }),
-  actions: {
-    setError(error: { code: number, detail: string }) {
-      this.error = error;
-    },
-    clearError() {
-      this.error = null;
-    },
-  },
-});
+import { ref } from 'vue'
+
+export const useErrorStore = defineStore('error', () => {
+  const error = ref<{ code?: number; message?: string } | null>(null)
+
+  function setError( code?: number, message?: string) {
+    error.value = { code, message }
+  }
+
+  function clearError() {
+    error.value = null
+  }
+
+  return { error, setError, clearError }
+})

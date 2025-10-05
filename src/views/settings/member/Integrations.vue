@@ -1,5 +1,5 @@
 <template>
-    <section class="flex flex-col w-full h-full lg:flex-row lg:flex-wrap gap-8">
+    <section class="grid grid-cols-2 auto-rows-fr w-full gap-8">
         <IntegrationCard
         :img="GoogleCal"
         title="Google"
@@ -11,17 +11,17 @@
             <p>Skip users who are marked as OOO automatically</p>
             <p>No access to meeting content or private notes</p>
         </IntegrationCard>
-        <!-- <IntegrationCard
+        <IntegrationCard
         :img="AsanaImg"
         title="Asana"
         :connected="asanaConnected"
-        @connect="triggerGoogle()"
-        @disconnect="disconnectGoogle()"
+        @connect="triggerAsana()"
+        @disconnect="disconnectAsana()"
         >
-            <p>Trigger feedback automatically when tasks or projects are finished</p>
-            <p>Identify strong collaborators from assignees, followers, and project members</p>
-            <p>No access to task descriptions or private comments</p>
-        </IntegrationCard> -->
+            <p class="text-center">Trigger feedback automatically when tasks or projects are finished</p>
+            <p class="text-center">Identify strong collaborators from assignees, followers, and project members</p>
+            <p class="text-center">No access to task descriptions or private comments</p>
+        </IntegrationCard>
     </section>
     <BaseToast
     :text="toastText"
@@ -46,8 +46,10 @@ const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
+const asanaToastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
+const asanaLink = ref<string>()
 
 onMounted(async () => {
     try {
@@ -57,27 +59,49 @@ onMounted(async () => {
         toastBg.value = 'bg-lumy-green';
         showToast.value = true;
     } else if (route.query.status === 'error') {
-        toastText.value = 'There was an error connecting Google Calendar';
+        const rawMsg = route.query.message as string;
+        toastText.value = rawMsg.replace(/_/g, ' ');
         toastBg.value = 'bg-lumy-danger';
         showToast.value = true;
         
     }
     const googleRes = await api.get('/integrations/google');
     googleConnected.value = await googleRes.data.connected;
-    // const asanaRes = await api.get('/integrations/asana');
-    // asanaConnected.value = await asanaRes.data.connected;
-    } catch (error) {
-        console.error('Error fetching Google Calendar status:', error);
-        toastText.value = 'There was an error connecting Google Calendar';
-        toastBg.value = 'bg-lumy-danger';
-        showToast.value = true;
+
+    const asanaRes = await api.get('/integrations/asana');
+    asanaConnected.value = await asanaRes.data.connected;
+    const asanaOauth = await api.get('/integrations/asana/oauth/start')
+    if(asanaOauth.status === 200) {
+        asanaLink.value = asanaOauth.data.authorize_url
     }
-})
+    } catch (error) {
+        console.error('Error fetching integration status:', error);
+        
+    }
+});
+
+const triggerAsana = () => {
+    window.open(asanaLink.value, '_self');
+};
+const disconnectAsana = async () => {
+    try {
+        const res = await api.post('/integrations/asana/disconnect');
+        if(res.status === 200) {
+            toastText.value = 'Asana integration disconnected successfully'
+            toastBg.value = 'bg-lumy-green'
+            showToast.value = true
+            const asanaRes = await api.get('/integrations/asana');
+            asanaConnected.value = await asanaRes.data.connected;
+        }
+    } catch (err: any) {
+        console.error('Failed to disconnect Asana: ', err)
+    }
+}
 
 const triggerGoogle = () => {
     window.open(apiUrl + 'integrations/google/start',
   '_self');
-}
+};
 
 const disconnectGoogle = async () => {
     try {

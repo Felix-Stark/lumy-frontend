@@ -91,7 +91,7 @@ export const useUserStore = defineStore('user', () => {
     meSummary,
     userSkills,
     users,
-	sortedUsers,
+	  sortedUsers,
     // actions
     getMe,
     getMeSummary,

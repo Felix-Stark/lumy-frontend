@@ -30,6 +30,7 @@ export type Account = {
   nudge_grace_period: number;
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
+  timezone: string;
   created_at: string;
   updated_at: string;
 };
@@ -54,7 +55,7 @@ export type User = {
   slack_team_id?: string; // Slack team ID
   account_id: string; // ID of the account this user belongs to
   is_active: boolean;
-  manager_id?: number;
+  manager_id: number | null;
 };
 
 export type UserSummary = {
@@ -267,4 +268,26 @@ export type FeedbackSubmissionFull = {
     status: string;
   };
 };
-//
+
+// TEAM ADMIN/MANAGER
+
+export type TeamOverview = {
+  feedback_submitted_total: number;
+  feedback_requested_total: number;
+  positive_feedback_percentage: number;
+  constructive_feedback_average: number;
+  submitted_per_month: {
+    month: string;
+    count: number;
+  } [];
+  average_sentiment_score: number;
+};
+
+//GET /team.users
+export type TeamUser = {
+  user_id: number;
+  name: string;
+  avatar: string;
+  average_sentiment_word: string;
+  manager_summary: string | null;
+}

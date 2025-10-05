@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
+import AdminDashboardLayout from '@/layouts/AdminDashboardLayout.vue';
 import SetupLayout from '@/layouts/SetupLayout.vue';
 import SlackLayout from '@/layouts/SlackLayout.vue';
 import FeedbackOverview from '@/views/member/FeedbackOverview.vue';
@@ -14,6 +15,13 @@ import Intelligence from '@/views/settings/admin/Intelligence.vue';
 import Users from '@/views/settings/admin/Users.vue';
 import Integrations from '@/views/settings/member/Integrations.vue';
 import SkillOverview from '@/views/member/SkillOverview.vue';
+import Overview from '@/views/admin/Overview.vue';
+import Teams from '@/views/settings/admin/Teams.vue';
+import Employee from '@/views/admin/Employee.vue';
+import Give from '@/views/feedback/Give.vue';
+import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
+import Request from '@/views/feedback/Request.vue';
+import Error from '@/views/Error.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -81,27 +89,31 @@ const router = createRouter({
       ]
     },
     { 
-      path: '/overview',
-      component: DashboardLayout,
+      path: '/admin',
+      component: AdminDashboardLayout,
+      redirect: '/admin/overview',
       meta: {
-        requiresRole: true,
-        requiresAuth: true,
+        roles: ["manager", "admin"]
       },
       children: [
         {
-          path: 'employee',
-          name: 'overview-employee',
-          component: () => import('@/views/admin/Employee.vue'),
+          path: 'overview',
+          name: 'admin-overview',
+          component: Overview
+        },
+        {
+          path: 'overview/employee',
+          name: 'admin-overview-employee',
+          component: Employee,
         }
       ]
     },
     {
       path: '/member',
-      name: 'member',
       redirect: '/member/overview',
       component: DashboardLayout,
       meta: {
-        requiresAuth: true, // This route requires authentication
+        roles: ["member", "manager", "admin"]
       },
       children: [
         {
@@ -117,7 +129,7 @@ const router = createRouter({
         {
           path: 'skill-overview',
           name: 'skill-overview',
-          component: () => import('@/views/member/SkillOverview.vue'),
+          component: SkillOverview,
         }
       ]
     },  
@@ -134,32 +146,36 @@ const router = createRouter({
         }
       },
       component: SettingsLayout,
-      meta: {
-        requiresAuth: true,
-      },
       children: [
         {
           path: 'member/integrations',
           name: 'settings-member-integrations',
           component: Integrations,
+          meta: { roles: ["member", "manager", "admin"] }
         },
         {
           path: 'admin/general',
           name: 'settings-admin-general',
           component: General,
-          meta: { isAdmin: true }
+          meta: { roles: ["admin"] }
         },
         {
           path: 'admin/intelligence',
           name: 'settings-admin-intelligence',
           component: Intelligence,
-          meta: { isAdmin: true }
+          meta: { roles: ["admin"] }
         },
         {
           path: 'admin/users',
           name: 'settings-admin-users',
           component: Users,
-          meta: { isAdmin: true }
+          meta: { roles: ["admin"] }
+        },
+        {
+          path: 'admin/teams',
+          name: 'settings-admin-teams',
+          component: Teams,
+          meta: { roles: ["admin"] }
         }
 
       ]
@@ -171,25 +187,25 @@ const router = createRouter({
         {
           path: 'give',
           name: 'feedback-give',
-          component: () => import('@/views/feedback/Give.vue')
+          component: Give
         },
         {
           path: 'give/success',
           name: 'feedback-give-success',
-          component: () => import('@/views/feedback/GiveSuccess.vue')
+          component: GiveSuccess
         },
         {
           path: 'request',
           name: 'feedback-request',
-          component: () => import('@/views/feedback/Request.vue'),
-          meta: { requiresAuth: true }
+          component: Request,
+          meta: { roles: ["member", "manager", "admin"] }
         },
       ]
     },
     {
       path: '/error',
       name: 'error',
-      component: () => import('@/views/Error.vue'),
+      component: Error,
     },
   ],
 });
@@ -197,36 +213,34 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  const store = useAuthStore();
   const errorStore = useErrorStore();
-  const rawLoggedIn = sessionStorage.getItem('loggedin')
   const raw = sessionStorage.getItem('LumyRole');
-  const role = raw ? JSON.parse(raw) : null;
-  const loggedIn = rawLoggedIn ? JSON.parse(rawLoggedIn) : null;
+  const role: string = raw ? JSON.parse(raw) : null;
+  const allowedRoles = to.meta.roles as string[] | undefined;
 
-  // 1. Require authentication
-  if (to.meta.requiresAuth && !loggedIn) {
-    return next({ name: 'slack-login' });
+  if (!allowedRoles) {
+    return next(); // unrestricted route
   }
 
-  // 2. Require admin
-  if (to.meta.isAdmin && role !== 'admin') {
-    errorStore.setError({
-      code: 403,
-      detail: 'You do not have permission to access this page (admin only).',
-    });
+  if (allowedRoles.includes(role)) {
+    return next(); // user is allowed
+  }
+
+  if(!allowedRoles.includes(role)) {
+    const message = 'You do not have permission to access this page (admin only).'
+    const code = 403;
+    errorStore.setError(
+      code, message
+    );
     return next({ name: 'error' });
   }
 
-  // 3. Require manager
-  if (to.meta.isManager && role !== 'manager') {
-    errorStore.setError({
-      code: 403,
-      detail: 'You do not have permission to access this page (manager only).',
-    });
-    return next({ name: 'error' });
+  if(to.path === null) {
+    const code = 404;
+    const message = 'Page not found!'
+    errorStore.setError(code, message);
+    return next({ name: 'error' })
   }
-
   // ✅ 4. Allow navigation
   next();
 });

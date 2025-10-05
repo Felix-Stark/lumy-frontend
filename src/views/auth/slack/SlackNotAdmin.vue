@@ -7,7 +7,7 @@ Copy the link below and send to one of your admins and you will be set up in no 
 	>
 	<div class="flex items-center mt-4 border border-gray-300 rounded">
 		<p class="font-inter font-light  text-center p-4">
-			{{ installLink }}
+			{{ JSON.parse(installLink) }}
 		</p>
 		<button
 			class="bg-purple-500 text-white flex-1 p-4 rounded-r hover:bg-purple-400 transition"

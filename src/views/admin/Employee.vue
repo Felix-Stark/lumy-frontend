@@ -1,6 +1,18 @@
 <template>
 	<div v-if="employee" class="w-full flex">
-		<p class="text-lg text-gray-600">Summary of: {{ employee.name }}</p>
+		<div class="flex items-center relative">
+            <button @click="resetEmployee()" class="absolute top-1 left-2">{{ X }}</button>
+            <img
+				v-if="employee.avatar"
+				:src="employee.avatar"
+				alt="User Avatar"
+				class="w-12 h-12 rounded-full object-cover"
+			/>
+			<div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+				<span class="text-gray-500">No Image</span>
+			</div>
+            <p class="text-lg text-gray-600">Summary of {{ formatName(employee.name!) }}</p>
+        </div>
 	</div>
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
@@ -105,19 +117,18 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronRight, Heart } from 'lucide-vue-next';
+import { ChevronRight, Heart, X } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
-import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import LumySuccess from '@/assets/images/lumy_cheering.png';
 import type { Skill, SkillSummary, TeamUser, User, UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useAdminStore } from '@/stores/adminStore';
+import { formatName } from '@/composables/formatName';
 Chart.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
@@ -133,7 +144,6 @@ const employee = computed(() => {
 		return JSON.parse(raw) as Partial<TeamUser>;
 	} else return null
 });
-const showSuccess = ref(false);
 
 onMounted(async() => {
 	if(employee.value !== null) {
@@ -144,6 +154,11 @@ onMounted(async() => {
 onUnmounted(() => {
     sessionStorage.removeItem('employee')
 })
+
+function resetEmployee() {
+    sessionStorage.removeItem('employee');
+    router.push({ name: 'admin-overview' });
+}
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));

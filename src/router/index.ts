@@ -17,6 +17,7 @@ import Integrations from '@/views/settings/member/Integrations.vue';
 import SkillOverview from '@/views/member/SkillOverview.vue';
 import Overview from '@/views/admin/Overview.vue';
 import Teams from '@/views/settings/admin/Teams.vue';
+import Employee from '@/views/admin/Employee.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -99,7 +100,7 @@ const router = createRouter({
         {
           path: 'overview/employee',
           name: 'admin-overview-employee',
-          component: () => import('@/views/admin/Employee.vue'),
+          component: Employee,
         }
       ]
     },

@@ -30,6 +30,7 @@ export type Account = {
   nudge_grace_period: number;
   intelligence_coach: boolean;
   intelligence_assistant: boolean;
+  timezone: string;
   created_at: string;
   updated_at: string;
 };

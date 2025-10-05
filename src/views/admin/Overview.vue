@@ -49,7 +49,7 @@
       :name="u.name"
       :sentSum="u.manager_summary"
       :avgSent="u.average_sentiment_word"
-      @setEmployee=""
+      @setEmployee="() => selectedEmployee(u)"
       />
     </div>
   </section>
@@ -113,9 +113,9 @@ const clearQuery = () => {
   query.value = '';
 };
 
-function selectedEmployee(user: User) {
+function selectedEmployee(user: Partial<User>) {
   sessionStorage.setItem('employee', JSON.stringify(user))
-  router.push({ name: 'employee-overview' });
+  router.push({ name: 'admin-overview-employee' });
 }
 
 const lineData = computed(() => {

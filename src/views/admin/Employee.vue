@@ -130,14 +130,14 @@ const summary = ref<UserSummary | null>();
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
-		return JSON.parse(raw) as User;
+		return JSON.parse(raw) as Partial<User>;
 	} else return null
 });
 const showSuccess = ref(false);
 
 onMounted(async() => {
 	if(employee.value !== null) {
-		await adminStore.getEmployeeSummary(employee.value.id)
+		await adminStore.getEmployeeSummary(employee.value.id!)
 		summary.value = adminStore.employeeSummary
 	}
 });

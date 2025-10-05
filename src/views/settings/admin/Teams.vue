@@ -57,7 +57,7 @@
                         @close="success = false"
                     />
                     <BaseToast
-                        :text="error.text"
+                        :text="error"
                         bgClass="bg-lumy-danger"
                         :show="showError"
                         :duration="3000"
@@ -95,7 +95,7 @@ const query = ref('');
 const success = ref(false);
 const loading = ref(false)
 const users = computed<User[]>(() => userStore.users)
-const error = ref({ text: '', code: 0 })
+const error = ref('')
 const showError = ref(false)
 
 onMounted( async() => {
@@ -177,7 +177,8 @@ async function assign(user: User) {
         
         console.log('manager id: ', selectedManager.value?.id);
     } catch(err: any) {
-        console.error('Unable to assign employee: ', err?.response?.data?.detail);
+        error.value = err?.response?.data?.detail;
+        showError.value = true
     } finally {
         loading.value = false
     }

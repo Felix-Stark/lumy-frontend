@@ -49,6 +49,7 @@
       :name="u.name"
       :sentSum="u.manager_summary"
       :avgSent="u.average_sentiment_word"
+      @setEmployee=""
       />
     </div>
   </section>
@@ -67,7 +68,10 @@ import { Chart, registerables } from 'chart.js';
 import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
 import { useAdminStore } from '@/stores/adminStore';
+import type { User } from '@/types';
+import { useRouter } from 'vue-router'; 
 
+const router = useRouter();
 
 Chart.register(...registerables);
 const adminStore = useAdminStore();
@@ -108,6 +112,12 @@ const filteredUsers = computed(() => {
 const clearQuery = () => {
   query.value = '';
 };
+
+function selectedEmployee(user: User) {
+  sessionStorage.setItem('employee', JSON.stringify(user))
+  router.push({ name: 'employee-overview' });
+}
+
 const lineData = computed(() => {
   const months = adminStore.teamSummary?.submitted_per_month.map(m => m.month) || [];
   const counts = adminStore.teamSummary?.submitted_per_month.map(m => m.count) || [];
@@ -149,34 +159,5 @@ const lineOptions = computed(() => {
   }
 });
 
-const sentScoreData = computed(() => {
-  return {
-    datasets: [
-      {
-        data: [adminStore.teamSummary?.positive_feedback_percentage ?? 0, 100 - (adminStore.teamSummary?.positive_feedback_percentage ?? 0)],
-        backgroundColor: ["#7FE47E", "#e5e7eb"],
-        borderWidth: 0,
-        borderRadius: 5,
-        borderColor: '#FFFFF',
-        cutout: "90%", // thickness of the arc
-        circumference: 180, // half circle
-        rotation: 270, // start at bottom center
-      }
-    ]
-  }
-});
-
-const sentScoreOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        tooltip: { enabled: false },
-        legend: { display: false },
-    },
-    animation: {
-        animateRotate: false,
-        animateScale: false
-    }
-};
 
 </script>

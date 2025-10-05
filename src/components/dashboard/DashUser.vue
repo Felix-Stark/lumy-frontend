@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-between w-full p-6 bg-white rounded-full shadow-lg hover:bg-gray-300 cursor-pointer">
+    <div @click="$emit('setEmployee')" class="flex items-center justify-between w-full p-6 bg-white rounded-full shadow-lg hover:bg-gray-300 cursor-pointer">
         <div :class="['flex items-center gap-4']">
             <!-- Avatar and Name Section -->
             <img
@@ -39,5 +39,8 @@ defineProps<{
     sentSum?: string | null;
     avgSent?: string;
     avgSentColor?: string;
+}>();
+defineEmits<{
+    (e: 'setEmployee'): void
 }>();
 </script>

@@ -1,7 +1,7 @@
 import api from "@/services/api";
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { type TeamOverview, type TeamUser, type User } from "@/types";
+import { type TeamOverview, type TeamUser, type User, type UserSummary } from "@/types";
 
 interface Manager {
     manager: User,
@@ -12,7 +12,7 @@ export const useAdminStore = defineStore("admin", () => {
     const teamSummary = ref<TeamOverview | null>(null);
     const teamUsers = ref<TeamUser[]>([]);
     const managers = ref<Manager[] | null>(null);
-    const employeeSummary = ref<User | null>(null);
+    const employeeSummary = ref<UserSummary | null>(null);
 
     async function getTeamSummary() {
         try {

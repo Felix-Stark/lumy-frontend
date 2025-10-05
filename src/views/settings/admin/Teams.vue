@@ -101,6 +101,7 @@ const showError = ref(false)
 onMounted( async() => {
     await adminStore.getManagers();
     await userStore.getUsers(false);
+    users.value = userStore.users;
 })
 
 const sortedFilteredUsers = computed<User[]>(() => {

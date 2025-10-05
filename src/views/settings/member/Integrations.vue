@@ -84,14 +84,17 @@ const triggerAsana = () => {
     window.open(asanaLink.value, '_self');
 };
 const disconnectAsana = async () => {
-    const res = await api.post('/integrations/asana/disconnect');
-    console.log('disconnect asana res: ', res);
-    if(res.status === 200) {
-        toastText.value = 'Asana integration disconnected successfully'
-        toastBg.value = 'bg-lumy-green'
-        showToast.value = true
-        const asanaRes = await api.get('/integrations/asana');
-        asanaConnected.value = await asanaRes.data.connected;
+    try {
+        const res = await api.post('/integrations/asana/disconnect');
+        if(res.status === 200) {
+            toastText.value = 'Asana integration disconnected successfully'
+            toastBg.value = 'bg-lumy-green'
+            showToast.value = true
+            const asanaRes = await api.get('/integrations/asana');
+            asanaConnected.value = await asanaRes.data.connected;
+        }
+    } catch (err: any) {
+        console.error('Failed to disconnect Asana: ', err)
     }
 }
 

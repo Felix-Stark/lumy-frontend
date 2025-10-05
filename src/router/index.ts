@@ -105,7 +105,6 @@ const router = createRouter({
     },
     {
       path: '/member',
-      name: 'member',
       redirect: '/member/overview',
       component: DashboardLayout,
       meta: {
@@ -219,11 +218,6 @@ router.beforeEach((to, from, next) => {
 
   if (!allowedRoles) {
     return next(); // unrestricted route
-  }
-
-    // fallback: redirect member to their dashboard
-  if (role === "member") {
-    return next({ name: "member-overview" });
   }
 
   if (allowedRoles.includes(role)) {

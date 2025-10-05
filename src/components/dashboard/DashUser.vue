@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-between w-full p-6 bg-white rounded-full shadow-lg">
+    <div class="flex items-center justify-between w-full p-6 bg-white rounded-full shadow-lg hover:bg-gray-300 cursor-pointer">
         <div :class="['flex items-center gap-4']">
             <!-- Avatar and Name Section -->
             <img

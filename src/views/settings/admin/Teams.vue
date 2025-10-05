@@ -161,7 +161,7 @@ async function assign(user: User) {
         
         if (res.status === 200) {
             console.log('assign res: ', res.data);
-            const oldUser = userStore.users.find(u => u.id === user.id);
+            const oldUser = users.value.find(u => u.id === user.id);
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
             const diffManager = adminStore.managers?.find(m => m.manager.id === user.manager_id);
 

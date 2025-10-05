@@ -119,6 +119,7 @@ const sortedFilteredUsers = computed<User[]>(() => {
     const group = (user: User) => {
       if (user.manager_id === selectedManager.value!.id) return 0; // assigned to this manager
       if (user.manager_id === null) return 1; // unassigned
+      if (user.id === selectedManager.value!.id) return 3;
       return 2; // assigned to another manager
     };
 
@@ -171,7 +172,8 @@ async function assign(user: User) {
             }
             if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}
 
-            if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) } 
+            if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) }
+            userStore.users = [...userStore.users, user]
             success.value = true;
         }
         

@@ -48,6 +48,7 @@ const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
+const asanaLink = ref<string>()
 
 onMounted(async () => {
     try {
@@ -57,7 +58,8 @@ onMounted(async () => {
         toastBg.value = 'bg-lumy-green';
         showToast.value = true;
     } else if (route.query.status === 'error') {
-        toastText.value = 'There was an error connecting Google Calendar';
+        const rawMsg = route.query.message as string;
+        toastText.value = rawMsg.replace(/_/g, ' ');
         toastBg.value = 'bg-lumy-danger';
         showToast.value = true;
         
@@ -67,6 +69,10 @@ onMounted(async () => {
 
     const asanaRes = await api.get('/integrations/asana');
     asanaConnected.value = await asanaRes.data.connected;
+    const asanaOauth = await api.get('/integrations/asana/oauth/start')
+    if(asanaOauth.status === 200) {
+        asanaLink.value = asanaOauth.data.authorize_url
+    }
     } catch (error) {
         console.error('Error fetching Google Calendar status:', error);
         toastText.value = 'There was an error connecting Google Calendar';
@@ -76,7 +82,7 @@ onMounted(async () => {
 });
 
 const triggerAsana = () => {
-    window.open(apiUrl + 'integrations/asana/oauth/start', '_self');
+    window.open(asanaLink.value, '_self');
 };
 const disconnectAsana = async () => {
     const res = await api.post('/integrations/asana/disconnect');

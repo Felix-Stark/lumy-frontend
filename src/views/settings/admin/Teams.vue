@@ -10,7 +10,7 @@
         @manage-team="triggerModal(m.manager)"
         />
     </div>
-    <Dialog :open="isOpen" @close="() => isOpen = false" class="relative z-50">
+    <Dialog :open="isOpen" @close="() => isOpen = false" class="relative w-150 z-50">
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
 			<DialogPanel class="w-full flex flex-col gap-6 max-w-lg max-h-150 overflow-auto rounded-lg bg-white p-8">

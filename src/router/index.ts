@@ -18,6 +18,10 @@ import SkillOverview from '@/views/member/SkillOverview.vue';
 import Overview from '@/views/admin/Overview.vue';
 import Teams from '@/views/settings/admin/Teams.vue';
 import Employee from '@/views/admin/Employee.vue';
+import Give from '@/views/feedback/Give.vue';
+import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
+import Request from '@/views/feedback/Request.vue';
+import Error from '@/views/Error.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -142,9 +146,6 @@ const router = createRouter({
         }
       },
       component: SettingsLayout,
-      meta: {
-        requiresAuth: true,
-      },
       children: [
         {
           path: 'member/integrations',
@@ -156,25 +157,25 @@ const router = createRouter({
           path: 'admin/general',
           name: 'settings-admin-general',
           component: General,
-          meta: { roles: ["manager", "admin"] }
+          meta: { roles: ["admin"] }
         },
         {
           path: 'admin/intelligence',
           name: 'settings-admin-intelligence',
           component: Intelligence,
-          meta: { roles: ["manager", "admin"] }
+          meta: { roles: ["admin"] }
         },
         {
           path: 'admin/users',
           name: 'settings-admin-users',
           component: Users,
-          meta: { roles: ["manager", "admin"] }
+          meta: { roles: ["admin"] }
         },
         {
           path: 'admin/teams',
           name: 'settings-admin-teams',
           component: Teams,
-          meta: { roles: ["manager", "admin"] }
+          meta: { roles: ["admin"] }
         }
 
       ]
@@ -186,17 +187,17 @@ const router = createRouter({
         {
           path: 'give',
           name: 'feedback-give',
-          component: () => import('@/views/feedback/Give.vue')
+          component: Give
         },
         {
           path: 'give/success',
           name: 'feedback-give-success',
-          component: () => import('@/views/feedback/GiveSuccess.vue')
+          component: GiveSuccess
         },
         {
           path: 'request',
           name: 'feedback-request',
-          component: () => import('@/views/feedback/Request.vue'),
+          component: Request,
           meta: { roles: ["member", "manager", "admin"] }
         },
       ]
@@ -204,7 +205,7 @@ const router = createRouter({
     {
       path: '/error',
       name: 'error',
-      component: () => import('@/views/Error.vue'),
+      component: Error,
     },
   ],
 });

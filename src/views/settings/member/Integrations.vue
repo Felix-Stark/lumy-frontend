@@ -85,6 +85,7 @@ const triggerAsana = () => {
 };
 const disconnectAsana = async () => {
     const res = await api.post('/integrations/asana/disconnect');
+    console.log('disconnect asana res: ', res);
     if(res.status === 200) {
         toastText.value = 'Asana integration disconnected successfully'
         toastBg.value = 'bg-lumy-green'

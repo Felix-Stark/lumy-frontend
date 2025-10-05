@@ -1,8 +1,8 @@
 <template>
 	<div v-if="employee" class="w-full flex">
 		<div class="flex items-center relative">
-            <button @click="resetEmployee()" class="absolute rounded-full bg-white -top-1 -left-1">
-                <X class="text-gray-600 size-2" />
+            <button @click="resetEmployee()" class="absolute rounded-full bg-white top-0 left-0 cursor-pointer">
+                <X class="text-gray-600 size-3" />
             </button>
             <img
 				v-if="employee.avatar"
@@ -79,7 +79,7 @@
 						<tr
 						v-for="skill in summary?.skills_summary"
 						:key="skill.skill_id"
-						class="hover:bg-gray-50 cursor-pointer"
+						class="hover:bg-gray-50 "
 						@click="selectedSkill(skill)"
 						>
 							<td class="px-6 py-4">{{ skill.name }}</td>
@@ -163,8 +163,8 @@ function resetEmployee() {
 }
 
 function selectedSkill(skill: SkillSummary) {
-	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push({ name: 'skill-overview' });
+	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+	// router.push({ name: 'skill-overview' });
 }
 
 const avgSentChart = computed(() => {

@@ -47,7 +47,7 @@ export const useAdminStore = defineStore("admin", () => {
     };
     async function getEmployeeSummary(userId: number) {
         try {
-            const res = await api.get('/me/summary?user_id='+userId);
+            const res = await api.get(`/me/summary?user_id=${userId}`);
             if(res.status === 200) {
                 employeeSummary.value = res.data;
             }

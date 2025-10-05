@@ -1,7 +1,7 @@
 <template>
 	<div v-if="employee" class="w-full flex">
 		<div class="flex items-center relative">
-            <button @click="resetEmployee()" class="absolute top-1 left-2">
+            <button @click="resetEmployee()" class="absolute top-0 left-0">
                 <X class="text-gray-600" />
             </button>
             <img

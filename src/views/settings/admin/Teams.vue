@@ -94,7 +94,7 @@ const isOpen = ref(false)
 const query = ref('');
 const success = ref(false);
 const loading = ref(false)
-const users = computed<User[]>(() => userStore.users)
+const users = ref<User[]>([])
 const error = ref('')
 const showError = ref(false)
 
@@ -173,8 +173,8 @@ async function assign(user: User) {
             if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}
 
             if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) }
-            userStore.users = [...userStore.users, user]
-            success.value = true;
+            console.log('user: ', user);
+            console.log('oldUser: ', oldUser)
         }
         
         console.log('manager id: ', selectedManager.value?.id);

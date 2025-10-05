@@ -13,7 +13,7 @@
     <Dialog :open="isOpen" @close="() => isOpen = false" class="relative z-50">
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
 		<div class="fixed inset-0 flex w-screen items-center justify-center p-4">
-			<DialogPanel class="w-full flex flex-col gap-6 max-w-lg max-h-150 rounded-lg bg-white p-8">
+			<DialogPanel class="w-full flex flex-col gap-6 max-w-lg max-h-150 overflow-auto rounded-lg bg-white p-8">
 				<DialogTitle class="text-2xl font-semibold">Manage direct reports for: {{ selectedManager?.name }}</DialogTitle>
 				<DialogDescription>
 				    Set which employees report to this manager

@@ -212,9 +212,7 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach((to, from, next) => {
-  const store = useAuthStore();
   const errorStore = useErrorStore();
-  const rawLoggedIn = sessionStorage.getItem('loggedin')
   const raw = sessionStorage.getItem('LumyRole');
   const role: string = raw ? JSON.parse(raw) : null;
   const allowedRoles = to.meta.roles as string[] | undefined;
@@ -240,9 +238,6 @@ router.beforeEach((to, from, next) => {
     );
     return next({ name: 'error' });
   }
-
-
-
 
   if(to.path === null) {
     const code = 404;

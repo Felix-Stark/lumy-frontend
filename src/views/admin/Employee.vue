@@ -1,8 +1,8 @@
 <template>
 	<div v-if="employee" class="w-full flex">
 		<div class="flex items-center relative">
-            <button @click="resetEmployee()" class="absolute top-0 -left-2">
-                <X class="text-gray-600" />
+            <button @click="resetEmployee()" class="absolute rounded-full bg-white -top-1 -left-3">
+                <X class="text-gray-600 text-sm" />
             </button>
             <img
 				v-if="employee.avatar"

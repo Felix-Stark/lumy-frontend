@@ -115,7 +115,7 @@ import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
-import type { Skill, SkillSummary, User, UserSummary } from '@/types';
+import type { Skill, SkillSummary, TeamUser, User, UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useAdminStore } from '@/stores/adminStore';
 Chart.register(...registerables);
@@ -130,14 +130,14 @@ const summary = ref<UserSummary | null>();
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
-		return JSON.parse(raw) as Partial<User>;
+		return JSON.parse(raw) as Partial<TeamUser>;
 	} else return null
 });
 const showSuccess = ref(false);
 
 onMounted(async() => {
 	if(employee.value !== null) {
-		await adminStore.getEmployeeSummary(employee.value.id!)
+		await adminStore.getEmployeeSummary(employee.value.user_id!)
 		summary.value = adminStore.employeeSummary
 	}
 });

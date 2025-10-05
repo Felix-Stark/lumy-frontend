@@ -1,7 +1,9 @@
 <template>
 	<div v-if="employee" class="w-full flex">
 		<div class="flex items-center relative">
-            <button @click="resetEmployee()" class="absolute top-1 left-2">{{ X }}</button>
+            <button @click="resetEmployee()" class="absolute top-1 left-2">
+                <X class="text-gray-600" />
+            </button>
             <img
 				v-if="employee.avatar"
 				:src="employee.avatar"

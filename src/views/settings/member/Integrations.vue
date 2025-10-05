@@ -18,9 +18,9 @@
         @connect="triggerAsana()"
         @disconnect="disconnectAsana()"
         >
-            <p>Trigger feedback automatically when tasks or projects are finished</p>
-            <p>Identify strong collaborators from assignees, followers, and project members</p>
-            <p>No access to task descriptions or private comments</p>
+            <p class="text-center">Trigger feedback automatically when tasks or projects are finished</p>
+            <p class="text-center">Identify strong collaborators from assignees, followers, and project members</p>
+            <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
     </section>
     <BaseToast
@@ -46,6 +46,7 @@ const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
+const asanaToastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
 const asanaLink = ref<string>()
@@ -74,10 +75,8 @@ onMounted(async () => {
         asanaLink.value = asanaOauth.data.authorize_url
     }
     } catch (error) {
-        console.error('Error fetching Google Calendar status:', error);
-        toastText.value = 'There was an error connecting Google Calendar';
-        toastBg.value = 'bg-lumy-danger';
-        showToast.value = true;
+        console.error('Error fetching integration status:', error);
+        
     }
 });
 
@@ -86,6 +85,9 @@ const triggerAsana = () => {
 };
 const disconnectAsana = async () => {
     const res = await api.post('/integrations/asana/disconnect');
+    if(res.status === 200) {
+        toastText.value = 'Asana integration disconnected'
+    }
 }
 
 const triggerGoogle = () => {

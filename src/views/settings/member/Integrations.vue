@@ -15,8 +15,8 @@
         :img="AsanaImg"
         title="Asana"
         :connected="asanaConnected"
-        @connect="triggerGoogle()"
-        @disconnect="disconnectGoogle()"
+        @connect="triggerAsana()"
+        @disconnect="disconnectAsana()"
         >
             <p>Trigger feedback automatically when tasks or projects are finished</p>
             <p>Identify strong collaborators from assignees, followers, and project members</p>

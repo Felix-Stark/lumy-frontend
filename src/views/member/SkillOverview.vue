@@ -105,9 +105,6 @@ onMounted(async() => {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
                 console.log('skill overview data: ', response.data);
-            } else {
-                errorStore.setError({ code: response.status, detail: response.statusText || 'Failed to fetch skill overview' });
-                router.push({name:'error'});
             }
         } else {
             router.push({name:'member-overview'});

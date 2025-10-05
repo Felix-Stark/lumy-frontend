@@ -84,7 +84,6 @@ const users = computed(() => adminStore.teamUsers)
 onMounted(async () => {
   await adminStore.getTeamSummary();
   await adminStore.getTeamUsers();
-  console.log('teamUsers: ', adminStore.teamUsers)
 
   let progress = 0;
     const duration = 1000; // 1 second animation
@@ -121,7 +120,6 @@ function selectedEmployee(user: Partial<User>) {
 const lineData = computed(() => {
   const months = adminStore.teamSummary?.submitted_per_month.map(m => m.month) || [];
   const counts = adminStore.teamSummary?.submitted_per_month.map(m => m.count) || [];
-  console.log('months + counts: ', months, counts)
   return {
     labels: months,
     datasets: [

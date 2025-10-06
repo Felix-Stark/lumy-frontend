@@ -84,7 +84,7 @@ import { Annoyed, Frown, Smile } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useErrorStore } from '@/stores/errorStore';
 import Card from '@/components/feedback/Card.vue';
-import RequestModal from '../feedback/RequestModal.vue';
+import RequestModal from '@/components/feedback/RequestModal.vue';
 
 const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();

@@ -1,6 +1,5 @@
 <template>
     <BaseModal :isOpen="true" :onClose="handleClose">
-        <div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw] lg:w-[60vw]">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>
@@ -68,18 +67,7 @@
             :onAction="sendReq"
             />
         </div>
-    </div>
     </BaseModal>
-    <!-- <BaseDialog
-        :isOpen="showSuccess"
-        :imgPath="LumySuccess"
-        title="Feedback Request Sent!"
-        message="Your feedback request has been successfully sent. Thank you for helping us improve our skills!"
-        btnText="Back to Dashboard"
-        :onAction="handleClose"
-        @close="handleClose"
-    /> -->
-    
 </template>
 
 <script setup lang="ts">

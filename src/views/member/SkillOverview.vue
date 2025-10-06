@@ -4,6 +4,7 @@
         <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
             :onAction="() => showReqModal = true"
+            btnText="Request feedback"
         />
     </section>
     <section v-if="skillOv?.skill_stale" class="w-full p-8 flex justify-center items-center bg-lumy-danger rounded-lg shadow-md"><div class="rounded-full border-2 mr-2 flex justify-center items-center border-white font-semibold size-6 text-white text-lg">!</div><p class="text-white">It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>

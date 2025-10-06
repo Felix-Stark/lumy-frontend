@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw] lg:w-[60vw]">
+    <BaseModal :isOpen="true" :onClose="handleClose">
+        <div class="flex flex-col p-4 rounded-2xl bg-white drop-shadow-xl w-full min-h-[80vh] md:p-10 md:w-[75vw] lg:w-[60vw]">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>
@@ -68,7 +69,8 @@
             />
         </div>
     </div>
-    <BaseDialog
+    </BaseModal>
+    <!-- <BaseDialog
         :isOpen="showSuccess"
         :imgPath="LumySuccess"
         title="Feedback Request Sent!"
@@ -76,7 +78,8 @@
         btnText="Back to Dashboard"
         :onAction="handleClose"
         @close="handleClose"
-    />
+    /> -->
+    
 </template>
 
 <script setup lang="ts">
@@ -89,13 +92,13 @@ import {
   } from '@headlessui/vue'
 import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
-import BaseDialog from '@/components/base/BaseDialog.vue';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
 import { ref, onMounted, computed, watch } from 'vue';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 import type { SkillSummary, User } from '@/types';
 import { ChevronDown, Check, ArrowLeft } from 'lucide-vue-next';
+import BaseModal from '../base/BaseModal.vue';
 
 const router = useRouter();
 

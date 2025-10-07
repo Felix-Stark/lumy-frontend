@@ -1,7 +1,7 @@
 <template>
     <RequestModal :isOpen="showReqModal" @close="showReqModal = false" />
     <section class="flex justify-between items-center mb-6 w-full">
-        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal">{{ formatName(activeSkill.name) }}</span></h1>
+        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
             :onAction="() => showReqModal = true"
             btnText="Request feedback"
@@ -214,5 +214,9 @@ const avgSentOptions = {
     }
   }
 };
+
+onUnmounted(() => {
+    sessionStorage.removeItem('selectedSkill');
+})
 
 </script>

@@ -1,5 +1,21 @@
 <template>
     <section class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+       <section v-if="loading" class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+            <!-- skeletons -->
+            <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+                <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+                </div>
+                <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+                <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+            </div>
+        </section>
+
         <IntegrationCard
         :img="GoogleCal"
         title="Google"
@@ -41,15 +57,13 @@ import api from '@/services/api.ts';
 
 const route = useRoute();
 const apiUrl = import.meta.env.VITE_API_URL as string;
-
-const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
-const asanaToastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
 const asanaLink = ref<string>()
+const loading = ref(true);
 
 onMounted(async () => {
     try {
@@ -77,6 +91,8 @@ onMounted(async () => {
     } catch (error) {
         console.error('Error fetching integration status:', error);
         
+    } finally {
+        loading.value = false;
     }
 });
 
@@ -107,7 +123,7 @@ const disconnectGoogle = async () => {
     try {
         const res = await api.delete('/integrations/google');
         if (res.status === 200) {
-            isConnected.value = false;
+            googleConnected.value = false;
             toastText.value = 'Google Calendar disconnected successfully';
             toastBg.value = 'bg-lumy-green';
             showToast.value = true;

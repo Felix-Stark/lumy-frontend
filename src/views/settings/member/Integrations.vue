@@ -1,5 +1,4 @@
 <template>
-    <section class="grid grid-cols-2 auto-rows-fr w-full gap-8">
        <section v-if="loading" class="grid grid-cols-2 auto-rows-fr w-full gap-8">
             <!-- skeletons -->
             <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
@@ -45,7 +44,6 @@
             <p class="text-center">No access to task descriptions or private comments</p>
             </IntegrationCard>
         </section>
-    </section>
     <BaseToast
     :text="toastText"
     :bgClass="toastBg"

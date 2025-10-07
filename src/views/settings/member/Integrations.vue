@@ -16,28 +16,35 @@
             </div>
         </section>
 
-        <IntegrationCard
-        :img="GoogleCal"
-        title="Google"
-        :connected="googleConnected"
-        @connect="triggerGoogle()"
-        @disconnect="disconnectGoogle()"
-        >
+        <section v-else class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+            <IntegrationCard
+            :img="GoogleCal"
+            title="Google"
+            :connected="googleConnected"
+            @connect="triggerGoogle()"
+            @disconnect="disconnectGoogle()"
+            >
             <p>Trigger feedback after regular meeting interactions</p>
             <p>Skip users who are marked as OOO automatically</p>
             <p>No access to meeting content or private notes</p>
-        </IntegrationCard>
-        <IntegrationCard
-        :img="AsanaImg"
-        title="Asana"
-        :connected="asanaConnected"
-        @connect="triggerAsana()"
-        @disconnect="disconnectAsana()"
-        >
-            <p class="text-center">Trigger feedback automatically when tasks or projects are finished</p>
-            <p class="text-center">Identify strong collaborators from assignees, followers, and project members</p>
+            </IntegrationCard>
+
+            <IntegrationCard
+            :img="AsanaImg"
+            title="Asana"
+            :connected="asanaConnected"
+            @connect="triggerAsana()"
+            @disconnect="disconnectAsana()"
+            >
+            <p class="text-center">
+                Trigger feedback automatically when tasks or projects are finished
+            </p>
+            <p class="text-center">
+                Identify strong collaborators from assignees, followers, and project members
+            </p>
             <p class="text-center">No access to task descriptions or private comments</p>
-        </IntegrationCard>
+            </IntegrationCard>
+        </section>
     </section>
     <BaseToast
     :text="toastText"

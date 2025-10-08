@@ -44,15 +44,13 @@
         <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
     </section>
-    <div class="flex w-full justify-center">
-        <BaseToast
-        :text="toastText"
-        :bgClass="toastBg"
-        :show="showToast"
-        @close="showToast = false"
-        :duration="3000"
-        />
-    </div>
+    <BaseToast
+    :text="toastText"
+    :bgClass="toastBg"
+    :show="showToast"
+    @close="showToast = false"
+    :duration="3000"
+    />
 </template>
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';

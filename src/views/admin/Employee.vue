@@ -1,8 +1,8 @@
 <template>
-	<div v-if="employee" class="w-full flex items-center mb-8 gap-4">
+	<div v-if="employee" class="absolute top-8 left-4 flex items-center mb-8 gap-4">
             <button @click="resetEmployee()" class="px-4 py-2 cursor-pointer">
-				<span class="flex items-center gap-4 p-2 text-gray-500 hover:text-gray-700">
-					<ChevronLeft class="size-4" />
+				<span class="flex items-center gap-4 text-sm text-gray-500 hover:text-gray-700">
+					<ChevronLeft class="size-3" />
 					Go back
 				</span>				
             </button>
@@ -118,7 +118,7 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronRight, Heart, X } from 'lucide-vue-next';
+import { ChevronLeft, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';

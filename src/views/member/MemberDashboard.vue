@@ -122,13 +122,17 @@ defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const userStore = useUserStore();
-const summary = ref<UserSummary | null>();
-const showSuccess = ref(false);
-
+const summary = computed<UserSummary | null>(() => userStore.meSummary);
+const loading = ref(true);
 onMounted(async() => {
-	await userStore.getMeSummary();
-	summary.value = userStore.meSummary;
-})
+	try {
+		await userStore.getMeSummary();
+	} catch (err:any) {
+		console.error('Error fetching user summary:', err);
+	} finally {
+		loading.value = false;
+	}
+});
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));

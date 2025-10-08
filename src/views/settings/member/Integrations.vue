@@ -81,9 +81,9 @@ onMounted(async () => {
         const rawMsg = route.query.message as string;
         toastText.value = rawMsg.replace(/_/g, ' ');
         toastBg.value = 'bg-lumy-danger';
-        showToast.value = true;
-        
+        showToast.value = true;   
     }
+    
     const googleRes = await api.get('/integrations/google');
     googleConnected.value = await googleRes.data.connected;
 
@@ -97,6 +97,13 @@ onMounted(async () => {
         console.error('Error fetching integration status:', error);
         
     } finally {
+        if (route.params.includesion === 'asana=connected') {
+            toastText.value = 'Asana connected successfully';
+            toastBg.value = 'bg-lumy-green';
+            showToast.value = true;
+            loading.value = false;
+            return;
+        }
         loading.value = false;
     }
 });

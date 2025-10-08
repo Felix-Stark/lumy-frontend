@@ -3,7 +3,7 @@
     <div
       v-if="show"
       :class="[
-        'fixed bottom-8 mx-auto px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
+        'fixed bottom-8 left-0 right-0 px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
         bgClass
       ]"
       role="alert"

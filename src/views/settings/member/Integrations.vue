@@ -1,56 +1,58 @@
 <template>
-       <section v-if="loading" class="grid grid-cols-2 auto-rows-fr w-full gap-8">
-            <!-- skeletons -->
-            <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
-                <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
-                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
-                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-            </div>
-            <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
-                <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
-                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
-                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-            </div>
-        </section>
+    <section v-if="loading" class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+        <!-- skeletons -->
+        <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+            <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+        <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+            <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+    </section>
 
-        <section v-else class="grid grid-cols-2 auto-rows-fr w-full gap-8">
-            <IntegrationCard
-            :img="GoogleCal"
-            title="Google"
-            :connected="googleConnected"
-            @connect="triggerGoogle()"
-            @disconnect="disconnectGoogle()"
-            >
-            <p>Trigger feedback after regular meeting interactions</p>
-            <p>Skip users who are marked as OOO automatically</p>
-            <p>No access to meeting content or private notes</p>
-            </IntegrationCard>
+    <section v-else class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+        <IntegrationCard
+        :img="GoogleCal"
+        title="Google"
+        :connected="googleConnected"
+        @connect="triggerGoogle()"
+        @disconnect="disconnectGoogle()"
+        >
+        <p>Trigger feedback after regular meeting interactions</p>
+        <p>Skip users who are marked as OOO automatically</p>
+        <p>No access to meeting content or private notes</p>
+        </IntegrationCard>
 
-            <IntegrationCard
-            :img="AsanaImg"
-            title="Asana"
-            :connected="asanaConnected"
-            @connect="triggerAsana()"
-            @disconnect="disconnectAsana()"
-            >
-            <p class="text-center">
-                Trigger feedback automatically when tasks or projects are finished
-            </p>
-            <p class="text-center">
-                Identify strong collaborators from assignees, followers, and project members
-            </p>
-            <p class="text-center">No access to task descriptions or private comments</p>
-            </IntegrationCard>
-        </section>
-    <BaseToast
-    :text="toastText"
-    :bgClass="toastBg"
-    :show="showToast"
-    @close="showToast = false"
-    :duration="3000"
-    />
+        <IntegrationCard
+        :img="AsanaImg"
+        title="Asana"
+        :connected="asanaConnected"
+        @connect="triggerAsana()"
+        @disconnect="disconnectAsana()"
+        >
+        <p class="text-center">
+            Trigger feedback automatically when tasks or projects are finished
+        </p>
+        <p class="text-center">
+            Identify strong collaborators from assignees, followers, and project members
+        </p>
+        <p class="text-center">No access to task descriptions or private comments</p>
+        </IntegrationCard>
+    </section>
+    <div class="flex w-full justify-center">
+        <BaseToast
+        :text="toastText"
+        :bgClass="toastBg"
+        :show="showToast"
+        @close="showToast = false"
+        :duration="3000"
+        />
+    </div>
 </template>
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';

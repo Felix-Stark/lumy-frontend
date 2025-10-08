@@ -33,12 +33,12 @@ function signInWithSlack() {
 	window.location.href = slackOauthUrl;
 }
 onMounted(async() => {
-	await authStore.getSession();
-	if (authStore.session?.authenticated && authStore.session?.user.role === 'member') {
-		router.push({ name: 'member-overview'});
-	} else {
-		router.push({ name: 'admin-overview'});
-	}
+	// await authStore.getSession();
+	// if (authStore.session?.authenticated && authStore.session?.user.role === 'member') {
+	// 	router.push({ name: 'member-overview'});
+	// } else {
+	// 	router.push({ name: 'admin-overview'});
+	// }
 })
 
 </script>

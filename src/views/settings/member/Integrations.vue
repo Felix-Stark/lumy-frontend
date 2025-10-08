@@ -6,8 +6,8 @@
                 <div class="h-4 bg-gray-200 rounded w-1/2"></div>
                 <div class="h-4 bg-gray-200 rounded w-3/4"></div>
                 <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-                </div>
-                <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+            </div>
+            <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
                 <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
                 <div class="h-4 bg-gray-200 rounded w-1/2"></div>
                 <div class="h-4 bg-gray-200 rounded w-3/4"></div>
@@ -49,6 +49,7 @@
     :bgClass="toastBg"
     :show="showToast"
     @close="showToast = false"
+    :duration="3000"
     />
 </template>
 <script setup lang="ts">

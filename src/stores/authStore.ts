@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import api from "..//services/api";
 import { useUserStore } from "./userStore";
-import type { SetupAccount } from "@/types";
+import type { SetupAccount, Session } from "@/types";
 import { useErrorStore } from "./errorStore";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -9,8 +9,21 @@ export const useAuthStore = defineStore("auth", {
     isAdmin: false,
     accountId: null as string | null,
     setupAccount: loadSetupAccount(),
+    session: null as Session | null,
   }),
   actions: {
+    async getSession() {
+      try {
+        const res = await api.get('/session');
+        if (res.status === 200) {
+          this.session = res.data;
+          sessionStorage.setItem("LumyRole", JSON.stringify(this.session?.user.role));
+          sessionStorage.setItem("loggedin", "true");
+        }
+      } catch (err:any) {
+        console.error('Error fetching session: ', err);
+      }
+    },
     async loginSlack(code: string) {
       let path = "";
       try {

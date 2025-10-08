@@ -1,7 +1,6 @@
 <template>
-	<div v-if="employee" class="w-full flex">
-		<div class="flex items-center gap-4 mb-8">
-            <button @click="resetEmployee()" class="absolute cursor-pointer">
+	<div v-if="employee" class="w-full flex items-center mb-8 gap-4">
+            <button @click="resetEmployee()" class="px-4 py-2 cursor-pointer">
 				<span class="flex items-center gap-4 p-2 text-gray-500 hover:text-gray-700">
 					<ChevronLeft class="size-4" />
 					Go back
@@ -18,7 +17,6 @@
 				<span class="text-gray-500">No Image</span>
 			</div>
             <p class="text-lg text-gray-600">{{ formatName(employee.name!) }}</p>
-        </div>
 	</div>
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard

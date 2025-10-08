@@ -182,15 +182,7 @@ onMounted(async () => {
 	} catch (error: any) {
 		console.error('Error fetching request info:', error);
 		if (error.response && error.response.status == 403) {
-			errorStore.setError({
-				code: error.response?.status || 500,
-				detail: error.response?.data?.detail || 'An error occurred while fetching the request info.'
-			})
-		} else {
-			errorStore.setError({
-				code: 500,
-				detail: 'An unexpected error occurred.'
-			})
+			
 		}
 		router.push({ name: 'error' })
 	}

@@ -1,12 +1,12 @@
 <template>
-	<div v-if="employee" class="absolute top-8 left-4 flex items-center mb-8 gap-4">
-            <button @click="resetEmployee()" class="px-4 py-2 cursor-pointer">
-				<span class="flex items-center gap-4 text-sm text-gray-500 hover:text-gray-700">
+	<div v-if="employee" class="absolute top-8 left-4 flex items-center mb-8">
+            <button @click="resetEmployee()" class="p-2 mr-4 cursor-pointer">
+				<span class="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
 					<ChevronLeft class="size-3" />
 					Go back
 				</span>				
             </button>
-            <div v-if="employee.avatar" class="p-1 bg-white shadow-lg rounded-full">
+            <div v-if="employee.avatar" class="p-1 bg-white shadow-lg rounded-full mr-4">
 				<img
 				:src="employee.avatar"
 				alt="User Avatar"

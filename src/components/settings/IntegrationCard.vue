@@ -14,7 +14,7 @@
                 <Unlink class="w-4 h-4 stroke-3 text-gray-500 mr-1"/>
                 <p class="text-lumy-danger">Not connected</p>
             </div>
-            <div class="flex space-x-4 mt-6">
+            <div class="flex items-center space-x-4 mt-6">
                 <button v-if="connected === true" @click="$emit('disconnect')" class="flex items-center space-x-2 px-4 py-2 bg-lumy-secondary opacity-70 text-white text-sm rounded-lg cursor-pointer">
                     Disconnect
                 </button>

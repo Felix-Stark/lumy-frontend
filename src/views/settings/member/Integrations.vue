@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';
 import AsanaImg from '@/assets/images/asana.png';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import BaseToast from '@/components/base/BaseToast.vue';
 import IntegrationCard from '@/components/settings/IntegrationCard.vue';
@@ -97,16 +97,22 @@ onMounted(async () => {
         console.error('Error fetching integration status:', error);
         
     } finally {
-        if (route.params.includesion === 'asana=connected') {
-            toastText.value = 'Asana connected successfully';
-            toastBg.value = 'bg-lumy-green';
-            showToast.value = true;
-            loading.value = false;
-            return;
-        }
+        
         loading.value = false;
     }
 });
+
+watch(
+  () => route.query.asana,
+  (val) => {
+    if (String(val) === 'connected') {
+      toastText.value = 'Asana connected successfully';
+      toastBg.value = 'bg-lumy-green';
+      showToast.value = true;
+    }
+  },
+  { immediate: true }
+);
 
 const triggerAsana = () => {
     loading.value = true;

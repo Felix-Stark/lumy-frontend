@@ -102,6 +102,7 @@ onMounted(async () => {
 });
 
 const triggerAsana = () => {
+    loading.value = true;
     window.open(asanaLink.value, '_self');
 };
 const disconnectAsana = async () => {
@@ -120,6 +121,7 @@ const disconnectAsana = async () => {
 }
 
 const triggerGoogle = () => {
+    loading.value = true;
     window.open(apiUrl + 'integrations/google/start',
   '_self');
 };

@@ -34,8 +34,10 @@ function signInWithSlack() {
 }
 onMounted(async() => {
 	await authStore.getSession();
-	if (authStore.session?.authenticated) {
+	if (authStore.session?.authenticated && authStore.session?.user.role === 'member') {
 		router.push({ name: 'member-overview'});
+	} else {
+		router.push({ name: 'admin-overview'});
 	}
 })
 

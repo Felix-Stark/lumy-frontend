@@ -5,7 +5,7 @@
         <div class="flex flex-col justify-center items-center mt-4 font-normal text-sm space-y-1">
             <slot />
         </div>
-        <div class="flex flex-col items bg-center">
+        <div class="flex flex-col items-center">
             <div v-if="connected === true" class="flex">
                 <Link class="w-4 h-4 stroke-3 text-gray-500 mr-1" />
                 <p class="text-lumy-green">Connected</p>

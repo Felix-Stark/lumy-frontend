@@ -1,19 +1,23 @@
 <template>
 	<div v-if="employee" class="w-full flex">
-		<div class="flex items-center relative">
-            <button @click="resetEmployee()" class="absolute rounded-full bg-white top-0 left-0 cursor-pointer">
-                <X class="text-gray-600 size-3" />
+		<div class="flex items-center gap-4 mb-8">
+            <button @click="resetEmployee()" class="absolute cursor-pointer">
+				<span class="flex items-center gap-4 p-2 text-gray-500 hover:text-gray-700">
+					<ChevronLeft class="size-4" />
+					Go back
+				</span>				
             </button>
-            <img
-				v-if="employee.avatar"
+            <div v-if="employee.avatar" class="p-1 bg-white shadow-lg rounded-full">
+				<img
 				:src="employee.avatar"
 				alt="User Avatar"
 				class="w-12 h-12 rounded-full object-cover"
 			/>
+			</div>
 			<div v-else class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
 				<span class="text-gray-500">No Image</span>
 			</div>
-            <p class="text-lg text-gray-600">Summary of {{ formatName(employee.name!) }}</p>
+            <p class="text-lg text-gray-600">{{ formatName(employee.name!) }}</p>
         </div>
 	</div>
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">

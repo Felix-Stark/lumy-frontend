@@ -1,5 +1,5 @@
 <template>
-	<DashSkeleton v-if="loading" :isOpen="loading" />
+	<DashSkeleton v-if="loading === true" :isOpen="loading" />
 	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
@@ -105,6 +105,7 @@
 </template>
 
 <script setup lang="ts">
+import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'

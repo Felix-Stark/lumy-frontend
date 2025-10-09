@@ -1,5 +1,5 @@
 <template>
-    <RequestModal :isOpen="showReqModal" @close="showReqModal = false" />
+    <RequestModal v-if="showReqModal === true" @close="closeModal" />
     <section class="flex justify-between items-center mb-6 w-full">
         <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
@@ -70,10 +70,17 @@
         :sentiment="feedback?.sentiment"
         />
     </section>
+    <BaseToast 
+    :text="toastText" 
+    :show="showToast" 
+    :bgClass="toastBg"
+    :duration="3000"
+    />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseToast from '@/components/base/BaseToast.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { SkillSummary, SkillOverview, FeedbackSubmission } from '@/types';
 import { Line, Bar } from 'vue-chartjs';
@@ -91,12 +98,14 @@ const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
 Chart.register(...registerables);
 const router = useRouter();
-
+const toastText = ref('');
+const showToast = ref(false);
+const toastBg = ref('bg-lumy-green')
 const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
 const feedbackList = ref<FeedbackSubmission[]>();
-const showReqModal = ref<boolean>();
+const showReqModal = ref<boolean>(false);
 const skillOv = ref<SkillOverview | null>(null);
 
 onMounted(async() => {
@@ -106,7 +115,6 @@ onMounted(async() => {
             if (response.status === 200) {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
-                console.log('skill overview data: ', response.data);
             }
         } else {
             router.push({name:'member-overview'});
@@ -116,6 +124,12 @@ onMounted(async() => {
         router.push('/member/overview');
     }
 });
+
+function closeModal() {
+    showReqModal.value = false;
+    toastText.value = 'Feedback request sent!';
+    showToast.value = true;
+}
 
 const skillSent = computed(() => {
     const total = skillOv.value?.submission_counts.total || 0;

@@ -1,5 +1,5 @@
 <template>
-    <BaseModal :isOpen="show" :onClose="handleClose">
+    <BaseModal :isOpen="showModal" :onClose="handleClose">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>
@@ -90,7 +90,7 @@ import BaseModal from '../base/BaseModal.vue';
 
 const router = useRouter();
 
-const show = ref(true);
+const showModal = ref(true);
 const message = ref('');
 const users = ref<User[]>([]);
 const showSuccess = ref(false);
@@ -151,7 +151,7 @@ const sendReq = async () => {
         console.error('Error sending feedback request:', error);
     } finally {
         showSuccess.value = true;
-        show.value = false
+        showModal.value = false
         message.value = '';
         selectedUsers.value = [];
     }

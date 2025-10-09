@@ -1,5 +1,5 @@
 <template>
-    <RequestModal :isOpen="showReqModal" @close="showReqModal = false" />
+    <RequestModal v-if="showReqModal === true" @close="showReqModal = false" />
     <section class="flex justify-between items-center mb-6 w-full">
         <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
@@ -96,7 +96,7 @@ const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
 const feedbackList = ref<FeedbackSubmission[]>();
-const showReqModal = ref<boolean>();
+const showReqModal = ref<boolean>(false);
 const skillOv = ref<SkillOverview | null>(null);
 
 onMounted(async() => {

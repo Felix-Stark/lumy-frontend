@@ -115,7 +115,6 @@ onMounted(async() => {
             if (response.status === 200) {
                 skillOv.value = response.data;
                 feedbackList.value = response.data.feedback_received;
-                console.log('skill overview data: ', response.data);
             }
         } else {
             router.push({name:'member-overview'});

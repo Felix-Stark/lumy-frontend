@@ -57,8 +57,8 @@
                     >
                         <ListboxOption
                         v-for="tz in timezones"
-                        :key="tz"
-                        :value="tz"
+                        :key="tz.value"
+                        :value="tz.value"
                         class="cursor-pointer"
                         v-slot="{ active, selected }"
                         >
@@ -68,7 +68,7 @@
                             { 'bg-purple-50': active }
                             ]"
                         >
-                            <span class="flex-1">{{ tz }}</span>
+                            <span class="flex-1">{{ tz.region }} -> {{ tz.city }}</span>
                             <CheckIcon v-show="selected" class="text-lumy-purple" />
                         </li>
                         </ListboxOption>
@@ -158,7 +158,7 @@ const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const selectedTimezone = ref<string>('');
-const timezones = ref<string[]>([]);
+const timezones = ref<{region: string; city: string; value: string;}[]>([]);
 const loading = ref(true);
 
 onMounted(async () => {
@@ -173,9 +173,10 @@ onMounted(async () => {
 
         // Populate available timezones
         if (typeof Intl.supportedValuesOf === 'function') {
-        timezones.value = Intl.supportedValuesOf('timeZone');
-        } else {
-        timezones.value = ["UTC", "Europe/Stockholm", "America/New_York"]; // fallback
+            timezones.value = Intl.supportedValuesOf("timeZone").map((tz) => {
+                const [region, city] = tz.split("/");
+                return { region, city, value: tz };
+            });
         }
 
         const res = await api.get('/bot-personalities');

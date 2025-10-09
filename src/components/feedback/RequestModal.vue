@@ -1,5 +1,5 @@
 <template>
-    <BaseModal :isOpen="show" :onClose="handleClose">
+    <BaseModal :is-open="show" show :onClose="handleClose">
 		<header class="w-full mb-10">
 			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
 		</header>

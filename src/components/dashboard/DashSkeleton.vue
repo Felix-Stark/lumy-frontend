@@ -1,10 +1,6 @@
 <template>
     <div v-if="isOpen === true" class="animate-pulse p-4 w-full lg:my-20 flex flex-col">
-        <div class="flex items-center mb-8 gap-4">
-            <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-            <div class="h-6 bg-gray-300 rounded w-1/4"></div>
-        </div>
-        <div class="grid grid-cols-2 gap-6 mb-6">
+    <div class="grid grid-cols-2 gap-6 mb-6">
       <div class="flex items-center gap-4 p-6 bg-white rounded-lg shadow animate-pulse">
         <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
         <div class="flex-1">

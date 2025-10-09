@@ -20,11 +20,11 @@ import Teams from '@/views/settings/admin/Teams.vue';
 import Employee from '@/views/admin/Employee.vue';
 import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
-import Request from '@/views/feedback/Request.vue';
 import Error from '@/views/Error.vue';
 
 const router = createRouter({
   history: createWebHistory(),
+  scrollBehavior: () => ({ top:0 }),
   routes: [
     {
       path: '/',
@@ -193,12 +193,6 @@ const router = createRouter({
           path: 'give/success',
           name: 'feedback-give-success',
           component: GiveSuccess
-        },
-        {
-          path: 'request',
-          name: 'feedback-request',
-          component: Request,
-          meta: { roles: ["member", "manager", "admin"] }
         },
       ]
     },

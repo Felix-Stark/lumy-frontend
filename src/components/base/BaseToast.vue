@@ -1,9 +1,9 @@
 <template>
-  <transition name="fade">
+  <transition name="slide">
     <div
       v-if="show"
       :class="[
-        'fixed bottom-8 px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
+        'fixed bottom-8 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded shadow-lg text-white z-50 transition-all',
         bgClass
       ]"
       role="alert"

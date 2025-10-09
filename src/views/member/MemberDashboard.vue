@@ -1,4 +1,6 @@
 <template>
+	<DashSkeleton v-if="loading" :isOpen="loading" />
+	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
@@ -99,6 +101,7 @@
 				<Line :data="feedbackChart" :options="feedbackChartOptions" />
 			</div>
 		</section>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -122,13 +125,17 @@ defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const userStore = useUserStore();
-const summary = ref<UserSummary | null>();
-const showSuccess = ref(false);
-
+const summary = computed<UserSummary | null>(() => userStore.meSummary);
+const loading = ref(true);
 onMounted(async() => {
-	await userStore.getMeSummary();
-	summary.value = userStore.meSummary;
-})
+	try {
+		await userStore.getMeSummary();
+	} catch (err:any) {
+		console.error('Error fetching user summary:', err);
+	} finally {
+		loading.value = false;
+	}
+});
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));

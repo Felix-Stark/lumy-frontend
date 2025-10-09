@@ -17,7 +17,9 @@
 import { useRouter } from 'vue-router';
 import lumyLogo from '@/assets/images/lumy.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
-
+import { onMounted } from 'vue';
+import { useAuthStore } from '@/stores/authStore.ts';
+const authStore = useAuthStore();
 const clientId = import.meta.env.VITE_SLACK_CLIENT_ID;
 const redirectUri = import.meta.env.VITE_SLACK_REDIRECT_URI;
 // Construct the Slack OAuth URL
@@ -30,5 +32,13 @@ function signInWithSlack() {
 	// Redirect to Slack OAuth URL
 	window.location.href = slackOauthUrl;
 }
+onMounted(async() => {
+	// await authStore.getSession();
+	// if (authStore.session?.authenticated && authStore.session?.user.role === 'member') {
+	// 	router.push({ name: 'member-overview'});
+	// } else {
+	// 	router.push({ name: 'admin-overview'});
+	// }
+})
 
 </script>

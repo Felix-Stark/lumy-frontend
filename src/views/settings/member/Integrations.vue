@@ -1,5 +1,21 @@
 <template>
-    <section class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+    <section v-if="loading" class="grid grid-cols-2 auto-rows-fr w-full gap-8">
+        <!-- skeletons -->
+        <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+            <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+        <div class="animate-pulse flex flex-col gap-4 p-6 bg-white rounded-xl shadow">
+            <div class="h-12 w-12 bg-gray-200 rounded-full"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+    </section>
+
+    <section v-else class="grid grid-cols-2 auto-rows-fr w-full gap-8">
         <IntegrationCard
         :img="GoogleCal"
         title="Google"
@@ -7,10 +23,11 @@
         @connect="triggerGoogle()"
         @disconnect="disconnectGoogle()"
         >
-            <p>Trigger feedback after regular meeting interactions</p>
-            <p>Skip users who are marked as OOO automatically</p>
-            <p>No access to meeting content or private notes</p>
+        <p>Trigger feedback after regular meeting interactions</p>
+        <p>Skip users who are marked as OOO automatically</p>
+        <p>No access to meeting content or private notes</p>
         </IntegrationCard>
+
         <IntegrationCard
         :img="AsanaImg"
         title="Asana"
@@ -18,9 +35,13 @@
         @connect="triggerAsana()"
         @disconnect="disconnectAsana()"
         >
-            <p class="text-center">Trigger feedback automatically when tasks or projects are finished</p>
-            <p class="text-center">Identify strong collaborators from assignees, followers, and project members</p>
-            <p class="text-center">No access to task descriptions or private comments</p>
+        <p class="text-center">
+            Trigger feedback automatically when tasks or projects are finished
+        </p>
+        <p class="text-center">
+            Identify strong collaborators from assignees, followers, and project members
+        </p>
+        <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
     </section>
     <BaseToast
@@ -28,12 +49,13 @@
     :bgClass="toastBg"
     :show="showToast"
     @close="showToast = false"
+    :duration="3000"
     />
 </template>
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';
 import AsanaImg from '@/assets/images/asana.png';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import BaseToast from '@/components/base/BaseToast.vue';
 import IntegrationCard from '@/components/settings/IntegrationCard.vue';
@@ -41,15 +63,13 @@ import api from '@/services/api.ts';
 
 const route = useRoute();
 const apiUrl = import.meta.env.VITE_API_URL as string;
-
-const isConnected = ref(false);
 const showToast = ref(false);
 const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
-const asanaToastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
 const asanaLink = ref<string>()
+const loading = ref(true);
 
 onMounted(async () => {
     try {
@@ -62,9 +82,9 @@ onMounted(async () => {
         const rawMsg = route.query.message as string;
         toastText.value = rawMsg.replace(/_/g, ' ');
         toastBg.value = 'bg-lumy-danger';
-        showToast.value = true;
-        
+        showToast.value = true;   
     }
+    
     const googleRes = await api.get('/integrations/google');
     googleConnected.value = await googleRes.data.connected;
 
@@ -77,10 +97,26 @@ onMounted(async () => {
     } catch (error) {
         console.error('Error fetching integration status:', error);
         
+    } finally {
+        
+        loading.value = false;
     }
 });
 
+watch(
+  () => route.query.asana,
+  (val) => {
+    if (String(val) === 'connected') {
+      toastText.value = 'Asana connected successfully';
+      toastBg.value = 'bg-lumy-green';
+      showToast.value = true;
+    }
+  },
+  { immediate: true }
+);
+
 const triggerAsana = () => {
+    loading.value = true;
     window.open(asanaLink.value, '_self');
 };
 const disconnectAsana = async () => {
@@ -99,6 +135,7 @@ const disconnectAsana = async () => {
 }
 
 const triggerGoogle = () => {
+    loading.value = true;
     window.open(apiUrl + 'integrations/google/start',
   '_self');
 };
@@ -107,7 +144,7 @@ const disconnectGoogle = async () => {
     try {
         const res = await api.delete('/integrations/google');
         if (res.status === 200) {
-            isConnected.value = false;
+            googleConnected.value = false;
             toastText.value = 'Google Calendar disconnected successfully';
             toastBg.value = 'bg-lumy-green';
             showToast.value = true;

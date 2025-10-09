@@ -1,9 +1,10 @@
 <template>
+    <RequestModal :isOpen="showReqModal" @close="showReqModal = false" />
     <section class="flex justify-between items-center mb-6 w-full">
-        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal">{{ formatName(activeSkill.name) }}</span></h1>
+        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
-            :onAction="() => router.push({ name: 'feedback-request' })"
-            btnText="Request Feedback"
+            :onAction="() => showReqModal = true"
+            btnText="Request feedback"
         />
     </section>
     <section v-if="skillOv?.skill_stale" class="w-full p-8 flex justify-center items-center bg-lumy-danger rounded-lg shadow-md"><div class="rounded-full border-2 mr-2 flex justify-center items-center border-white font-semibold size-6 text-white text-lg">!</div><p class="text-white">It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>
@@ -84,6 +85,7 @@ import { Annoyed, Frown, Smile } from 'lucide-vue-next';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useErrorStore } from '@/stores/errorStore';
 import Card from '@/components/feedback/Card.vue';
+import RequestModal from '@/components/feedback/RequestModal.vue';
 
 const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
@@ -94,7 +96,7 @@ const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
 const feedbackList = ref<FeedbackSubmission[]>();
-
+const showReqModal = ref<boolean>();
 const skillOv = ref<SkillOverview | null>(null);
 
 onMounted(async() => {
@@ -212,5 +214,9 @@ const avgSentOptions = {
     }
   }
 };
+
+onUnmounted(() => {
+    sessionStorage.removeItem('selectedSkill');
+})
 
 </script>

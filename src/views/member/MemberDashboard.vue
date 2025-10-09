@@ -105,6 +105,7 @@
 </template>
 
 <script setup lang="ts">
+import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'

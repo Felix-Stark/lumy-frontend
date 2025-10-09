@@ -63,6 +63,7 @@ import {
     Combobox,
     ComboboxInput,
   } from '@headlessui/vue';
+import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
 import { XCircleIcon } from 'lucide-vue-next';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';

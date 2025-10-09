@@ -144,11 +144,8 @@ import { useUserStore } from '@/stores/userStore';
 import { useAccountStore } from '@/stores/accountStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
-// import testBots from '@/test/mockBotFrameworks.json';
-// import testFrameworks from '@/test/mockFeedbackFrameworks.json';
-// import testAccount from '@/test/mockAccount.json';
+
 const accountStore = useAccountStore();
-const userStore = useUserStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
 const toastBg = ref('bg-green-500')

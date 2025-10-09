@@ -41,6 +41,41 @@
                 </Listbox>
 
             </div>
+            <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
+                <p class="font-thin py-2 text-sm">Timezone</p>
+                <Listbox v-model="selectedTimezone">
+                    <Float placement="bottom-start" :flip="true" :offset="4">
+                    <ListboxButton
+                        class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white"
+                    >
+                        <span>{{ selectedTimezone || 'Select timezone' }}</span>
+                        <ChevronDown class="ml-2 size-4" />
+                    </ListboxButton>
+
+                    <ListboxOptions
+                        class="w-full max-h-48 xl:max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10"
+                    >
+                        <ListboxOption
+                        v-for="tz in timezones"
+                        :key="tz"
+                        :value="tz"
+                        class="cursor-pointer"
+                        v-slot="{ active, selected }"
+                        >
+                        <li
+                            :class="[
+                            'flex items-center px-4 py-2',
+                            { 'bg-purple-50': active }
+                            ]"
+                        >
+                            <span class="flex-1">{{ tz }}</span>
+                            <CheckIcon v-show="selected" class="text-lumy-purple" />
+                        </li>
+                        </ListboxOption>
+                    </ListboxOptions>
+                    </Float>
+                </Listbox>
+            </div>
             <hr class="text-gray-300" />
             <h1 class="font-thin text-2xl text-gray-500">
                 Bot settings
@@ -122,12 +157,27 @@ const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
-
+const selectedTimezone = ref<string>('');
+const timezones = ref<string[]>([]);
+const loading = ref(true);
 
 onMounted(async () => {
     try {
         await accountStore.getAccount();
         companyName.value = accountStore.account?.name || '';
+
+        // Preselect timezone from account or user’s current
+        selectedTimezone.value =
+        accountStore.account?.timezone ||
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Populate available timezones
+        if (typeof Intl.supportedValuesOf === 'function') {
+        timezones.value = Intl.supportedValuesOf('timeZone');
+        } else {
+        timezones.value = ["UTC", "Europe/Stockholm", "America/New_York"]; // fallback
+        }
+
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
             botPersonalities.value = res.data;
@@ -151,7 +201,8 @@ async function saveSettings() {
        const updated = await accountStore.updateAccount({
             name: companyName.value,
             framework_id: selectedFramework.value,
-            bot_personality_id: selectedBot.value
+            bot_personality_id: selectedBot.value,
+            timezone: selectedTimezone.value
         });
         if(updated) {
             toastText.value = 'Settings saved!';

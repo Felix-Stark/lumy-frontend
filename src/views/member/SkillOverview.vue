@@ -1,5 +1,5 @@
 <template>
-    <RequestModal v-if="showReqModal === true" @close="showReqModal = false" />
+    <RequestModal v-if="showReqModal === true" @close="closeModal" />
     <section class="flex justify-between items-center mb-6 w-full">
         <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
         <BaseButton
@@ -70,10 +70,17 @@
         :sentiment="feedback?.sentiment"
         />
     </section>
+    <BaseToast 
+    :text="toastText" 
+    :show="showToast" 
+    :bgClass="toastBg"
+    :duration="3000"
+    />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
+import BaseToast from '@/components/base/BaseToast.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type { SkillSummary, SkillOverview, FeedbackSubmission } from '@/types';
 import { Line, Bar } from 'vue-chartjs';
@@ -91,7 +98,9 @@ const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
 Chart.register(...registerables);
 const router = useRouter();
-
+const toastText = ref('');
+const showToast = ref(false);
+const toastBg = ref('bg-lumy-green')
 const activeSkill = computed<SkillSummary>(() => {
     return JSON.parse(sessionStorage.getItem('selectedSkill') || '{}');
 });
@@ -116,6 +125,12 @@ onMounted(async() => {
         router.push('/member/overview');
     }
 });
+
+function closeModal() {
+    showReqModal.value = false;
+    toastText.value = 'Feedback request sent!';
+    showToast.value = true;
+}
 
 const skillSent = computed(() => {
     const total = skillOv.value?.submission_counts.total || 0;

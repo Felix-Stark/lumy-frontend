@@ -1,4 +1,6 @@
 <template>
+	<DashSkeleton v-if="loading === true" :isOpen="loading" />
+	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
 	<div v-if="employee" class="absolute top-8 left-4 flex items-center mb-8">
             <button @click="resetEmployee()" class="p-2 mr-4 cursor-pointer">
 				<span class="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
@@ -115,6 +117,7 @@
 				<Line :data="feedbackChart" :options="feedbackChartOptions" />
 			</div>
 		</section>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -139,6 +142,7 @@ const router = useRouter();
 const userStore = useUserStore();
 const adminStore = useAdminStore();
 const summary = ref<UserSummary | null>();
+const loading = ref(true);
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
@@ -147,9 +151,15 @@ const employee = computed(() => {
 });
 
 onMounted(async() => {
-	if(employee.value !== null) {
+	try {
+		if(employee.value !== null) {
 		await adminStore.getEmployeeSummary(employee.value.user_id!)
 		summary.value = adminStore.employeeSummary
+		} 
+	} catch (err: any) {
+		console.error('Error fetching employee summary: ', err)
+	} finally {
+		loading.value = false;
 	}
 });
 onUnmounted(() => {

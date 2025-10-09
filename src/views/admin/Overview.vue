@@ -1,4 +1,6 @@
 <template>
+	<DashSkeleton v-if="loading === true" :isOpen="loading" />
+	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
   <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
     <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
@@ -53,6 +55,7 @@
       />
     </div>
   </section>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -74,6 +77,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 Chart.register(...registerables);
+const loading = ref(true);
 const adminStore = useAdminStore();
 const constructiveAverageRounded = computed(() =>
   Math.round(adminStore.teamSummary?.constructive_feedback_average ?? 0)
@@ -82,9 +86,14 @@ const currentPercentage = ref(0);
 const positiveSentiments = computed(() => adminStore.teamSummary?.positive_feedback_percentage || 0);
 const users = computed(() => adminStore.teamUsers)
 onMounted(async () => {
-  await adminStore.getTeamSummary();
-  await adminStore.getTeamUsers();
-
+  try {
+    await adminStore.getTeamSummary();
+    await adminStore.getTeamUsers();
+  } catch (err:any) {
+    console.error('Error loading admin overview data: ', err);
+  } finally {
+    loading.value = false;
+  }
   let progress = 0;
     const duration = 1000; // 1 second animation
     const step = 16; // ~60fps

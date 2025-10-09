@@ -90,7 +90,7 @@ import BaseModal from '../base/BaseModal.vue';
 
 const router = useRouter();
 
-const showModal = ref(false);
+const showModal = ref(true);
 const message = ref('');
 const users = ref<User[]>([]);
 const showSuccess = ref(false);

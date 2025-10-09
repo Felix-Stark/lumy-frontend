@@ -68,7 +68,7 @@
                             { 'bg-purple-50': active }
                             ]"
                         >
-                            <span class="flex-1">{{ tz.region }} -> {{ tz.city }}</span>
+                            <span class="flex-1">{{ tz.label }}</span>
                             <CheckIcon v-show="selected" class="text-lumy-purple" />
                         </li>
                         </ListboxOption>
@@ -157,27 +157,87 @@ const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
-const selectedTimezone = ref<string>('');
-const timezones = ref<{region: string; city: string; value: string;}[]>([]);
 const loading = ref(true);
+// List of curated IANA timezones you want to support
+const curatedTimeZones = [
+  "Europe/Lisbon",
+  "Europe/London",
+  "Europe/Stockholm",
+  "Europe/Berlin",
+  "Europe/Paris",
+  "Europe/Madrid",
+  "Europe/Helsinki",
+  "Europe/Athens",
+  "Europe/Istanbul",
+  "Europe/Moscow",
+  "America/Los_Angeles",
+  "America/Denver",
+  "America/Chicago",
+  "America/New_York",
+  "America/Puerto_Rico",
+  "America/Argentina/Buenos_Aires",
+  "America/Sao_Paulo",
+  "America/Santiago",
+  "Africa/Accra",
+  "Africa/Lagos",
+  "Africa/Cairo",
+  "Africa/Johannesburg",
+  "Africa/Nairobi",
+  "Asia/Riyadh",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Almaty",
+  "Asia/Bangkok",
+  "Asia/Singapore",
+  "Asia/Hong_Kong",
+  "Asia/Tokyo",
+  "Australia/Adelaide",
+  "Australia/Sydney",
+  "Pacific/Auckland",
+];
+
+interface TimezoneOption {
+  label: string;
+  value: string;
+}
+
+const timezones = ref<TimezoneOption[]>([]);
+const selectedTimezone = ref<string>("");
+
+// Utility: get offset string like (UTC+02:00)
+function getOffset(tz: string): string {
+  const now = new Date();
+  const tzDate = new Date(
+    now.toLocaleString("en-US", { timeZone: tz })
+  );
+  const diffMinutes = (tzDate.getTime() - now.getTime()) / 60000;
+
+  const totalMinutes = diffMinutes + now.getTimezoneOffset();
+  const sign = totalMinutes >= 0 ? "+" : "-";
+  const hours = String(Math.floor(Math.abs(totalMinutes) / 60)).padStart(2, "0");
+  const minutes = String(Math.abs(totalMinutes) % 60).padStart(2, "0");
+
+  return `(UTC${sign}${hours}:${minutes})`;
+}
+
+function buildTimezoneOptions() {
+  return curatedTimeZones.map((tz) => {
+    const city = tz.split("/").pop()?.replace("_", " ") || tz;
+    return {
+      label: `${getOffset(tz)} ${city}`,
+      value: tz,
+    };
+  });
+}
 
 onMounted(async () => {
     try {
         await accountStore.getAccount();
         companyName.value = accountStore.account?.name || '';
 
-        // Preselect timezone from account or user’s current
-        selectedTimezone.value =
-        accountStore.account?.timezone ||
-        Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-        // Populate available timezones
-        if (typeof Intl.supportedValuesOf === 'function') {
-            timezones.value = Intl.supportedValuesOf("timeZone").map((tz) => {
-                const [region, city] = tz.split("/");
-                return { region, city, value: tz };
-            });
-        }
+        timezones.value = buildTimezoneOptions();
+        // Default to current system timezone
+        selectedTimezone.value = accountStore.account?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
@@ -194,6 +254,8 @@ onMounted(async () => {
         toastText.value = error?.response?.data?.detail || 'Could not load settings';
         toastBg.value = 'bg-red-500';
         showToast.value = true;
+    } finally {
+        loading.value = false;
     }
 })
 

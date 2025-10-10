@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="flex items-center gap-5">
-            <div v-if="avgSent" :class="['px-4 py-2 rounded-full', avgSent === 'positive' ? 'bg-lumy-green' : avgSent === 'mixed' || 'neutral' ? 'bg-lumy-neutral-light' : 'bg-lumy-danger']">
+            <div v-if="avgSent" :class="['px-4 py-2 rounded-lg', avgSent === 'positive' ? 'bg-lumy-green' : avgSent === 'mixed' || 'neutral' ? 'bg-lumy-neutral-light' : 'bg-lumy-danger']">
                 <p class="text-white text-sm">{{ avgSent }}</p>
             </div>
             <ChevronRight class="text-gray-600 text-lg" />

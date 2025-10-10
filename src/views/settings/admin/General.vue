@@ -56,7 +56,7 @@
                         class="w-full max-h-48 xl:max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10"
                     >
                         <ListboxOption
-                        v-for="tz in timezones"
+                        v-for="tz in timezoneOptions"
                         :key="tz.value"
                         :value="tz.value"
                         class="cursor-pointer"
@@ -144,6 +144,7 @@ import { useUserStore } from '@/stores/userStore';
 import { useAccountStore } from '@/stores/accountStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
+import { buildTimezoneOptions } from '@/utils/timezones';
 
 const accountStore = useAccountStore();
 const showToast = ref(false)
@@ -156,7 +157,7 @@ const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const loading = ref(true);
 // List of curated IANA timezones you want to support
-const curatedTimeZones = [
+const curated = [
   "Europe/Lisbon",
   "Europe/London",
   "Europe/Stockholm",
@@ -193,48 +194,20 @@ const curatedTimeZones = [
   "Pacific/Auckland",
 ];
 
-interface TimezoneOption {
+interface TZOption {
   label: string;
   value: string;
 }
 
-const timezones = ref<TimezoneOption[]>([]);
-const selectedTimezone = ref<string>("");
-
-// Utility: get offset string like (UTC+02:00)
-function getOffset(tz: string): string {
-  const now = new Date();
-  const tzDate = new Date(
-    now.toLocaleString("en-US", { timeZone: tz })
-  );
-  const diffMinutes = (tzDate.getTime() - now.getTime()) / 60000;
-
-  const totalMinutes = diffMinutes + now.getTimezoneOffset();
-  const sign = totalMinutes >= 0 ? "+" : "-";
-  const hours = String(Math.floor(Math.abs(totalMinutes) / 60)).padStart(2, "0");
-  const minutes = String(Math.abs(totalMinutes) % 60).padStart(2, "0");
-
-  return `(UTC${sign}${hours}:${minutes})`;
-}
-
-function buildTimezoneOptions() {
-  return curatedTimeZones.map((tz) => {
-    const city = tz.split("/").pop()?.replace("_", " ") || tz;
-    return {
-      label: `${getOffset(tz)} ${city}`,
-      value: tz,
-    };
-  });
-}
+const timezoneOptions = ref<TZOption[]>([]);
+const selectedTimezone = ref<string>();
 
 onMounted(async () => {
     try {
         await accountStore.getAccount();
         companyName.value = accountStore.account?.name || '';
 
-        timezones.value = buildTimezoneOptions();
-        // Default to current system timezone
-        selectedTimezone.value = accountStore.account?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezoneOptions.value = buildTimezoneOptions(curated);
 
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {

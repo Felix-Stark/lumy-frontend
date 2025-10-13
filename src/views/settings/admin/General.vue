@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col justify-between w-full bg-white p-8 mb-14 rounded-xl shadow-md">
+    <div class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
         <article class="flex flex-col gap-8 md:w-1/2 relative">
             <h1 class="font-thin text-2xl text-gray-500">
                 General settings

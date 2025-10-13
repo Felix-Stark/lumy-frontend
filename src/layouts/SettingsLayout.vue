@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center gap-6 w-full min-h-[90vh] lg:w-4/5">
+    <div class="flex flex-col items-center gap-6 w-full min-h-[90vh] mt-20 mb-20 lg:w-4/5">
         <NavUtility />
         <SettingsNav />
         <main class="w-full">

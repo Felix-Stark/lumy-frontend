@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-col justify-between w-full bg-white p-8  rounded-xl shadow-md">
+    <SettingsIntelligence v-if="loading" />
+    <div v-else class="flex flex-col justify-between w-full bg-white p-8  rounded-xl shadow-md">
         <article class="flex flex-col gap-8 md:w-1/2">
             <h1 class="font-thin text-2xl text-gray-500">Feedback helpers</h1>
             <div class="flex flex-col pl-8 pb-6 border-l border-gray-300">
@@ -113,17 +114,24 @@ const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
 const btnText = ref('Save Settings');
 const ngp = ref(0);
+const loading = ref (true);
 
 
 onMounted(async () => {
-    await accountStore.getAccount();
-    if (accountStore.account) {
-        toggleCoaching.value = accountStore.account.intelligence_coach;
-        toggleSuggestions.value = accountStore.account.intelligence_assistant;
-        selectedFrequency.value = accountStore.account.nudge_interval_weeks;
-        selectedDay.value = accountStore.account.nudge_weekday;
-        selectedHour.value = accountStore.account.nudge_hour;
-        ngp.value = accountStore.account.nudge_grace_period;
+    try {
+        await accountStore.getAccount();
+        if (accountStore.account) {
+            toggleCoaching.value = accountStore.account.intelligence_coach;
+            toggleSuggestions.value = accountStore.account.intelligence_assistant;
+            selectedFrequency.value = accountStore.account.nudge_interval_weeks;
+            selectedDay.value = accountStore.account.nudge_weekday;
+            selectedHour.value = accountStore.account.nudge_hour;
+            ngp.value = accountStore.account.nudge_grace_period;
+        }
+    } catch (err: any) {
+        console.error('Error fetching data for intelligence: ', err);
+    } finally {
+        loading.value = false;
     }
 })
 

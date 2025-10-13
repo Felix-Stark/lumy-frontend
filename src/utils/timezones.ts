@@ -58,10 +58,11 @@ function formatOffsetLabel(mins: number) {
 
 export function buildTimezoneOptions(timeZones: string[]): TZOption[] {
   const now = new Date();
-  return timeZones.map((tz) => {
+  const options = timeZones.map((tz) => {
     const mins = offsetMinutesFor(tz, now);
     const city = tz.split("/").pop()?.replace("_", " ") ?? tz;
     const label = `${formatOffsetLabel(mins)} ${city}`;
     return { label, value: tz };
-  });
+  }).sort((a, b) => a.label.localeCompare(b.label));
+  return options;
 }

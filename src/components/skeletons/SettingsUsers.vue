@@ -13,8 +13,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -27,8 +27,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -41,8 +41,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -55,8 +55,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -69,8 +69,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -83,8 +83,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -97,8 +97,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -111,8 +111,8 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
+        <hr class="my-2 mb-2 border-gray-200 w-full">
         <div class="flex items-center w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
@@ -125,7 +125,6 @@
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
                 <div class="h-6 w-12 bg-gray-200 rounded"></div>
             </div>
-            <hr class="my-2 mb-2 border-gray-200 w-full">
         </div>
     </div>
 </template>

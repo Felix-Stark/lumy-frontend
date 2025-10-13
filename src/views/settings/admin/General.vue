@@ -197,6 +197,7 @@ const curated = [
 interface TZOption {
   label: string;
   value: string;
+  zones: string[];
 }
 
 const timezoneOptions = ref<TZOption[]>([]);
@@ -207,7 +208,7 @@ onMounted(async () => {
         await accountStore.getAccount();
         companyName.value = accountStore.account?.name || '';
 
-        timezoneOptions.value = buildTimezoneOptions(curated);
+        timezoneOptions.value = buildTimezoneOptions();
 
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {

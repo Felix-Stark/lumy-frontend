@@ -1,5 +1,6 @@
 <template>
-    <div class="w-full grid grid-cols-3 auto-rows-fr gap-8">
+    <SettingsTeams v-if="initLoading" />
+    <div v-else class="w-full grid grid-cols-3 auto-rows-fr gap-8">
         <TeamCard
         v-for="m in adminStore.managers"
         :avatar="m.manager.avatar"
@@ -80,6 +81,7 @@ import {
 	} from '@headlessui/vue'
 import { ref, computed, onMounted, watch } from 'vue';
 import TeamCard from '@/components/settings/TeamCard.vue';
+import SettingsTeams from '@/components/skeletons/SettingsTeams.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { useAdminStore } from '@/stores/adminStore';
 import { useUserStore } from '@/stores/userStore';
@@ -97,11 +99,18 @@ const loading = ref(false)
 const users = ref<User[]>([])
 const error = ref('')
 const showError = ref(false)
+const initLoading = ref(true)
 
 onMounted( async() => {
-    await adminStore.getManagers();
-    await userStore.getUsers(false);
-    users.value = userStore.users;
+    try {
+        await adminStore.getManagers();
+        await userStore.getUsers(false);
+        users.value = userStore.users;
+    } catch (err:any) {
+        console.error('Error fetching users or managers in Settings Teams: ', err);
+    } finally {
+        initLoading.value = false;
+    }
 })
 
 const sortedFilteredUsers = computed<User[]>(() => {

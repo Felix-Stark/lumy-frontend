@@ -99,10 +99,9 @@
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
-import { Float } from '@headlessui-float/vue'
-
+import SettingsIntelligence from '@/components/skeletons/SettingsIntelligence.vue';
 import { ref, onMounted, watch } from 'vue';
-import { Switch, Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
+import { Switch } from '@headlessui/vue'
 import { useAccountStore } from '@/stores/accountStore';
 
 const accountStore = useAccountStore();
@@ -112,7 +111,6 @@ const toggleSuggestions = ref(false);
 const showToast = ref(false);
 const toastText = ref('Settings saved successfully!');
 const toastBg = ref('bg-lumy-green');
-const btnText = ref('Save Settings');
 const ngp = ref(0);
 const loading = ref (true);
 

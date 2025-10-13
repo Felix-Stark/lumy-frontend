@@ -209,7 +209,7 @@ onMounted(async () => {
         companyName.value = accountStore.account?.name || '';
 
         timezoneOptions.value = buildTimezoneOptions();
-
+        if( timezoneOptions.value.length > 0) console.log('tz options: ', timezoneOptions.value);
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
             botPersonalities.value = res.data;

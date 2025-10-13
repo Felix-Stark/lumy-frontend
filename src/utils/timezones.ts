@@ -27,34 +27,34 @@ export function buildTimezoneOptions() {
   const groups: Record<string, string[]> = {};
 
   for (const tz of timezones) {
-    // Get local time in that timezone
-    const date = new Date(now.toLocaleString("en-GB", { timeZone: tz }));
-    const offsetMinutes = (date.getTime() - now.getTime()) / 60000;
-    const totalMinutes = Math.round(offsetMinutes);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = Math.abs(totalMinutes % 60);
-    const sign = totalMinutes >= 0 ? "+" : "-";
+    // Use Intl.DateTimeFormat to get the timezone offset reliably
+    const fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz,
+      timeZoneName: "shortOffset",
+    });
+    const parts = fmt.formatToParts(now);
+    const offsetPart = parts.find(p => p.type === "timeZoneName")?.value || "";
+
+    // Parse offset (e.g. "GMT+2", "UTC-05:00", etc.)
+    const match = offsetPart.match(/([+-]\d{1,2})(?::?(\d{2}))?/);
+    const hours = match ? parseInt(match[1], 10) : 0;
+    const minutes = match ? parseInt(match[2] || "0", 10) : 0;
+    const sign = hours >= 0 ? "+" : "-";
     const offsetLabel = `UTC${sign}${String(Math.abs(hours)).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 
     if (!groups[offsetLabel]) groups[offsetLabel] = [];
     groups[offsetLabel].push(tz);
   }
 
-  // Convert groups into nice readable labels
   const options = Object.entries(groups)
     .map(([offset, zones]) => {
-      // Extract city names (the part after the last slash)
       const cityNames = zones.map((z) => z.split("/").pop()?.replace(/_/g, " ") || z);
-
-      // Take up to 3 unique city names
       const shownCities = Array.from(new Set(cityNames)).slice(0, 3);
-
-      // Build label like: "UTC+01:00 — Stockholm, Berlin, Paris"
       const label = `${offset} — ${shownCities.join(", ")}`;
 
       return {
         label,
-        value: zones[0], // pick the first timezone as representative
+        value: zones[0],
         zones,
       };
     })
@@ -62,4 +62,3 @@ export function buildTimezoneOptions() {
 
   return options;
 }
-

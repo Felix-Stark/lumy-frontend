@@ -156,43 +156,6 @@ const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const loading = ref(true);
-// List of curated IANA timezones you want to support
-const curated = [
-  "Europe/Lisbon",
-  "Europe/London",
-  "Europe/Stockholm",
-  "Europe/Berlin",
-  "Europe/Paris",
-  "Europe/Madrid",
-  "Europe/Helsinki",
-  "Europe/Athens",
-  "Europe/Istanbul",
-  "Europe/Moscow",
-  "America/Los_Angeles",
-  "America/Denver",
-  "America/Chicago",
-  "America/New_York",
-  "America/Puerto_Rico",
-  "America/Argentina/Buenos_Aires",
-  "America/Sao_Paulo",
-  "America/Santiago",
-  "Africa/Accra",
-  "Africa/Lagos",
-  "Africa/Cairo",
-  "Africa/Johannesburg",
-  "Africa/Nairobi",
-  "Asia/Riyadh",
-  "Asia/Dubai",
-  "Asia/Kolkata",
-  "Asia/Almaty",
-  "Asia/Bangkok",
-  "Asia/Singapore",
-  "Asia/Hong_Kong",
-  "Asia/Tokyo",
-  "Australia/Adelaide",
-  "Australia/Sydney",
-  "Pacific/Auckland",
-];
 
 interface TZOption {
   label: string;

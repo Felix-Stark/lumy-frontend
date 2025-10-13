@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center w-full h-[80vh] bg-white rounded-xl shadow-md p-8">
         <div class="h-6 w-full bg-gray-200 mt-4"></div>
-        <div class="flex items-center w-full mb-4">
+        <div class="flex items-center justify-between w-full mb-4">
             <div class="flex items-center gap-4 p-2">
                 <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"></div>
                 <div class="flex flex-col">

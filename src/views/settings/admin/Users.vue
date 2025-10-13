@@ -96,7 +96,7 @@ onMounted(async() => {
     } catch (err:any) {
       console.error('Error fetching users in Settings Users: ', err);
     } finally {
-      loading.value = false;
+      initLoading.value = false;
     }
 })
 const patching = ref<Record<number, boolean>>({}); // store loading state per user

@@ -48,7 +48,7 @@
                     <ListboxButton
                         class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white"
                     >
-                        <span>{{ selectedTimezone || 'Select timezone' }}</span>
+                        <span>{{ selectedTimezone || accountStore.account?.timezone || 'Select timezone' }}</span>
                         <ChevronDown class="ml-2 size-4" />
                     </ListboxButton>
 

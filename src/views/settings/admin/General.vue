@@ -48,7 +48,7 @@
                     <ListboxButton
                         class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white"
                     >
-                        <span>{{ selectedTimezone || accountStore.account?.timezone || 'Select timezone' }}</span>
+                        <span>{{ selectedTimezone || 'Select timezone' }}</span>
                         <ChevronDown class="ml-2 size-4" />
                     </ListboxButton>
 
@@ -172,6 +172,7 @@ onMounted(async () => {
         companyName.value = accountStore.account?.name || '';
 
         timezoneOptions.value = buildTimezoneOptions();
+        selectedTimezone.value = accountStore.account?.timezone || 'Select timezone';
         if( timezoneOptions.value.length > 0) console.log('tz options: ', timezoneOptions.value);
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {

@@ -75,7 +75,7 @@ export function buildTimezoneOptions() {
     const hours = match ? parseInt(match[1], 10) : 0;
     const minutes = match ? parseInt(match[2] || "0", 10) : 0;
     const sign = hours >= 0 ? "+" : "-";
-    const offsetLabel = `UTC${sign}${String(Math.abs(hours)).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    const offsetLabel = `UTC ${sign}${String(Math.abs(hours)).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 
     if (!groups[offsetLabel]) groups[offsetLabel] = [];
     groups[offsetLabel].push(tz);

@@ -1,75 +1,80 @@
 <template>
     <RequestModal v-if="showReqModal === true" @close="closeModal" />
-    <section class="flex justify-between items-center mb-6 w-full">
-        <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
-        <BaseButton
-            :onAction="() => showReqModal = true"
-            btnText="Request feedback"
-        />
-    </section>
-    <section v-if="skillOv?.skill_stale" class="w-full p-8 flex justify-center items-center bg-lumy-danger rounded-lg shadow-md"><div class="rounded-full border-2 mr-2 flex justify-center items-center border-white font-semibold size-6 text-white text-lg">!</div><p class="text-white">It's been a while since you showed this skill some love — go request some fresh feedback!</p></section>
-    <section class="w-full bg-white p-8 xl:p-12 text-gray-800 rounded-lg shadow-md">
-        <p class="text-xl font-gray-600">{{ skillOv?.skill_definition }}</p>
-    </section>
-    <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg shadow-md">
-        <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-        <div class="w-full">
-            <Line :data="avgSentChart" :options="avgSentOptions" />
-        </div>
-    </section>
-    <section class="flex flex-col justify-center items-center gap-4 w-full 2xl:flex-row bg-white p-8 xl:p-12 rounded-lg shadow-md">
-        <div class="w-full h-12">
-            <Bar :data="sentOvData" :options="sentOvOptions" />
-        </div>
-        <div class="flex">
-            <div class="flex flex-col items-center mx-4">
-                <p class="font-thin">
-                    Negative
-                </p>
-                <div class="flex">
-                    <Frown :class="['text-lumy-danger-light size-6']" />
-                    <p class="font-thin text-lg text-gray ml-2">{{ skillSent.negSent }}</p>
+    <SkillSkeleton v-if="initLoading" />
+    <div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
+        <section class="flex justify-between items-center  w-full">
+            <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
+            <BaseButton
+                :onAction="() => showReqModal = true"
+                btnText="Request feedback"
+            />
+        </section>
+        <section v-if="skillOv?.skill_stale" class="w-full p-8 flex justify-center items-center bg-lumy-danger rounded-lg shadow-md">
+            <div class="rounded-full border-2 mr-2 flex justify-center items-center border-white font-semibold size-6 text-white text-lg">!</div><p class="text-white">It's been a while since you showed this skill some love — go request some fresh feedback!</p>
+        </section>
+        <section class="w-full bg-white p-8 xl:p-12 text-gray-800 rounded-lg shadow-md">
+            <p class="text-xl font-gray-600">{{ skillOv?.skill_definition }}</p>
+        </section>
+        <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg shadow-md">
+            <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+            <div class="w-full">
+                <Line :data="avgSentChart" :options="avgSentOptions" />
+            </div>
+        </section>
+        <section class="flex flex-col justify-center items-center gap-4 w-full 2xl:flex-row bg-white p-8 xl:p-12 rounded-lg shadow-md">
+            <div class="w-full h-12">
+                <Bar :data="sentOvData" :options="sentOvOptions" />
+            </div>
+            <div class="flex">
+                <div class="flex flex-col items-center mx-4">
+                    <p class="font-thin">
+                        Negative
+                    </p>
+                    <div class="flex">
+                        <Frown :class="['text-lumy-danger-light size-6']" />
+                        <p class="font-thin text-lg text-gray ml-2">{{ skillSent.negSent }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col items-center mx-4">
-                <p class="font-thin">
-                    Neutral
-                </p>
-                <div class="flex">
-                    <Annoyed :class="['text-lumy-neutral-light size-6']" />
-                    <p class="font-thin text-lg text-gray ml-2">{{ skillSent.neuSent }}</p>
+                <div class="flex flex-col items-center mx-4">
+                    <p class="font-thin">
+                        Neutral
+                    </p>
+                    <div class="flex">
+                        <Annoyed :class="['text-lumy-neutral-light size-6']" />
+                        <p class="font-thin text-lg text-gray ml-2">{{ skillSent.neuSent }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-col items-center mx-4">
-                <p class="font-thin">
-                    Positive
-                </p>
-                <div class="flex">
-                    <Smile :class="['text-lumy-green-light size-6']" />
-                    <p class="font-thin text-lg text-gray ml-2">{{ skillSent.posSent }}</p>
+                <div class="flex flex-col items-center mx-4">
+                    <p class="font-thin">
+                        Positive
+                    </p>
+                    <div class="flex">
+                        <Smile :class="['text-lumy-green-light size-6']" />
+                        <p class="font-thin text-lg text-gray ml-2">{{ skillSent.posSent }}</p>
+                    </div>
                 </div>
+                <div class="flex flex-col items-center mx-4">
+                    <p class="font-thin">
+                        Total
+                    </p>
+                    <p class="font-thin text-lg text-gray">{{ skillSent.total }}</p>
+                </div>
+                
             </div>
-            <div class="flex flex-col items-center mx-4">
-                <p class="font-thin">
-                    Total
-                </p>
-                <p class="font-thin text-lg text-gray">{{ skillSent.total }}</p>
-            </div>
-            
-        </div>
-    </section>
-    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
-        <div v-if="feedbackList?.length === 0" class="text-gray-500">No feedback available.</div>
-        <Card v-else v-for="feedback in feedbackList"
-        :id="feedback?.id"
-        :content="feedback?.content"
-        :img="feedback?.feedback_request?.recipient.avatar"
-        :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
-        :skill="feedback?.feedback_request?.skill.skill"
-        :created_at="feedback?.created_at"
-        :sentiment="feedback?.sentiment"
-        />
-    </section>
+        </section>
+        <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
+            <div v-if="feedbackList?.length === 0" class="text-gray-500">No feedback available.</div>
+            <Card v-else v-for="feedback in feedbackList"
+            :id="feedback?.id"
+            :content="feedback?.content"
+            :img="feedback?.feedback_request?.recipient.avatar"
+            :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
+            :skill="feedback?.feedback_request?.skill.skill"
+            :created_at="feedback?.created_at"
+            :sentiment="feedback?.sentiment"
+            />
+        </section>
+    </div>
     <BaseToast 
     :text="toastText" 
     :show="showToast" 
@@ -93,6 +98,7 @@ import { useDateFormat } from '@/composables/useDateFormat';
 import { useErrorStore } from '@/stores/errorStore';
 import Card from '@/components/feedback/Card.vue';
 import RequestModal from '@/components/feedback/RequestModal.vue';
+import SkillSkeleton from '@/components/skeletons/SkillSkeleton.vue';
 
 const errorStore = useErrorStore();
 const { formatFeedbackDate } = useDateFormat();
@@ -107,6 +113,7 @@ const activeSkill = computed<SkillSummary>(() => {
 const feedbackList = ref<FeedbackSubmission[]>();
 const showReqModal = ref<boolean>(false);
 const skillOv = ref<SkillOverview | null>(null);
+const initLoading = ref(true);
 
 onMounted(async() => {
    try {
@@ -122,6 +129,8 @@ onMounted(async() => {
     } catch (error) {
         console.error('Error fetching skill overview:', error);
         router.push('/member/overview');
+    } finally {
+        initLoading.value = false;
     }
 });
 

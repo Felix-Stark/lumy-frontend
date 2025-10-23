@@ -146,23 +146,23 @@
                     <h3 class="font-bold text-gray-600">
                         Bot name
                     </h3>
-                    <input v-model="customBot?.name" type="text" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple" />
+                    <input v-model="botName" type="text" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple" />
                     <p class="text-gray-400 font-thin">Example: Coach Clara</p>
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <h3 class="font-bold text-gray-600">
                         Description
                     </h3>
-                    <textarea v-model="customBot?.description" rows="4" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botDesc" rows="4" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 font-thin">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
                 <div class="w-full flex flex-col gap-2">
                     <h3 class="font-bold text-gray-600">
                         Example phrases
                     </h3>
-                    <textarea v-model="customBot?.examplePhrases[0]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="customBot?.examplePhrases[1]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="customBot?.examplePhrases[2]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botExamples[0]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botExamples[1]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botExamples[2]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 font-thin">Example: What's one thing you have learned this week that surprised you?</p>
                 </div>
                 <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>
@@ -202,11 +202,10 @@ interface CustomBot {
     description: string;
     examplePhrases: string[];
 }
-const customBot = ref<CustomBot>({
-    name: '',
-    description: '',
-    examplePhrases: ['', '', '']
-});
+
+const botName = ref('');
+const botDesc = ref('');
+const botExamples = ref<string[]>(['', '', '']);
 
 interface TZOption {
   label: string;
@@ -267,7 +266,11 @@ async function saveSettings() {
 };
 
 async function saveBot() {
-    console.log('Bot personality saved: ', customBot.value);
+    console.log('Bot personality saved: ', {
+        name: botName.value,
+        description: botDesc.value,
+        examplePhrases: botExamples.value
+    });
 }
 
 </script>

@@ -289,11 +289,6 @@ onMounted(async () => {
             await feedbackStore.getRequests();
             feedbackReq.value = feedbackStore.requests;
         }
-    } catch (err: any) {
-        console.error('Error fetching feedback data: ', err);
-    } finally {
-        initLoading.value = false;
-
         let progress = 0;
         const duration = 1000; // 1 second animation
         const step = 16; // ~60fps
@@ -308,6 +303,10 @@ onMounted(async () => {
                 currentPercentage.value = Math.round(progress);
             }
         }, step);
+    } catch (err: any) {
+        console.error('Error fetching feedback data: ', err);
+    } finally {
+        initLoading.value = false;
     }
 });
 // FILTERS

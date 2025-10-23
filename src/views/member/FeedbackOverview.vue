@@ -209,6 +209,7 @@
 </template>
 
 <script lang="ts" setup>
+import FeedbackSkeleton from '@/components/skeletons/FeedbackSkeleton.vue';
 import { computed, ref, onMounted } from 'vue'
 import Card from '@/components/feedback/Card.vue';
 import { Chart, registerables } from 'chart.js'

@@ -9,6 +9,7 @@
 		<p class="text-sm text-gray-500 mb-4">Please try again later or contact support.</p>
 		<BaseButton 
 		:onAction="() => backToHome()"
+		btnText="Back to Login"
 		/>
 	</div>
 </template>

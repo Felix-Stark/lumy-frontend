@@ -117,7 +117,7 @@
                     </Float>
                 </Listbox>
             </div>
-
+            <p class="underline text-lumy-purple active:opacity-50"></p>
         </article>
 
         <BaseButton
@@ -168,6 +168,7 @@
                 <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>
             </div>
         </BaseModal>
+        
     </div>
 </template>
 

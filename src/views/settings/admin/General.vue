@@ -131,10 +131,47 @@
         :text="toastText"
         :bg-class="toastBg"
         />
+        <BaseModal
+        :isOpen="showBotModal"
+        @close="showBotModal = false"
+        >
+            <div class="w-full flex flex-col justify-between p-8">
+                <div class="w-full">
+                    <h1 class="text-3xl text-gray-600">
+                        Add a custom bot personality
+                    </h1>
+                    <hr class="text-gray-200 w-full mx-8">
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-600">
+                        Bot name
+                    </h3>
+                    <input type="text" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple" />
+                    <p class="text-gray-400 font-thin">Example: Coach Clara</p>
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-600">
+                        Description
+                    </h3>
+                    <textarea rows="4" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 font-thin">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
+                </div>
+                <div class="w-full flex flex-col gap-2">
+                    <h3 class="font-bold text-gray-600">
+                        Example phrases
+                    </h3>
+                    <textarea rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 font-thin">Example: "How did that situation make you feel?" "What do you think you could do differently next time?" "Can you identify any patterns in your behavior?"</p>
+                </div>
+            </div>
+        </BaseModal>
     </div>
 </template>
 
 <script setup lang="ts">
+import BaseModal from '@/components/base/BaseModal.vue';
 import SettingsGeneral from '@/components/skeletons/SettingsGeneral.vue';
 import type { Account, BotPersonality, FeedbackFramework } from '@/types';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue';
@@ -158,6 +195,13 @@ const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const loading = ref(true);
+const showBotModal = ref(false);
+interface CustomBot {
+    name: string;
+    description: string;
+    examplePhrases: string[];
+}
+const customBot = ref<CustomBot>();
 
 interface TZOption {
   label: string;

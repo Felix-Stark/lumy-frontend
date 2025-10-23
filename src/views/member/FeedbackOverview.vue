@@ -292,12 +292,14 @@ onMounted(async () => {
     } catch (err: any) {
         console.error('Error fetching feedback data: ', err);
     } finally {
-        let progress = 0;
-    const duration = 1000; // 1 second animation
-    const step = 16; // ~60fps
-    const increment = positiveSentiments.value / (duration / step);
+        initLoading.value = false;
 
-    const interval = setInterval(() => {
+        let progress = 0;
+        const duration = 1000; // 1 second animation
+        const step = 16; // ~60fps
+        const increment = positiveSentiments.value / (duration / step);
+
+        const interval = setInterval(() => {
         progress += increment;
         if (progress >= positiveSentiments.value) {
             currentPercentage.value = positiveSentiments.value;
@@ -306,7 +308,6 @@ onMounted(async () => {
                 currentPercentage.value = Math.round(progress);
             }
         }, step);
-        initLoading.value = false;
     }
 });
 // FILTERS

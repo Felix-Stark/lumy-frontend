@@ -117,7 +117,7 @@
                     </Float>
                 </Listbox>
             </div>
-            <a class="underline text-lumy-purple active:opacity-50">Add custom personality</a>
+            <a @click="() => showBotModal = true " class="underline text-sm text-lumy-purple active:opacity-50">Add custom personality</a>
         </article>
 
         <BaseButton

@@ -117,7 +117,7 @@
                     </Float>
                 </Listbox>
             </div>
-            <p class="underline text-lumy-purple active:opacity-50"></p>
+            <a class="underline text-lumy-purple active:opacity-50">Add custom personality</a>
         </article>
 
         <BaseButton

@@ -202,7 +202,11 @@ interface CustomBot {
     description: string;
     examplePhrases: string[];
 }
-const customBot = ref<CustomBot>();
+const customBot = ref<CustomBot>({
+    name: '',
+    description: '',
+    examplePhrases: ['', '', '']
+});
 
 interface TZOption {
   label: string;

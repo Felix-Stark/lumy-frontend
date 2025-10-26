@@ -117,7 +117,7 @@
                     </Float>
                 </Listbox>
             </div>
-            <a @click="() => showBotModal = true " class="underline text-sm text-lumy-purple active:opacity-50">Add custom personality</a>
+            <a @click="() => showBotModal = true " class="underline text-sm text-lumy-purple active:opacity-50 cursor-pointer">Add custom personality</a>
         </article>
 
         <BaseButton
@@ -135,25 +135,25 @@
         :isOpen="showBotModal"
         @close="showBotModal = false"
         >
-            <div class="w-full flex flex-col justify-between p-8">
-                <div class="w-full">
+            <div class="w-full flex flex-col p-6">
+                <div class="w-full mb-2">
                     <h1 class="text-3xl text-gray-600">
                         Add a custom bot personality
                     </h1>
                     <hr class="text-gray-200 w-full mx-8">
                 </div>
-                <div class="w-full flex flex-col gap-2">
+                <div class="w-full my-4 flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Bot name
                     </h3>
-                    <input v-model="botName" type="text" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple" />
+                    <input v-model="botName" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
                     <p class="text-gray-400 font-thin">Example: Coach Clara</p>
                 </div>
-                <div class="w-full flex flex-col gap-2">
+                <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Description
                     </h3>
-                    <textarea v-model="botDesc" rows="4" class="p-4 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botDesc" rows="3" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 font-thin">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
                 <div class="w-full flex flex-col gap-2">
@@ -165,7 +165,9 @@
                     <textarea v-model="botExamples[2]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 font-thin">Example: What's one thing you have learned this week that surprised you?</p>
                 </div>
-                <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>
+                <div class="flex justify-end">
+                    <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>
+                </div>
             </div>
         </BaseModal>
         

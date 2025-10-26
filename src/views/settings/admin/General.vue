@@ -142,6 +142,17 @@
                     </h1>
                     <hr class="text-gray-200 w-full mx-8">
                 </div>
+                <section class="bg-gray-200 rounded p-4">
+                    <h3 class="font-bold text-gray-600 mb-2">
+                        Instructions
+                    </h3>
+                    <p class="text-gray-500 text-sm">
+                        This is where you create your company's unique feedback bot personality. By doing so, Lumy has no control of your bot's behavior, tone, or style beyond what you define here.
+                    </p>
+                    <p class="text-gray-500 text-sm">
+                        Define a unique personality for your feedback bot by providing a name, description, and example phrases. The description should outline the bot's tone and approach, while the example phrases will guide how the bot interacts with users. Once saved, this custom personality will be used to tailor the feedback experience.
+                    </p>
+                </section>
                 <div class="w-full my-4 flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Bot name

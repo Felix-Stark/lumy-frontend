@@ -238,7 +238,6 @@ onMounted(async () => {
 
         timezoneOptions.value = buildTimezoneOptions();
         selectedTimezone.value = accountStore.account?.timezone || 'Select timezone';
-        if( timezoneOptions.value.length > 0) console.log('tz options: ', timezoneOptions.value);
         const res = await api.get('/bot-personalities');
         if( res.status === 200) {
             botPersonalities.value = res.data;

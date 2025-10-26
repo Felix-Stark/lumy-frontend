@@ -135,8 +135,8 @@
         :isOpen="showBotModal"
         @close="showBotModal = false"
         >
-            <div class="w-full flex flex-col p-6">
-                <div class="w-full mb-2">
+            <div class="w-full flex flex-col p-6 space-y-8">
+                <div class="w-full">
                     <h1 class="text-3xl text-gray-600">
                         Add a custom bot personality
                     </h1>
@@ -147,23 +147,23 @@
                         Bot name
                     </h3>
                     <input v-model="botName" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
-                    <p class="text-gray-400 font-thin">Example: Coach Clara</p>
+                    <p class="text-gray-400 text-sm">Example: Coach Clara</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Description
                     </h3>
                     <textarea v-model="botDesc" rows="3" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <p class="text-gray-400 font-thin">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
+                    <p class="text-gray-400 text-sm">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
-                <div class="w-full flex flex-col gap-2">
+                <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Example phrases
                     </h3>
-                    <textarea v-model="botExamples[0]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="botExamples[1]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="botExamples[2]" rows="1" class="p-4 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <p class="text-gray-400 font-thin">Example: What's one thing you have learned this week that surprised you?</p>
+                    <textarea v-model="botExamples[0]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botExamples[1]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botExamples[2]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 text-sm">Example: What's one thing you have learned this week that surprised you? Your colleague is very good at [skill], you should ask them for feedback to share their knowledge!</p>
                 </div>
                 <div class="flex justify-end">
                     <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>

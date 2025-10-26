@@ -116,14 +116,15 @@
                         </ListboxOptions>
                     </Float>
                 </Listbox>
+                <a @click="() => showBotModal = true " class="underline text-sm text-lumy-purple active:opacity-50 cursor-pointer">Add custom personality</a>
             </div>
-            <a @click="() => showBotModal = true " class="underline text-sm text-lumy-purple active:opacity-50 cursor-pointer">Add custom personality</a>
         </article>
-
-        <BaseButton
-        btnText="Save settings"
-        :onAction="() => saveSettings()"
-        />
+        <section class="flex justify-end">
+            <BaseButton
+            btnText="Save settings"
+            :onAction="() => saveSettings()"
+            />
+        </section>
         <BaseToast
         :show="showToast"
         @close="showToast = false"

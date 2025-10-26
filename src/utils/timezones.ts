@@ -37,25 +37,6 @@ const curated = [
   "Australia/Sydney",
   "Pacific/Auckland",
 ];
-function partsFor(date: Date, timeZone: string) {
-  const fmt = new Intl.DateTimeFormat("en-GB", {
-    timeZone,
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-  });
-
-  const parts = fmt.formatToParts(date);
-  const map: Record<string, string> = {};
-  for (const p of parts) {
-    if (p.type !== "literal") map[p.type] = p.value;
-  }
-  return map;
-}
 
 export function buildTimezoneOptions() {
   const now = new Date();

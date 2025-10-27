@@ -148,7 +148,7 @@
                         Instructions
                     </h3>
                     <p class="text-gray-500 text-sm">
-                        This is where you create your company's unique feedback bot personality. By doing so, <span class="italic">Lumy has no control of your bot's behavior, tone, or style beyond what you define here.</span>
+                        This is where you create your company's unique feedback bot personality. Please note: <span class="italic">Lumy has no control of your bot's behavior, tone, or style beyond what you define here.</span>
                     </p>
                     <br/>
                     <p class="text-gray-500 text-sm">

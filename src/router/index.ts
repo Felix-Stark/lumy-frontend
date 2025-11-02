@@ -21,7 +21,8 @@ import Employee from '@/views/admin/Employee.vue';
 import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
 import Error from '@/views/Error.vue';
-
+const authStore = useAuthStore();
+const role = authStore.session?.user.role || '';
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top:0 }),
@@ -29,7 +30,15 @@ const router = createRouter({
     {
       path: '/',
       component: SlackLayout,
-      redirect: '/slack/login',
+      redirect: () => {
+        if (!authStore.authenticated) {
+          return '/slack/login';
+        } else if (authStore.authenticated && role === 'admin') {
+          return '/admin/overview';
+        } else {
+          return 'member/overview';
+        }
+      },
       meta: {
         title: 'Slack Login',
       },
@@ -137,8 +146,6 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       redirect: () => {
-        const raw = sessionStorage.getItem('LumyRole')
-        const role = raw ? JSON.parse(raw) : null;
         if (role === 'admin') {
           return '/settings/admin/general';
         } else {
@@ -208,8 +215,10 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach((to, from, next) => {
   const errorStore = useErrorStore();
-  const raw = sessionStorage.getItem('LumyRole');
-  const role: string = raw ? JSON.parse(raw) : null;
+  const authStore = useAuthStore();
+  const role = authStore.session?.user.role || '';
+  // ✅ 1. Check if the user is authenticated
+ 
   const allowedRoles = to.meta.roles as string[] | undefined;
 
   if (!allowedRoles) {

@@ -31,6 +31,7 @@ const router = createRouter({
       path: '/',
       component: SlackLayout,
       redirect: () => {
+        authStore.getSession();
         if (!authStore.authenticated) {
           return '/slack/login';
         } else if (authStore.authenticated && role === 'admin') {

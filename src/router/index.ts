@@ -36,7 +36,7 @@ const router = createRouter({
         } else if (authStore.authenticated && role === 'admin') {
           return '/admin/overview';
         } else {
-          return 'member/overview';
+          return '/member/overview';
         }
       },
       meta: {
@@ -213,9 +213,10 @@ const router = createRouter({
 
 
 // Global navigation guard
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   const errorStore = useErrorStore();
   const authStore = useAuthStore();
+  await authStore.getSession();
   const role = authStore.session?.user.role || '';
   // ✅ 1. Check if the user is authenticated
  

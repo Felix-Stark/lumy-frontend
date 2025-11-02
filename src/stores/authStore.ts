@@ -18,10 +18,10 @@ export const useAuthStore = defineStore("auth", () => {
   });
 
   async function getSession() {
-    if (session.value?.authenticated) return session.value;
+    if (authenticated) return session.value;
     try {
       const res = await api.get('/session');
-      if (res.status === 200) {
+      if (res.data.authenticated) {
         session.value = await res.data;
       }
     } catch (err:any) {

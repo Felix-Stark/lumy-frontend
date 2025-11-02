@@ -21,8 +21,14 @@ import Employee from '@/views/admin/Employee.vue';
 import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
 import Error from '@/views/Error.vue';
+import { ref, computed } from 'vue';
 const authStore = useAuthStore();
-const role = authStore.session?.user.role || '';
+const role = computed(() => {
+  if(!authStore.session?.authenticated) {
+    authStore.getSession();
+  }
+    return authStore.session?.user.role;
+});
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top:0 }),
@@ -34,7 +40,7 @@ const router = createRouter({
         authStore.getSession();
         if (!authStore.authenticated) {
           return '/slack/login';
-        } else if (authStore.authenticated && role === 'admin') {
+        } else if (authStore.authenticated && role.value === 'admin') {
           return '/admin/overview';
         } else {
           return '/member/overview';
@@ -147,7 +153,7 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       redirect: () => {
-        if (role === 'admin') {
+        if (role.value === 'admin') {
           return '/settings/admin/general';
         } else {
           return '/settings/member/integrations';

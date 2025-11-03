@@ -22,7 +22,9 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const res = await api.get('/session');
       if (res.data.authenticated) {
-        session.value = await res.data;
+        const se: Session = await res.data
+        session.value = se;
+        return se;
       }
     } catch (err:any) {
       console.error('Error fetching session: ', err)
@@ -34,42 +36,51 @@ export const useAuthStore = defineStore("auth", () => {
       const res = await api.get("/slack/login/callback?code=" + code);
       if (res.status === 200) {
         await getSession();
+        return res.data;
       }
-      return res.data;
     } catch (err: any) {
       console.error('Error during Slack login: ', err);
     }
-  }
+  };
 
   async function registerSlackUser(code: string) {
     try {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
       if (res.status === 200) {
-        this.setupAccount = await res.data; //store this in sessionStorage
         sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
+        sessionStorage.setItem('LumyRole', JSON.stringify(res.data.role));
       }
       return res.status;
-    },
-    async verifyAccount(accountId: number) {
-      const res = await api.post("/slack/verify-setup", { account_id: accountId });
-      if (res.status === 200) {
-        sessionStorage.setItem("loggedin", "true");
-        this.isLoggedIn = true;
-        return res.status;
-      }
-    },
-    async logout() {
-      sessionStorage.clear();
-      this.isLoggedIn = false;
-      this.isAdmin = false;
-      this.accountId = null;
+    } catch (err:any) {
+      console.error('Error in register with slack: ', err);
+    }
+  };
 
-      window.location.href = "/"; // Redirect to login page
-    },
-  },
+  async function verifyAccount(accountId: number) {
+    const res = await api.post("/slack/verify-setup", { account_id: accountId });
+    if (res.status === 200) {
+      sessionStorage.setItem("loggedin", "true");
+      return res.status;
+    }
+  };
+
+  async function logout() {
+    sessionStorage.clear();
+    
+    window.location.href = "/"; // Redirect to login page
+  };
+  return {
+    session,
+    authenticated,
+    setupAccount,
+    getSession,
+    loginSlack,
+    registerSlackUser,
+    verifyAccount,
+    logout
+  }
 });
-
 
 
 function loadSetupAccount(): SetupAccount | null {

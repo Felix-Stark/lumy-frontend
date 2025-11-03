@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { ref, computed } from "vue";
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-
 import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
@@ -21,6 +21,9 @@ import Employee from '@/views/admin/Employee.vue';
 import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
 import Error from '@/views/Error.vue';
+
+const authStore = useAuthStore();
+
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top:0 }),
@@ -87,51 +90,52 @@ const router = createRouter({
         }
       ]
     },
-    { 
-      path: '/admin',
-      component: AdminDashboardLayout,
-      redirect: '/admin/overview',
-      meta: {
-        roles: ["manager", "admin"]
+    {
+      path: '/overview',
+      component: DashboardLayout,
+      redirect: () => {
+        if (authStore.session?.user?.role === 'admin' || authStore.session?.user?.role === 'manager') {
+          return '/admin/overview';
+        } else {
+          return '/member/overview';
+        }
       },
       children: [
-        {
-          path: 'overview',
-          name: 'admin-overview',
-          component: Overview
+        { 
+          path: 'admin',
+          component: Overview,
+          meta: {
+            roles: ["manager", "admin"]
+          },
+          children: [
+            {
+              path: 'overview/employee',
+              name: 'admin-overview-employee',
+              component: Employee,
+            }
+          ]
         },
         {
-          path: 'overview/employee',
-          name: 'admin-overview-employee',
-          component: Employee,
-        }
+          path: 'member',
+          component: MemberDashboard,
+          meta: {
+            roles: ["member", "manager", "admin"]
+          },
+          children: [
+            {
+              path: 'feedback',
+              name: 'feedback-overview',
+              component: FeedbackOverview,
+            },
+            {
+              path: 'skill',
+              name: 'skill-overview',
+              component: SkillOverview,
+            }
+          ]
+        },
       ]
     },
-    {
-      path: '/member',
-      redirect: '/member/overview',
-      component: DashboardLayout,
-      meta: {
-        roles: ["member", "manager", "admin"]
-      },
-      children: [
-        {
-          path: 'overview',
-          name: 'member-overview',
-          component: MemberDashboard,
-        },
-        {
-          path: 'feedback-overview',
-          name: 'feedback-overview',
-          component: FeedbackOverview,
-        },
-        {
-          path: 'skill-overview',
-          name: 'skill-overview',
-          component: SkillOverview,
-        }
-      ]
-    },  
     {
       path: '/settings',
       name: 'settings',

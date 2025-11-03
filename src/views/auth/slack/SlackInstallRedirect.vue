@@ -22,11 +22,9 @@ const code = route.query.code;
 
 onMounted( async () => {
 	try {
-		const res = await api.post("/slack/account", { code });
-      	console.log("register data: ", res.data);
-		if (res.status === 200) {
-			authStore.setupAccount = await res.data; //store this in sessionStorage
-			sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
+		const res = await authStore.registerSlackUser(code as string);
+		if (res === 200) {
+			router.push({name: 'slack-install-success'})
 		}
 	} catch (err: any) {
 		console.error('Error in Register: ', err);

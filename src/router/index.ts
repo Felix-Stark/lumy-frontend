@@ -22,8 +22,6 @@ import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
 import Error from '@/views/Error.vue';
 
-const authStore = useAuthStore();
-
 const router = createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ top:0 }),
@@ -94,7 +92,9 @@ const router = createRouter({
       path: '/overview',
       component: DashboardLayout,
       redirect: () => {
-        if (authStore.session?.user?.role === 'admin' || authStore.session?.user?.role === 'manager') {
+        const raw = sessionStorage.getItem('LumyRole');
+        const role = raw ? JSON.parse(raw) : null;
+        if (role === 'admin' || role === 'manager') {
           return '/admin/overview';
         } else {
           return '/member/overview';

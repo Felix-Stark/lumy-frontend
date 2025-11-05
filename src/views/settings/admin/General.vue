@@ -188,6 +188,7 @@
                     <BaseTagInput v-model="botTraits"
                     label="Add bot traits"
                     hint="Press Enter to add each trait."
+                    placeholder="Add a trait and press Enter"
                     />
                     <p class="text-gray-400 text-sm">
                         Example: "Empathetic",
@@ -203,6 +204,7 @@
                     <BaseTagInput v-model="botQuirks"
                     label="Add bot quirks"
                     hint="Press Enter to add each quirk."
+                    placeholder="Add a quirk and press Enter"
                     />
                     <p class="text-gray-400 text-sm">
                         Example: "Asks open questions",
@@ -224,6 +226,7 @@
                     <BaseTagInput v-model="botExamples"
                     label="Add example phrases"
                     hint="Press Enter to add each phrase."
+                    placeholder="Add an example phrase and press Enter"
                     />
                     <p class="text-gray-400 text-sm">Example: "What's one thing you have learned this week that surprised you?", "If you zoom out, what progress do you notice?",
                     "What's a small action you can take today to feel better?"</p>
@@ -246,7 +249,6 @@ import { Float } from '@headlessui-float/vue';
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import { CheckIcon, ChevronDown } from 'lucide-vue-next';
-import { useUserStore } from '@/stores/userStore';
 import { useAccountStore } from '@/stores/accountStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
@@ -273,10 +275,10 @@ const botName = ref('');
 const botDesc = ref('');
 const botOrigin = ref('');
 const botTone = ref('');
-const botTraits = ref<string[]>(['']);
-const botQuirks = ref<string[]>(['']);
+const botTraits = ref<string[]>([]);
+const botQuirks = ref<string[]>([]);
 const botCatchphrase = ref('');
-const botExamples = ref<string[]>(['']);
+const botExamples = ref<string[]>([]);
 
 interface TZOption {
   label: string;

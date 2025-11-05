@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2">
     <label v-if="label" class="text-sm text-gray-400">{{ label }}</label>
     <div
-      class="flex flex-wrap gap-2 items-center border border-gray-300 rounded p-2 bg-white focus-within:border-lumy-purple transition-all"
+      class="flex flex-wrap gap-2 items-center border rounded p-2 bg-white focus-within:border-lumy-purple transition-all"
       @click="focusInput"
     >
       <span
@@ -27,7 +27,7 @@
         @keydown.enter.prevent="addTag"
         @keydown.tab.prevent="addTag"
         @keydown.delete="handleDelete"
-        placeholder="Add a trait and press Enter"
+        :placeholder="placeholder || 'Add a tag and press Enter'"
         class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple"
       />
     </div>
@@ -42,6 +42,7 @@ interface Props {
   modelValue: string[]
   label?: string
   hint?: string
+  placeholder?: string
 }
 
 const props = defineProps<Props>()

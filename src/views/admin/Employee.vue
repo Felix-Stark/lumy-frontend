@@ -174,7 +174,7 @@ function resetEmployee() {
 
 function selectedSkill(skill: SkillSummary) {
 	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	// router.push({ name: 'skill-overview' });
+	// router.push({ name: 'overview-member-skill' });
 }
 
 const avgSentChart = computed(() => {

@@ -110,8 +110,8 @@ const router = createRouter({
           },
           children: [
             {
-              path: 'overview/employee',
-              name: 'admin-overview-employee',
+              path: 'employee',
+              name: 'overview-admin-employee',
               component: Employee,
             }
           ]
@@ -126,12 +126,12 @@ const router = createRouter({
           children: [
             {
               path: 'feedback',
-              name: 'feedback-overview',
+              name: 'overview-member-feedback',
               component: FeedbackOverview,
             },
             {
               path: 'skill',
-              name: 'skill-overview',
+              name: 'overview-member-skill',
               component: SkillOverview,
             }
           ]

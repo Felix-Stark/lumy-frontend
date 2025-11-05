@@ -24,9 +24,9 @@ onMounted( async () => {
 		if(code) {
 		await authStore.loginSlack(code as string);
 		if (authStore.session?.user?.role === 'member') {
-			router.replace('/overview/member')
+			router.replace('/member/overview')
 		} else {
-			router.replace('/overview/admin')
+			router.replace('/admin/overview')
 		}
 		if(route.query.error === 'access_denied') {
 			router.push({ name: 'slack-login' });

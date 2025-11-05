@@ -91,15 +91,6 @@ const router = createRouter({
     {
       path: '/overview',
       component: DashboardLayout,
-      redirect: () => {
-        const raw = sessionStorage.getItem('LumyRole');
-        const role = raw ? JSON.parse(raw) : null;
-        if (role === 'admin' || role === 'manager') {
-          return '/admin/overview';
-        } else {
-          return '/member/overview';
-        }
-      },
       children: [
         { 
           path: 'admin',
@@ -216,6 +207,13 @@ router.beforeEach(async(to, from, next) => {
   const raw = sessionStorage.getItem('LumyRole');
   const role: string = raw ? JSON.parse(raw) : null;
   const allowedRoles = to.meta.roles as string[] | undefined;
+  if(to.name === 'overview' && role === 'admin') {
+    return next({ name: 'overview-admin' });
+  }
+
+  if(to.name === 'overview' && role === 'member') {
+    return next({ name: 'overview-member' });
+  }
 
   if (!allowedRoles) {
     return next(); // unrestricted route

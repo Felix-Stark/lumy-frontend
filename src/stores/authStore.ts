@@ -67,9 +67,17 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   async function logout() {
-    sessionStorage.clear();
-    
-    window.location.href = "/"; // Redirect to login page
+    try {
+      const res = await api.post("/logout");
+      if (res.status === 200) {
+        session.value = null
+        sessionStorage.clear();
+      }
+    } catch (err: any) {
+      console.error('Error during logout: ', err);
+    } finally {
+        window.location.href = "/";
+    }
   };
   return {
     session,

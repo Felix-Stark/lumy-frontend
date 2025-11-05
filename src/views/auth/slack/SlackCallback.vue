@@ -24,15 +24,15 @@ onMounted( async () => {
 		if(code) {
 		await authStore.loginSlack(code as string);
 		if (authStore.session?.user?.role === 'member') {
-			router.replace({ name: 'member-overview' })
+			router.replace('/overview/member')
 		} else {
-			router.replace({ name: 'admin-overview' })
+			router.replace('/overview/admin')
 		}
 		if(route.query.error === 'access_denied') {
 			router.push({ name: 'slack-login' });
 		}
 	}
-	} catch (error) {
+	} catch (error: any) {
 		console.error('Error during Slack callback: ', error);
 		router.push({ name: 'error' });
 	}

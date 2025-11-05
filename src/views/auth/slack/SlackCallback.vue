@@ -13,7 +13,6 @@ import { useAuthStore } from '@/stores/authStore';
 import { onMounted } from 'vue';
 import lumyWaiting from '@/assets/images/lumy_waiting.png';
 import SlackFlowComp from '@/components/slackFlow/SlackFlowComp.vue';
-
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
@@ -23,8 +22,8 @@ const code = route.query.code;
 onMounted( async () => {
 	try {
 		if(code) {
-		const result = await authStore.loginSlack(code as string);
-		if (result.role === 'member') {
+		await authStore.loginSlack(code as string);
+		if (authStore.session?.user?.role === 'member') {
 			router.replace({ name: 'member-overview' })
 		} else {
 			router.replace({ name: 'admin-overview' })

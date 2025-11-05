@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
   });
 
   async function getSession() {
-    if (authenticated) return session.value;
+    if (authenticated.value === true) return session.value;
     try {
       const res = await api.get('/session');
       if (res.data.authenticated) {
@@ -36,6 +36,7 @@ export const useAuthStore = defineStore("auth", () => {
       const res = await api.get("/slack/login/callback?code=" + code);
       if (res.status === 200) {
         await getSession();
+        sessionStorage.setItem('LumyRole', JSON.stringify(res.data.role));
         return res.data;
       }
     } catch (err: any) {

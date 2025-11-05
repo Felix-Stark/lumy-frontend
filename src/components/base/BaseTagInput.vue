@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-2">
     <label v-if="label" class="text-sm text-gray-400">{{ label }}</label>
     <div
-      class="flex flex-wrap gap-2 items-center border rounded p-2 bg-white focus-within:border-lumy-purple transition-all"
+      class="flex flex-wrap gap-2 items-center rounded bg-white focus-within:border-lumy-purple transition-all"
       @click="focusInput"
     >
       <span

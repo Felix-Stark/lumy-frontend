@@ -166,19 +166,19 @@
                     <h3 class="font-bold text-gray-600">
                         Description
                     </h3>
-                    <textarea v-model="botDesc" rows="3" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botDesc" rows="3" autocorrect="on" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
                         Origin
                     </h3>
-                    <textarea v-model="botOrigin" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botOrigin" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Lumy core coaching persona.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">Tone</h3>
-                    <textarea v-model="botTone" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botTone" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Calm, thoughtful, empathetic</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
@@ -216,7 +216,7 @@
                     <h3 class="font-bold text-gray-600">
                         Catchphrase
                     </h3>
-                    <textarea v-model="botCatchphrase" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botCatchphrase" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: "Small steps, big momentum."</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">

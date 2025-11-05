@@ -6,6 +6,7 @@
       @click="focusInput"
     >
       <span
+        v-if="modelValue.length > 0"
         v-for="(tag, index) in modelValue"
         :key="index"
         class="bg-lumy-purple/10 text-lumy-purple px-2 py-1 rounded-full text-sm flex items-center gap-1"
@@ -27,9 +28,10 @@
         @keydown.enter.prevent="addTag"
         @keydown.tab.prevent="addTag"
         @keydown.delete="handleDelete"
+        autocorrect="on"
         :placeholder="placeholder || 'Add a tag and press Enter'"
         class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple"
-      />
+      ></textarea>
     </div>
     <p v-if="hint" class="text-xs text-gray-400">{{ hint }}</p>
   </div>

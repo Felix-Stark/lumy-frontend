@@ -171,24 +171,74 @@
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <h3 class="font-bold text-gray-600">
+                        Origin
+                    </h3>
+                    <textarea v-model="botOrigin" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 text-sm">Example: Lumy core coaching persona.</p>
+                </div>
+                <div class="w-full flex flex-col gap-1">
+                    <h3 class="font-bold text-gray-600">Tone</h3>
+                    <textarea v-model="botTone" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 text-sm">Example: Calm, thoughtful, empathetic</p>
+                </div>
+                <div class="w-full flex flex-col gap-1">
+                    <h3 class="font-bold text-gray-600">
+                        Traits
+                    </h3>
+                    <BaseTagInput v-model="botTraits"
+                    label="Add bot traits"
+                    hint="Press Enter to add each trait."
+                    />
+                    <p class="text-gray-400 text-sm">
+                        Example: "Empathetic",
+                        "Reflective questions",
+                        "Guides growth",
+                        "Calm presence"
+                    </p>
+                </div>
+                <div class="w-full flex flex-col gap-1">
+                    <h3 class="font-bold text-gray-600">
+                        Quirks
+                    </h3>
+                    <BaseTagInput v-model="botQuirks"
+                    label="Add bot quirks"
+                    hint="Press Enter to add each quirk."
+                    />
+                    <p class="text-gray-400 text-sm">
+                        Example: "Asks open questions",
+                        "Encourages journaling",
+                        "Pauses for reflection"
+                    </p>
+                </div>
+                <div class="w-full flex flex-col gap-1">
+                    <h3 class="font-bold text-gray-600">
+                        Catchphrase
+                    </h3>
+                    <textarea v-model="botCatchphrase" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <p class="text-gray-400 text-sm">Example: "Small steps, big momentum."</p>
+                </div>
+                <div class="w-full flex flex-col gap-1">
+                    <h3 class="font-bold text-gray-600">
                         Example phrases
                     </h3>
-                    <textarea v-model="botExamples[0]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="botExamples[1]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <textarea v-model="botExamples[2]" rows="1" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
-                    <p class="text-gray-400 text-sm">Example: What's one thing you have learned this week that surprised you? Your colleague is very good at [skill], you should ask them for feedback to share their knowledge!</p>
+                    <BaseTagInput v-model="botExamples"
+                    label="Add example phrases"
+                    hint="Press Enter to add each phrase."
+                    />
+                    <p class="text-gray-400 text-sm">Example: "What's one thing you have learned this week that surprised you?", "If you zoom out, what progress do you notice?",
+                    "What's a small action you can take today to feel better?"</p>
                 </div>
                 <div class="flex justify-end">
                     <button @click="saveBot" class="rounded px-4 py-2 text-white bg-lumy-green cursor-pointer">Save</button>
                 </div>
             </div>
         </BaseModal>
-        
     </div>
 </template>
 
 <script setup lang="ts">
 import BaseModal from '@/components/base/BaseModal.vue';
+import BaseTagInput from '@/components/base/BaseTagInput.vue';
 import SettingsGeneral from '@/components/skeletons/SettingsGeneral.vue';
 import type { Account, BotPersonality, FeedbackFramework } from '@/types';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue';
@@ -221,7 +271,12 @@ interface CustomBot {
 
 const botName = ref('');
 const botDesc = ref('');
-const botExamples = ref<string[]>(['', '', '']);
+const botOrigin = ref('');
+const botTone = ref('');
+const botTraits = ref<string[]>(['']);
+const botQuirks = ref<string[]>(['']);
+const botCatchphrase = ref('');
+const botExamples = ref<string[]>(['']);
 
 interface TZOption {
   label: string;
@@ -283,8 +338,14 @@ async function saveSettings() {
 async function saveBot() {
     console.log('Bot personality saved: ', {
         name: botName.value,
+        formatted_name: botName.value.toLowerCase().replace(/\s+/g, '_'),
         description: botDesc.value,
-        examplePhrases: botExamples.value
+        origin: botOrigin.value,
+        tone: botTone.value,
+        traits: botTraits.value,
+        quirks: botQuirks.value,
+        catchphrase: botCatchphrase.value,
+        examples: botExamples.value
     });
 }
 

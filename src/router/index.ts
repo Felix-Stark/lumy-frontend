@@ -103,6 +103,7 @@ const router = createRouter({
       children: [
         { 
           path: 'admin',
+          name: 'overview-admin',
           component: Overview,
           meta: {
             roles: ["manager", "admin"]
@@ -117,6 +118,7 @@ const router = createRouter({
         },
         {
           path: 'member',
+          name: 'overview-member',
           component: MemberDashboard,
           meta: {
             roles: ["member", "manager", "admin"]

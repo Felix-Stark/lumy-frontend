@@ -47,9 +47,16 @@ export type Account = {
 
 export type BotPersonality = {
   id: number;
+  account_id: number;
   name: string;
   description: string;
   formatted_name: string;
+  origin: string;
+  tone: string;
+  traits: string[];
+  quirks: string[];
+  catchphrase: string;
+  examples: string[];
 }
 
 // USER TYPES

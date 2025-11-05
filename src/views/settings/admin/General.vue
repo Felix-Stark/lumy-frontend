@@ -265,11 +265,6 @@ const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
 const loading = ref(true);
 const showBotModal = ref(false);
-interface CustomBot {
-    name: string;
-    description: string;
-    examplePhrases: string[];
-}
 
 const botName = ref('');
 const botDesc = ref('');
@@ -349,6 +344,45 @@ async function saveBot() {
         catchphrase: botCatchphrase.value,
         examples: botExamples.value
     });
+    try {
+        const res = await api.post('/bot-personalities', {
+            name: botName.value,
+            formatted_name: botName.value.toLowerCase().replace(/\s+/g, '_'),
+            description: botDesc.value,
+            origin: botOrigin.value,
+            tone: botTone.value,
+            traits: botTraits.value,
+            quirks: botQuirks.value,
+            catchphrase: botCatchphrase.value,
+            example_phrases: botExamples.value
+        });
+        if(res.status === 201) {
+            toastText.value = 'Custom bot personality added!';
+            toastBg.value = 'bg-lumy-green';
+            showToast.value = true;
+            selectedBot.value = res.data.id;
+            showBotModal.value = false;
+            // Reset form
+            botName.value = '';
+            botDesc.value = '';
+            botOrigin.value = '';
+            botTone.value = '';
+            botTraits.value = [];
+            botQuirks.value = [];
+            botCatchphrase.value = '';
+            botExamples.value = [];
+        }
+    } catch (error: any) {
+        console.error('Error saving custom bot personality: ', error);
+        toastText.value = error?.response?.data?.detail || 'Could not save custom bot personality';
+        toastBg.value = 'bg-red-500';
+        showToast.value = true;
+    } finally {
+        const res = await api.get('/bot-personalities');
+        if( res.status === 200) {
+            botPersonalities.value = res.data;
+        }
+    }
 }
 
 </script>

@@ -89,12 +89,12 @@ const router = createRouter({
       ]
     },
     {
-      path: '/overview',
+      path: '/admin',
       component: DashboardLayout,
       children: [
         { 
-          path: 'admin',
-          name: 'overview-admin',
+          path: 'overview',
+          name: 'admin-overview',
           component: Overview,
           meta: {
             roles: ["manager", "admin"]
@@ -102,31 +102,36 @@ const router = createRouter({
           children: [
             {
               path: 'employee',
-              name: 'overview-admin-employee',
+              name: 'admin-overview-employee',
               component: Employee,
             }
           ]
         },
-        {
-          path: 'member',
-          name: 'overview-member',
-          component: MemberDashboard,
-          meta: {
+      ]
+    },
+    {
+      path: '/member',
+      component: DashboardLayout,
+      redirect: '/member/overview',
+      meta: {
             roles: ["member", "manager", "admin"]
           },
-          children: [
-            {
-              path: 'feedback',
-              name: 'overview-member-feedback',
-              component: FeedbackOverview,
-            },
-            {
-              path: 'skill',
-              name: 'overview-member-skill',
-              component: SkillOverview,
-            }
-          ]
+      children: [
+        {
+          path: 'overview',
+          name: 'member-overview',
+          component: MemberDashboard,
         },
+        {
+          path: 'feedback',
+          name: 'member-feedback',
+          component: FeedbackOverview,
+        },
+        {
+          path: 'skill',
+          name: 'member-skill',
+          component: SkillOverview,
+        }
       ]
     },
     {

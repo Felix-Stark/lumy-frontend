@@ -34,7 +34,7 @@
             </div>
         </section>
         <section class="flex items-center w-full justify-between">
-            <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
+            <!-- <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
                 <Listbox v-model="filteredSkill" >
                     <Float
                     placement="bottom"
@@ -148,7 +148,7 @@
                         Clear Filters
                     </button>
                 </div>
-            </div>
+            </div> -->
             <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
                 <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'received' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('received')">
                     Received

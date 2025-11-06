@@ -90,7 +90,7 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      component: DashboardLayout,
+      component: AdminDashboardLayout,
       children: [
         { 
           path: 'overview',

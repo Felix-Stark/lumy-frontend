@@ -21,7 +21,7 @@
                             <span>
                                 {{ frameworks?.find(fw => fw.id === selectedFramework)?.name }}
                             </span>
-                            <ChevronDown class="ml-2 w-4 h-4" />
+                            <ChevronDown aria-hidden="true" class="ml-2 w-4 h-4" />
                         </ListboxButton>
                         
                         <ListboxOptions class="w-full max-h-48 xl:max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg">
@@ -50,7 +50,7 @@
                         class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white"
                     >
                         <span>{{ selectedTimezone || 'Select timezone' }}</span>
-                        <ChevronDown class="ml-2 size-4" />
+                        <ChevronDown aria-hidden="true" class="ml-2 size-4" />
                     </ListboxButton>
 
                     <ListboxOptions
@@ -91,7 +91,7 @@
                         >
                         <ListboxButton class="w-full p-2 border rounded border-gray-300 flex cursor-pointer justify-between items-center text-gray-700 bg-white">
                             <span>{{ botPersonalities?.find(bp => bp.id === selectedBot)?.name }}</span>
-                            <ChevronDown class="ml-2 size-4"/>
+                            <ChevronDown aria-hidden="true" class="ml-2 size-4"/>
                         </ListboxButton>
                         
                         <ListboxOptions class="w-full max-h-48 xl:max-h-100 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
@@ -105,7 +105,7 @@
                                 <li :class="['flex items-center', { 'bg-purple-50': active }]">
                                     <div class="px-4 py-2">
                                         <span class="font-medium flex gap-2">
-                                            {{ bp.name }} <CheckIcon v-show="selected" />
+                                            {{ bp.name }} <CheckIcon class="text-lumy-purple" v-show="selected" />
                                         </span>
                                         <div class="text-xs text-gray-500">
                                             {{ bp.description }}
@@ -156,29 +156,29 @@
                     </p>
                 </section>
                 <div class="w-full my-4 flex flex-col gap-1">
-                    <h3 class="font-bold text-gray-600">
+                    <label for="bot-name" class="font-bold text-gray-600">
                         Bot name
-                    </h3>
-                    <input v-model="botName" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
+                    </label>
+                    <input v-model="botName" name="bot-name" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
                     <p class="text-gray-400 text-sm">Example: Coach Clara</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
-                    <h3 class="font-bold text-gray-600">
+                    <label for="bot-description" class="font-bold text-gray-600">
                         Description
-                    </h3>
-                    <textarea v-model="botDesc" rows="3" autocorrect="on" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    </label>
+                    <textarea v-model="botDesc" name="bot-description" rows="3" autocorrect="on" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
-                    <h3 class="font-bold text-gray-600">
+                    <label for="bot-origin" class="font-bold text-gray-600">
                         Origin
-                    </h3>
-                    <textarea v-model="botOrigin" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    </label>
+                    <textarea v-model="botOrigin" name="bot-origin" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Lumy core coaching persona.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
-                    <h3 class="font-bold text-gray-600">Tone</h3>
-                    <textarea v-model="botTone" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <label for="bot-tone" class="font-bold text-gray-600">Tone</label>
+                    <textarea v-model="botTone" name="bot-tone" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Calm, thoughtful, empathetic</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">

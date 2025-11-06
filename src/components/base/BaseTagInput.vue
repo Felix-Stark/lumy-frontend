@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-2">
-    <label v-if="label" class="text-sm text-gray-400">{{ label }}</label>
+    <label v-if="label" :for="label?.toLowerCase().replace(/\s+/g, '-')" class="text-sm text-gray-400">{{ label }}</label>
     <div
       class="flex flex-wrap gap-2 items-center rounded bg-white focus-within:border-lumy-purple transition-all"
       @click="focusInput"
@@ -14,6 +14,7 @@
         {{ tag }}
         <button
           type="button"
+          aria-label="Remove tag"
           class="hover:text-red-500"
           @click.stop="removeTag(index)"
         >
@@ -22,6 +23,7 @@
       </span>
 
       <textarea
+        :name="label?.toLowerCase().replace(/\s+/g, '-') || 'tag-input'"
         rows="1"
         ref="inputRef"
         v-model="inputValue"

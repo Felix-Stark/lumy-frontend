@@ -47,7 +47,7 @@ export type Account = {
 
 export type BotPersonality = {
   id: number;
-  account_id: number;
+  account_id?: number;
   name: string;
   description: string;
   formatted_name: string;

@@ -140,7 +140,7 @@ onMounted(async() => {
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push({ name: 'overview-member-skill' });
+	router.push({ name: 'member-skill' });
 }
 
 const avgSentChart = computed(() => {

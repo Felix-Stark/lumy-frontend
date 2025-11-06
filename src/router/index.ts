@@ -101,7 +101,7 @@ const router = createRouter({
           },
           children: [
             {
-              path: 'employee',
+              path: 'overview/employee',
               name: 'admin-overview-employee',
               component: Employee,
             }

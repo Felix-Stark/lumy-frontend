@@ -6,8 +6,8 @@
                 General settings
             </h1>
             <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
-                <p class="font-thin py-2 text-sm">Company name</p>
-                <input v-model="companyName" name="company-name" class=" text-gray-700 p-2 border border-gray-300 rounded outline-lumy-purple" />
+                <label class="font-thin py-2 text-sm">Company name</label>
+                <input v-model="companyName" id="company-name" class=" text-gray-700 p-2 border border-gray-300 rounded outline-lumy-purple" />
             </div>
             <div class="flex flex-col w-full pl-8 pb-6 border-l border-gray-300">
                 <p class="font-thin py-2 text-sm">Feedback framework</p>
@@ -159,26 +159,26 @@
                     <label for="bot-name" class="font-bold text-gray-600">
                         Bot name
                     </label>
-                    <input v-model="botName" name="bot-name" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
+                    <input v-model="botName" id="bot-name" type="text" class="p-2 rounded border text-gray-600 border-gray-300 w-full outline-lumy-purple" />
                     <p class="text-gray-400 text-sm">Example: Coach Clara</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <label for="bot-description" class="font-bold text-gray-600">
                         Description
                     </label>
-                    <textarea v-model="botDesc" name="bot-description" rows="3" autocorrect="on" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botDesc" id="bot-description" rows="3" autocorrect="on" class="p-2 rounded border text-gray-600 border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Empathetic, focused, and great at guiding reflection and growth. Clara speaks with a calm and thoughtful tone, asking reflective questions to help you gain perspective.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <label for="bot-origin" class="font-bold text-gray-600">
                         Origin
                     </label>
-                    <textarea v-model="botOrigin" name="bot-origin" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botOrigin" id="bot-origin" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Lumy core coaching persona.</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">
                     <label for="bot-tone" class="font-bold text-gray-600">Tone</label>
-                    <textarea v-model="botTone" name="bot-tone" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
+                    <textarea v-model="botTone" id="bot-tone" rows="1" autocorrect="on" class="p-2 text-gray-600 rounded border border-gray-300 w-full my-2 outline-lumy-purple"></textarea>
                     <p class="text-gray-400 text-sm">Example: Calm, thoughtful, empathetic</p>
                 </div>
                 <div class="w-full flex flex-col gap-1">

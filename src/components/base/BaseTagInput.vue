@@ -23,7 +23,7 @@
       </span>
 
       <textarea
-        :name="label?.toLowerCase().replace(/\s+/g, '-') || 'tag-input'"
+        :id="label?.toLowerCase().replace(/\s+/g, '-') || 'tag-input'"
         rows="1"
         ref="inputRef"
         v-model="inputValue"

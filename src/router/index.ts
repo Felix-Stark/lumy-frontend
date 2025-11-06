@@ -99,14 +99,15 @@ const router = createRouter({
           meta: {
             roles: ["manager", "admin"]
           },
-          children: [
-            {
-              path: 'overview/employee',
-              name: 'admin-overview-employee',
-              component: Employee,
-            }
-          ]
         },
+        {
+          path: 'overview/employee',
+          name: 'admin-overview-employee',
+          component: Employee,
+          meta: {
+            roles: ["manager", "admin"]
+          }
+        }
       ]
     },
     {

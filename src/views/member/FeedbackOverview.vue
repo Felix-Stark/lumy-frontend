@@ -164,7 +164,7 @@
         <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex gap-2 w-full">
             <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ filterPeersList }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Status: {{ formatName(filteredStatus) }}</span>
         </div>
-        <div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
+        <div v-else class="flex flex-col items-center gap-6 w-full lg:my-10">
         <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
             <div v-if="currentFilter === 'received' && filter.length === 0" class="text-gray-500">
                 No feedback available.

@@ -1,7 +1,7 @@
 <template>
     <RequestModal v-if="showReqModal === true" @close="closeModal" />
     <SkillSkeleton v-if="initLoading" />
-    <div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
+    <div v-else class="flex flex-col items-center gap-6 w-full">
         <section class="flex justify-between items-center  w-full">
             <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
             <BaseButton
@@ -17,7 +17,7 @@
         </section>
         <section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg shadow-md">
             <h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-            <div class="w-full">
+            <div class="w-full h-100 items-stretch">
                 <Line :data="avgSentChart" :options="avgSentOptions" />
             </div>
         </section>
@@ -224,7 +224,7 @@ const avgSentChart = computed(() => {
 
 const avgSentOptions = {
   responsive: true,
-  maintainAspectRatio: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: { display: false },
     title: { display: false }

@@ -124,7 +124,7 @@ const clearQuery = () => {
 
 function selectedEmployee(user: Partial<User>) {
   sessionStorage.setItem('employee', JSON.stringify(user))
-  router.push({ name: 'overview-admin-employee' });
+  router.push({ name: 'admin-overview-employee' });
 }
 
 const lineData = computed(() => {

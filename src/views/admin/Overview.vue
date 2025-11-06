@@ -1,6 +1,6 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full">
+	<div v-else class="flex flex-col items-center gap-6 w-full my-20">
   <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
     <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
@@ -123,6 +123,7 @@ const clearQuery = () => {
 };
 
 function selectedEmployee(user: Partial<User>) {
+  console.log('Selected employee: ', user);
   sessionStorage.setItem('employee', JSON.stringify(user))
   router.push({ name: 'admin-overview-employee' });
 }

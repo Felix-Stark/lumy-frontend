@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center h-full w-full p-4 md:p-8 lg:w-4/5 xl:w-3/4 2xl:w-2/3 mx-auto">
+    <div class="flex flex-col items-center h-full box-border w-full p-4 md:p-8 lg:w-4/5  mx-auto">
 
 		<NavUtility />
         <main class="flex flex-col items-center gap-6 w-full lg:my-20">

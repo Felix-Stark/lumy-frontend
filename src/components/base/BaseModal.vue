@@ -26,7 +26,7 @@
           leave-to="opacity-0 scale-95"
         >
           <DialogPanel
-            class="w-full max-w-3xl rounded-2xl bg-white shadow-xl p-6"
+            class="w-full max-w-3xl rounded-2xl max-h-[80vh] overflow-auto bg-white shadow-xl p-6"
           >
             <slot />
           </DialogPanel>

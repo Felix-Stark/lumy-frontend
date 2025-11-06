@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { ref, computed } from "vue";
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-
 import { useAuthStore } from '@/stores/authStore'
 import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
@@ -88,33 +88,35 @@ const router = createRouter({
         }
       ]
     },
-    { 
+    {
       path: '/admin',
       component: AdminDashboardLayout,
-      redirect: '/admin/overview',
-      meta: {
-        roles: ["manager", "admin"]
-      },
       children: [
-        {
+        { 
           path: 'overview',
           name: 'admin-overview',
-          component: Overview
+          component: Overview,
+          meta: {
+            roles: ["manager", "admin"]
+          },
         },
         {
           path: 'overview/employee',
           name: 'admin-overview-employee',
           component: Employee,
+          meta: {
+            roles: ["manager", "admin"]
+          }
         }
       ]
     },
     {
       path: '/member',
-      redirect: '/member/overview',
       component: DashboardLayout,
+      redirect: '/member/overview',
       meta: {
-        roles: ["member", "manager", "admin"]
-      },
+            roles: ["member", "manager", "admin"]
+          },
       children: [
         {
           path: 'overview',
@@ -122,17 +124,17 @@ const router = createRouter({
           component: MemberDashboard,
         },
         {
-          path: 'feedback-overview',
-          name: 'feedback-overview',
+          path: 'feedback',
+          name: 'member-feedback',
           component: FeedbackOverview,
         },
         {
-          path: 'skill-overview',
-          name: 'skill-overview',
+          path: 'skill',
+          name: 'member-skill',
           component: SkillOverview,
         }
       ]
-    },  
+    },
     {
       path: '/settings',
       name: 'settings',
@@ -206,7 +208,7 @@ const router = createRouter({
 
 
 // Global navigation guard
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   const errorStore = useErrorStore();
   const raw = sessionStorage.getItem('LumyRole');
   const role: string = raw ? JSON.parse(raw) : null;

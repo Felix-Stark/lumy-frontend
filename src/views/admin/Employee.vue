@@ -121,7 +121,7 @@
 </template>
 
 <script setup lang="ts">
-import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
+import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronLeft, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
@@ -174,7 +174,7 @@ function resetEmployee() {
 
 function selectedSkill(skill: SkillSummary) {
 	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	// router.push({ name: 'skill-overview' });
+	// router.push({ name: 'overview-member-skill' });
 }
 
 const avgSentChart = computed(() => {

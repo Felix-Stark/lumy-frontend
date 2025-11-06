@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[80vh]">
+    <SettingsUsers v-if="initLoading" />
+    <div v-else class="flex flex-col items-center border-box w-full h-full mb-6 bg-white rounded-xl shadow-md p-8 max-h-[80vh]">
       <div class="flex flex-col gap-2 md:gap-4 p-4 w-full h-full overflow-auto">
         <Combobox>
           <div class="relative w-full">
@@ -53,6 +54,7 @@ import {
     Combobox,
     ComboboxInput,
   } from '@headlessui/vue'
+  import SettingsUsers from '@/components/skeletons/SettingsUsers.vue';
 import { XCircleIcon } from 'lucide-vue-next';
 import PickUserComp from '@/components/setup/PickUserComp.vue';
 import BaseButton from '@/components/base/BaseButton.vue';
@@ -68,6 +70,7 @@ const userStore = useUserStore();
 const account = computed(() => accountStore.account);
 const users = computed<User[]>(() => userStore.sortedUsers);
 const loading = ref(false);
+const initLoading = ref(true);
 const success = ref(false);
 const query = ref('');
 const filteredUsers = computed<User[]>(() => {
@@ -82,13 +85,19 @@ const clearQuery = () => {
 };
 
 onMounted(async() => {
-    if(account === null) {
+    try {
+      if(account === null) {
         await accountStore.getAccount();
     }
     if(users === null || users.value.length === 0){
         await userStore.getUsers(true);
     }
     await userStore.getMe();
+    } catch (err:any) {
+      console.error('Error fetching users in Settings Users: ', err);
+    } finally {
+      initLoading.value = false;
+    }
 })
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 

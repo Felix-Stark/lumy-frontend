@@ -1,6 +1,6 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
+	<div v-else class="flex flex-col items-center gap-6 w-full">
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
@@ -42,7 +42,7 @@
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
-		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
+		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
 			<div class="w-full h-100 items-stretch">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
@@ -105,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
+import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
@@ -140,7 +140,7 @@ onMounted(async() => {
 
 function selectedSkill(skill: SkillSummary) {
 	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push({ name: 'skill-overview' });
+	router.push({ name: 'member-skill' });
 }
 
 const avgSentChart = computed(() => {

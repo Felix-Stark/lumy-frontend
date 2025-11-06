@@ -19,10 +19,10 @@
 				<router-link :to="{name: 'admin-overview'}">Team Overview</router-link>
 			</li>
 			<li>
-				<router-link :to="{name: 'member'}">Your Overview</router-link>
+				<router-link :to="{name: 'member-overview'}">Your Overview</router-link>
 			</li>
 			<li>
-				<router-link :to="{name: 'feedback-overview'}">Your Feedback</router-link>
+				<router-link :to="{name: 'member-feedback'}">Your Feedback</router-link>
 			</li>
 			<li>
 				<router-link :to="{name: 'settings'}">Settings</router-link>
@@ -42,7 +42,7 @@
 		'hidden lg:flex'
 		]"
 		style="transition: all 0.3s;">
-		<router-link v-if="role === 'admin' || role === 'manager'" :to="{name: 'admin-overview'}" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link v-if="role === 'admin' || role === 'manager'" :to="{ name: 'admin-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Team Overview')"
 		@mouseleave="handleMouseLeave"
 		>
@@ -61,7 +61,7 @@
 			]" />
 			
 		</router-link>
-		<router-link :to="{ name: 'feedback-overview' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link :to="{ name: 'member-feedback' }" v-slot="{ isExactActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Your Feedback')"
 		@mouseleave="handleMouseLeave"
 		>

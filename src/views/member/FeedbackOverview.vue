@@ -1,211 +1,215 @@
 <template>
-    <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
-        <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
-            <div class="relative h-48">
-                <Doughnut :data="data" :options="options" />
-                <!-- Center text -->
-                <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
-                    <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
-                    <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
+    <FeedbackSkeleton v-if="initLoading" />
+        <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
+                <div class="relative h-48">
+                    <Doughnut :data="data" :options="options" />
+                    <!-- Center text -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
+                        <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
+                        <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
+                    </div>
                 </div>
-            </div>
 
-        </div>
-        <div class="bg-white relative flex items-center justify-between gap-8 shadow-md rounded-lg p-8 w-full">
-            <div class="h-48">
-                <Doughnut :data="allTimeData" :options="allTimeOptions" />
             </div>
-            <!-- Legend -->
-            <div class="text-sm space-y-2">
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
-                    <span>Feedback Requested <i>({{ summary?.feedback_requested_count || 0 }})</i></span>
+            <div class="bg-white relative flex items-center justify-between gap-8 shadow-md rounded-lg p-8 w-full">
+                <div class="h-48">
+                    <Doughnut :data="allTimeData" :options="allTimeOptions" />
                 </div>
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
-                    <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
-                    <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
+                <!-- Legend -->
+                <div class="text-sm space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-[#60a5fa]"></span>
+                        <span>Feedback Requested <i>({{ summary?.feedback_requested_count || 0 }})</i></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-[#3b82f6]"></span>
+                        <span>Feedback Received <i>({{ summary?.feedback_received_count || 0 }})</i></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-lumy-purple"></span>
+                        <span>Feedback Given <i>({{ summary?.feedback_given_count || 0 }})</i></span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="flex items-center w-full justify-between">
-        <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <Listbox v-model="filteredSkill" >
-                <Float
-                placement="bottom"
-                :flip="true"
-                :offset="2"
-                >
-                <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
-                    <span class="block ">
-                         Filter by Skill
-                    </span>
-                    <ChevronDown class="ml-2 size-4"/>
-                </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 shadow-lg rounded-bl-lg rounded-br-lg p-2 overflow-y-auto">
-                        <ListboxOption
-                        v-for="s in summary?.skills_summary"
-                        v-slot="{ active, selected }"
-                        :key="s.skill_id"
-                        :value="s.name"
-                        class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
-                        >
-                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
-                                {{ s.name }}
-                            </span>
-                        </ListboxOption>
-                    </ListboxOptions>
-                </Float>
-            </Listbox>
-            <Listbox v-model="filteredSubmitter">
-                <Float
-                placement="bottom-end"
-                :flip="true"
-                :offset="2"
-                >
-                <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
-                    <span class="block">
-                        Filter by Peer
-                    </span>
-                    <ChevronDown class="ml-2 size-4"/>
-                </ListboxButton>
-                    <ListboxOptions class="bg-white max-h-60 p-2 shadow-lg rounded-bl-lg rounded-br-lg overflow-y-auto">
-                        <ListboxOption
-                        v-for="submitter in submitters"
-                        v-slot="{ active, selected }"
-                        :key="submitter.id"
-                        :value="submitter.id"
-                        class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
-                        >
-                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
-                                {{ formatName(submitter.name) }}
-                            </span>
-                        </ListboxOption>
-                    </ListboxOptions>
-                </Float>
-            </Listbox>
-            <Listbox v-if="currentFilter !== 'requests'" v-model="filteredSentiment">
-                <Float
-                placement="bottom"
-                :flip="true"
-                :offset="2"
-                >
+        </section>
+        <section class="flex items-center w-full justify-between">
+            <!-- <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
+                <Listbox v-model="filteredSkill" >
+                    <Float
+                    placement="bottom"
+                    :flip="true"
+                    :offset="2"
+                    >
                     <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
-                        <span class="block">
-                            Filter by Sentiment
+                        <span class="block ">
+                            Filter by Skill
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-auto">
-                        <ListboxOption
-                        v-for="sentiment in ['positive', 'neutral', 'negative']"
-                        v-slot="{ active, selected }"
-                        :key="sentiment"
-                        :value="sentiment"
-                        class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
-                        >
-                            <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
-                                {{ formatName(sentiment) }}
-                            </span>
-                        </ListboxOption>
-                    </ListboxOptions>
-                </Float>
-            </Listbox>
-            <Listbox v-if="currentFilter === 'requests'" v-model="filteredStatus">
-                <Float
-                placement="bottom-end"
-                :flip="true"
-                :offset="2"
-                >
+                        <ListboxOptions class="bg-white max-h-60 shadow-lg rounded-bl-lg rounded-br-lg p-2 overflow-y-auto">
+                            <ListboxOption
+                            v-for="s in summary?.skills_summary"
+                            v-slot="{ active, selected }"
+                            :key="s.skill_id"
+                            :value="s.name"
+                            class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
+                            >
+                                <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
+                                    {{ s.name }}
+                                </span>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </Float>
+                </Listbox>
+                <Listbox v-model="filteredSubmitter">
+                    <Float
+                    placement="bottom-end"
+                    :flip="true"
+                    :offset="2"
+                    >
                     <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
                         <span class="block">
-                            Filter by Status
+                            Filter by Peer
                         </span>
                         <ChevronDown class="ml-2 size-4"/>
                     </ListboxButton>
-                    <ListboxOptions class="bg-white shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-y-auto w-full">
-                        <ListboxOption
-                        v-for="status in ['answered', 'pending']"
-                        v-slot="{ active, selected }"
-                        :key="status"
-                        :value="status"
-                        class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
-                        >
-                            <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
-                                {{ formatName(status) }}
+                        <ListboxOptions class="bg-white max-h-60 p-2 shadow-lg rounded-bl-lg rounded-br-lg overflow-y-auto">
+                            <ListboxOption
+                            v-for="submitter in submitters"
+                            v-slot="{ active, selected }"
+                            :key="submitter.id"
+                            :value="submitter.id"
+                            class="cursor-pointer text-wrap p-2 hover:bg-purple-50 w-full"
+                            >
+                                <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
+                                    {{ formatName(submitter.name) }}
+                                </span>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </Float>
+                </Listbox>
+                <Listbox v-if="currentFilter !== 'requests'" v-model="filteredSentiment">
+                    <Float
+                    placement="bottom"
+                    :flip="true"
+                    :offset="2"
+                    >
+                        <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+                            <span class="block">
+                                Filter by Sentiment
                             </span>
-                        </ListboxOption>
-                    </ListboxOptions>
-                </Float>
-            </Listbox>
-            <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white rounded-lg">
-                <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null; filteredStatus = null;" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
-                    Clear Filters
+                            <ChevronDown class="ml-2 size-4"/>
+                        </ListboxButton>
+                        <ListboxOptions class="bg-white bottom-2 shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-auto">
+                            <ListboxOption
+                            v-for="sentiment in ['positive', 'neutral', 'negative']"
+                            v-slot="{ active, selected }"
+                            :key="sentiment"
+                            :value="sentiment"
+                            class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
+                            >
+                                <span :class="selected ? 'font-sm text-lumy-purple' : 'font-sm'">
+                                    {{ formatName(sentiment) }}
+                                </span>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </Float>
+                </Listbox>
+                <Listbox v-if="currentFilter === 'requests'" v-model="filteredStatus">
+                    <Float
+                    placement="bottom-end"
+                    :flip="true"
+                    :offset="2"
+                    >
+                        <ListboxButton class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 focus:outline-none cursor-pointer">
+                            <span class="block">
+                                Filter by Status
+                            </span>
+                            <ChevronDown class="ml-2 size-4"/>
+                        </ListboxButton>
+                        <ListboxOptions class="bg-white shadow-lg rounded-bl-lg rounded-br-lg max-h-60 p-2 overflow-y-auto w-full">
+                            <ListboxOption
+                            v-for="status in ['answered', 'pending']"
+                            v-slot="{ active, selected }"
+                            :key="status"
+                            :value="status"
+                            class="cursor-pointer w-full text-wrap p-2 hover:bg-purple-50"
+                            >
+                                <span :class="selected ? 'font-medium text-lumy-purple' : 'font-normal'">
+                                    {{ formatName(status) }}
+                                </span>
+                            </ListboxOption>
+                        </ListboxOptions>
+                    </Float>
+                </Listbox>
+                <div v-if="filteredSentiment || filteredSkill || filteredSubmitter" class="bg-white rounded-lg">
+                    <button @click="filteredSkill = null; filteredSubmitter = null; filteredSentiment = null; filteredStatus = null;" class="px-4 py-2 text-sm rounded-lg hover:bg-gray-50 cursor-pointer">
+                        Clear Filters
+                    </button>
+                </div>
+            </div> -->
+            <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
+                <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'received' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('received')">
+                    Received
+                </button>
+                <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'given' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('given')">
+                    Given
+                </button>
+                <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
+                    Requests
                 </button>
             </div>
+        </section>
+        <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex gap-2 w-full">
+            <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ filterPeersList }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Status: {{ formatName(filteredStatus) }}</span>
         </div>
-        <div class="flex gap-4 items-center bg-white shadow-md rounded-lg">
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'received' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('received')">
-                Received
-            </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'given' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('given')">
-                Given
-            </button>
-            <button :class="['cursor-pointer px-4 py-2 text-sm hover:bg-gray-300 rounded-lg', currentFilter === 'requests' ? 'bg-lumy-secondary text-white' : '']" @click="setFilter('requests')">
-                Requests
-            </button>
-        </div>
-    </section>
-    <div v-if="filteredSentiment || filteredSkill || filteredSubmitter " class="flex gap-2 w-full">
-        <p class="text-sm">Filter by: </p><span class="ml-2 bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full" v-if="filteredSkill">Skill: {{ filteredSkill }}</span><span v-if="filteredSubmitter" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Peer: {{ filterPeersList }}</span><span v-if="filteredSentiment" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Sentiment: {{ formatName(filteredSentiment) }}</span><span v-if="filteredStatus" class="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full">Status: {{ formatName(filteredStatus) }}</span>
-    </div>
-    <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
-        <div v-if="currentFilter === 'received' && filter.length === 0" class="text-gray-500">
-            No feedback available.
-        </div>
-        <div v-if="currentFilter === 'given' && peerFilter.length === 0" class="text-gray-500">
-            No feedback available.
-        </div>
-        <div v-if="currentFilter === 'requests' && reqFilter.length === 0" class="text-gray-500">
-            No feedback available.
-        </div>
+        <div v-else class="flex flex-col items-center gap-6 w-full lg:my-10">
+        <section class="flex flex-col lg:flex-row lg:flex-wrap justify-between w-full gap-8 space-y-8">
+            <div v-if="currentFilter === 'received' && filter.length === 0" class="text-gray-500">
+                No feedback available.
+            </div>
+            <div v-if="currentFilter === 'given' && peerFilter.length === 0" class="text-gray-500">
+                No feedback available.
+            </div>
+            <div v-if="currentFilter === 'requests' && reqFilter.length === 0" class="text-gray-500">
+                No feedback available.
+            </div>
 
-        <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
-        :id="feedback?.id"
-        :content="feedback?.content"
-        :img="feedback?.feedback_request?.recipient.avatar"
-        :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
-        :skill="feedback?.feedback_request?.skill.skill"
-        :created_at="feedback?.created_at"
-        :sentiment="feedback?.sentiment"
-        />
-        <Card v-if="currentFilter === 'given'" v-for="feedback in peerFilter"
-        :id="feedback?.id"
-        :content="feedback?.content"
-        :img="feedback?.feedback_request?.sender.avatar"
-        :name="feedback?.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
-        :skill="feedback?.feedback_request?.skill.skill"
-        :created_at="feedback?.created_at"
-        :sentiment="feedback?.sentiment"
-        />
-        <Card v-if="currentFilter === 'requests'" v-for="req in reqFilter"
-        :id="req.id"
-        :content="req.message"
-        :img="req.recipient.avatar"
-        :name="'To: '+formatName(req.recipient.name)"
-        :skill="req.skill.skill"
-        :created_at="req.created_at"
-        :updated_at="req.updated_at"
-        :status="req.status"
-        />
-    </section>
+            <Card v-if="currentFilter === 'received'" v-for="feedback in filter"
+            :id="feedback?.id"
+            :content="feedback?.content"
+            :img="feedback?.feedback_request?.recipient.avatar"
+            :name="feedback?.feedback_request?.recipient.name ? 'From: '+formatName(feedback.feedback_request.recipient.name) : ''"
+            :skill="feedback?.feedback_request?.skill.skill"
+            :created_at="feedback?.created_at"
+            :sentiment="feedback?.sentiment"
+            />
+            <Card v-if="currentFilter === 'given'" v-for="feedback in peerFilter"
+            :id="feedback?.id"
+            :content="feedback?.content"
+            :img="feedback?.feedback_request?.sender.avatar"
+            :name="feedback?.feedback_request?.sender.name ? 'To: '+formatName(feedback.feedback_request.sender.name) : ''"
+            :skill="feedback?.feedback_request?.skill.skill"
+            :created_at="feedback?.created_at"
+            :sentiment="feedback?.sentiment"
+            />
+            <Card v-if="currentFilter === 'requests'" v-for="req in reqFilter"
+            :id="req.id"
+            :content="req.message"
+            :img="req.recipient.avatar"
+            :name="'To: '+formatName(req.recipient.name)"
+            :skill="req.skill.skill"
+            :created_at="req.created_at"
+            :updated_at="req.updated_at"
+            :status="req.status"
+            />
+        </section>
+    </div>
 </template>
 
 <script lang="ts" setup>
+import FeedbackSkeleton from '@/components/skeletons/FeedbackSkeleton.vue';
 import { computed, ref, onMounted } from 'vue'
 import Card from '@/components/feedback/Card.vue';
 import { Chart, registerables } from 'chart.js'
@@ -219,6 +223,7 @@ import { ChevronDown } from 'lucide-vue-next';
 
 type Submitter = {id: number, name: string, avatar: string, is_active: boolean}
 Chart.register(...registerables);
+const initLoading = ref(true);
 const userStore = useUserStore();
 const feedbackStore = useFeedbackStore();
 const summary = ref<UserSummary | null>();
@@ -268,36 +273,41 @@ const filterPeersList = computed(() => {
 })
 
 onMounted(async () => {
-    if (!summary.value) {
+    try {
+        if (!summary.value) {
         await userStore.getMeSummary();
         summary.value = userStore.meSummary;
-    }
-    if (feedbackList.value.length < 1) {
-        await feedbackStore.fetchSubmissions();
-        feedbackList.value = feedbackStore.submissions;
-    }
-    if (feedbackGiven.value.length < 1) {
-        await feedbackStore.getSubmissionsGiven();
-    }
-    if(feedbackReq.value.length < 1) {
-        await feedbackStore.getRequests();
-        feedbackReq.value = feedbackStore.requests;
-    }
+        }
+        if (feedbackList.value.length < 1) {
+            await feedbackStore.fetchSubmissions();
+            feedbackList.value = feedbackStore.submissions;
+        }
+        if (feedbackGiven.value.length < 1) {
+            await feedbackStore.getSubmissionsGiven();
+        }
+        if(feedbackReq.value.length < 1) {
+            await feedbackStore.getRequests();
+            feedbackReq.value = feedbackStore.requests;
+        }
+        let progress = 0;
+        const duration = 1000; // 1 second animation
+        const step = 16; // ~60fps
+        const increment = positiveSentiments.value / (duration / step);
 
-    let progress = 0;
-    const duration = 1000; // 1 second animation
-    const step = 16; // ~60fps
-    const increment = positiveSentiments.value / (duration / step);
-
-    const interval = setInterval(() => {
+        const interval = setInterval(() => {
         progress += increment;
         if (progress >= positiveSentiments.value) {
             currentPercentage.value = positiveSentiments.value;
             clearInterval(interval);
         } else {
-            currentPercentage.value = Math.round(progress);
-        }
-    }, step);
+                currentPercentage.value = Math.round(progress);
+            }
+        }, step);
+    } catch (err: any) {
+        console.error('Error fetching feedback data: ', err);
+    } finally {
+        initLoading.value = false;
+    }
 });
 // FILTERS
 const currentFilter = ref<'received' | 'given' | 'requests'>('received');

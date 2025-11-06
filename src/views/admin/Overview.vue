@@ -1,6 +1,6 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full lg:my-20">
+	<div v-else class="flex flex-col items-center gap-6 w-full my-20">
   <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
     <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
       <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
@@ -16,7 +16,7 @@
     </HeadCard>
   </header>
   <section class="w-full flex  items-center gap-8 mt-6">
-    <div class="w-full bg-white rounded-xl shadow-lg self-stretch h-100 p-6">
+    <div class="w-full bg-white rounded-lg shadow-md self-stretch h-100 p-6">
       <Line :data="lineData" :options="lineOptions" />
     </div>
     <!-- <div class="bg-white shadow-lg rounded-lg p-8  w-1/3">
@@ -63,7 +63,7 @@ import {
     Combobox,
     ComboboxInput,
   } from '@headlessui/vue';
-import DashSkeleton from '@/components/dashboard/DashSkeleton.vue';
+import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { XCircleIcon } from 'lucide-vue-next';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';
@@ -123,6 +123,7 @@ const clearQuery = () => {
 };
 
 function selectedEmployee(user: Partial<User>) {
+  console.log('Selected employee: ', user);
   sessionStorage.setItem('employee', JSON.stringify(user))
   router.push({ name: 'admin-overview-employee' });
 }

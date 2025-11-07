@@ -1,4 +1,5 @@
 <template>
+    <BaseLoader :isLoading="loading" />
     <SettingsGeneral v-if="initLoading" />
     <div v-else class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
         <article class="flex flex-col gap-8 md:w-1/2 relative">
@@ -241,6 +242,7 @@
 
 <script setup lang="ts">
 import BaseModal from '@/components/base/BaseModal.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseTagInput from '@/components/base/BaseTagInput.vue';
 import SettingsGeneral from '@/components/skeletons/SettingsGeneral.vue';
 import type { Account, BotPersonality, FeedbackFramework } from '@/types';
@@ -310,7 +312,7 @@ onMounted(async () => {
     } finally {
         initLoading.value = false;
     }
-})
+});
 
 async function saveSettings() {
     loading.value = true;

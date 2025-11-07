@@ -308,7 +308,7 @@ onMounted(async () => {
         toastBg.value = 'bg-red-500';
         showToast.value = true;
     } finally {
-        loading.value = false;
+        initLoading.value = false;
     }
 })
 

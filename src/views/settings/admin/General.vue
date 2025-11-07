@@ -389,6 +389,7 @@ async function saveBot() {
         if( res.status === 200) {
             botPersonalities.value = res.data;
         }
+        loading.value = false;
     }
 }
 

@@ -1,5 +1,6 @@
 <template>
-    <SettingsGeneral v-if="loading" />
+    <BaseLoader :isLoading="loading" />
+    <SettingsGeneral v-if="initLoading" />
     <div v-else class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
         <article class="flex flex-col gap-8 md:w-1/2 relative">
             <h1 class="font-thin text-2xl text-gray-500">
@@ -241,6 +242,7 @@
 
 <script setup lang="ts">
 import BaseModal from '@/components/base/BaseModal.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
 import BaseTagInput from '@/components/base/BaseTagInput.vue';
 import SettingsGeneral from '@/components/skeletons/SettingsGeneral.vue';
 import type { Account, BotPersonality, FeedbackFramework } from '@/types';
@@ -263,7 +265,8 @@ const selectedFramework = ref();
 const frameworks = ref<FeedbackFramework[]>([])
 const selectedBot = ref();
 const botPersonalities = ref<BotPersonality[]>([]);
-const loading = ref(true);
+const initLoading = ref(true);
+const loading = ref(false);
 const showBotModal = ref(false);
 
 const botName = ref('');
@@ -307,11 +310,12 @@ onMounted(async () => {
         toastBg.value = 'bg-red-500';
         showToast.value = true;
     } finally {
-        loading.value = false;
+        initLoading.value = false;
     }
-})
+});
 
 async function saveSettings() {
+    loading.value = true;
     try {
        const updated = await accountStore.updateAccount({
             name: companyName.value,
@@ -320,15 +324,17 @@ async function saveSettings() {
             timezone: selectedTimezone.value
         });
         if(updated) {
-            toastText.value = 'Settings saved!';
-            toastBg.value = 'bg-lumy-green';
-            showToast.value = true;
+            loading.value = false;
         }
     } catch (error: any) {
         console.log('failed to save settings: ', error)
         toastText.value = error?.response?.data?.detail || 'Could not save settings'
         toastBg.value = 'bg-red-500'
         showToast.value = true
+    } finally {
+        toastText.value = 'Settings saved!';
+        toastBg.value = 'bg-lumy-green';
+        showToast.value = true;
     }
 };
 
@@ -344,6 +350,7 @@ async function saveBot() {
         catchphrase: botCatchphrase.value,
         examples: botExamples.value
     });
+    loading.value = true;
     try {
         const res = await api.post('/bot-personalities', {
             name: botName.value,
@@ -357,11 +364,11 @@ async function saveBot() {
             example_phrases: botExamples.value
         });
         if(res.status === 201) {
+            showBotModal.value = false;
             toastText.value = 'Custom bot personality added!';
             toastBg.value = 'bg-lumy-green';
             showToast.value = true;
             selectedBot.value = res.data.id;
-            showBotModal.value = false;
             // Reset form
             botName.value = '';
             botDesc.value = '';
@@ -382,6 +389,7 @@ async function saveBot() {
         if( res.status === 200) {
             botPersonalities.value = res.data;
         }
+        loading.value = false;
     }
 }
 

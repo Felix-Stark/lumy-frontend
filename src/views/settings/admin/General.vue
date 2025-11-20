@@ -311,6 +311,7 @@ onMounted(async () => {
         showToast.value = true;
     } finally {
         initLoading.value = false;
+        console.log(accountStore.account);
     }
 });
 

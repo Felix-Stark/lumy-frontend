@@ -22,15 +22,16 @@ const code = route.query.code;
 onMounted( async () => {
 	try {
 		if(code) {
-		await authStore.loginSlack(code as string);
-		if (authStore.session?.user?.role === 'member') {
-			router.replace('/member/overview')
-		} else {
-			router.replace('/admin/overview')
-		}
-		if(route.query.error === 'access_denied') {
-			router.push({ name: 'slack-login' });
-		}
+		// await authStore.loginSlack(code as string);
+		// if (authStore.session?.user?.role === 'member') {
+		// 	router.replace('/member/overview')
+		// } else {
+		// 	router.replace('/admin/overview')
+		// }
+		// if(route.query.error === 'access_denied') {
+		// 	router.push({ name: 'slack-login' });
+		// }
+		console.log('code: ', code);
 	}
 	} catch (error: any) {
 		console.error('Error during Slack callback: ', error);

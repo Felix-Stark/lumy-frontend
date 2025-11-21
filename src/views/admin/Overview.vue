@@ -2,8 +2,8 @@
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
 	<div v-else class="flex flex-col items-center gap-6 w-full my-20">
     <div class="absolute top-8 left-8 flex items-center mb-8">
-      <h1 class="text-lumy-secondary text-2xl">Team overview</h1>
-      <h1 class="text-lumy-secondary text-2xl">Org overview</h1>
+      <h1 v-if="session.user?.role === 'manager'" class="text-lumy-secondary text-2xl">Team overview</h1>
+      <h1 v-if="session.user?.role === 'admin'" class="text-lumy-secondary text-2xl">Org overview</h1>
     </div>
 
     <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
@@ -11,13 +11,13 @@
         <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
       </HeadCard>
       <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Total feedback requests">
-        <MessageCircleQuestion class=" text-lumy-secondary-light min-w-10 h-auto" stroke="currentColor" />
+        <MessageCircleQuestion class=" text-lumy-secondary min-w-10 h-auto" stroke="currentColor" />
       </HeadCard>
       <HeadCard :title="adminStore.teamSummary?.positive_feedback_percentage+'%' || 0" description="Positive feedback">
         <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
       </HeadCard>
       <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">
-        <HeartHandshake class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
+        <Handshake class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
       </HeadCard>
     </header>
     <section class="w-full flex  items-center gap-8 mt-6">
@@ -64,11 +64,14 @@ import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';
 import { Doughnut, Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js';
-import { XCircleIcon, Heart, Smile, Settings, HeartHandshake, MessageCircleQuestion } from 'lucide-vue-next';
+import { XCircleIcon, Heart, Smile, Settings, Handshake, MessageCircleQuestion } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
 import { useAdminStore } from '@/stores/adminStore';
 import type { User } from '@/types';
 import { useRouter } from 'vue-router'; 
+import { useSessionStore } from '@/stores/sessionStore';
+
+const session = useSessionStore();
 
 const router = useRouter();
 

@@ -1,9 +1,9 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full my-20">
-    <div class="absolute top-8 left-8 flex items-center mb-8">
+	<div v-else class="flex flex-col items-center gap-6 w-full my-12 lg:my-20">
+    <div class="absolute top-8 left-8 lg:top-20 lg:left-20 flex items-center mb-8">
       <h1 v-if="session.user?.role === 'manager'" class="text-lumy-secondary text-2xl">Team overview</h1>
-      <h1 v-if="session.user?.role === 'admin'" class="text-lumy-secondary text-2xl">Org overview</h1>
+      <h1 v-if="session.user?.role === 'admin'" class="text-lumy-secondary text-2xl">Organisation overview</h1>
     </div>
 
     <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
@@ -62,13 +62,13 @@ import {
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';
-import { Doughnut, Line } from 'vue-chartjs';
+import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js';
-import { XCircleIcon, Heart, Smile, Settings, Handshake, MessageCircleQuestion } from 'lucide-vue-next';
+import { XCircleIcon, Heart, Smile, Handshake, MessageCircleQuestion } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
-import { useAdminStore } from '@/stores/adminStore';
 import type { User } from '@/types';
 import { useRouter } from 'vue-router'; 
+import { useAdminStore } from '@/stores/adminStore';
 import { useSessionStore } from '@/stores/sessionStore';
 
 const session = useSessionStore();

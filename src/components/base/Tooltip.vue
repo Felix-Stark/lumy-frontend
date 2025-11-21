@@ -27,7 +27,7 @@
 	() => [props.x, props.y, props.visible],
 	([x, y, visible]) => {
 	  if (visible) {
-		style.value = { left: `${x}px`, top: `${y}px` };
+		style.value = { left: `${x || 0}px`, top: `${y || 0}px` };
 	  }
 	}
   );

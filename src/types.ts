@@ -99,6 +99,7 @@ export type Skill = {
   skill: string;
   definition: string;
   theme: string;
+  is_active: boolean;
 }
 
 export type SkillSummary = {

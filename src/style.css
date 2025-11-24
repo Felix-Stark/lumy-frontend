@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
+@import "@headlessui/tailwindcss";
 
 @theme{
 	--color-darkblue: rgba(31, 54, 82, 1);

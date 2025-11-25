@@ -37,7 +37,10 @@ export const useAuthStore = defineStore("auth", () => {
       if (res.status === 200) {
         await getSession();
         sessionStorage.setItem('LumyRole', JSON.stringify(res.data.role));
-        return res.data;
+        return res.status;
+      }
+      if (res.status === 204) {
+        return res.status;
       }
     } catch (err: any) {
       console.error('Error during Slack login: ', err);

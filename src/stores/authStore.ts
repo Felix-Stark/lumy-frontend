@@ -4,6 +4,7 @@ import { useUserStore } from "./userStore";
 import type { SetupAccount, Session } from "@/types";
 import { useErrorStore } from "./errorStore";
 import { ref, computed } from "vue";
+import type { Router } from "vue-router";
 export const useAuthStore = defineStore("auth", () => {
   const session = ref<Session | null>(null);
   const authenticated = computed(() => session.value?.authenticated || false);
@@ -47,7 +48,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  async function registerSlackUser(code: string) {
+  async function registerSlackUser(code: string, router: Router) {
     try {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
@@ -57,7 +58,11 @@ export const useAuthStore = defineStore("auth", () => {
       }
       return res.status;
     } catch (err:any) {
-      console.error('Error in register with slack: ', err);
+      if(err.response?.status === 403) {
+        throw new Error('NOT_ADMIN');
+      }
+      console.error('Error in registerSlackAccount: ', err);
+      throw err;
     }
   };
 

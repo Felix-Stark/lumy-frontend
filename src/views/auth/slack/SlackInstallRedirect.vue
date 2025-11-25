@@ -26,6 +26,9 @@ onMounted( async () => {
 		if (res === 200) {
 			router.push({name: 'slack-install-success'})
 		}
+		if (res === 403) {
+			router.push({ name: 'slack-not-admin' })
+		}
 	} catch (err: any) {
 		console.error('Error in Register: ', err);
 		router.push({name: 'slack-not-admin'});

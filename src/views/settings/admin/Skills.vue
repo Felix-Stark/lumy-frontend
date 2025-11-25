@@ -14,7 +14,7 @@
             <Disclosure v-slot="{ open }" v-for="s in skills">
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <DisclosureButton class="flex w-full cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                        <span>{{ s.skill }}</span>
+                        <span class="font-bold text-gray-600">{{ s.skill }}</span>
                         <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                     </DisclosureButton>
                     <div class="flex gap-6">
@@ -29,20 +29,29 @@
                             :class="active ? 'translate-x-6' : 'translate-x-1'"
                             />
                         </Switch>
-                        <Menu>
+                        <Menu as="div" class="relative inline-block text-left">
                             <MenuButton>
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
-                            <MenuItems class="w-36 bg-white">
-                                <MenuItem class="flex gap-4">
+                            <MenuItems class="w-36 bg-white aboslute bottom-0">
+                                <MenuItem class="flex items-center gap-4">
                                     <button @click="() => editSkill(s)" class="cursor-pointer">
-                                        <Edit class="w-5 h-5 text-lumy-secondary" />
+                                        <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
                                     </button>
                                     Edit
+                                </MenuItem>
+                                <MenuItem class="flex items-center gap-4">
+                                    <button @click="() => editSkill(s)" class="cursor-pointer">
+                                        <Delete class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
+                                    </button>
+                                    Delete
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
                     </div>
+                    <DisclosurePanel class="text-gray-600 text-sm">
+                        {{ s.definition }}
+                    </DisclosurePanel>
                 </div>
             </Disclosure>
         </section>
@@ -65,7 +74,7 @@ MenuItems,
 MenuItem,
 Switch
 } from '@headlessui/vue';
-import { EllipsisVertical, ChevronDown, Edit } from 'lucide-vue-next';
+import { EllipsisVertical, ChevronDown, Edit, Delete } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 const initLoading = ref(true);

@@ -79,10 +79,10 @@
                     </div>
                     <div class="flex items-center gap-6">
                         <Switch
-                            v-model="selectedSkill?.is_active"
+                            v-model="s.is_active"
+                            @update:model-value="val => toggleSkill(s.id, val)"
                             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
                             :class="s.is_active ? 'bg-lumy-green' : 'bg-lumy-danger-light'"
-                            @click="() => toggleSkill(s.id, s.is_active)"
                         >
                             <span class="sr-only">Enable skill</span>
                             <span
@@ -198,19 +198,28 @@ function handleClose() {
 }
 
 
-async function toggleSkill(skillId: number, isActive: boolean) {
+async function toggleSkill(skillId: number, newValue: boolean) {
+    const idx = skills.value.findIndex(s => s.id === skillId)
+    if(idx === -1) return;
+    const prev = skills.value[idx].is_active;
+    loading.value = true;
     try{
-        loading.value = true;
-        if(skillId) {
-            skills.value.find(s => s.id === skillId)!.is_active = !isActive;
-        }
-        const res = await api.post(`/skills${skillId}/toggle?enabled=${!isActive}`);
-        
-    } catch(err:any) {
-        console.error('Error toggle skill: ', err);
+
+
+        skills.value[idx].is_active = newValue;
+        const res = await api.post(`/skills${skillId}/toggle?enabled=${newValue}`);
+        if (res.status !== 200) {
+        // revert if backend didn't accept
+        skills.value[idx].is_active = prev;
         toastBg.value = 'bg-lumy-danger';
-        toastText.value = 'Something went wrong :('
-        loading.value = false;
+        toastText.value = 'Failed to update skill';
+        showToast.value = true;
+        }
+    } catch(err:any) {
+        skills.value[idx].is_active = prev;
+        console.error('Error toggling skill: ', err);
+        toastBg.value = 'bg-lumy-danger';
+        toastText.value = 'Something went wrong :(';
         showToast.value = true;
     } finally {
         toastBg.value = 'bg-lumy-green';

@@ -62,7 +62,7 @@
         <section class="flex flex-row-reverse">
             <BaseButton
             btn-text="Add new skill"
-            :onAction="() => editModal = true"
+            :onAction="() => addModal = true"
             />
         </section>
         <section class="flex flex-col gap-6">
@@ -202,7 +202,6 @@ async function toggleSkill(skillId: number, newValue: boolean) {
     const idx = skills.value.findIndex(s => s.id === skillId)
     if(idx === -1) return;
     const prev = skills.value[idx].is_active;
-    loading.value = true;
     try{
         skills.value[idx].is_active = newValue;
         const res = await api.post(`/skills/${skillId}/toggle?enabled=${newValue}`);
@@ -218,10 +217,6 @@ async function toggleSkill(skillId: number, newValue: boolean) {
         console.error('Error toggling skill: ', err);
         toastBg.value = 'bg-lumy-danger';
         toastText.value = 'Something went wrong :(';
-        showToast.value = true;
-    } finally {
-        toastBg.value = 'bg-lumy-green';
-        loading.value = false;
         showToast.value = true;
     }
 }

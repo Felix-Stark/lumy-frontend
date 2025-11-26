@@ -174,21 +174,21 @@ onMounted(async() => {
 async function addSkill() {
     try {
         loading.value = true;
-        if(edits.value) {
-            const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
-                skill: edits.value.skill,
-                definition: edits.value.definition,
+        if(editName.value) {
+            const res = await api.post(`/skills`, {
+                skill: editName.value,
+                definition: editDef.value,
             });
             if(res.status === 200) {
-                handleClose()
+                addModal.value = false;
+                toastBg.value = 'bg-lumy-green';
+                showToast.value = true;
             }
         }
     } catch (err: any) {
         console.error('Failed to delete skill: ', err);
     } finally {
-        toastBg.value = 'bg-lumy-green';
         loading.value = false;
-        showToast.value = true;
     }
 }
 

@@ -5,11 +5,11 @@
         <section class="flex flex-col items-center gap-6">
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="edits?.skill" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
             <div class="space-y-4">
                 <h2 class="text-600 text-lg">Definition</h2>
-                <textarea v-model="edits?.definition" type="text" rows="3" class="p-2 outline-lumy-purple" :placeholder="selectedSkill?.definition" />
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 outline-lumy-purple" :placeholder="selectedSkill?.definition" />
             </div>
             <base-button
             btn-text="Save changes"
@@ -24,12 +24,12 @@
         <section class="flex flex-col items-center gap-6">
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="edits?.skill" type="text" class="p-2 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
             <div class="space-y-4">
                 <h2 class="text-600 text-lg">Skill definition</h2>
                 <p class="text-sm text-gray-600">Enter a brief and understandable description of the skill</p>
-                <textarea v-model="edits?.definition" type="text" rows="3" class="p-2 border border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
             </div>
             <base-button
             btn-text="Save changes"
@@ -155,6 +155,8 @@ const showToast = ref(false);
 const toastText = ref('')
 const toastBg = ref('')
 const edits = ref<Partial<Skill>>();
+const editName = ref('');
+const editDef = ref('');
 
 onMounted(async() => {
     try {

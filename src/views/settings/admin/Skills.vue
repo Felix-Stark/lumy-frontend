@@ -1,69 +1,133 @@
 <template>
-    <BaseModal :isOpen="showModal" @close="handleClose">
-        <h1 class="text-lumy-secondary text-2xl"></h1>
-
+    <BaseModal :isOpen="editModal" @close="handleClose">
+        <h1 class="text-lumy-secondary text-2xl">Update: {{ selectedSkill?.skill }}</h1>
+        <hr class="my-2 mb-2 border-gray-300 w-[80%]">
+        <section class="flex flex-col items-center gap-6">
+            <div class="w-full space-y-4">
+                <h2 class="text-600 text-lg">Skill name</h2>
+                <input v-model="edits?.skill" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+            </div>
+            <div class="space-y-4">
+                <h2 class="text-600 text-lg">Definition</h2>
+                <textarea v-model="edits?.definition" type="text" rows="3" class="p-2 outline-lumy-purple" :placeholder="selectedSkill?.definition" />
+            </div>
+            <base-button
+            btn-text="Save changes"
+            :onAction="() => addSkill()"
+            bgColor="bg-lumy-green"
+            />
+        </section>
     </BaseModal>
+    <BaseModal :isOpen="addModal" @close="handleClose">
+        <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
+        <hr class="my-2 mb-2 border-gray-300 w-[80%]">
+        <section class="flex flex-col items-center gap-6">
+            <div class="w-full space-y-4">
+                <h2 class="text-600 text-lg">Skill name</h2>
+                <input v-model="edits?.skill" type="text" class="p-2 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+            </div>
+            <div class="space-y-4">
+                <h2 class="text-600 text-lg">Skill definition</h2>
+                <p class="text-sm text-gray-600">Enter a brief and understandable description of the skill</p>
+                <textarea v-model="edits?.definition" type="text" rows="3" class="p-2 border border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
+            </div>
+            <base-button
+            btn-text="Save changes"
+            :onAction="() => updateSkill()"
+            bgColor="bg-lumy-green"
+            />
+        </section>
+    </BaseModal>
+    <base-modal :isOpen="deleteModal" @close="deleteModal = false">
+        <div class="flex flex-col w-full">
+            <h1 class="text-lumy-secondary text-2xl">Deleting skill - {{ selectedSkill?.skill }}</h1>
+            <p class="text-gray-600 mt-4">This action will remove the skill from your account. Are you sure you want to proceed?</p>
+            <section class="flex gap-4 justify-end">
+                <base-button
+                btn-text="Cancel"
+                :secondary="true"
+                :onAction="handleClose"
+                />
+                <base-button
+                btn-text="Delete"
+                bgColor="bg-lumy-danger"
+                :onAction="deleteSkill"
+                />
+            </section>
+        </div>
+    </base-modal>
+    <base-loader :isLoading="loading"/>
     <SettingsSkills v-if="initLoading" />
     <div v-else class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
         <section class="flex flex-row-reverse">
             <BaseButton
             btn-text="Add new skill"
-            :onAction="() => showModal = true"
+            :onAction="() => editModal = true"
             />
         </section>
         <section class="flex flex-col gap-6">
             <Disclosure v-slot="{ open }" v-for="s in skills">
-                <div class="flex w-full justify-between border-b border-b-gray-300">
+                <div class="relative flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex flex-col">
-                        <DisclosureButton class="flex w-full cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
                             <span class="font-bold text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
-                        <div class="flex gap-6">
-                            <Switch
-                                v-model="s.is_active"
-                                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
-                                :class="active ? 'bg-lumy-green' : 'bg-lumy-danger-light'"
-                            >
-                                <span class="sr-only">Enable skill</span>
-                                <span
-                                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
-                                :class="active ? 'translate-x-6' : 'translate-x-1'"
-                                />
-                            </Switch>
-                            <Menu as="div" class="relative inline-block text-left">
-                                <MenuButton>
-                                    <EllipsisVertical class="h-6" />
-                                </MenuButton>
-                                <MenuItems class="w-36 bg-white aboslute bottom-0">
-                                    <MenuItem class="flex items-center gap-4">
-                                        <button @click="() => editSkill(s)" class="cursor-pointer">
-                                            <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
-                                        </button>
-                                        Edit
-                                    </MenuItem>
-                                    <MenuItem class="flex items-center gap-4">
-                                        <button @click="() => editSkill(s)" class="cursor-pointer">
-                                            <Delete class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
-                                        </button>
-                                        Delete
-                                    </MenuItem>
-                                </MenuItems>
-                            </Menu>
-                        </div>
                         <DisclosurePanel class="text-gray-600 text-sm">
                             {{ s.definition }}
                         </DisclosurePanel>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <Switch
+                            v-model="selectedSkill?.is_active"
+                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
+                            :class="s.is_active ? 'bg-lumy-green' : 'bg-lumy-danger-light'"
+                            @click="() => toggleSkill(s.id, s.is_active)"
+                        >
+                            <span class="sr-only">Enable skill</span>
+                            <span
+                            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                            :class="s.is_active ? 'translate-x-6' : 'translate-x-1'"
+                            />
+                        </Switch>
+                        <Menu as="div" class="relative inline-block text-left">
+                            <MenuButton>
+                                <EllipsisVertical class="h-6" />
+                            </MenuButton>
+                            <MenuItems class="w-36 bg-white aboslute bottom-0">
+                                <MenuItem class="flex items-center gap-4">
+                                    <button @click="() => editSkill(s)" class="cursor-pointer">
+                                        <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
+                                    </button>
+                                    Edit
+                                </MenuItem>
+                                <MenuItem class="flex items-center gap-4">
+                                    <button @click="deleteModal = true" class="cursor-pointer">
+                                        <Delete class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
+                                    </button>
+                                    Delete
+                                </MenuItem>
+                            </MenuItems>
+                        </Menu>
                     </div>
                 </div>
             </Disclosure>
         </section>
     </div>
+    <base-toast
+    :text="toastText || 'Saved change!'"
+    :show="showToast"
+    @close="showToast = false"
+    :duration="3000"
+    :bgClass="toastBg"
+    />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/base/BaseButton.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
+import BaseToast from '@/components/base/BaseToast.vue';
+import BaseLoader from '@/components/base/BaseLoader.vue';
 import SettingsSkills from '@/components/skeletons/SettingsSkills.vue';
 import api from '@/services/api';
 import type { Skill } from '@/types';
@@ -83,9 +147,14 @@ import { ref, onMounted } from 'vue';
 const initLoading = ref(true);
 const loading = ref(false);
 const skills = ref<Skill[]>([])
-const showModal = ref(false);
-const active = ref(true)
+const editModal = ref(false);
+const addModal = ref(false);
+const deleteModal = ref(false);
 const selectedSkill = ref<Skill>();
+const showToast = ref(false);
+const toastText = ref('')
+const toastBg = ref('')
+const edits = ref<Partial<Skill>>();
 
 onMounted(async() => {
     try {
@@ -100,28 +169,117 @@ onMounted(async() => {
     }
 })
 
-function addSkill() {
+async function addSkill() {
+    try {
+        loading.value = true;
+        if(edits.value) {
+            const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
+                skill: edits.value.skill,
+                definition: edits.value.definition,
+            });
+            if(res.status === 200) {
+                handleClose()
+            }
+        }
+    } catch (err: any) {
+        console.error('Failed to delete skill: ', err);
+    } finally {
+        toastBg.value = 'bg-lumy-green';
+        loading.value = false;
+        showToast.value = true;
+    }
 }
 
 function handleClose() {
-    showModal.value = false;
+    editModal.value = false;
+    edits.value = {}
 }
 
 
-async function toggleSkill(skillId: number) {
+async function toggleSkill(skillId: number, isActive: boolean) {
     try{
-        const res = await api.post(`/skills${skillId}/toggle`)
+        loading.value = true;
+        if(skillId) {
+            skills.value.find(s => s.id === skillId)!.is_active = !isActive;
+        }
+        const res = await api.post(`/skills${skillId}/toggle?enabled=${!isActive}`);
         
     } catch(err:any) {
         console.error('Error toggle skill: ', err);
+        toastBg.value = 'bg-lumy-danger';
+        toastText.value = 'Something went wrong :('
+        loading.value = false;
+        showToast.value = true;
+    } finally {
+        toastBg.value = 'bg-lumy-green';
+        loading.value = false;
+        showToast.value = true;
     }
 }
 async function editSkill(s: Skill) {
     selectedSkill.value = s;
-    showModal.value = true;
+    editModal.value = true;
 }
 
-async function updateSkill(s: Skill) {
+async function updateSkill() {
+    try {
+        loading.value = true;
+        if(edits.value) {
+            const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
+                skill: edits.value.skill,
+                definition: edits.value.definition,
+            });
+            if( res.status === 200 ) {
+                let index = skills.value.findIndex(s => s.id === selectedSkill.value!.id)
+                if (index !== -1) {
+                    skills.value[index] = {
+                        ...skills.value[index],
+                        skill: edits.value.skill || selectedSkill.value!.skill,
+                        definition: edits.value.skill || selectedSkill.value!.definition
+                    }
+                }
 
+            }
+        }
+
+    } catch (err: any) {
+        console.error('Failed to delete skill: ', err);
+        toastBg.value = 'bg-lumy-danger';
+        toastText.value = 'Something went wrong :('
+        loading.value = false;
+        showToast.value = true;
+    } finally {
+        handleClose();
+        toastBg.value = 'bg-lumy-green';
+        loading.value = false;
+        showToast.value = true;
+    }
+}
+
+function handleDelete() {
+    deleteModal.value = false;
+    selectedSkill.value = undefined
+}
+
+async function deleteSkill() {
+    try {
+        const s = selectedSkill.value
+        loading.value = true;
+        const res = await api.delete(`/skills/${s!.id}`);
+        if(res.status === 200) {
+            deleteModal.value = false
+        }
+
+    } catch (err: any) {
+        console.error('Failed to delete skill: ', err);
+        toastBg.value = 'bg-lumy-danger';
+        toastText.value = 'Something went wrong :('
+        loading.value = false;
+        showToast.value = true;
+    } finally {
+        toastBg.value = 'bg-lumy-green';
+        loading.value = false;
+        showToast.value = true;
+    }
 }
 </script>

@@ -104,7 +104,7 @@
                                     Edit
                                 </MenuItem>
                                 <MenuItem class="flex items-center gap-4">
-                                    <button @click="deleteModal = true selectedSkill = s" class="cursor-pointer">
+                                    <button @click="deleteModal = true, selectedSkill = s" class="cursor-pointer">
                                         <Delete class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
                                     </button>
                                     Delete

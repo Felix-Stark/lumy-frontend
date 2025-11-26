@@ -204,10 +204,8 @@ async function toggleSkill(skillId: number, newValue: boolean) {
     const prev = skills.value[idx].is_active;
     loading.value = true;
     try{
-
-
         skills.value[idx].is_active = newValue;
-        const res = await api.post(`/skills${skillId}/toggle?enabled=${newValue}`);
+        const res = await api.post(`/skills/${skillId}/toggle?enabled=${newValue}`);
         if (res.status !== 200) {
         // revert if backend didn't accept
         skills.value[idx].is_active = prev;
@@ -274,9 +272,8 @@ function handleDelete() {
 
 async function deleteSkill() {
     try {
-        const s = selectedSkill.value
         loading.value = true;
-        const res = await api.delete(`/skills/${s!.id}`);
+        const res = await api.delete(`/skills/${selectedSkill.value?.id}`);
         if(res.status === 200) {
             deleteModal.value = false
         }

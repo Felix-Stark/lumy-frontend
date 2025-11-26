@@ -19,17 +19,18 @@
         </section>
     </BaseModal>
     <BaseModal :isOpen="addModal" @close="handleClose">
-        <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
+        <div class="flex flex-col items-center">
+            <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
         <hr class="my-2 mb-2 border-gray-300 w-[80%]">
         <section class="flex flex-col items-center gap-6">
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="editName" type="text" class="p-2 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
-            <div class="space-y-4">
+            <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill definition</h2>
                 <p class="text-sm text-gray-600">Enter a brief and understandable description of the skill</p>
-                <textarea v-model="editDef" type="text" rows="3" class="p-2 border border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
             </div>
             <base-button
             btn-text="Save changes"
@@ -37,6 +38,7 @@
             bgColor="bg-lumy-green"
             />
         </section>
+        </div>
     </BaseModal>
     <base-modal :isOpen="deleteModal" @close="deleteModal = false">
         <div class="flex flex-col w-full">
@@ -46,7 +48,7 @@
                 <base-button
                 btn-text="Cancel"
                 :secondary="true"
-                :onAction="handleClose"
+                :onAction="handleDelete"
                 />
                 <base-button
                 btn-text="Delete"
@@ -102,7 +104,7 @@
                                     Edit
                                 </MenuItem>
                                 <MenuItem class="flex items-center gap-4">
-                                    <button @click="deleteModal = true" class="cursor-pointer">
+                                    <button @click="deleteModal = true selectedSkill = s" class="cursor-pointer">
                                         <Delete class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
                                     </button>
                                     Delete

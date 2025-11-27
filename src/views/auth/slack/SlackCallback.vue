@@ -22,7 +22,10 @@ const code = route.query.code;
 onMounted( async () => {
 	try {
 		if(code) {
-		await authStore.loginSlack(code as string);
+		const status = await authStore.loginSlack(code as string);
+		if(status === 204) {
+			router.replace({name: 'slack-register'})
+		}
 		if (authStore.session?.user?.role === 'member') {
 			router.replace('/member/overview')
 		} else {

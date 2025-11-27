@@ -13,7 +13,7 @@
             </div>
             <base-button
             btn-text="Save changes"
-            :onAction="() => addSkill()"
+            :onAction="() => updateSkill()"
             bgColor="bg-lumy-green"
             />
         </section>
@@ -25,7 +25,7 @@
         <section class="flex flex-col items-center gap-6">
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="editName" type="text" class="p-2 w-full border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill definition</h2>

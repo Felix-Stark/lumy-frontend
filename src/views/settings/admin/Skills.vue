@@ -96,7 +96,7 @@
                             <MenuButton>
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
-                            <MenuItems as="ul" class="w-36 bg-white aboslute bottom-0">
+                            <MenuItems as="ul" class="w-36 bg-white border border-gray-300 rounded aboslute bottom-0 z-50">
                                 <MenuItem as="li" class="flex items-center gap-4">
                                     <button @click="() => editSkill(s)" class="cursor-pointer">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />

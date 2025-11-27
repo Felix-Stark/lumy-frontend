@@ -67,8 +67,8 @@
             :onAction="() => addModal = true"
             />
         </section>
-        <section class="flex flex-col gap-6">
-            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-8">Custom skill</h2>
+        <section class="flex flex-col">
+            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-4">Custom skill</h2>
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </Disclosure>
-            <h2 class="text-lg text-gray-600">Default skills</h2>
+            <h2 class="text-lg text-gray-600 mt-8 mb-4">Default skills</h2>
             <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex w-full flex-col">

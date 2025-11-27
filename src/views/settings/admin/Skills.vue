@@ -2,14 +2,14 @@
     <BaseModal :isOpen="editModal" @close="handleClose">
         <h1 class="text-lumy-secondary text-2xl">Update: {{ selectedSkill?.skill }}</h1>
         <hr class="my-2 mb-2 border-gray-300 w-[80%]">
-        <section class="flex flex-col items-center gap-6">
+        <section class="flex flex-col gap-6">
             <div class="w-full space-y-4">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 rounded outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
-            <div class="space-y-4">
+            <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Definition</h2>
-                <textarea v-model="editDef" type="text" rows="3" class="p-2 outline-lumy-purple" :placeholder="selectedSkill?.definition" />
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="selectedSkill?.definition" />
             </div>
             <base-button
             btn-text="Save changes"
@@ -23,14 +23,14 @@
             <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
         <hr class="my-2 mb-2 border-gray-300 w-[80%]">
         <section class="flex flex-col items-center gap-6">
-            <div class="w-full space-y-4">
+            <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 rounded outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
             </div>
-            <div class="w-full space-y-4">
+            <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Skill definition</h2>
                 <p class="text-sm text-gray-600">Enter a brief and understandable description of the skill</p>
-                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 outline-lumy-purple" :placeholder="'Type description here'"></textarea>
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="'Type description here'"></textarea>
             </div>
             <base-button
             btn-text="Save changes"
@@ -242,6 +242,7 @@ async function updateSkill() {
             const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
                 skill: edits.value.skill,
                 definition: edits.value.definition,
+                theme: null
             });
             if( res.status === 200 ) {
                 let index = skills.value.findIndex(s => s.id === selectedSkill.value!.id)

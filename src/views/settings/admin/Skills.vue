@@ -92,18 +92,18 @@
                             :class="s.is_active ? 'translate-x-6' : 'translate-x-1'"
                             />
                         </Switch>
-                        <Menu as="template" class="relative inline-block text-left">
+                        <Menu as="div" class="relative inline-block text-left">
                             <MenuButton>
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
-                            <MenuItems class="w-36 bg-white aboslute bottom-0">
-                                <MenuItem as="div" class="flex items-center gap-4">
+                            <MenuItems as="ul" class="w-36 bg-white aboslute bottom-0">
+                                <MenuItem as="li" class="flex items-center gap-4">
                                     <button @click="() => editSkill(s)" class="cursor-pointer">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
                                     </button>
                                     Edit
                                 </MenuItem>
-                                <MenuItem class="flex items-center gap-4">
+                                <MenuItem as="li" class="flex items-center gap-4">
                                     <button @click="deleteModal = true, selectedSkill = s" class="cursor-pointer">
                                         <Delete class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
                                     </button>

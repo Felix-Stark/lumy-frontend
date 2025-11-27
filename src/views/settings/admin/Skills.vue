@@ -93,21 +93,21 @@
                             />
                         </Switch>
                         <Menu as="div" class="relative overflow-visible">
-                            <MenuButton>
+                            <MenuButton class="cursor-pointer">
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
                             <MenuItems as="ul" class="w-36 p-2 bg-white border border-gray-300 rounded absolute bottom-0 right-0 z-50">
-                                <MenuItem as="li" class="flex items-center gap-4">
-                                    <button @click="() => editSkill(s)" class="cursor-pointer">
+                                <MenuItem as="li" class="flex items-center gap-4 cursor-pointer">
+                                    <button @click="() => editSkill(s)">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
+                                        Edit
                                     </button>
-                                    Edit
                                 </MenuItem>
-                                <MenuItem as="li" class="flex items-center gap-4">
-                                    <button @click="deleteModal = true, selectedSkill = s" class="cursor-pointer">
-                                        <Delete class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
+                                <MenuItem as="li" class="flex items-center gap-4 cursor-pointer">
+                                    <button @click="deleteModal = true, selectedSkill = s">
+                                        <Trash2 class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
+                                        Delete
                                     </button>
-                                    Delete
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
@@ -143,7 +143,7 @@ MenuItems,
 MenuItem,
 Switch
 } from '@headlessui/vue';
-import { EllipsisVertical, ChevronDown, Edit, Delete } from 'lucide-vue-next';
+import { EllipsisVertical, ChevronDown, Edit, Delete, Trash2 } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 const initLoading = ref(true);

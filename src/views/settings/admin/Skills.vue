@@ -174,6 +174,7 @@ onMounted(async() => {
 })
 
 async function addSkill() {
+    console.log('name and def in addSkill: ', editName.value + editDef.value)
     try {
         loading.value = true;
         if(editName.value) {

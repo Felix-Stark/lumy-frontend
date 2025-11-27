@@ -73,7 +73,7 @@
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                            <span class="font-bold text-gray-600">{{ s.skill }}</span>
+                            <span class=" text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 text-sm">
@@ -120,7 +120,7 @@
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                            <span class="font-bold text-gray-600">{{ s.skill }}</span>
+                            <span class=" text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 text-sm">

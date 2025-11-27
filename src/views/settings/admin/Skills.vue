@@ -61,7 +61,7 @@
     <base-loader :isLoading="loading"/>
     <SettingsSkills v-if="initLoading" />
     <div v-else class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
-        <section class="flex flex-row-reverse">
+        <section class="flex flex-row-reverse mb-8">
             <BaseButton
             btn-text="Add new skill"
             :onAction="() => addModal = true"
@@ -197,6 +197,7 @@ async function addSkill() {
 }
 
 function handleClose() {
+    addModal.value = false
     editModal.value = false;
     edits.value = {}
 }
@@ -221,6 +222,11 @@ async function toggleSkill(skillId: number, newValue: boolean) {
         console.error('Error toggling skill: ', err);
         toastBg.value = 'bg-lumy-danger';
         toastText.value = 'Something went wrong :(';
+        showToast.value = true;
+    } finally {
+        toastBg.value = 'bg-lumy-green';
+        toastText.value = 'Change saved!'
+        loading.value = false;
         showToast.value = true;
     }
 }

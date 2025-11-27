@@ -19,7 +19,7 @@
         </section>
     </BaseModal>
     <BaseModal :isOpen="addModal" @close="handleClose">
-        <div class="flex flex-col items-center w-full">
+        <div class="flex flex-col w-full">
             <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
         <hr class="my-2 mb-2 border-gray-300 w-[80%]">
         <section class="flex flex-col items-center gap-6">

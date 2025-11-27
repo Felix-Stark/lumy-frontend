@@ -35,9 +35,9 @@
           :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
-          :disabled="patching[user.id] === true || loading === true || user.id === authStore.setupAccount?.id"
-          @update:isActive="val => updateUser(user.id, { is_active: val })"
-          @update:role="val => updateUser(user.id, { role: val })"
+          :disabled="patching[user.id] || loading === true || user.id === authStore.setupAccount?.id"
+          @update:isActive="val => toggleUser(user.id, { is_active: val })"
+          @update:role="val => updateRole(user.id, { role: val })"
         />
       </div>
     </SetupComp>
@@ -94,12 +94,40 @@ const clearQuery = () => {
 
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
-async function updateUser(userId:number, payload: Partial<SetupUser>) {
+async function updateRole(userId:number, newRole: Partial<SetupUser>) {
+  console.log('userId in updateUser fn: ', userId, newRole)
+  const idx = users.value.findIndex(u => u.id === userId);
+  const prevRole = users.value[idx].role
+  patching.value[userId] = true;
+  users.value[idx].role = newRole.role!;
+  if(idx === -1) return;
+  try {
+      const res = await api.patch(`/users/${userId}`, newRole);
+      if(res.status !== 200) {
+        users.value[idx].role = prevRole;
+      }
+  } catch (error: any) {
+    console.error('error in updateUser fn: ', error)
+  } finally {
+    patching.value[userId] = false;
+  }
+  
+}
+async function toggleUser(userId:number, payload: Partial<SetupUser>) {
   console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
+  const idx = users.value.findIndex(u => u.id === userId);
+  if(idx === -1) return;
+  const prev = users.value[idx].is_active;
+  users.value[idx].is_active = payload.is_active!;
+
   try {
-    users.value = await userStore.updateUser(userId, payload, 'setup');
-    
+      const res = await api.patch(`/users/${userId}`, payload);
+      if(res.status !== 200) {
+        users.value[idx].is_active = prev;
+        
+      }
+
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {

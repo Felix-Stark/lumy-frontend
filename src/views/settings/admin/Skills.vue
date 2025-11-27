@@ -240,8 +240,8 @@ async function updateSkill() {
         loading.value = true;
         if(edits.value) {
             const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
-                skill: edits.value.skill,
-                definition: edits.value.definition,
+                skill: editName.value,
+                definition: editDef.value,
                 theme: null
             });
             if( res.status === 200 ) {
@@ -253,7 +253,7 @@ async function updateSkill() {
                         definition: edits.value.skill || selectedSkill.value!.definition
                     }
                 }
-
+                toastBg.value = 'bg-lumy-green';
             }
         }
 
@@ -265,7 +265,6 @@ async function updateSkill() {
         showToast.value = true;
     } finally {
         handleClose();
-        toastBg.value = 'bg-lumy-green';
         loading.value = false;
         showToast.value = true;
     }

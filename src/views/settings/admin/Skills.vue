@@ -40,7 +40,7 @@
         </section>
         </div>
     </BaseModal>
-    <base-modal :isOpen="deleteModal" @close="deleteModal = false">
+    <base-modal :isOpen="deleteModal" @close="handleClose">
         <div class="flex flex-col w-full">
             <h1 class="text-lumy-secondary text-2xl">Deleting skill - {{ selectedSkill?.skill }}</h1>
             <p class="text-gray-600 mt-4">This action will remove the skill from your account. Are you sure you want to proceed?</p>
@@ -180,6 +180,7 @@ async function addSkill() {
             const res = await api.post(`/skills`, {
                 skill: editName.value,
                 definition: editDef.value,
+                theme: null
             });
             if(res.status === 200) {
                 addModal.value = false;
@@ -188,7 +189,7 @@ async function addSkill() {
             }
         }
     } catch (err: any) {
-        console.error('Failed to delete skill: ', err);
+        console.error('Failed to create skill: ', err);
     } finally {
         loading.value = false;
     }

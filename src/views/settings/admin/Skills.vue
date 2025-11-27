@@ -68,9 +68,10 @@
             />
         </section>
         <section class="flex flex-col gap-6">
-            <Disclosure v-slot="{ open }" v-for="s in skills">
+            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-8">Custom skill</h2>
+            <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between border-b border-b-gray-300">
-                    <div class="flex flex-col">
+                    <div class="flex w-full flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
                             <span class="font-bold text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
@@ -96,21 +97,49 @@
                             <MenuButton class="cursor-pointer">
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
-                            <MenuItems as="ul" class="w-36 p-2 bg-white border border-gray-300 rounded absolute bottom-0 right-0 z-50">
+                            <MenuItems as="ul" class="w-36 p-2 bg-white border border-gray-300 rounded absolute bottom-0 right-0 z-50 space-y-2">
                                 <MenuItem as="li" >
-                                    <button @click="() => editSkill(s)" class="flex items-center gap-4 cursor-pointer">
+                                    <button @click="() => editSkill(s)" class="flex items-center justify-between w-full gap-4 cursor-pointer">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
                                         Edit
                                     </button>
                                 </MenuItem>
                                 <MenuItem as="li" >
-                                    <button @click="deleteModal = true, selectedSkill = s" class="flex items-center gap-4 cursor-pointer">
+                                    <button @click="() => verifyDelete(s)" class="flex items-center gap-4 w-full cursor-pointer">
                                         <Trash2 class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
                                         Delete
                                     </button>
                                 </MenuItem>
                             </MenuItems>
                         </Menu>
+                    </div>
+                </div>
+            </Disclosure>
+            <h2 class="text-lg text-gray-600">Default skills</h2>
+            <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
+                <div class="flex w-full justify-between border-b border-b-gray-300">
+                    <div class="flex w-full flex-col">
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
+                            <span class="font-bold text-gray-600">{{ s.skill }}</span>
+                            <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
+                        </DisclosureButton>
+                        <DisclosurePanel class="text-gray-600 text-sm">
+                            {{ s.definition }}
+                        </DisclosurePanel>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <Switch
+                            v-model="s.is_active"
+                            @update:model-value="val => toggleSkill(s.id, val)"
+                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
+                            :class="s.is_active ? 'bg-lumy-green' : 'bg-lumy-danger-light'"
+                        >
+                            <span class="sr-only">Enable skill</span>
+                            <span
+                            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                            :class="s.is_active ? 'translate-x-6' : 'translate-x-1'"
+                            />
+                        </Switch>
                     </div>
                 </div>
             </Disclosure>
@@ -143,12 +172,14 @@ MenuItems,
 MenuItem,
 Switch
 } from '@headlessui/vue';
-import { EllipsisVertical, ChevronDown, Edit, Delete, Trash2 } from 'lucide-vue-next';
+import { EllipsisVertical, ChevronDown, Edit,  Trash2 } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 const initLoading = ref(true);
 const loading = ref(false);
-const skills = ref<Skill[]>([])
+const skills = ref<Skill[]>([]);
+const customSkills = ref<Skill[]>([]);
+const defaultSkills = ref<Skill[]>([]);
 const editModal = ref(false);
 const addModal = ref(false);
 const deleteModal = ref(false);
@@ -164,7 +195,9 @@ onMounted(async() => {
     try {
         const res = await api.get('/skills');
         if(res.status === 200) {
-            skills.value = res.data
+            skills.value = res.data;
+            defaultSkills.value = skills.value.filter(s => !s.account_id)
+            customSkills.value = skills.value.filter(s => s.account_id);
         }
     } catch (err: any) {
         console.error('Error fetching skills in settings: ', err);
@@ -273,6 +306,12 @@ async function updateSkill() {
 function cancelDelete() {
     deleteModal.value = false;
     selectedSkill.value = undefined
+}
+
+function verifyDelete(s: Skill) {
+    if (s.account_id) {
+        toastText.value = 'Can not delete default skill'
+    }
 }
 
 async function deleteSkill() {

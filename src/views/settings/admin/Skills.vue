@@ -238,7 +238,7 @@ async function editSkill(s: Skill) {
 async function updateSkill() {
     try {
         loading.value = true;
-        if(edits.value) {
+        if(editName.value || editDef.value) {
             const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
                 skill: editName.value,
                 definition: editDef.value,
@@ -249,8 +249,8 @@ async function updateSkill() {
                 if (index !== -1) {
                     skills.value[index] = {
                         ...skills.value[index],
-                        skill: edits.value.skill || selectedSkill.value!.skill,
-                        definition: edits.value.skill || selectedSkill.value!.definition
+                        skill: editName.value || selectedSkill.value!.skill,
+                        definition: editDef.value || selectedSkill.value!.definition
                     }
                 }
                 toastBg.value = 'bg-lumy-green';
@@ -281,6 +281,7 @@ async function deleteSkill() {
         const res = await api.delete(`/skills/${selectedSkill.value?.id}`);
         if(res.status === 200) {
             deleteModal.value = false
+            toastBg.value = 'bg-lumy-green';
         }
 
     } catch (err: any) {
@@ -290,7 +291,6 @@ async function deleteSkill() {
         loading.value = false;
         showToast.value = true;
     } finally {
-        toastBg.value = 'bg-lumy-green';
         loading.value = false;
         showToast.value = true;
     }

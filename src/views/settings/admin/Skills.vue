@@ -48,7 +48,7 @@
                 <base-button
                 btn-text="Cancel"
                 :secondary="true"
-                :onAction="handleDelete"
+                :onAction="cancelDelete"
                 />
                 <base-button
                 btn-text="Delete"
@@ -270,7 +270,7 @@ async function updateSkill() {
     }
 }
 
-function handleDelete() {
+function cancelDelete() {
     deleteModal.value = false;
     selectedSkill.value = undefined
 }
@@ -282,6 +282,7 @@ async function deleteSkill() {
         if(res.status === 200) {
             deleteModal.value = false
             toastBg.value = 'bg-lumy-green';
+            skills.value = skills.value.filter(s => s.id !== selectedSkill.value?.id);
         }
 
     } catch (err: any) {
@@ -291,6 +292,7 @@ async function deleteSkill() {
         loading.value = false;
         showToast.value = true;
     } finally {
+        selectedSkill.value = undefined;
         loading.value = false;
         showToast.value = true;
     }

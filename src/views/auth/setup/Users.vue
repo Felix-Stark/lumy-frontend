@@ -35,7 +35,7 @@
           :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
-          :disabled="patching[user.id] || loading === true || user.id === authStore.setupAccount?.id"
+          :disabled="loading === true || user.id === authStore.setupAccount?.id"
           @update:isActive="val => toggleUser(user.id, { is_active: val })"
           @update:role="val => updateRole(user.id, { role: val })"
         />
@@ -98,7 +98,7 @@ async function updateRole(userId:number, newRole: Partial<SetupUser>) {
   console.log('userId in updateUser fn: ', userId, newRole)
   const idx = users.value.findIndex(u => u.id === userId);
   const prevRole = users.value[idx].role
-  patching.value[userId] = true;
+
   users.value[idx].role = newRole.role!;
   if(idx === -1) return;
   try {
@@ -108,8 +108,6 @@ async function updateRole(userId:number, newRole: Partial<SetupUser>) {
       }
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
-  } finally {
-    patching.value[userId] = false;
   }
   
 }

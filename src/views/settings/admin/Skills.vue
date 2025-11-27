@@ -69,7 +69,7 @@
         </section>
         <section class="flex flex-col gap-6">
             <Disclosure v-slot="{ open }" v-for="s in skills">
-                <div class="relative flex w-full justify-between border-b border-b-gray-300">
+                <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
                             <span class="font-bold text-gray-600">{{ s.skill }}</span>

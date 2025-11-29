@@ -11,11 +11,13 @@
                 <h2 class="text-600 text-lg">Definition</h2>
                 <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="selectedSkill?.definition" />
             </div>
-            <base-button
-            btn-text="Save changes"
-            :onAction="() => updateSkill()"
-            bgColor="bg-lumy-green"
-            />
+            <section class="flex flex-row-reverse">
+                <base-button
+                btn-text="Save"
+                :onAction="() => updateSkill()"
+                bgColor="bg-lumy-green"
+                />
+            </section>
         </section>
     </BaseModal>
     <BaseModal :isOpen="addModal" @close="handleClose">
@@ -25,18 +27,20 @@
         <section class="flex flex-col items-center gap-6">
             <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Skill name</h2>
-                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 rounded outline-lumy-purple text-" :placeholder="selectedSkill?.skill" />
+                <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 rounded outline-lumy-purple text-" placeholder="Enter skill name" />
             </div>
             <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Skill definition</h2>
                 <p class="text-sm text-gray-600">Enter a brief and understandable description of the skill</p>
-                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="'Type description here'"></textarea>
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="'Enter description here'"></textarea>
             </div>
-            <base-button
-            btn-text="Save changes"
-            :onAction="() => addSkill()"
-            bgColor="bg-lumy-green"
-            />
+            <section class="flex flex-row-reverse">
+                <base-button
+                btn-text="Save"
+                :onAction="() => addSkill()"
+                bgColor="bg-lumy-green"
+                />
+            </section>
         </section>
         </div>
     </BaseModal>
@@ -68,7 +72,7 @@
             />
         </section>
         <section class="flex flex-col">
-            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-4">Custom skill</h2>
+            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-4">Custom skills</h2>
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
@@ -161,7 +165,7 @@ import BaseToast from '@/components/base/BaseToast.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
 import SettingsSkills from '@/components/skeletons/SettingsSkills.vue';
 import api from '@/services/api';
-import type { Skill } from '@/types';
+import type { CustomSkill, Skill } from '@/types';
 import {
 Disclosure,
 DisclosureButton,
@@ -187,7 +191,6 @@ const selectedSkill = ref<Skill>();
 const showToast = ref(false);
 const toastText = ref('')
 const toastBg = ref('')
-const edits = ref<Partial<Skill>>();
 const editName = ref('');
 const editDef = ref('');
 
@@ -208,31 +211,45 @@ onMounted(async() => {
 
 async function addSkill() {
     console.log('name and def in addSkill: ', editName.value + editDef.value)
+    let prev = customSkills.value;
     try {
         loading.value = true;
-        if(editName.value) {
+        if(editName.value && editDef.value) {
             const res = await api.post(`/skills`, {
                 skill: editName.value,
                 definition: editDef.value,
                 theme: null
             });
             if(res.status === 200) {
-                addModal.value = false;
+                customSkills.value.push(res.data)
                 toastBg.value = 'bg-lumy-green';
-                showToast.value = true;
+                toastText.value = 'Created custom skill!'
+                editDef.value = '';
+                editName.value = '';
+                addModal.value = false;
+            } else {
+                toastBg.value = 'bg-lumy-danger';
+                toastText.value = 'Failed to create skill';
             }
+        } else {
+            toastBg.value = 'bg-lumy-danger';
+            toastText.value = 'Please fill in all fields';
         }
+        
     } catch (err: any) {
-        console.error('Failed to create skill: ', err);
+            console.error('Failed to create skill:', err);
+            toastBg.value = 'bg-lumy-danger';
+            toastText.value = 'Something went wrong :(';
     } finally {
         loading.value = false;
+        showToast.value = true;
     }
 }
 
 function handleClose() {
     addModal.value = false
     editModal.value = false;
-    edits.value = {}
+    deleteModal.value = false;
 }
 
 
@@ -240,25 +257,25 @@ async function toggleSkill(skillId: number, newValue: boolean) {
     const idx = skills.value.findIndex(s => s.id === skillId)
     if(idx === -1) return;
     const prev = skills.value[idx].is_active;
+    loading.value = true
     try{
+        toastBg.value = 'bg-lumy-green';
+        toastText.value = 'Change saved!'
         skills.value[idx].is_active = newValue;
         const res = await api.post(`/skills/${skillId}/toggle?enabled=${newValue}`);
         if (res.status !== 200) {
-        // revert if backend didn't accept
-        skills.value[idx].is_active = prev;
-        toastBg.value = 'bg-lumy-danger';
-        toastText.value = 'Failed to update skill';
-        showToast.value = true;
+            // revert if backend didn't accept
+            skills.value[idx].is_active = prev;
+            toastBg.value = 'bg-lumy-danger';
+            toastText.value = 'Failed to update skill';
         }
     } catch(err:any) {
         skills.value[idx].is_active = prev;
         console.error('Error toggling skill: ', err);
         toastBg.value = 'bg-lumy-danger';
         toastText.value = 'Something went wrong :(';
-        showToast.value = true;
     } finally {
-        toastBg.value = 'bg-lumy-green';
-        toastText.value = 'Change saved!'
+        selectedSkill.value = undefined;
         loading.value = false;
         showToast.value = true;
     }
@@ -273,31 +290,30 @@ async function updateSkill() {
         loading.value = true;
         if(editName.value || editDef.value) {
             const res = await api.put(`/skills/${selectedSkill.value!.id}`, {
-                skill: editName.value,
-                definition: editDef.value,
+                skill: editName.value || selectedSkill.value!.skill,
+                definition: editDef.value || selectedSkill.value!.definition,
                 theme: null
             });
             if( res.status === 200 ) {
-                let index = skills.value.findIndex(s => s.id === selectedSkill.value!.id)
+                let index = customSkills.value.findIndex(s => s.id === selectedSkill.value!.id)
                 if (index !== -1) {
-                    skills.value[index] = {
-                        ...skills.value[index],
+                    customSkills.value[index] = {
+                        ...customSkills.value[index],
                         skill: editName.value || selectedSkill.value!.skill,
                         definition: editDef.value || selectedSkill.value!.definition
                     }
                 }
                 toastBg.value = 'bg-lumy-green';
+                toastText.value = 'Skill updated!';
+                handleClose();
             }
         }
-
     } catch (err: any) {
         console.error('Failed to delete skill: ', err);
         toastBg.value = 'bg-lumy-danger';
-        toastText.value = 'Something went wrong :('
-        loading.value = false;
-        showToast.value = true;
+        toastText.value = 'Something went wrong :(';
     } finally {
-        handleClose();
+        selectedSkill.value = undefined;
         loading.value = false;
         showToast.value = true;
     }
@@ -309,9 +325,8 @@ function cancelDelete() {
 }
 
 function verifyDelete(s: Skill) {
-    if (s.account_id) {
-        toastText.value = 'Can not delete default skill'
-    }
+    selectedSkill.value = s;
+    deleteModal.value = true;
 }
 
 async function deleteSkill() {

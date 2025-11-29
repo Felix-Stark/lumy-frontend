@@ -80,7 +80,7 @@
                             <span class=" text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
-                        <DisclosurePanel class="text-gray-600 pl-6 text-sm">
+                        <DisclosurePanel class="text-gray-600 pl-6 py-2 text-sm">
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
@@ -109,7 +109,7 @@
                                     </button>
                                 </MenuItem>
                                 <MenuItem as="li" >
-                                    <button @click="() => verifyDelete(s)" class="flex items-center gap-4 w-full cursor-pointer">
+                                    <button @click="() => verifyDelete(s)" class="flex items-center gap-6 w-full cursor-pointer">
                                         <Trash2 class="w-5 h-5 text-lumy-danger" aria-hidden="true" />
                                         Delete
                                     </button>

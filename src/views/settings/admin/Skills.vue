@@ -24,7 +24,7 @@
         <div class="flex flex-col w-full">
             <h1 class="text-lumy-secondary text-2xl">Add a new skill</h1>
         <hr class="my-2 mb-2 border-gray-300 w-[80%]">
-        <section class="flex flex-col items-center gap-6">
+        <section class="flex flex-col gap-6">
             <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Skill name</h2>
                 <input v-model="editName" type="text" class="p-2 w-full border border-gray-300 rounded outline-lumy-purple text-" placeholder="Enter skill name" />

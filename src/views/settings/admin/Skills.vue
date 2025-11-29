@@ -80,7 +80,7 @@
                             <span class=" text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
-                        <DisclosurePanel class="text-gray-600 text-sm">
+                        <DisclosurePanel class="text-gray-600 pl-6 text-sm">
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
@@ -97,13 +97,13 @@
                             :class="s.is_active ? 'translate-x-6' : 'translate-x-1'"
                             />
                         </Switch>
-                        <Menu as="div" class="relative overflow-visible">
+                        <Menu as="section" class="relative overflow-visible">
                             <MenuButton class="cursor-pointer">
                                 <EllipsisVertical class="h-6" />
                             </MenuButton>
                             <MenuItems as="ul" class="w-36 p-2 bg-white border border-gray-300 rounded absolute bottom-0 right-0 z-50 space-y-2">
                                 <MenuItem as="li" >
-                                    <button @click="() => editSkill(s)" class="flex items-center justify-between w-full gap-4 cursor-pointer">
+                                    <button @click="() => editSkill(s)" class="flex items-center w-full gap-6 cursor-pointer">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
                                         Edit
                                     </button>
@@ -336,7 +336,8 @@ async function deleteSkill() {
         if(res.status === 200) {
             deleteModal.value = false
             toastBg.value = 'bg-lumy-green';
-            skills.value = skills.value.filter(s => s.id !== selectedSkill.value?.id);
+            toastText.value = 'Deleted skill';
+            customSkills.value = customSkills.value.filter(s => s.id !== selectedSkill.value?.id);
         }
 
     } catch (err: any) {
@@ -344,7 +345,6 @@ async function deleteSkill() {
         toastBg.value = 'bg-lumy-danger';
         toastText.value = 'Something went wrong :('
         loading.value = false;
-        showToast.value = true;
     } finally {
         selectedSkill.value = undefined;
         loading.value = false;

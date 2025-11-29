@@ -84,7 +84,7 @@
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
-                    <div class="flex items-center gap-6">
+                    <div class="flex items-start gap-6">
                         <Switch
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"

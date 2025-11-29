@@ -114,18 +114,19 @@ async function updateRole(userId:number, newRole: Partial<SetupUser>) {
 async function toggleUser(userId:number, payload: Partial<SetupUser>) {
   console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
-  const idx = users.value.findIndex(u => u.id === userId);
-  if(idx === -1) return;
-  const prev = users.value[idx].is_active;
-  users.value[idx].is_active = payload.is_active!;
-
   try {
-      const res = await api.patch(`/users/${userId}`, payload);
-      if(res.status !== 200) {
-        users.value[idx].is_active = prev;
-        
-      }
-
+    // handle different shapes of response safely
+    const res = await userStore.updateUser(userId, payload, 'setup');
+    if (Array.isArray(res)) {
+      users.value = (res as SetupUser[]).filter(Boolean);
+    } else if (res && typeof res === 'object' && 'id' in res) {
+      // update single user in-place
+      users.value = users.value.map(u => (u && u.id === (res as any).id ? (res as SetupUser) : u)).filter(Boolean) as SetupUser[];
+    } else {
+      // fallback: refresh users from store
+      await userStore.getUsers(true);
+      users.value = (userStore.users as SetupUser[]).filter(Boolean);
+    }
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {

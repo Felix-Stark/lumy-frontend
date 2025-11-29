@@ -121,7 +121,7 @@
             </Disclosure>
             <h2 class="text-lg text-gray-600 mt-8 mb-4">Default skills</h2>
             <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
-                <div class="flex w-full justify-between border-b border-b-gray-300">
+                <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
                             <span class=" text-gray-600">{{ s.skill }}</span>
@@ -131,7 +131,7 @@
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
-                    <div class="flex items-center gap-6">
+                    <div class="flex items-start p-2 gap-6">
                         <Switch
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"

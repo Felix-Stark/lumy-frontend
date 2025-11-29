@@ -74,7 +74,7 @@
         <section class="flex flex-col">
             <h2 v-if="customSkills" class="text-lg text-gray-600 mb-4">Custom skills</h2>
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
-                <div class="flex w-full justify-between border-b border-b-gray-300">
+                <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
                         <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
                             <span class=" text-gray-600">{{ s.skill }}</span>

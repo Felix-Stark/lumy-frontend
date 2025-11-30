@@ -21,6 +21,7 @@ import Employee from '@/views/admin/Employee.vue';
 import Give from '@/views/feedback/Give.vue';
 import GiveSuccess from '@/views/feedback/GiveSuccess.vue';
 import Error from '@/views/Error.vue';
+import Skills from '@/views/settings/admin/Skills.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -165,6 +166,12 @@ const router = createRouter({
           path: 'admin/intelligence',
           name: 'settings-admin-intelligence',
           component: Intelligence,
+          meta: { roles: ["admin"] }
+        },
+        {
+          path: 'admin/skills',
+          name: 'settings-admin-skills',
+          component: Skills,
           meta: { roles: ["admin"] }
         },
         {

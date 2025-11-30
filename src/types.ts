@@ -96,9 +96,19 @@ export type UserSummary = {
 
 export type Skill = {
   id: number;
+  account_id?: number;
   skill: string;
   definition: string;
-  theme: string;
+  theme: string | null;
+  is_active: boolean;
+}
+export type CustomSkill = {
+  id: number;
+  account_id: number;
+  skill: string;
+  definition: string;
+  theme: string | null;
+  is_active: boolean;
 }
 
 export type SkillSummary = {

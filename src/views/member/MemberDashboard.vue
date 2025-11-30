@@ -4,7 +4,7 @@
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
-				description="Feedbacks received"
+				description="Feedback received"
 			>
 				<Heart
 				class="w-12 h-12 text-red-500"
@@ -13,7 +13,7 @@
 			</HeadCard>
 			<HeadCard
 				:title="`${summary?.feedback_given_count ?? 0}`"
-				description="Feedbacks given"
+				description="Feedback given"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="lucide lucide-message-square-quote-icon lucide-message-square-quote text-blue-500">
 					<!-- Outer shape filled blue -->

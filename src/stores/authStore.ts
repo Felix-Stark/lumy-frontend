@@ -43,6 +43,7 @@ export const useAuthStore = defineStore("auth", () => {
       if (res.status === 204) {
         return res.status;
       }
+      return res.status;
     } catch (err: any) {
       console.error('Error during Slack login: ', err);
     }

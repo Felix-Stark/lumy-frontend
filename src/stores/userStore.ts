@@ -54,10 +54,8 @@ export const useUserStore = defineStore('user', () => {
       const res = await api.patch(`/users/${userId}`, userData)
       if (res.status === 200) {
         if (path === 'setup') {
-          return res.data
-        } else {
           getUsers(true)
-        }
+        } 
       }
     } catch (error: any) {
       console.error('error in update user: ', error)

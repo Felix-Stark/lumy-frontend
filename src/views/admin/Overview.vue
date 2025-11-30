@@ -1,61 +1,57 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full my-20">
-  <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
-    <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
-      <Heart class="text-[#EB3B5A] min-w-10 h-auto " fill="currentColor" stroke="currentColor" />
-    </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Total feedback requested">
-      <CircleAlert class="text-[#304cee] min-w-10 h-auto" stroke="white" fill="currentColor" />
-    </HeadCard>
-    <HeadCard :title="adminStore.teamSummary?.positive_feedback_percentage+'%' || 0" description="Positive feedback">
-      <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
-    </HeadCard>
-    <HeadCard :title="constructiveAverageRounded || 0" description="Constructive feedback">
-      <Settings class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
-    </HeadCard>
-  </header>
-  <section class="w-full flex  items-center gap-8 mt-6">
-    <div class="w-full bg-white rounded-lg shadow-md self-stretch h-100 p-6">
-      <Line :data="lineData" :options="lineOptions" />
+	<div v-else class="flex flex-col items-center gap-6 w-full my-12 lg:my-20">
+    <div class="absolute top-8 left-8 lg:top-20 lg:left-20 flex items-center mb-8">
+      <h1 v-if="session.user?.role === 'manager'" class="text-lumy-secondary text-2xl">Team overview</h1>
+      <h1 v-if="session.user?.role === 'admin'" class="text-lumy-secondary text-2xl">Organisation overview</h1>
     </div>
-    <!-- <div class="bg-white shadow-lg rounded-lg p-8  w-1/3">
-        <div class="relative">
-            <Doughnut :data="sentScoreData" :options="sentScoreOptions" />
-            <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold">
-                <h2 class="font-bold text-5xl text-gray-700 ">{{ currentPercentage }}%</h2>
-                <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
-            </div>
-        </div>
-    </div> -->
-  </section>
-  <section class="flex flex-col items-center gap-8 w-full">
-    <Combobox>
-      <div class="relative w-full px-8">
-        <ComboboxInput
-          class="border p-2 border-gray-300 outline-lumy-purple w-full rounded-lg"
-          placeholder="Search user or pick from list"
-          :displayValue="() => query"
-          @change="query = $event.target.value"
-        />
-        <button @click="clearQuery" class="rounded-full absolute right-10 mt-[10px] cursor-pointer">
-          <XCircleIcon class="text-gray-500" />
-        </button>
+
+    <header v-if="adminStore.teamSummary" class="grid grid-cols-2 md:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6 mt-8">
+      <HeadCard :title="adminStore.teamSummary?.feedback_submitted_total || 0" description="Total feedback submitted">
+        <Heart class="text-[#EB3B5A] min-w-10 h-auto" stroke="currentColor" />
+      </HeadCard>
+      <HeadCard :title="adminStore.teamSummary?.feedback_requested_total" description="Total feedback requests">
+        <MessageCircleQuestion class=" text-lumy-secondary min-w-10 h-auto" stroke="currentColor" />
+      </HeadCard>
+      <HeadCard :title="adminStore.teamSummary?.positive_feedback_percentage+'%' || 0" description="Positive feedback">
+        <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
+      </HeadCard>
+      <HeadCard :title="constructiveAverageRounded+'%' || 0" description="Constructive feedback">
+        <Handshake class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
+      </HeadCard>
+    </header>
+    <section class="w-full flex  items-center gap-8 mt-6">
+      <div class="w-full bg-white rounded-lg shadow-md self-stretch h-100 p-6">
+        <Line :data="lineData" :options="lineOptions" />
       </div>
-    </Combobox>
-    <div v-if="users" class="flex flex-col gap-8 items-center w-full">
-      <DashUser
-      v-for="u in filteredUsers"
-      :id="u.user_id"
-      :avatarUrl="u.avatar"
-      :name="u.name"
-      :sentSum="u.manager_summary"
-      :avgSent="u.average_sentiment_word"
-      @setEmployee="() => selectedEmployee(u)"
-      />
-    </div>
-  </section>
-</div>
+    </section>
+    <section class="flex flex-col items-center gap-8 w-full">
+      <Combobox>
+        <div class="relative w-full px-8">
+          <ComboboxInput
+            class="border p-2 border-gray-300 outline-lumy-purple w-full rounded-lg"
+            placeholder="Search user or pick from list"
+            :displayValue="() => query"
+            @change="query = $event.target.value"
+          />
+          <button @click="clearQuery" class="rounded-full absolute right-10 mt-[10px] cursor-pointer">
+            <XCircleIcon class="text-gray-500" />
+          </button>
+        </div>
+      </Combobox>
+      <div v-if="users" class="flex flex-col gap-8 items-center w-full">
+        <DashUser
+        v-for="u in filteredUsers"
+        :id="u.user_id"
+        :avatarUrl="u.avatar"
+        :name="u.name"
+        :sentSum="u.manager_summary"
+        :avgSent="u.average_sentiment_word"
+        @setEmployee="() => selectedEmployee(u)"
+        />
+      </div>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -64,16 +60,18 @@ import {
     ComboboxInput,
   } from '@headlessui/vue';
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
-import { XCircleIcon } from 'lucide-vue-next';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import DashUser from '@/components/dashboard/DashUser.vue';
-import { Doughnut, Line } from 'vue-chartjs';
+import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js';
-import { CircleAlert, Heart, Smile, Settings } from 'lucide-vue-next';
+import { XCircleIcon, Heart, Smile, Handshake, MessageCircleQuestion } from 'lucide-vue-next';
 import { ref, computed, onMounted } from 'vue';
-import { useAdminStore } from '@/stores/adminStore';
 import type { User } from '@/types';
 import { useRouter } from 'vue-router'; 
+import { useAdminStore } from '@/stores/adminStore';
+import { useSessionStore } from '@/stores/sessionStore';
+
+const session = useSessionStore();
 
 const router = useRouter();
 
@@ -123,7 +121,6 @@ const clearQuery = () => {
 };
 
 function selectedEmployee(user: Partial<User>) {
-  console.log('Selected employee: ', user);
   sessionStorage.setItem('employee', JSON.stringify(user))
   router.push({ name: 'admin-overview-employee' });
 }

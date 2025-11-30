@@ -199,9 +199,13 @@ onMounted(async() => {
         const res = await api.get('/skills');
         if(res.status === 200) {
             skills.value = res.data;
-            defaultSkills.value = skills.value.filter(s => !s.account_id)
-            customSkills.value = skills.value.filter(s => s.account_id);
-        }
+            defaultSkills.value = skills.value
+                .filter(s => !s.account_id)
+                .sort((a, b) => a.skill.localeCompare(b.skill));
+            customSkills.value = skills.value
+                .filter(s => s.account_id)
+                .sort((a, b) => a.skill.localeCompare(b.skill));
+        };
     } catch (err: any) {
         console.error('Error fetching skills in settings: ', err);
     } finally {

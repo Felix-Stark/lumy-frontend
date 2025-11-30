@@ -9,7 +9,7 @@
             </div>
             <div class="w-full space-y-2">
                 <h2 class="text-600 text-lg">Definition</h2>
-                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" :placeholder="selectedSkill?.definition" />
+                <textarea v-model="editDef" type="text" rows="3" class="p-2 border w-full border-gray-300 rounded outline-lumy-purple" ></textarea>
             </div>
             <section class="flex flex-row-reverse">
                 <base-button
@@ -250,6 +250,8 @@ function handleClose() {
     addModal.value = false
     editModal.value = false;
     deleteModal.value = false;
+    editName.value = '';
+    editDef.value = '';
 }
 
 
@@ -283,6 +285,8 @@ async function toggleSkill(skillId: number, newValue: boolean) {
 async function editSkill(s: Skill) {
     selectedSkill.value = s;
     editModal.value = true;
+    editName.value = s.skill;
+    editDef.value = s.definition;
 }
 
 async function updateSkill() {

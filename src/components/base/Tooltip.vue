@@ -4,7 +4,7 @@
 	  <div
 		v-if="visible"
 		:style="style"
-		class="fixed z-50 bg-gray-600 text-white text-xs rounded px-2 py-1 whitespace-pre w-fit pointer-events-none"
+		class="fixed z-50 bg-gray-600 text-white text-xs rounded px-2 py-1 whitespace-pre max-w-50 text-wrap pointer-events-none"
 	  >
 		{{ text }}
 	  </div>

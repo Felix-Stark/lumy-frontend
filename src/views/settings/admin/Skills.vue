@@ -67,17 +67,19 @@
     <div v-else class="flex flex-col justify-between w-full bg-white p-8 rounded-xl shadow-md">
         <section class="flex flex-row-reverse mb-8">
             <BaseButton
+            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Create a skill for your organisation')"
+            @mouseleave="handleMouseLeave"
             btn-text="Add new skill"
             :onAction="() => addModal = true"
             />
         </section>
         <section class="flex flex-col gap-3">
-            <h2 v-if="customSkills" class="text-lg text-gray-600 mb-4">Custom skills</h2>
+            <h2 class="flex items-start text-lg text-gray-600 mb-4">Custom skills<span class="rounded-full" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Skills created for your organisation')" @mouseleave="handleMouseLeave"><Info class="w-3 h-3" /></span></h2>
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
-                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                            <span class=" text-gray-600">{{ s.skill }}</span>
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 ">
+                            <span class="hover:text-lumy-purple text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 pl-6 py-2 text-sm">
@@ -86,6 +88,8 @@
                     </div>
                     <div class="flex items-start p-2 gap-6">
                         <Switch
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, s.is_active ? 'Disable skill. Disabling a skill will not affect feedback connected to it.' : 'Enable skill')"
+                            @mouseleave="handleMouseLeave"
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"
                             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
@@ -103,7 +107,7 @@
                             </MenuButton>
                             <MenuItems as="ul" class="w-36 p-2 bg-white border border-gray-300 rounded absolute bottom-0 right-0 z-50 space-y-2">
                                 <MenuItem as="li" >
-                                    <button @click="() => editSkill(s)" class="flex items-center w-full gap-6 cursor-pointer">
+                                    <button @click="() => editSkill(s)" class="flex items-center w-full gap-6 cursor-pointer hover:bg-lumy-secondary/20">
                                         <Edit class="w-5 h-5 text-lumy-secondary" aria-hidden="true" />
                                         Edit
                                     </button>
@@ -119,19 +123,22 @@
                     </div>
                 </div>
             </Disclosure>
-            <h2 class="text-lg text-gray-600 mt-8 mb-4">Default skills</h2>
+            <h2 class="flex items-start text-lg text-gray-600 mt-8 mb-4">Default skills<span class="rounded-full" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Default skills created by Lumy. These skills cannot be edited or deleted, but you can disable them for your organisation using the toggle.')" @mouseleave="handleMouseLeave"><Info class="w-3 h-3" /></span></h2>
             <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
-                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                            <span class=" text-gray-600">{{ s.skill }}</span>
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 ">
+                            <span class="hover:text-lumy-purple text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 pl-6 py-2 text-sm">
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
-                    <div class="flex items-start p-2 gap-6">
+                    <div class="flex items-start p-2 gap-6"
+                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, s.is_active ? 'Disable skill. Disabling a skill will not affect feedback connected to it.' : 'Enable skill')"
+                    @mouseleave="handleMouseLeave"
+                    >
                         <Switch
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"
@@ -150,11 +157,17 @@
         </section>
     </div>
     <base-toast
-    :text="toastText || 'Saved change!'"
+    :text="toastText || 'Saved!'"
     :show="showToast"
     @close="showToast = false"
     :duration="3000"
     :bgClass="toastBg"
+    />
+    <Tooltip
+    :x="tooltipX"
+    :y="tooltipY"
+    :visible="showTooltip"
+    :text="toolText"
     />
 </template>
 
@@ -163,6 +176,7 @@ import BaseButton from '@/components/base/BaseButton.vue';
 import BaseModal from '@/components/base/BaseModal.vue';
 import BaseToast from '@/components/base/BaseToast.vue';
 import BaseLoader from '@/components/base/BaseLoader.vue';
+import Tooltip from '@/components/base/Tooltip.vue';
 import SettingsSkills from '@/components/skeletons/SettingsSkills.vue';
 import api from '@/services/api';
 import type { CustomSkill, Skill } from '@/types';
@@ -176,7 +190,7 @@ MenuItems,
 MenuItem,
 Switch
 } from '@headlessui/vue';
-import { EllipsisVertical, ChevronDown, Edit,  Trash2 } from 'lucide-vue-next';
+import { EllipsisVertical, ChevronDown, Edit,  Trash2, Info } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
 
 const initLoading = ref(true);
@@ -193,6 +207,23 @@ const toastText = ref('')
 const toastBg = ref('')
 const editName = ref('');
 const editDef = ref('');
+const toolText = ref('');
+const showTooltip = ref(false)
+
+const tooltipX = ref(0)
+const tooltipY = ref(0)
+const role = ref<string | null>(null)
+
+function handleMouseEnter(event: MouseEvent, text: string) {
+  toolText.value = text
+  tooltipX.value = event.clientX - 12 // offset for better positioning
+  tooltipY.value = event.clientY + 12
+  showTooltip.value = true
+}
+function handleMouseLeave() {
+  showTooltip.value = false
+}
+
 
 onMounted(async() => {
     try {

@@ -86,11 +86,10 @@
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
-                    <div class="flex items-start p-2 gap-6"
-                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, s.is_active ? 'Disable skill. Disabling a skill will not affect feedback connected to it.' : 'Enable skill')"
-                    @mouseleave="handleMouseLeave"
-                    >
+                    <div class="flex items-start p-2 gap-6">
                         <Switch
+                            @mouseenter="(e: MouseEvent) => handleMouseEnter(e, s.is_active ? 'Disable skill. Disabling a skill will not affect feedback connected to it.' : 'Enable skill')"
+                            @mouseleave="handleMouseLeave"
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"
                             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none cursor-pointer"
@@ -136,7 +135,10 @@
                             {{ s.definition }}
                         </DisclosurePanel>
                     </div>
-                    <div class="flex items-start p-2 gap-6">
+                    <div class="flex items-start p-2 gap-6"
+                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, s.is_active ? 'Disable skill. Disabling a skill will not affect feedback connected to it.' : 'Enable skill')"
+                    @mouseleave="handleMouseLeave"
+                    >
                         <Switch
                             v-model="s.is_active"
                             @update:model-value="val => toggleSkill(s.id, val)"

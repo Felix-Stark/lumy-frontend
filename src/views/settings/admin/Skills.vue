@@ -78,8 +78,8 @@
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
-                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple ">
-                            <span class=" text-gray-600">{{ s.skill }}</span>
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 ">
+                            <span class="hover:text-lumy-purple text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 pl-6 py-2 text-sm">
@@ -127,8 +127,8 @@
             <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
-                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 hover:text-lumy-purple/40 ">
-                            <span class=" text-gray-600">{{ s.skill }}</span>
+                        <DisclosureButton class="flex w-full items-center cursor-pointer justify-between p-2 ">
+                            <span class="hover:text-lumy-purple text-gray-600">{{ s.skill }}</span>
                             <ChevronDown class="w-5 h-5 text-gray-600" :class="open && 'rotate-180'" />
                         </DisclosureButton>
                         <DisclosurePanel class="text-gray-600 pl-6 py-2 text-sm">

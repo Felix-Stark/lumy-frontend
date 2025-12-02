@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { ref, computed } from "vue";
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import { useAuthStore } from '@/stores/authStore'
+import { useSessionStore } from '@/stores/sessionStore';
 import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
@@ -217,10 +217,12 @@ const router = createRouter({
 // Global navigation guard
 router.beforeEach(async(to, from, next) => {
   const errorStore = useErrorStore();
-  const raw = sessionStorage.getItem('LumyRole');
-  const role: string = raw ? JSON.parse(raw) : null;
+  const session = useSessionStore();
   const allowedRoles = to.meta.roles as string[] | undefined;
-
+  let role = '';
+  if(session.user !== null) {
+    role = session.user.role;
+  }
   if (!allowedRoles) {
     return next(); // unrestricted route
   }

@@ -25,6 +25,7 @@ onMounted( async () => {
 		if(code) {
 		const status = await authStore.loginSlack(code as string);
 		if(status === 200) {
+			await session.getSession();
 			if (session.user?.role === 'member') {
 			router.replace('/member/overview')
 			} else {

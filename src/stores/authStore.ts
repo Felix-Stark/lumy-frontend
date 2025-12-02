@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import api from "..//services/api";
-import { useUserStore } from "./userStore";
-import type { SetupAccount, Session } from "@/types";
-import { useErrorStore } from "./errorStore";
+import type { SetupAccount } from "@/types";
 import { ref, computed } from "vue";
 import type { Router } from "vue-router";
+import { useSessionStore } from "./sessionStore";
+const session = useSessionStore();
+
 export const useAuthStore = defineStore("auth", () => {
 
   const setupAccount = computed<SetupAccount | null>(() => {
@@ -19,13 +20,6 @@ export const useAuthStore = defineStore("auth", () => {
   async function loginSlack(code: string) {
     try {
       const res = await api.get("/slack/login/callback?code=" + code);
-      if (res.status === 200) {
-        sessionStorage.setItem('LumyRole', JSON.stringify(res.data.role));
-        return res.status;
-      }
-      if (res.status === 204) {
-        return res.status;
-      }
       return res.status;
     } catch (err: any) {
       console.error('Error during Slack login: ', err);

@@ -34,6 +34,7 @@ function signInWithSlack() {
 }
 onMounted(async() => {
 	await session.getSession();
+	if(!session.authenticated) return;
 	if (session.authenticated && session.user !== null) {
 		console.log('Session in login: ', session.user);
 		if(session.user.role) {

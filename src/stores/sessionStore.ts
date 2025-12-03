@@ -15,8 +15,10 @@ export const useSessionStore = defineStore("session", () => {
     const user = ref<SessionUser | null>(null);
 
     async function getSession() {
+        if(user.value !== null) return {authenticated, user};
         try {
             const { data } = await api.get('/session');
+            console.log('session: ', data);
             authenticated.value = data.authenticated;
             if (data.user) {
                 user.value = data.user;

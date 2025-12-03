@@ -218,6 +218,7 @@ const router = createRouter({
 router.beforeEach(async(to, from, next) => {
   const errorStore = useErrorStore();
   const session = useSessionStore();
+  await session.getSession();
   const allowedRoles = to.meta.roles as string[] | undefined;
   let role = '';
   if(session.user !== null) {

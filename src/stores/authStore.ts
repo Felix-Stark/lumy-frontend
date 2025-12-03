@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import api from "..//services/api";
 import type { SetupAccount } from "@/types";
 import { ref, computed } from "vue";
-import type { Router } from "vue-router";
 import { useSessionStore } from "./sessionStore";
 const session = useSessionStore();
 

@@ -26,13 +26,12 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  async function registerSlackUser(code: string, router: Router) {
+  async function registerSlackUser(code: string) {
     try {
       const res = await api.post("/slack/account", { code });
       console.log("register data: ", res.data);
       if (res.status === 200) {
         sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
-        sessionStorage.setItem('LumyRole', JSON.stringify(res.data.role));
       }
       return res.status;
     } catch (err:any) {
@@ -47,7 +46,7 @@ export const useAuthStore = defineStore("auth", () => {
   async function verifyAccount(accountId: number) {
     const res = await api.post("/slack/verify-setup", { account_id: accountId });
     if (res.status === 200) {
-      sessionStorage.setItem("loggedin", "true");
+      await session.getSession();
       return res.status;
     }
   };
@@ -72,21 +71,3 @@ export const useAuthStore = defineStore("auth", () => {
     logout
   }
 });
-
-
-function loadSetupAccount(): SetupAccount | null {
-  const raw = sessionStorage.getItem("LumySetupAccount");
-  try {
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}
-function loadLoggedIn(): boolean | null {
-  const raw = sessionStorage.getItem("loggedin");
-  try {
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-}

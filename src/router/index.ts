@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { ref, computed } from "vue";
+import { useSessionGuard } from './guards/useSessionGuard';
+import { useErrorGuard } from './guards/useErrorGuard';
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import { useSessionStore } from '@/stores/sessionStore';
-import { useErrorStore } from '@/stores/errorStore';
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import AdminDashboardLayout from '@/layouts/AdminDashboardLayout.vue';
@@ -216,9 +215,10 @@ const router = createRouter({
 
 // Global navigation guard
 router.beforeEach(async(to, from, next) => {
-  const errorStore = useErrorStore();
-  const session = useSessionStore();
-  await session.getSession();
+
+  const session = await useSessionGuard();
+  const errorStore = await useErrorGuard();
+
   const allowedRoles = to.meta.roles as string[] | undefined;
   let role = '';
   if(session.user !== null) {

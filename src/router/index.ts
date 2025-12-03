@@ -221,8 +221,10 @@ router.beforeEach(async(to, from, next) => {
 
   const allowedRoles = to.meta.roles as string[] | undefined;
   let role = '';
+  
   if(session.user !== null) {
     role = session.user.role;
+    return next();
   }
   if (!allowedRoles) {
     return next(); // unrestricted route

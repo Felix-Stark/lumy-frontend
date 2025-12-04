@@ -255,7 +255,10 @@ import { useAccountStore } from '@/stores/accountStore';
 import { onMounted, ref, computed } from 'vue';
 import api from '@/services/api';
 import { buildTimezoneOptions } from '@/utils/timezones';
+import { useSessionStore } from '@/stores/sessionStore';
+import router from '@/router';
 
+const session = useSessionStore();
 const accountStore = useAccountStore();
 const showToast = ref(false)
 const toastText = ref('Settings saved!')
@@ -288,6 +291,9 @@ const timezoneOptions = ref<TZOption[]>([]);
 const selectedTimezone = ref<string>();
 
 onMounted(async () => {
+    if (session.user?.role !== 'admin') {
+        router.push({ name: 'settings-member-integrations' });
+    }
     try {
         await accountStore.getAccount();
         companyName.value = accountStore.account?.name || '';

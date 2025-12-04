@@ -7,14 +7,6 @@ const session = useSessionStore();
 
 export const useAuthStore = defineStore("auth", () => {
 
-  const setupAccount = computed<SetupAccount | null>(() => {
-    const raw = sessionStorage.getItem("LumySetupAccount");
-    try {
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  });
 
   async function loginSlack(code: string) {
     try {
@@ -63,7 +55,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
   return {
-    setupAccount,
     loginSlack,
     registerSlackUser,
     verifyAccount,

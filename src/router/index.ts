@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { pinia } from '@/main';
 
 import { useErrorStore } from '@/stores/errorStore';
 import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
@@ -211,7 +210,7 @@ const roleRedirectMap: Record<string, string> = {
   member: '/member/overview'
 }
 
-router.beforeResolve(async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // Only call the session guard when you need session info.
   // If the route is public and you don't need role, you can skip.
   const needsAuth = !!to.meta?.roles

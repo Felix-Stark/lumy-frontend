@@ -15,7 +15,7 @@ export const useSessionStore = defineStore("session", () => {
     const user = ref<SessionUser | null>(null);
 
     async function getSession() {
-        if(user.value !== null || authenticated.value) return {authenticated: authenticated.value, user: user.value};
+        if(user.value !== null || authenticated.value) return {authenticated: authenticated.value, user: user.value} as Session;
 
         try {
             const { data } = await api.get('/session');

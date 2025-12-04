@@ -3,7 +3,6 @@ import api from "..//services/api";
 import type { SetupAccount } from "@/types";
 import { ref, computed } from "vue";
 import { useSessionStore } from "./sessionStore";
-const session = useSessionStore();
 
 export const useAuthStore = defineStore("auth", () => {
 
@@ -35,6 +34,8 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   async function verifyAccount(accountId: number) {
+    const session = useSessionStore();
+
     const res = await api.post("/slack/verify-setup", { account_id: accountId });
     if (res.status === 200) {
       await session.getSession();

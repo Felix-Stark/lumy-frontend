@@ -211,7 +211,7 @@ const roleRedirectMap: Record<string, string> = {
   member: '/member/overview'
 }
 
-router.beforeEach(async (to, from, next) => {
+router.beforeResolve(async (to, from, next) => {
   // Only call the session guard when you need session info.
   // If the route is public and you don't need role, you can skip.
   const needsAuth = !!to.meta?.roles

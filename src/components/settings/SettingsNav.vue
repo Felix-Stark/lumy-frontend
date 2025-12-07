@@ -68,14 +68,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useSessionStore } from '@/stores/sessionStore';
 
+const session = useSessionStore();
 const role = ref('member');
 
-onMounted(() => {
-    const raw = sessionStorage.getItem('LumyRole')
-  if (raw) {
-	role.value = JSON.parse(raw)
-  }
+onMounted(async() => {
+   role.value = (await session.getSession()).user?.role ?? 'member';
 })
 
 

@@ -35,7 +35,7 @@
           :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
-          :disabled="loading === true || user.id === authStore.setupAccount?.id"
+          :disabled="loading === true || user.id === setupAccount?.id"
           @update:isActive="val => toggleUser(user.id, { is_active: val })"
           @update:role="val => updateRole(user.id, { role: val })"
         />
@@ -57,7 +57,7 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted, computed } from 'vue';
 import api from '@/services/api';
 import { useUserStore } from '@/stores/userStore';
-import type { SetupUser } from '@/types';
+import type { SetupAccount, SetupUser } from '@/types';
 import { useAuthStore } from '@/stores/authStore';
 
 
@@ -68,6 +68,7 @@ const loading = ref(false);
 const users = ref<SetupUser[]>([]);
 const allActive = ref(true);
 const query = ref('');
+const setupAccount = ref<SetupAccount>();
 const filteredUsers = computed<SetupUser[]>(() => {
     return query.value === ''
         ? users.value
@@ -77,9 +78,13 @@ const filteredUsers = computed<SetupUser[]>(() => {
 });
 onMounted(async () => {
   loading.value = true;
+  const raw = sessionStorage.getItem('SetupLumyAccount');
   try {
-    if(authStore.setupAccount) {
-      users.value = authStore.setupAccount.users;
+    if (raw) {
+      setupAccount.value = JSON.parse(raw);
+    }
+    if(setupAccount.value) {
+      users.value = setupAccount.value?.users;
     }
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -140,7 +145,7 @@ const toggleAllActive = async () => {
     await api.post("/account/users/activation", { "active": !allActive.value });
     allActive.value = !allActive.value;
     users.value.map(user => {
-      user.id !== authStore.setupAccount?.id ? user.is_active = allActive.value : null;
+      user.id !== setupAccount.value?.id ? user.is_active = allActive.value : null;
       return user;
     });
   } catch (error) {
@@ -151,7 +156,7 @@ const toggleAllActive = async () => {
 async function verifySetup() {
   loading.value = true;
   try {
-    const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
+    const res = await api.post('/slack/verify-setup', { "account_id": setupAccount.value?.account_id})
     if (res.status === 200) {
 	    sessionStorage.setItem("loggedin", "true");
       sessionStorage.setItem("LumyRole", JSON.stringify("admin"));

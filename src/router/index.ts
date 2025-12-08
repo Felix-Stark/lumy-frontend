@@ -209,6 +209,11 @@ const roleRedirectMap: Record<string, string> = {
   manager: '/admin/overview',
   member: '/member/overview'
 }
+const settingsRedirect: Record<string, string> = {
+  admin: '/settings/admin/general',
+  manager: '/settings/admin/general',
+  member: '/settings/member/integrations'
+}
 
 router.beforeEach(async (to, from, next) => {
   // Only call the session guard when you need session info.
@@ -231,6 +236,11 @@ router.beforeEach(async (to, from, next) => {
   // If they're authenticated and trying to visit auth/login pages -> redirect based on role
   if (authenticated && (to.name === 'slack-login' || to.path === '/' || to.path === '/login')) {
     const redirectTo = roleRedirectMap[role] || '/member/overview'
+    return next(redirectTo)
+  }
+
+  if (authenticated && (to.name === 'settings')) {
+    const redirectTo = settingsRedirect[role];
     return next(redirectTo)
   }
 

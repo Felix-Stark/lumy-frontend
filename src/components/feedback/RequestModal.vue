@@ -1,71 +1,81 @@
 <template>
     <BaseModal :isOpen="showModal" :onClose="handleClose">
-		<header class="w-full mb-10">
-			<h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
-		</header>
-		<hr class="w-full mb-10 border-t-2 border-gray-300"/>
-		<section>
-			<h3 class="font-light text-gray-600">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
-		</section>
-		<hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
-		<div class="relative w-full sm:w-3/4 lg:w-1/2">
-            <div class="flex gap-2 my-4">
-                <div>
-                    <h3 class="font-light text-gray-600">Send request(s) to:</h3>
-                </div>
-                <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
-                    <li v-for="person in selectedUsers" :key="person.id"
-                    class="bg-lumy-purple text-sm text-white rounded-lg flex items-center">
-                        <button :disabled="loading" @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1 cursor-pointer">
-                            {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
-                        </button>
-                    </li>
-                </ul>
-            </div>
-			<Combobox v-model="selectedUsers"
-                multiple
-                :disabled="loading"
-            >
-                <Float
-                    placement="bottom"  
-                    :flip="true"
-                    :offset="4"
-                    floatingAs="template"
-                >
-                    <div class="w-full flex">
-                        <ComboboxInput
-                        class="border pl-2 border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl"
-                        placeholder="Search user or pick from list"
-                        :displayValue="() => query"
-                        @change="query = $event.target.value"
-                        />
-                        <ComboboxButton
-                        class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
-                            <ChevronDown :class="['w-4 h-4']" />
-                        </ComboboxButton>
-                    </div>
-                    <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
-                        <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
-                            <li :class="['flex items-center justify-between p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-100' : 'hover:bg-purple-50', selected ? 'bg-purple-100' : 'hover:bg-purple-50' ]" >
-                                {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />
-                            </li>
-                        </ComboboxOption>
-                    </ComboboxOptions>
-                </Float>
-            </Combobox>
-            <textarea
-                v-model="message"
-                aria-label="Request Message"
-                name="request-message"
-                class="w-full h-full p-4 mt-12 border border-gray-300 outline-lumy-purple"
-                placeholder="Specify what you would like feedback on, i.e. a scenario, a task, or a specific skill aspect."
-                rows="5"
-            ></textarea>
+        <div v-if="showSuccess" class="w-full flex flex-col items-center gap-6">
+            <img :src="LumySuccess" alt="Lumy is cheering" class="w-25 h-25">
+            <h1 class="font-light text-2xl font-inter text-gray-600">Request was sent successfully!</h1>
             <BaseButton 
-            btnText="Send Feedback Request"
-            :disabled="selectedUsers.length === 0"
-            :onAction="sendReq"
-            />
+                btnText="Close"
+                :onAction="handleClose"
+                />
+        </div>
+        <div v-else class="w-full flex flex-col">
+            <header class="w-full mb-10">
+                <h1 class="font-light text-2xl font-inter text-gray-600">Request feedback to fuel your Superpowers!</h1>
+            </header>
+            <hr class="w-full mb-10 border-t-2 border-gray-300"/>
+            <section>
+                <h3 class="font-light text-gray-600">Skill: <span class="text-lumy-purple">{{ reqSkill?.name }}</span></h3>
+            </section>
+            <hr class="w-full mt-6 mb-8 border-t-2 border-gray-300"/>
+            <div class="relative w-full sm:w-3/4 lg:w-1/2">
+                <div class="flex gap-2 my-4">
+                    <div>
+                        <h3 class="font-light text-gray-600">Send request(s) to:</h3>
+                    </div>
+                    <ul v-if="selectedUsers.length > 0" class="flex flex-wrap gap-2">
+                        <li v-for="person in selectedUsers" :key="person.id"
+                        class="bg-lumy-purple text-sm text-white rounded-lg flex items-center">
+                            <button :disabled="loading" @click="selectedUsers = selectedUsers.filter(u => u.id !== person.id)" class="px-2 py-1 cursor-pointer">
+                                {{ person.name.charAt(0).toUpperCase() + person.name.slice(1) }}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <Combobox v-model="selectedUsers"
+                    multiple
+                    :disabled="loading"
+                >
+                    <Float
+                        placement="bottom"  
+                        :flip="true"
+                        :offset="4"
+                        floatingAs="template"
+                    >
+                        <div class="w-full flex">
+                            <ComboboxInput
+                            class="border pl-2 border-gray-300  outline-lumy-purple w-full rounded-bl rounded-tl"
+                            placeholder="Search user or pick from list"
+                            :displayValue="() => query"
+                            @change="query = $event.target.value"
+                            />
+                            <ComboboxButton
+                            class="bg-lumy-purple text-white font-bold p-2 rounded-br rounded-tr cursor-pointer">
+                                <ChevronDown :class="['w-4 h-4']" />
+                            </ComboboxButton>
+                        </div>
+                        <ComboboxOptions class="w-full max-h-48 overflow-auto bg-white border border-gray-300 rounded shadow-lg z-10">
+                            <ComboboxOption v-for="u in filteredUsers" :key="u.id" :value="u" v-slot="{ active, selected }">
+                                <li :class="['flex items-center justify-between p-2 hover:bg-purple-50 cursor-pointer', active ? 'bg-purple-100' : 'hover:bg-purple-50', selected ? 'bg-purple-100' : 'hover:bg-purple-50' ]" >
+                                    {{ u.name.charAt(0).toUpperCase() + u.name.slice(1) }} <Check v-if="selectedUsers.includes(u)" class="text-lumy-purple" />
+                                </li>
+                            </ComboboxOption>
+                        </ComboboxOptions>
+                    </Float>
+                </Combobox>
+                <textarea
+                    v-model="message"
+                    aria-label="Request Message"
+                    name="request-message"
+                    class="w-full h-full p-4 mt-12 border border-gray-300 outline-lumy-purple"
+                    placeholder="Specify what you would like feedback on, i.e. a scenario, a task, or a specific skill aspect."
+                    rows="5"
+                ></textarea>
+                <BaseButton 
+                btnText="Send Feedback Request"
+                :disabled="selectedUsers.length === 0"
+                :onAction="sendReq"
+                />
+            </div>
         </div>
     </BaseModal>
 </template>
@@ -151,15 +161,14 @@ const sendReq = async () => {
         console.error('Error sending feedback request:', error);
     } finally {
         showSuccess.value = true;
-        showModal.value = false
         message.value = '';
         selectedUsers.value = [];
     }
 }
 
 const handleClose = () => {
-    showSuccess.value = false;
     message.value = '';
+    showModal.value = false
 }
 
 </script>

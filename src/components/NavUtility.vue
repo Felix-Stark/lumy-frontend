@@ -131,6 +131,7 @@ const handleScroll = () => {
 }
 
 onMounted(async() => {
+  	window.addEventListener('scroll', handleScroll);
 	session.value = await sessionStore.getSession();
 	if(session.value.user) {
 		role.value = session.value.user?.role;

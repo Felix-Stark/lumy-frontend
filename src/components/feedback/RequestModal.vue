@@ -1,7 +1,7 @@
 <template>
     <BaseModal :isOpen="showModal" :onClose="handleClose">
-        <div v-if="showSuccess" class="w-full flex flex-col items-center gap-6">
-            <img :src="LumySuccess" alt="Lumy is cheering" class="w-25 h-25">
+        <div v-if="showSuccess" class="flex flex-col items-center gap-6">
+            <img :src="LumySuccess" alt="Lumy is cheering" class="w-38 h-38">
             <h1 class="font-light text-2xl font-inter text-gray-600">Request was sent successfully!</h1>
             <BaseButton 
                 btnText="Close"

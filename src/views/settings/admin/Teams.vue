@@ -2,7 +2,6 @@
     <SettingsTeams v-if="initLoading" />
     <div v-if="!initLoading" class="w-full grid grid-cols-3 auto-rows-fr gap-8">
         <TeamCard
-        v-if="!!adminStore.managers"
         v-for="m in adminStore.managers"
         :avatar="m.manager.avatar"
         :teamLead="m.manager.name"
@@ -12,7 +11,7 @@
         @manage-team="triggerModal(m.manager)"
         />
     </div>
-    <div class="w-full flex justify-center items-center" v-else>
+    <div v-if="!adminStore.managers" class="w-full flex justify-center items-center">
         <div class="flex flex-col items-center gap 6">
             <img :src="LumyConcerned" alt="Lumy is concerned">
             <p class="text-lg font-semibold">Oh no! No teams?</p>

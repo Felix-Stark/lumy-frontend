@@ -1,7 +1,8 @@
 <template>
     <SettingsTeams v-if="initLoading" />
-    <div v-if="!initLoading && adminStore.managers" class="w-full grid grid-cols-3 auto-rows-fr gap-8">
+    <div v-else class="w-full grid grid-cols-3 auto-rows-fr gap-8">
         <TeamCard
+        v-if="adminStore.managers"
         v-for="m in adminStore.managers"
         :avatar="m.manager.avatar"
         :teamLead="m.manager.name"
@@ -10,12 +11,12 @@
         btnText="Manage team"
         @manage-team="triggerModal(m.manager)"
         />
-    </div>
-    <div v-if="!adminStore.managers" class="w-full flex justify-center items-center">
-        <div class="flex flex-col items-center gap 6">
-            <img :src="LumyConcerned" alt="Lumy is concerned">
-            <p class="text-lg font-semibold">Oh no! No teams?</p>
-            <p class="text-lg">Quick, go to the Users tab and make someone a manager!</p>
+        <div v-else class="w-full flex justify-center items-center">
+            <div class="flex flex-col items-center w-md gap 6">
+                <img :src="LumyConcerned" alt="Lumy is concerned">
+                <p class="text-lg font-semibold">Oh no! No teams?</p>
+                <p class="text-lg">Quick, go to the Users tab and make someone a manager!</p>
+            </div>
         </div>
     </div>
     <Dialog :open="isOpen" @close="() => isOpen = false" class="relative w-150 z-50">

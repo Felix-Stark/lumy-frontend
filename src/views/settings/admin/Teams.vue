@@ -1,6 +1,6 @@
 <template>
     <SettingsTeams v-if="initLoading" />
-    <div v-if="!initLoading" class="w-full grid grid-cols-3 auto-rows-fr gap-8">
+    <div v-if="!initLoading && adminStore.managers" class="w-full grid grid-cols-3 auto-rows-fr gap-8">
         <TeamCard
         v-for="m in adminStore.managers"
         :avatar="m.manager.avatar"

@@ -12,8 +12,8 @@
         @manage-team="triggerModal(m.manager)"
         />
         <div v-else class="w-full flex justify-center items-center">
-            <div class="flex flex-col items-center w-md gap 6">
-                <img :src="LumyConcerned" alt="Lumy is concerned">
+            <div class="flex flex-col items-center w-md gap-4">
+                <img :src="LumyConcerned" alt="Lumy is concerned" class="w-38 h-38 mb-4">
                 <p class="text-lg font-semibold">Oh no! No teams?</p>
                 <p class="text-lg">Quick, go to the Users tab and make someone a manager!</p>
             </div>

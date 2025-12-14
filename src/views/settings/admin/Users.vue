@@ -16,7 +16,7 @@
           </div>
         </Combobox>
         <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
-            <PickUserComp
+            <UserListComp
             v-for="user in filteredUsers"
             :key="user.id"
             :id="user.id"
@@ -56,9 +56,8 @@ import {
   } from '@headlessui/vue'
   import SettingsUsers from '@/components/skeletons/SettingsUsers.vue';
 import { XCircleIcon } from 'lucide-vue-next';
-import PickUserComp from '@/components/setup/PickUserComp.vue';
-import BaseButton from '@/components/base/BaseButton.vue';
-import type { User, Account, SetupUser } from '@/types';
+import UserListComp from '@/components/settings/UserListComp.vue';
+import type { User } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import BaseToast from '@/components/base/BaseToast.vue';
@@ -105,7 +104,6 @@ const updateUser = async (userId: number, payload: Partial<User>) => {
   patching.value[userId] = true;
   try {
     await userStore.updateUser(userId, payload, 'settings');
-    console.log('updated user: ', payload);
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {

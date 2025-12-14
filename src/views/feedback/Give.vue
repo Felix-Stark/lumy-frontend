@@ -123,7 +123,7 @@
 							<div class="w-12 h-12 border-4 border-slate-200 border-t-[#4a154b] rounded-full animate-spin mb-4"></div>
 							<p class="text-gray-700">Drawing knowledge from the Lumyverse, might take a sec...</p>
 						</div>
-						<div v-html="coachingSuggestions"></div>
+						<div v-html="cleanSuggestions"></div>
 					</div>
 				</div>
 			</div>
@@ -141,13 +141,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { User2 } from 'lucide-vue-next'
 import BaseButton from '@/components/base/BaseButton.vue'
 import type { User, FeedbackRequest } from '@/types'
 import api from '@/services/api'
 import { useErrorStore } from '@/stores/errorStore'
+import DOMpurify from 'dompurify'
 
 const errorStore = useErrorStore()
 
@@ -155,16 +156,19 @@ const requestInfo = ref<FeedbackRequest>()
 const disablePost = ref<boolean>(false)
 const feedback = ref<string>('')
 const aiSuggestions = ref<string[]>([])
-const coachingSuggestions = ref<string[]>([])
+const coachingSuggestions = ref('')
 const loadingAiSuggestions = ref<boolean>(false)
 const loadingCoaching = ref<boolean>(false)
 const suggestionsSection = ref<HTMLElement | null>(null)
 const feedbackSection = ref<HTMLElement | null>(null)
 const activeTab = ref<'ai' | 'coaching'>()
 const showTabs = ref(false)
-
 const toggleCoaching = ref(false)
 const toggleSuggestions = ref(false)
+
+const cleanSuggestions = computed(() => {
+	return DOMpurify.sanitize(coachingSuggestions.value)
+})
 
 const route = useRoute()
 const router = useRouter()

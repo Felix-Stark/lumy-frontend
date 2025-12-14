@@ -10,6 +10,13 @@
         btnText="Manage team"
         @manage-team="triggerModal(m.manager)"
         />
+        <div v-if="adminStore.managers === null" class="w-full flex justify-center items-center">
+            <div class="flex flex-col items-center w-md gap-4">
+                <img :src="LumyConcerned" alt="Lumy is concerned" class="w-38 h-38 mb-4">
+                <p class="text-lg font-semibold">Oh no! No teams?</p>
+                <p class="text-lg">Quick, go to the Users tab and make someone a manager!</p>
+            </div>
+        </div>
     </div>
     <Dialog :open="isOpen" @close="() => isOpen = false" class="relative w-150 z-50">
 		<div class="fixed inset-0 bg-black/30" aria-hidden="true" />
@@ -79,6 +86,7 @@ import {
       Combobox,
       ComboboxInput
 	} from '@headlessui/vue'
+import LumyConcerned from '@/assets/images/lumy_concerned.png'
 import { ref, computed, onMounted, watch } from 'vue';
 import TeamCard from '@/components/settings/TeamCard.vue';
 import SettingsTeams from '@/components/skeletons/SettingsTeams.vue';
@@ -161,8 +169,6 @@ const findManager = (id: number) => {
 
 async function assign(user: User) {
     loading.value = true;
-    console.log('user id: ', user.id);
-    console.log('manager id: ', selectedManager.value?.id)
     try {
         const res = await api.patch(`/org/${user.id}/manager`, {
             ...user,
@@ -170,7 +176,6 @@ async function assign(user: User) {
         });
         
         if (res.status === 200) {
-            console.log('assign res: ', res.data);
             const oldUser = users.value.find(u => u.id === user.id);
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
             const diffManager = adminStore.managers?.find(m => m.manager.id === user.manager_id);
@@ -183,11 +188,8 @@ async function assign(user: User) {
             if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}
 
             if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) }
-            console.log('user: ', user);
-            console.log('oldUser: ', oldUser)
         }
         
-        console.log('manager id: ', selectedManager.value?.id);
     } catch(err: any) {
         error.value = err?.response?.data?.detail;
         showError.value = true
@@ -197,8 +199,6 @@ async function assign(user: User) {
 }
 async function unAssign(user: User) {
     loading.value = true;
-    console.log('user id: ', user.id);
-    console.log('manager id: ', selectedManager.value?.id)
 
     try {
         const res = await api.patch(`/org/${user.id}/manager`, {
@@ -212,7 +212,6 @@ async function unAssign(user: User) {
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
             if(oldManager && selectedManager.value) { oldManager.employees = oldManager.employees.filter(e => e.id !== user.id) }
 
-            console.log('unassigned res: ', res.data);
             success.value = true;
         }
     } catch(err:any) {

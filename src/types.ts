@@ -2,14 +2,14 @@ export type TimeSeries = Record<string, number>;
 
 export type Session = {
   authenticated: boolean;
-  user?: {
-    id: number;
-    role: string;
-    name: string;
-    email: string;
-  }
+  user: SessionUser | null;
 }
-
+export type SessionUser = {
+  id: number;
+  role: string;
+  name: string;
+  email: string;
+}
 // ONBOARDING
 export type SetupAccount = {
 	  id: number;

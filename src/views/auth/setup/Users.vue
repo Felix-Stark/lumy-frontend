@@ -92,7 +92,6 @@ function clearQuery() {
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
 async function updateRole(userId:number, newRole: Partial<SetupUser>) {
-  console.log('userId in updateUser fn: ', userId, newRole)
   const idx = users.value.findIndex(u => u.id === userId);
   const prevRole = users.value[idx].role
 
@@ -109,7 +108,6 @@ async function updateRole(userId:number, newRole: Partial<SetupUser>) {
   
 }
 async function toggleUser(userId:number, payload: Partial<SetupUser>) {
-  console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
     // handle different shapes of response safely

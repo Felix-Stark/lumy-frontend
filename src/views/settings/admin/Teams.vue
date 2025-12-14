@@ -169,8 +169,6 @@ const findManager = (id: number) => {
 
 async function assign(user: User) {
     loading.value = true;
-    console.log('user id: ', user.id);
-    console.log('manager id: ', selectedManager.value?.id)
     try {
         const res = await api.patch(`/org/${user.id}/manager`, {
             ...user,
@@ -178,7 +176,6 @@ async function assign(user: User) {
         });
         
         if (res.status === 200) {
-            console.log('assign res: ', res.data);
             const oldUser = users.value.find(u => u.id === user.id);
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
             const diffManager = adminStore.managers?.find(m => m.manager.id === user.manager_id);
@@ -191,11 +188,8 @@ async function assign(user: User) {
             if(oldUser && selectedManager.value) { oldUser.manager_id = selectedManager.value.id}
 
             if(oldManager && selectedManager.value) { oldManager.employees.push(oldUser!) }
-            console.log('user: ', user);
-            console.log('oldUser: ', oldUser)
         }
         
-        console.log('manager id: ', selectedManager.value?.id);
     } catch(err: any) {
         error.value = err?.response?.data?.detail;
         showError.value = true
@@ -205,8 +199,6 @@ async function assign(user: User) {
 }
 async function unAssign(user: User) {
     loading.value = true;
-    console.log('user id: ', user.id);
-    console.log('manager id: ', selectedManager.value?.id)
 
     try {
         const res = await api.patch(`/org/${user.id}/manager`, {
@@ -220,7 +212,6 @@ async function unAssign(user: User) {
             const oldManager = adminStore.managers?.find(m => m.manager.id === selectedManager.value?.id);
             if(oldManager && selectedManager.value) { oldManager.employees = oldManager.employees.filter(e => e.id !== user.id) }
 
-            console.log('unassigned res: ', res.data);
             success.value = true;
         }
     } catch(err:any) {

@@ -19,7 +19,6 @@ export const useAuthStore = defineStore("auth", () => {
   async function registerSlackUser(code: string) {
     try {
       const res = await api.post("/slack/account", { code });
-      console.log("register data: ", res.data);
       if (res.status === 200) {
         sessionStorage.setItem("LumySetupAccount", JSON.stringify(res.data));
       }

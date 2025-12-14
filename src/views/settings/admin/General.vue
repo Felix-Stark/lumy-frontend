@@ -317,7 +317,6 @@ onMounted(async () => {
         showToast.value = true;
     } finally {
         initLoading.value = false;
-        console.log(accountStore.account);
     }
 });
 
@@ -334,7 +333,7 @@ async function saveSettings() {
             loading.value = false;
         }
     } catch (error: any) {
-        console.log('failed to save settings: ', error)
+        console.error('failed to save settings: ', error)
         toastText.value = error?.response?.data?.detail || 'Could not save settings'
         toastBg.value = 'bg-red-500'
         showToast.value = true
@@ -346,17 +345,6 @@ async function saveSettings() {
 };
 
 async function saveBot() {
-    console.log('Bot personality saved: ', {
-        name: botName.value,
-        formatted_name: botName.value.toLowerCase().replace(/\s+/g, '_'),
-        description: botDesc.value,
-        origin: botOrigin.value,
-        tone: botTone.value,
-        traits: botTraits.value,
-        quirks: botQuirks.value,
-        catchphrase: botCatchphrase.value,
-        examples: botExamples.value
-    });
     loading.value = true;
     try {
         const res = await api.post('/bot-personalities', {

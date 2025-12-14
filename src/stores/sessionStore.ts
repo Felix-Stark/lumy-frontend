@@ -19,7 +19,6 @@ export const useSessionStore = defineStore("session", () => {
 
         try {
             const { data } = await api.get('/session');
-            console.log('session: ', data);
             authenticated.value = data.authenticated;
             if (data.user) {
                 user.value = data.user;

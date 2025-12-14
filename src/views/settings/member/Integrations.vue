@@ -43,6 +43,14 @@
         </p>
         <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
+        <IntegrationCard
+        :img="Outlook"
+        title="Outlook calendar"
+        :connected="outlookConnected"
+
+        >
+
+        </IntegrationCard>
     </section>
     <BaseToast
     :text="toastText"
@@ -55,6 +63,7 @@
 <script setup lang="ts">
 import GoogleCal from '@/assets/images/google_cal.png';
 import AsanaImg from '@/assets/images/asana.png';
+import Outlook from '@/assets/images/outlook_logo.png';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import BaseToast from '@/components/base/BaseToast.vue';
@@ -68,6 +77,7 @@ const toastBg = ref('bg-lumy-green');
 const toastText = ref('');
 const googleConnected = ref(false);
 const asanaConnected = ref(false);
+const outlookConnected = ref(false);
 const asanaLink = ref<string>()
 const loading = ref(true);
 
@@ -94,6 +104,9 @@ onMounted(async () => {
     if(asanaOauth.status === 200) {
         asanaLink.value = asanaOauth.data.authorize_url
     }
+
+    const outlookRes = await api.get('/integrations/outlook');
+    outlookConnected.value = await outlookRes.data.connected;
     } catch (error) {
         console.error('Error fetching integration status:', error);
         
@@ -114,6 +127,12 @@ watch(
   },
   { immediate: true }
 );
+
+function triggerOutlook() {
+    loading.value = true;
+    window.open(apiUrl + 'integrations/outlook/start',
+  '_self');
+}
 
 const triggerAsana = () => {
     loading.value = true;

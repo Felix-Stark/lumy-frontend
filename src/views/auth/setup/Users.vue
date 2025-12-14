@@ -84,6 +84,7 @@ onMounted(async () => {
       setupAccount.value = JSON.parse(raw);
     }
     if(setupAccount.value) {
+      console.log('setupAccount - users: ', setupAccount.value)
       users.value = setupAccount.value?.users;
     }
   } catch (error) {
@@ -93,7 +94,7 @@ onMounted(async () => {
   }
 });
 
-const clearQuery = () => {
+function clearQuery() {
   query.value = '';
 }
 

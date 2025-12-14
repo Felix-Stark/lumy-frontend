@@ -48,8 +48,8 @@
 				</div>
 			</Listbox>
 			<button
-			:disabled="disabled || isCreator"
-			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8', disabled === true || isCreator === true ? 'cursor-not-allowed' : 'cursor-pointer']" 
+			:disabled="disabled"
+			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8', disabled === true ? 'cursor-not-allowed' : 'cursor-pointer']" 
 			@click="emit('update:isActive', !isActive)"
 			>
 				{{ isActive === true ? 'Remove' : 'Add' }}
@@ -70,10 +70,9 @@ defineProps<{
 	email?: string;
 	avatarUrl?: string;
 	isActive: boolean;
-	isCreator: boolean;
 	title?: string;
 	role: string;
-	disabled?: boolean;
+	disabled: boolean;
 }>();
 const emit = defineEmits<{
 	(e: 'update:role', value: string): void;

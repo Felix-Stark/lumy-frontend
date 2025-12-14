@@ -35,7 +35,7 @@
           :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
-          :disabled="loading === true || user.id === setupAccount?.id"
+          :disabled="loading === true || user.id === setupAccount!.id"
           @update:isActive="val => toggleUser(user.id, { is_active: val })"
           @update:role="val => updateRole(user.id, { role: val })"
         />

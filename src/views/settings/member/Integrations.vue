@@ -133,6 +133,10 @@ function triggerOutlook() {
     window.open(apiUrl + 'integrations/outlook/start',
   '_self');
 }
+function disconnectOutlook() {
+    loading.value = true;
+    
+}
 
 const triggerAsana = () => {
     loading.value = true;

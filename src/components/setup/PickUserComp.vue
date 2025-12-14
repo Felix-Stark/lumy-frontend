@@ -49,7 +49,7 @@
 			</Listbox>
 			<button
 			:disabled="disabled || isCreator"
-			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8', disabled ? 'cursor-not-allowed' : 'cursor-pointer']" 
+			:class="['px-4 py-2 text-white cursor-pointer rounded', isActive === true ? 'bg-red-400' : 'bg-green-400 px-8', disabled === true || isCreator === true ? 'cursor-not-allowed' : 'cursor-pointer']" 
 			@click="emit('update:isActive', !isActive)"
 			>
 				{{ isActive === true ? 'Remove' : 'Add' }}

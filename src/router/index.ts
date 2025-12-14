@@ -138,7 +138,6 @@ const router = createRouter({
     {
       path: '/settings',
       name: 'settings',
-      redirect: 'admin/general',
       component: SettingsLayout,
       children: [
         {

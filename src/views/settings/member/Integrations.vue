@@ -47,7 +47,7 @@
         :img="Outlook"
         title="Outlook calendar"
         :connected="outlookConnected"
-
+        @connect="triggerOutlook"
         >
 
         </IntegrationCard>

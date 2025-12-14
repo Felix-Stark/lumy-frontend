@@ -78,19 +78,12 @@ const filteredUsers = computed<SetupUser[]>(() => {
 });
 onMounted(async () => {
   loading.value = true;
-  const raw = sessionStorage.getItem('SetupLumyAccount');
-  try {
-    if (raw) {
-      setupAccount.value = JSON.parse(raw);
-    }
-    if(setupAccount.value) {
-      console.log('setupAccount - users: ', setupAccount.value)
-      users.value = setupAccount.value?.users;
-    }
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  } finally {
-    loading.value = false;
+  const raw = sessionStorage.getItem('LumySetupAccount');
+  if(raw) {
+    setupAccount.value = JSON.parse(raw);
+  }
+  if(setupAccount.value) {
+    users.value = setupAccount.value.users;
   }
 });
 

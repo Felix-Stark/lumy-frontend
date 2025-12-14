@@ -58,12 +58,9 @@ import { ref, onMounted, computed } from 'vue';
 import api from '@/services/api';
 import { useUserStore } from '@/stores/userStore';
 import type { SetupAccount, SetupUser } from '@/types';
-import { useAuthStore } from '@/stores/authStore';
-
 
 const router = useRouter();
 const userStore = useUserStore();
-const authStore = useAuthStore();
 const loading = ref(false);
 const users = ref<SetupUser[]>([]);
 const allActive = ref(true);
@@ -85,6 +82,7 @@ onMounted(async () => {
   if(setupAccount.value) {
     users.value = setupAccount.value.users;
   }
+  loading.value = false;
 });
 
 function clearQuery() {

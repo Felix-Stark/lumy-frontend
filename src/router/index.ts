@@ -210,7 +210,7 @@ const roleRedirectMap: Record<string, string> = {
 }
 const settingsRedirect: Record<string, string> = {
   admin: '/settings/admin/general',
-  manager: '/settings/admin/general',
+  manager: '/settings/member/integrations',
   member: '/settings/member/integrations'
 }
 

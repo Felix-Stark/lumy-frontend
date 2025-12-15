@@ -9,7 +9,7 @@ onMounted(() => {
     session.getSession();
   }
 })
-function breaker()
+
 </script>
 
 <template>

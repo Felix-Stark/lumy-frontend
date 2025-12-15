@@ -10,7 +10,7 @@
                         <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
                     </div>
                 </div>
-                <div v-else>
+                <div class="text-center" v-else>
                     <h3 class="text-lg">You haven't received any feedback yet</h3>
                     <p>Go to your overview, click on a skill and request some feedback to get started. You can also do this in Slack</p>
                     

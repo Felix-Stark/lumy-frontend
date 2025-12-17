@@ -1,8 +1,8 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
 	<div v-else class="flex flex-col items-center gap-6 w-full">
-		<div v-if="user" class="absolute top-8 left-4 flex items-center mb-8">
-			<p class="text-lg flex items-center text-gray-600">{{ formatName(user.name) }}<span class="w-6 h-6 text-cyan-600" v-if="user.name.includes('Pei')"><HeroBadge/> Hero tester</span></p>
+		<div v-if="user" class="absolute top-8 left-8 lg:top-20 lg:left-20 flex items-center mb-8">
+			<p class="text-lg flex items-center text-gray-600">{{ formatName(user.name) }}'s overview</p>
 		</div>
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
 			<HeadCard

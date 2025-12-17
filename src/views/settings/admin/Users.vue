@@ -34,16 +34,15 @@
       </div>
     </div>
     <BaseToast
-        v-if="loading"
         text="Saving changes..."
-        bgClass="bg-blue-600"
+        bgClass="bg-blue-300"
         :show="loading"
         :duration="3000"
     />
     <BaseToast
         text="Changes saved successfully!"
         bgClass="bg-green-500"
-        :show="success"
+        :show="showToast"
         :duration="3000"
         @close="success = false"
     />

@@ -40,11 +40,11 @@
         :duration="3000"
     />
     <BaseToast
-        text="Changes saved successfully!"
-        bgClass="bg-green-500"
+        :text="toastText"
+        :bgClass="toastBg"
         :show="showToast"
         :duration="3000"
-        @close="success = false"
+        @close="showToast = false"
     />
 </template>
 

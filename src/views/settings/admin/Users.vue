@@ -27,8 +27,8 @@
             :disabled="patching[user.id] === true || loading === true || user.id === userStore.me?.id"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
-            @update:isActive="val => updateUser(user.id, { is_active: val })"
-            @update:role="val => updateUser(user.id, { role: val })"
+            @update:isActive="val => updateUser(user, { is_active: val })"
+            @update:role="val => updateUser(user, { role: val })"
             />
         </div>
       </div>
@@ -71,6 +71,9 @@ const users = computed<User[]>(() => userStore.sortedUsers);
 const loading = ref(false);
 const initLoading = ref(true);
 const success = ref(false);
+const showToast = ref(false);
+const toastText = ref('');
+const toastBg = ref('bg-lumy-green');
 const query = ref('');
 const filteredUsers = computed<User[]>(() => {
     return query.value === ''
@@ -100,14 +103,20 @@ onMounted(async() => {
 })
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
-const updateUser = async (userId: number, payload: Partial<User>) => {
-  patching.value[userId] = true;
+const updateUser = async (user: Partial<User>, payload: Partial<User>) => {
+  patching.value[user.id!] = true;
+  loading.value = true;
   try {
-    await userStore.updateUser(userId, payload, 'settings');
+    const res = await userStore.updateUser(user.id!, payload, 'settings');
+    if(res) {
+      toastText.value = `Updated ${user.name}`;
+    }
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {
-    patching.value[userId] = false;
+    patching.value[user.id!] = false;
+    loading.value = false;
+    showToast.value = true;
   }
 }
 </script>

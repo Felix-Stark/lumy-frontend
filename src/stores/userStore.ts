@@ -56,9 +56,7 @@ export const useUserStore = defineStore('user', () => {
         if (path === 'setup') {
           await getUsers(true)
         }
-        if (users.value) {
-          return sortedUsers.value;
-        }
+        return res.status;
       }
     } catch (error: any) {
       console.error('error in update user: ', error)

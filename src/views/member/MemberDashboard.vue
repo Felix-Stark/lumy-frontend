@@ -1,6 +1,6 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full">
+	<div v-else class="flex flex-col items-center gap-6 w-full my-12 lg:my-20">
 		<div v-if="user" class="absolute top-8 left-8 lg:top-20 lg:left-20 flex items-center mb-8">
 			<p class="text-lg flex items-center text-gray-600">{{ formatName(user.name) }}'s overview</p>
 		</div>

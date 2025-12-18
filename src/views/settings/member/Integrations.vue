@@ -44,8 +44,8 @@
         <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
         <div class="relative self-stretch">
-            <div class="absolute bg-gray-300/80 w-full h-full flex justify-center items-center">
-                <p class="font-bold text-xl">Upcoming feature</p>
+            <div class="absolute bg-gray-300/80 w-full flex justify-center items-center">
+                <p class="font-bold text-xl">Coming soon</p>
             </div>
             <IntegrationCard
             :img="Outlook"

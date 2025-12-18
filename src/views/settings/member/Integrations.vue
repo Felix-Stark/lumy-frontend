@@ -52,6 +52,7 @@
             title="Outlook calendar"
             :connected="outlookConnected"
             @connect="triggerOutlook"
+            :disabled="true"
             >
                 <p>Trigger feedback after regular meeting interactions</p>
                 <p>No access to meeting content or private notes</p>

@@ -1,10 +1,10 @@
 <template>
     <SettingsTeams v-if="initLoading" />
     <div v-if="adminStore.managers?.length < 1" class="w-full flex justify-center items-center">
-        <div class="flex flex-col items-center w-md gap-2">
+        <div class="flex flex-col items-center w-md mt-20 gap-2">
             <img :src="LumyConcerned" alt="Lumy is concerned" class="w-38 h-38 mb-4">
-            <p class="text-lg font-semibold">Oh no! No teams...</p>
-            <p class="text-lg">Quick, go to the Users tab <br/> and assign the manager role to the team leaders!</p>
+            <p class="text-lg text-center font-semibold">Oh no! No teams...</p>
+            <p class="text-lg text-center">Quick, go to the Users tab <br/> and assign the manager role to the team leaders!</p>
         </div>
     </div>
     <div v-else class="w-full grid grid-cols-3 auto-rows-fr gap-8">

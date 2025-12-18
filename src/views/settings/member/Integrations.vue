@@ -43,21 +43,16 @@
         </p>
         <p class="text-center">No access to task descriptions or private comments</p>
         </IntegrationCard>
-        <div class="relative self-stretch">
-            <div class="absolute bg-gray-300/80 w-full h-full flex justify-center items-center">
-                <p class="font-bold text-xl">Coming soon</p>
-            </div>
-            <IntegrationCard
-            :img="Outlook"
-            title="Outlook calendar"
-            :connected="outlookConnected"
-            @connect="triggerOutlook"
-            :disabled="true"
-            >
-                <p>Trigger feedback after regular meeting interactions</p>
-                <p>No access to meeting content or private notes</p>
+        <IntegrationCard
+        :img="Outlook"
+        title="Outlook calendar"
+        :connected="outlookConnected"
+        @connect="triggerOutlook"
+        :disabled="true"
+        >
+            <p>Trigger feedback after regular meeting interactions</p>
+            <p>No access to meeting content or private notes</p>
         </IntegrationCard>
-        </div>
     </section>
     <BaseToast
     :text="toastText"

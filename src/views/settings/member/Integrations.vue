@@ -107,8 +107,8 @@ onMounted(async () => {
         asanaLink.value = asanaOauth.data.authorize_url
     }
 
-    const outlookRes = await api.get('/integrations/outlook');
-    outlookConnected.value = await outlookRes.data.connected;
+    // const outlookRes = await api.get('/integrations/outlook');
+    // outlookConnected.value = await outlookRes.data.connected;
     } catch (error) {
         console.error('Error fetching integration status:', error);
         

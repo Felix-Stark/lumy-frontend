@@ -25,8 +25,8 @@ onMounted( async () => {
 		router.push('/')
 	}
 	try {
-		const res = await authStore.registerSlackUser(code as string, router);
-		if (res === 200) {
+		const status = await authStore.registerSlackUser(code as string);
+		if (status === 200) {
 			router.push({name: 'slack-install-success'})
 		}
 	} catch (err: any) {

@@ -11,7 +11,7 @@ interface Manager {
 export const useAdminStore = defineStore("admin", () => {
     const teamSummary = ref<TeamOverview | null>(null);
     const teamUsers = ref<TeamUser[]>([]);
-    const managers = ref<Manager[] | null>(null);
+    const managers = ref<Manager[] | []>([]);
     const employeeSummary = ref<UserSummary | null>(null);
 
     async function getTeamSummary() {

@@ -1,7 +1,10 @@
 <template>
 	<DashSkeleton v-if="loading === true" :isOpen="loading" />
-	<div v-else class="flex flex-col items-center gap-6 w-full">
-		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 w-full items-stretch gap-6">
+	<div v-else class="flex flex-col items-center gap-6 w-full my-12 lg:my-20">
+		<div v-if="user" class="absolute top-8 left-8 lg:top-20 lg:left-20 flex items-center mb-8">
+			<p class="text-lg flex items-center text-gray-600">{{ formatName(user.name) }}'s overview</p>
+		</div>
+		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 lg:mt-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
 				description="Feedback received"
@@ -116,8 +119,12 @@ import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import LumySuccess from '@/assets/images/lumy_cheering.png';
-import type { Skill, SkillSummary, User, UserSummary } from '@/types';
+import type { SessionUser, Skill, SkillSummary, UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
+import { useSessionStore } from '@/stores/sessionStore';
+import { formatName } from '@/composables/formatName';
+import HeroBadge from '@/components/HeroBadge.vue';
+const session = useSessionStore();
 
 Chart.register(...registerables);
 
@@ -128,9 +135,11 @@ const router = useRouter();
 const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
+const user = ref<SessionUser | null>(null)
 onMounted(async() => {
 	try {
 		await userStore.getMeSummary();
+		user.value = session.user;
 	} catch (err:any) {
 		console.error('Error fetching user summary:', err);
 	} finally {

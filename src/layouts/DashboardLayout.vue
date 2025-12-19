@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center h-full box-border w-full p-4 md:p-8 lg:w-4/5  mx-auto">
 
 		<NavUtility />
-        <main class="flex flex-col items-center gap-6 w-full lg:my-20">
+        <main class="flex flex-col items-center gap-6 w-full">
         <router-view />
         </main>
     </div>

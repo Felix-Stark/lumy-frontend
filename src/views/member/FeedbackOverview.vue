@@ -2,7 +2,7 @@
     <FeedbackSkeleton v-if="initLoading" />
         <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
             <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
-                <div class="relative h-48">
+                <div v-if="currentPercentage" class="relative h-48">
                     <Doughnut :data="data" :options="options" />
                     <!-- Center text -->
                     <div class="absolute inset-0 flex flex-col items-center justify-end text-2xl font-bold" style="margin-top: 40px">
@@ -10,7 +10,11 @@
                         <p class="text-gray-500 text-sm -mt-1">Positive sentiment</p>
                     </div>
                 </div>
-
+                <div class="text-center" v-else>
+                    <h3 class="text-lg">You haven't received any feedback yet</h3>
+                    <p>Go to your overview, click on a skill and request some feedback to get started. You can also do this in Slack</p>
+                    
+                </div>
             </div>
             <div class="bg-white relative flex items-center justify-between gap-8 shadow-md rounded-lg p-8 w-full">
                 <div class="h-48">

@@ -70,7 +70,7 @@
 				: 'text-gray-500 size-4'
 			]" />
 		</router-link>
-		<router-link :to="{name:'settings'}" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
+		<router-link to="/settings" v-slot="{ isActive }" class="rounded-full p-3 bg-white hover:bg-gray-100 transition duration-200 ease-in-out"
 		@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Settings')"
 		@mouseleave="handleMouseLeave"
 		>
@@ -100,7 +100,10 @@ import { UserRound, MessageSquareText, Settings, Activity, Home, UserRoundCog, L
 import { onMounted, onUnmounted, ref } from 'vue';
 import Tooltip from './base/Tooltip.vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useSessionStore } from '@/stores/sessionStore';
+import type { Session } from '@/types';
 
+const sessionStore = useSessionStore();
 const auth = useAuthStore();
 
 const isSticky = ref(false)
@@ -110,6 +113,7 @@ const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
 const role = ref<string | null>(null)
+const session = ref<Session | null>(null);
 
 function handleMouseEnter(event: MouseEvent, text: string) {
   tooltipText.value = text
@@ -126,12 +130,12 @@ const handleScroll = () => {
   isSticky.value = window.scrollY > 40
 }
 
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-   const raw = sessionStorage.getItem('LumyRole')
-  if (raw) {
-	role.value = JSON.parse(raw)
-  }
+onMounted(async() => {
+  	window.addEventListener('scroll', handleScroll);
+	session.value = await sessionStore.getSession();
+	if(session.value.user) {
+		role.value = session.value.user?.role;
+	}
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);

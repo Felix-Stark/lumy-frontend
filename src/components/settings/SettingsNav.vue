@@ -1,5 +1,5 @@
 <template>
-    <header class="w-full mt-12 flex justify-center">
+    <header class="w-screen mt-12 flex justify-center overflow-auto">
         <nav class="flex items-center justify-center gap-4 p-4 w-full">
             <router-link v-if="role === 'admin'" :to="{name: 'settings-admin-general'}" v-slot="{isExactActive}">
                 <span :class="['px-4 py-2 rounded-lg text-lg',
@@ -68,14 +68,13 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useSessionStore } from '@/stores/sessionStore';
 
+const session = useSessionStore();
 const role = ref('member');
 
-onMounted(() => {
-    const raw = sessionStorage.getItem('LumyRole')
-  if (raw) {
-	role.value = JSON.parse(raw)
-  }
+onMounted(async() => {
+   role.value = (await session.getSession()).user?.role ?? 'member';
 })
 
 

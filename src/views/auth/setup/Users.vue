@@ -35,7 +35,7 @@
           :email="user.email"
           v-model:role="user.role"
           v-model:isActive="user.is_active"
-          :disabled="loading === true || user.id === authStore.setupAccount?.id"
+          :disabled="loading === true || user.id === setupAccount?.id"
           @update:isActive="val => toggleUser(user.id, { is_active: val })"
           @update:role="val => updateRole(user.id, { role: val })"
         />
@@ -57,17 +57,15 @@ import { useRouter } from 'vue-router';
 import { ref, onMounted, computed } from 'vue';
 import api from '@/services/api';
 import { useUserStore } from '@/stores/userStore';
-import type { SetupUser } from '@/types';
-import { useAuthStore } from '@/stores/authStore';
-
+import type { SetupAccount, SetupUser } from '@/types';
 
 const router = useRouter();
 const userStore = useUserStore();
-const authStore = useAuthStore();
 const loading = ref(false);
 const users = ref<SetupUser[]>([]);
 const allActive = ref(true);
 const query = ref('');
+const setupAccount = ref<SetupAccount>();
 const filteredUsers = computed<SetupUser[]>(() => {
     return query.value === ''
         ? users.value
@@ -77,25 +75,23 @@ const filteredUsers = computed<SetupUser[]>(() => {
 });
 onMounted(async () => {
   loading.value = true;
-  try {
-    if(authStore.setupAccount) {
-      users.value = authStore.setupAccount.users;
-    }
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  } finally {
-    loading.value = false;
+  const raw = sessionStorage.getItem('LumySetupAccount');
+  if(raw) {
+    setupAccount.value = JSON.parse(raw);
   }
+  if(setupAccount.value) {
+    users.value = setupAccount.value.users;
+  }
+  loading.value = false;
 });
 
-const clearQuery = () => {
+function clearQuery() {
   query.value = '';
 }
 
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
 async function updateRole(userId:number, newRole: Partial<SetupUser>) {
-  console.log('userId in updateUser fn: ', userId, newRole)
   const idx = users.value.findIndex(u => u.id === userId);
   const prevRole = users.value[idx].role
 
@@ -112,7 +108,6 @@ async function updateRole(userId:number, newRole: Partial<SetupUser>) {
   
 }
 async function toggleUser(userId:number, payload: Partial<SetupUser>) {
-  console.log('userId in updateUser fn: ', userId, payload)
   patching.value[userId] = true;
   try {
     // handle different shapes of response safely
@@ -140,7 +135,7 @@ const toggleAllActive = async () => {
     await api.post("/account/users/activation", { "active": !allActive.value });
     allActive.value = !allActive.value;
     users.value.map(user => {
-      user.id !== authStore.setupAccount?.id ? user.is_active = allActive.value : null;
+      user.id !== setupAccount.value?.id ? user.is_active = allActive.value : null;
       return user;
     });
   } catch (error) {
@@ -151,7 +146,7 @@ const toggleAllActive = async () => {
 async function verifySetup() {
   loading.value = true;
   try {
-    const res = await api.post('/slack/verify-setup', { "account_id": authStore.setupAccount?.account_id})
+    const res = await api.post('/slack/verify-setup', { "account_id": setupAccount.value?.account_id})
     if (res.status === 200) {
 	    sessionStorage.setItem("loggedin", "true");
       sessionStorage.setItem("LumyRole", JSON.stringify("admin"));

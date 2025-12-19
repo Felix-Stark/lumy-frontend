@@ -9,6 +9,7 @@ onMounted(() => {
     session.getSession();
   }
 })
+
 </script>
 
 <template>

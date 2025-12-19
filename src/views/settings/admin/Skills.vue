@@ -245,7 +245,6 @@ onMounted(async() => {
 })
 
 async function addSkill() {
-    console.log('name and def in addSkill: ', editName.value + editDef.value)
     let prev = customSkills.value;
     try {
         loading.value = true;

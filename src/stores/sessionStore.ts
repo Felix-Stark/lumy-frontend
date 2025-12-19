@@ -15,6 +15,8 @@ export const useSessionStore = defineStore("session", () => {
     const user = ref<SessionUser | null>(null);
 
     async function getSession() {
+        if(user.value !== null || authenticated.value) return {authenticated: authenticated.value, user: user.value} as Session;
+
         try {
             const { data } = await api.get('/session');
             authenticated.value = data.authenticated;
@@ -24,6 +26,9 @@ export const useSessionStore = defineStore("session", () => {
             return data as Session;
         } catch (err: any) {
             console.error('Error fetching session: ', err);
+            authenticated.value = false;
+            user.value = null
+            throw err
         }
     };
     function clearSession() {

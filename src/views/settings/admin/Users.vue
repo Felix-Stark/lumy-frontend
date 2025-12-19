@@ -16,7 +16,7 @@
           </div>
         </Combobox>
         <div v-if="users" class="flex flex-col gap-2 items-center mt-3 w-full h-full overflow-auto">
-            <PickUserComp
+            <UserListComp
             v-for="user in filteredUsers"
             :key="user.id"
             :id="user.id"
@@ -27,25 +27,24 @@
             :disabled="patching[user.id] === true || loading === true || user.id === userStore.me?.id"
             v-model:role="user.role"
             v-model:isActive="user.is_active"
-            @update:isActive="val => updateUser(user.id, { is_active: val })"
-            @update:role="val => updateUser(user.id, { role: val })"
+            @update:isActive="val => updateUser(user, { is_active: val })"
+            @update:role="val => updateUser(user, { role: val })"
             />
         </div>
       </div>
     </div>
     <BaseToast
-        v-if="loading"
         text="Saving changes..."
-        bgClass="bg-blue-600"
+        bgClass="bg-blue-300"
         :show="loading"
         :duration="3000"
     />
     <BaseToast
-        text="Changes saved successfully!"
-        bgClass="bg-green-500"
-        :show="success"
+        :text="toastText"
+        :bgClass="toastBg"
+        :show="showToast"
         :duration="3000"
-        @close="success = false"
+        @close="showToast = false"
     />
 </template>
 
@@ -56,9 +55,8 @@ import {
   } from '@headlessui/vue'
   import SettingsUsers from '@/components/skeletons/SettingsUsers.vue';
 import { XCircleIcon } from 'lucide-vue-next';
-import PickUserComp from '@/components/setup/PickUserComp.vue';
-import BaseButton from '@/components/base/BaseButton.vue';
-import type { User, Account, SetupUser } from '@/types';
+import UserListComp from '@/components/settings/UserListComp.vue';
+import type { User } from '@/types';
 import { ref, onMounted, computed } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import BaseToast from '@/components/base/BaseToast.vue';
@@ -72,6 +70,9 @@ const users = computed<User[]>(() => userStore.sortedUsers);
 const loading = ref(false);
 const initLoading = ref(true);
 const success = ref(false);
+const showToast = ref(false);
+const toastText = ref('');
+const toastBg = ref('bg-lumy-green');
 const query = ref('');
 const filteredUsers = computed<User[]>(() => {
     return query.value === ''
@@ -101,15 +102,20 @@ onMounted(async() => {
 })
 const patching = ref<Record<number, boolean>>({}); // store loading state per user
 
-const updateUser = async (userId: number, payload: Partial<User>) => {
-  patching.value[userId] = true;
+const updateUser = async (user: Partial<User>, payload: Partial<User>) => {
+  patching.value[user.id!] = true;
+  loading.value = true;
   try {
-    await userStore.updateUser(userId, payload, 'settings');
-    console.log('updated user: ', payload);
+    const res = await userStore.updateUser(user.id!, payload, 'settings');
+    if(res) {
+      toastText.value = `Updated ${user.name}`;
+    }
   } catch (error: any) {
     console.error('error in updateUser fn: ', error)
   } finally {
-    patching.value[userId] = false;
+    patching.value[user.id!] = false;
+    loading.value = false;
+    showToast.value = true;
   }
 }
 </script>

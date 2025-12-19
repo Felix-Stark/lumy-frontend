@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { ref, computed } from "vue";
-import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
-import { useAuthStore } from '@/stores/authStore'
+
 import { useErrorStore } from '@/stores/errorStore';
+import SlackLogin from '@/views/auth/slack/SlackLogin.vue'
 import SettingsLayout from '@/layouts/SettingsLayout.vue';
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import AdminDashboardLayout from '@/layouts/AdminDashboardLayout.vue';
@@ -139,15 +138,6 @@ const router = createRouter({
     {
       path: '/settings',
       name: 'settings',
-      redirect: () => {
-        const raw = sessionStorage.getItem('LumyRole')
-        const role = raw ? JSON.parse(raw) : null;
-        if (role === 'admin') {
-          return '/settings/admin/general';
-        } else {
-          return '/settings/member/integrations';
-        }
-      },
       component: SettingsLayout,
       children: [
         {
@@ -213,40 +203,66 @@ const router = createRouter({
   ],
 });
 
+const roleRedirectMap: Record<string, string> = {
+  admin: '/admin/overview',
+  manager: '/admin/overview',
+  member: '/member/overview'
+}
+const settingsRedirect: Record<string, string> = {
+  admin: '/settings/admin/general',
+  manager: '/settings/member/integrations',
+  member: '/settings/member/integrations'
+}
 
-// Global navigation guard
-router.beforeEach(async(to, from, next) => {
-  const errorStore = useErrorStore();
-  const raw = sessionStorage.getItem('LumyRole');
-  const role: string = raw ? JSON.parse(raw) : null;
-  const allowedRoles = to.meta.roles as string[] | undefined;
+router.beforeEach(async (to, from, next) => {
+  // Only call the session guard when you need session info.
+  // If the route is public and you don't need role, you can skip.
+  const needsAuth = !!to.meta?.roles
+  let sessionStore = null
 
+  try {
+    // Lazily import and fetch session (guarantees Pinia is installed)
+    const { useSessionGuard } = await import('./guards/useSessionGuard')
+    sessionStore = await useSessionGuard()
+  } catch (err) {
+    // If session fetch fails, treat as not authenticated
+    console.error('Session guard error:', err)
+  }
+
+  const role = sessionStore?.user?.role ?? ''
+  const authenticated = sessionStore?.authenticated ?? false
+
+  // If they're authenticated and trying to visit auth/login pages -> redirect based on role
+  if (authenticated && (to.name === 'slack-login' || to.path === '/' || to.path === '/login')) {
+    const redirectTo = roleRedirectMap[role] || '/member/overview'
+    return next(redirectTo)
+  }
+
+  if (authenticated && (to.name === 'settings')) {
+    const redirectTo = settingsRedirect[role];
+    return next(redirectTo)
+  }
+
+  // If route has role restrictions, check them
+  const allowedRoles = to.meta?.roles as string[] | undefined
   if (!allowedRoles) {
-    return next(); // unrestricted route
+    return next()
+  }
+
+  if (!authenticated) {
+    // not logged in -> redirect to login (or Slack login)
+    return next({ name: 'slack-login' })
   }
 
   if (allowedRoles.includes(role)) {
-    return next(); // user is allowed
-  }
-
-  if(!allowedRoles.includes(role)) {
-    const message = 'You do not have permission to access this page (admin only).'
-    const code = 403;
-    errorStore.setError(
-      code, message
-    );
-    return next({ name: 'error' });
-  }
-
-  if(to.path === null) {
-    const code = 404;
-    const message = 'Page not found!'
-    errorStore.setError(code, message);
+    return next()
+  } else {
+    // unauthorized
+    const errorStore = useErrorStore()
+    errorStore.setError(403, 'You do not have permission to access this page.')
     return next({ name: 'error' })
-  }
-  // ✅ 4. Allow navigation
-  next();
-});
-
+  }  
+})
 
 export default router
+

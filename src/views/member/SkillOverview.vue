@@ -136,8 +136,6 @@ onMounted(async() => {
 
 function closeModal() {
     showReqModal.value = false;
-    toastText.value = 'Feedback request sent!';
-    showToast.value = true;
 }
 
 const skillSent = computed(() => {

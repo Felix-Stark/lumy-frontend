@@ -27,7 +27,7 @@
 				</svg>
 			</HeadCard>
 			<HeadCard
-				:title="summary?.top_positive_skill || 'N/A'"
+				:title="summary?.top_positive_skill || 'Need more data'"
 				description="Most mentioned strength"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
@@ -46,7 +46,14 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
-			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+			<div class="w-full flex items-center justify-between">
+				<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+				<div class="flex items-center gap-4 py-2 px-4 bg-gray-300">
+					<button @click="selectedFilter = 'year'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'year' ? 'bg-lumy-secondary' : 'bg-white']">Year</button>
+					<button @click="selectedFilter = 'quarter'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'quarter' ? 'bg-lumy-secondary' : 'bg-white']">Quarter</button>
+					<button @click="selectedFilter = 'month'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'month' ? 'bg-lumy-secondary' : 'bg-white']">Month</button>
+				</div>
+			</div>
 			<div class="w-full h-100 items-stretch">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
 			</div>
@@ -114,16 +121,13 @@ import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
-import BaseDialog from '@/components/base/BaseDialog.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import LumySuccess from '@/assets/images/lumy_cheering.png';
-import type { SessionUser, Skill, SkillSummary, UserSummary } from '@/types';
+import type { TimeSeries,  SessionUser,  SkillSummary,  UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import HeroBadge from '@/components/HeroBadge.vue';
 const session = useSessionStore();
 
 Chart.register(...registerables);
@@ -136,6 +140,10 @@ const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
+const filterYear = ref<TimeSeries[]>();
+const filterQuarter = ref<TimeSeries[]>();
+const filterMonth = ref<TimeSeries[]>();
+const selectedFilter = ref('')
 onMounted(async() => {
 	try {
 		await userStore.getMeSummary();

@@ -1,7 +1,7 @@
 <template>
     <RequestModal v-if="showReqModal === true" @close="closeModal" />
     <SkillSkeleton v-if="initLoading" />
-    <div v-else class="flex flex-col items-center gap-6 w-full">
+    <div v-else class="flex flex-col items-center gap-6 w-full my-12 lg:my-20">
         <section class="flex justify-between items-center  w-full">
             <h1 class="font-thin text-2xl text-lumy-secondary">Skill: <span class="font-normal text-lumy-purple">{{ formatName(activeSkill.name) }}</span></h1>
             <BaseButton

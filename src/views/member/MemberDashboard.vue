@@ -48,10 +48,10 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<div class="w-full flex items-center justify-between">
 				<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-				<div class="flex items-center gap-4 py-2 px-4 bg-gray-300">
-					<button @click="selectedFilter = 'year'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'year' ? 'bg-lumy-secondary' : 'bg-white']">Year</button>
-					<button @click="selectedFilter = 'quarter'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'quarter' ? 'bg-lumy-secondary' : 'bg-white']">Quarter</button>
-					<button @click="selectedFilter = 'month'" :class="['rounded px-4 py-2 font-thin', selectedFilter === 'month' ? 'bg-lumy-secondary' : 'bg-white']">Month</button>
+				<div class="flex items-center gap-6 py-2 px-4">
+					<button @click="selectedFilter = 'month'" :class="['rounded-lg shadow-md px-4 py-2', selectedFilter === 'month' ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary']">Month</button>
+					<button @click="selectedFilter = 'quarter'" :class="['rounded-lg shadow-md px-4 py-2', selectedFilter === 'quarter' ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary']">Quarter</button>
+					<button @click="selectedFilter = 'year'" :class="['rounded-lg shadow-md px-4 py-2', selectedFilter === 'year' ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary']">Year</button>
 				</div>
 			</div>
 			<div class="w-full h-100 items-stretch">

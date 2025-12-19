@@ -1,6 +1,6 @@
 <template>
     <FeedbackSkeleton v-if="initLoading" />
-        <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8">
+        <section class="flex flex-col md:flex-row w-full gap-6 lg:gap-8 my-12 lg:my-20">
             <div class="bg-white shadow-lg rounded-lg p-8 w-full flex justify-center items-center">
                 <div v-if="currentPercentage" class="relative h-48">
                     <Doughnut :data="data" :options="options" />

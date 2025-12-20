@@ -125,6 +125,7 @@ import type { TimeSeries,  SessionUser,  SkillSummary,  UserSummary } from '@/ty
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
+import { filtered } from '@/composables/timeFilter';
 const session = useSessionStore();
 
 Chart.register(...registerables);
@@ -137,10 +138,9 @@ const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
-const filterYear = ref<TimeSeries[]>();
-const filterQuarter = ref<TimeSeries[]>();
-const filterMonth = ref<TimeSeries[]>();
 const selectedFilter = ref('year')
+const avgSent = ref<TimeSeries>({})
+
 onMounted(async() => {
 	try {
 		await userStore.getMeSummary();
@@ -158,13 +158,15 @@ function selectedSkill(skill: SkillSummary) {
 }
 
 const avgSentChart = computed(() => {
-	const avgSent = summary.value?.avg_sentiment || {};
+	if(summary.value?.avg_sentiment) {
+		avgSent.value = filtered(summary.value?.avg_sentiment, selectedFilter.value)
+	}
 	return {
-		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
+		labels: Object.keys(filtered(avgSent.value, )), // e.g. ["2025-07", "2025-08", ...]
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
+				data: Object.values(avgSent.value), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				borderDash: [ 5, 5 ],

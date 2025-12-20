@@ -5,7 +5,7 @@
       :key="filter.value"
       @click="emit('update:selectedFilter', filter.value)"
       :class="[
-        'rounded-lg shadow-md px-4 py-2',
+        'rounded-lg shadow-md px-4 py-2 cursor-pointer',
         selectedFilter === filter.value ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary'
       ]"
     >

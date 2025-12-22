@@ -1,6 +1,6 @@
 import type { TimeSeries } from "@/types";
 
-export function filtered(ts: TimeSeries, tf: string = 'year'): TimeSeries {
+export function filtered(ts: TimeSeries, tf: string): TimeSeries {
     let keys = [''];
     if(tf !== 'month') {
         Object.keys(ts).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());

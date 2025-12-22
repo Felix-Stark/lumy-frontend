@@ -119,13 +119,15 @@ import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { TimeSeries,  SessionUser,  SkillSummary,  UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { filtered } from '@/composables/timeFilter';
+import api from '@/services/api';
+import { useFeedbackStore } from '@/stores/feedbackStore';
 const session = useSessionStore();
 
 Chart.register(...registerables);
@@ -140,6 +142,15 @@ const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const selectedFilter = ref('year')
 const avgSent = ref<TimeSeries>({})
+
+
+watch(() => selectedFilter.value, async (v) => {
+	if(v === 'month') {
+		const feedback = await useFeedbackStore().getSubmissionsGiven();
+		const month = filtered(summary.value!.avg_sentiment, 'month');
+		console.log('month: ', month)
+	}
+})
 
 onMounted(async() => {
 	try {
@@ -162,7 +173,7 @@ const avgSentChart = computed(() => {
 		avgSent.value = filtered(summary.value?.avg_sentiment, selectedFilter.value)
 	}
 	return {
-		labels: Object.keys(filtered(avgSent.value, )), // e.g. ["2025-07", "2025-08", ...]
+		labels: Object.keys(avgSent.value), // e.g. ["2025-07", "2025-08", ...]
 		datasets: [
 			{
 				label: 'Average Sentiment',

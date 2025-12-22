@@ -171,6 +171,7 @@ function selectedSkill(skill: SkillSummary) {
 const avgSentChart = computed(() => {
 	if(summary.value?.avg_sentiment) {
 		avgSent.value = filtered(summary.value?.avg_sentiment, selectedFilter.value)
+		console.log('avgSent: ', avgSent.value)
 	}
 	return {
 		labels: Object.keys(avgSent.value), // e.g. ["2025-07", "2025-08", ...]

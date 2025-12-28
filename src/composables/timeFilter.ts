@@ -1,10 +1,7 @@
 import type { TimeSeries } from "@/types";
 
 export function filtered(ts: TimeSeries, tf: string): TimeSeries {
-    let keys = [''];
-    if(tf !== 'month') {
-        Object.keys(ts).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());
-    }
+    const keys = Object.keys(ts).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());
     let numToTake: number;
     switch (tf) {
         case 'month':
@@ -23,5 +20,7 @@ export function filtered(ts: TimeSeries, tf: string): TimeSeries {
     filteredKeys.forEach(key => {
         filteredTs[key] = ts[key];
     });
+    console.log('filteredKeys: ', filteredKeys)
     return filteredTs;
 }
+

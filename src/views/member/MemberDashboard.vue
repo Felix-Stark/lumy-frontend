@@ -121,15 +121,17 @@ import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type { TimeSeries,  SessionUser,  SkillSummary,  UserSummary } from '@/types';
+import type {  TimeSeries,   SessionUser,   SkillSummary,   UserSummary, FeedbackSubmissionFull } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { filtered } from '@/composables/timeFilter';
 import api from '@/services/api';
 import { useFeedbackStore } from '@/stores/feedbackStore';
+import { getLastMonthRange } from '@/composables/timeFilter';
 const session = useSessionStore();
-
+const feedbackStore = useFeedbackStore();
+const { start, end } = getLastMonthRange();
 Chart.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
@@ -142,13 +144,14 @@ const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const selectedFilter = ref('year')
 const avgSent = ref<TimeSeries>({})
+const allFeedback = ref<FeedbackSubmissionFull[]>([])
 
-
-watch(() => selectedFilter.value, async (v) => {
-	if(v === 'month') {
-		const feedback = await useFeedbackStore().getSubmissionsGiven();
-		const month = filtered(summary.value!.avg_sentiment, 'month');
-		console.log('month: ', month)
+watch(() => selectedFilter.value, async () => {
+	if(selectedFilter.value === 'month') {
+		allFeedback.value = await feedbackStore.getSubmissionsGiven();
+		console.log('filter = month: ', allFeedback.value)
+		const res = filterFeedbackByRange(allFeedback.value, start, end)
+		console.log('filter res: ', res);
 	}
 })
 
@@ -168,7 +171,19 @@ function selectedSkill(skill: SkillSummary) {
 	router.push({ name: 'member-skill' });
 }
 
+function filterFeedbackByRange(
+	feedback: FeedbackSubmissionFull[],
+	start: Date,
+	end: Date
+) {
+	return feedback.filter(f => {
+		const created = new Date(f.created_at)
+		return created >= start && created <= end
+	})
+}
+
 const avgSentChart = computed(() => {
+	
 	if(summary.value?.avg_sentiment) {
 		avgSent.value = filtered(summary.value?.avg_sentiment, selectedFilter.value)
 		console.log('avgSent: ', avgSent.value)

@@ -1,5 +1,4 @@
-import type { TimeSeries } from "@/types";
-import api from "@/services/api";
+import type { FeedbackSubmissionFull, TimeSeries } from "@/types";
 
 export function filtered(ts: TimeSeries, tf: string): TimeSeries {
     const keys = Object.keys(ts).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());
@@ -34,5 +33,39 @@ export function getLastMonthRange() {
   return { start, end }
 }
 
+export function filterFeedbackByRange(
+	feedback: FeedbackSubmissionFull[],
+	start: Date,
+	end: Date
+) {
+	return feedback.filter(f => {
+		const created = new Date(f.created_at)
+		return created >= start && created <= end
+	})
+}
 
+export function mapFeedbackToPoints(feedback: FeedbackSubmissionFull[]) {
+  return feedback.map(f => ({
+    date: f.created_at, // keep full ISO for precision
+    sentiment: f.sentiment
+  }))
+}
 
+export function aggregateSentimentPerDay(feedback: FeedbackSubmissionFull[]) {
+  const map = new Map<string, { sum: number; count: number }>()
+
+  feedback.forEach(f => {
+    const day = new Date(f.created_at).toISOString().slice(0, 10) // YYYY-MM-DD
+
+    const entry = map.get(day) ?? { sum: 0, count: 0 }
+    entry.sum += f.sentiment_score
+    entry.count += 1
+
+    map.set(day, entry)
+  })
+
+  return Array.from(map.entries()).map(([date, { sum, count }]) => ({
+    date,
+    sentiment: Number((sum / count).toFixed(2))
+  }))
+}

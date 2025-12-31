@@ -128,7 +128,7 @@ import { formatName } from '@/composables/formatName';
 import { filtered } from '@/composables/timeFilter';
 import api from '@/services/api';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import { getLastMonthRange } from '@/composables/timeFilter';
+import { getLastMonthRange, filterFeedbackByRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
 const { start, end } = getLastMonthRange();
@@ -145,13 +145,15 @@ const user = ref<SessionUser | null>(null)
 const selectedFilter = ref('year')
 const avgSent = ref<TimeSeries>({})
 const allFeedback = ref<FeedbackSubmissionFull[]>([])
+const lastMonth = ref<FeedbackSubmissionFull[]>([])
+const avgSentLabels = ref([''])
+const avgSentData = ref([0])
 
 watch(() => selectedFilter.value, async () => {
 	if(selectedFilter.value === 'month') {
 		allFeedback.value = await feedbackStore.getSubmissionsGiven();
 		console.log('filter = month: ', allFeedback.value)
-		const res = filterFeedbackByRange(allFeedback.value, start, end)
-		console.log('filter res: ', res);
+		lastMonth.value = filterFeedbackByRange(allFeedback.value, start, end)
 	}
 })
 
@@ -171,29 +173,31 @@ function selectedSkill(skill: SkillSummary) {
 	router.push({ name: 'member-skill' });
 }
 
-function filterFeedbackByRange(
-	feedback: FeedbackSubmissionFull[],
-	start: Date,
-	end: Date
-) {
-	return feedback.filter(f => {
-		const created = new Date(f.created_at)
-		return created >= start && created <= end
-	})
-}
 
 const avgSentChart = computed(() => {
 	
-	if(summary.value?.avg_sentiment) {
-		avgSent.value = filtered(summary.value?.avg_sentiment, selectedFilter.value)
-		console.log('avgSent: ', avgSent.value)
+	if(selectedFilter.value === 'month') {
+		const daily = aggregateSentimentPerDay(lastMonth.value);
+	 	avgSentLabels.value = daily.map(d =>
+			new Date(d.date).toLocaleDateString('en-GB', {
+				day: '2-digit',
+				month: 'short'
+			})
+		) // → ['02 Dec', '05 Dec', '18 Dec']
+
+		avgSentData.value = daily.map(d => d.sentiment)
+	} else {
+		avgSent.value = filtered(summary.value?.avg_sentiment!, selectedFilter.value)
+		avgSentLabels.value = Object.keys(avgSent.value)
+		avgSentData.value = Object.values(avgSent.value)
 	}
+	
 	return {
-		labels: Object.keys(avgSent.value), // e.g. ["2025-07", "2025-08", ...]
+		labels: avgSentLabels.value, // e.g. ["2025-07", "2025-08", ...]
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data: Object.values(avgSent.value), // e.g. [0.8, 0.85, ...]
+				data: avgSentData.value, // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				borderDash: [ 5, 5 ],

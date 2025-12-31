@@ -150,6 +150,7 @@ const avgSentLabels = ref([''])
 const avgSentData = ref([0])
 
 watch(() => selectedFilter.value, async (val) => {
+	console.log('watch val: ', val)
 	if(val === 'month') {
 		allFeedback.value = await feedbackStore.getSubmissionsGiven();
 		console.log('filter = month: ', allFeedback.value)

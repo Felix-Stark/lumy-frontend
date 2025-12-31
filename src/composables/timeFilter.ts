@@ -45,6 +45,7 @@ export function filterFeedbackByRange(
 }
 
 export function mapFeedbackToPoints(feedback: FeedbackSubmissionFull[]) {
+  console.log('feedback in timeFilter: ', feedback);
   return feedback.map(f => ({
     date: f.created_at, // keep full ISO for precision
     sentiment: f.sentiment
@@ -63,7 +64,7 @@ export function aggregateSentimentPerDay(feedback: FeedbackSubmissionFull[]) {
 
     map.set(day, entry)
   })
-
+  
   return Array.from(map.entries()).map(([date, { sum, count }]) => ({
     date,
     sentiment: Number((sum / count).toFixed(2))

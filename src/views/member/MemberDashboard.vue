@@ -149,8 +149,8 @@ const lastMonth = ref<FeedbackSubmissionFull[]>([])
 const avgSentLabels = ref([''])
 const avgSentData = ref([0])
 
-watch(() => selectedFilter.value, async () => {
-	if(selectedFilter.value === 'month') {
+watch(() => selectedFilter.value, async (val) => {
+	if(val === 'month') {
 		allFeedback.value = await feedbackStore.getSubmissionsGiven();
 		console.log('filter = month: ', allFeedback.value)
 		lastMonth.value = filterFeedbackByRange(allFeedback.value, start, end)

@@ -186,6 +186,8 @@ const avgSentChart = computed(() => {
 		) // → ['02 Dec', '05 Dec', '18 Dec']
 
 		avgSentData.value = daily.map(d => d.sentiment)
+		console.log('labels: ', avgSentLabels.value);
+		console.log('data: ', avgSentData.value);
 	} else {
 		avgSent.value = filtered(summary.value?.avg_sentiment!, selectedFilter.value)
 		avgSentLabels.value = Object.keys(avgSent.value)

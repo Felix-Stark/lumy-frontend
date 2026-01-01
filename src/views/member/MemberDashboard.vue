@@ -48,7 +48,7 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<div class="w-full flex items-center justify-between">
 				<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-				<ChartFilter v-model:selectedFilter="selectedFilter" />
+				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
 				<Line :data="avgSentChart" :options="avgSentOptions" />
@@ -142,27 +142,21 @@ const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
-const selectedFilter = ref('year')
 const avgSent = ref<TimeSeries>({})
-const allFeedback = ref<FeedbackSubmissionFull[]>([])
+const rawFeedback = ref<FeedbackSubmissionFull[]>([])
 const lastMonth = ref<FeedbackSubmissionFull[]>([])
 const avgSentLabels = ref([''])
 const avgSentData = ref([0])
+const timeFilter = ref<'month' | 'quarter' | 'year'>('year')
 
-watch(() => selectedFilter.value, async (val) => {
+watch(() => timeFilter.value, async (val) => {
 	console.log('selectedFilter updated: ', val)
-	if(val == 'month') {
-		console.log('val = month', val)
-		allFeedback.value = await feedbackStore.getSubmissionsGiven();
-		if(allFeedback.value) {
-			console.log('allFeedback: ', allFeedback.value)
-		}
-		lastMonth.value = filterFeedbackByRange(allFeedback.value, start, end);
-		
-	}
+	if (val !== 'month') return;
+	if (rawFeedback.value.length) return;
+	if (lastMonth.value.length) return;
+	rawFeedback.value = await feedbackStore.getSubmissionsGiven();
+	lastMonth.value = filterFeedbackByRange(rawFeedback.value, start, end);
 })
-
-
 
 onMounted(async() => {
 	try {
@@ -182,36 +176,36 @@ function selectedSkill(skill: SkillSummary) {
 
 
 const avgSentChart = computed(() => {
-	
-	if(selectedFilter.value === 'month') {
+	if(timeFilter.value === 'month') {
 		const daily = aggregateSentimentPerDay(lastMonth.value);
-	 	avgSentLabels.value = daily.map(d =>
-			new Date(d.date).toLocaleDateString('en-GB', {
-				day: '2-digit',
-				month: 'short'
-			})
-		) // → ['02 Dec', '05 Dec', '18 Dec']
-
-		avgSentData.value = daily.map(d => d.sentiment)
-		console.log('labels: ', avgSentLabels.value);
-		console.log('data: ', avgSentData.value);
-	} 
-	if(summary.value?.avg_sentiment && selectedFilter.value !== 'month') {
-		avgSent.value = filtered(summary.value.avg_sentiment, selectedFilter.value)
-		avgSentLabels.value = Object.keys(avgSent.value)
-		avgSentData.value = Object.values(avgSent.value)
+		console.log('daily in avgSentChart: ', daily)
+		return {
+			labels: daily.map(d =>
+			   new Date(d.date).toLocaleDateString('en-GB', {
+				   day: '2-digit',
+				   month: 'short'
+			   })
+		   ), // → ['02 Dec', '05 Dec', '18 Dec']
+		   datasets: [
+			{
+				label: 'Average sentiment last month',
+				data: daily.map(d => d.sentiment)
+			}
+		   ]
+		}
 	}
+	const entries = filtered(summary.value!.avg_sentiment, timeFilter.value)
 	
 	return {
-		labels: avgSentLabels.value, // e.g. ["2025-07", "2025-08", ...]
+		labels: Object.keys(entries), // e.g. ["2025-07", "2025-08", ...]
 		datasets: [
 			{
 				label: 'Average Sentiment',
-				data: avgSentData.value, // e.g. [0.8, 0.85, ...]
+				data: Object.values(entries), // e.g. [0.8, 0.85, ...]
 				fill: false,
 				borderColor: 'rgba(150, 45, 255, 1)',
 				borderDash: [ 5, 5 ],
-				tension: 0.4
+				tension: 0.3
 			}
 		]
 	};

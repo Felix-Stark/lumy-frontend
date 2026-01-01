@@ -177,6 +177,7 @@ function selectedSkill(skill: SkillSummary) {
 
 const avgSentChart = computed(() => {
 	if(timeFilter.value === 'month') {
+		console.log('lastMonth: ', lastMonth.value)
 		const daily = aggregateSentimentPerDay(lastMonth.value);
 		console.log('daily in avgSentChart: ', daily)
 		return {

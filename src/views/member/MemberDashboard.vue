@@ -153,6 +153,7 @@ watch(() => selectedFilter.value, async (val) => {
 	console.log('watch val: ', val)
 	if(val === 'month') {
 		allFeedback.value = await feedbackStore.getSubmissionsGiven();
+
 		allFeedback.value ?? console.log('allFeedback' , allFeedback.value);
 		lastMonth.value = filterFeedbackByRange(allFeedback.value, start, end);
 		lastMonth.value ?? console.log('lastMonth: ', lastMonth.value);
@@ -178,7 +179,7 @@ function selectedSkill(skill: SkillSummary) {
 
 const avgSentChart = computed(() => {
 	
-	if(selectedFilter.value === 'month') {
+	if(lastMonth.value) {
 		const daily = aggregateSentimentPerDay(lastMonth.value);
 	 	avgSentLabels.value = daily.map(d =>
 			new Date(d.date).toLocaleDateString('en-GB', {

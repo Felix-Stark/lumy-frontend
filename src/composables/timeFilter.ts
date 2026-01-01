@@ -25,10 +25,11 @@ export function filtered(ts: TimeSeries, tf: string): TimeSeries {
 }
 
 export function getLastMonthRange() {
-  const now = new Date()
-
-  const start = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-  const end = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999)
+  const end = new Date()
+  end.setHours(23, 59, 59, 999 );
+  const start = new Date(end)
+  start.setDate(start.getDate() - 29)
+  start.setHours(0,0,0,0)
 
   return { start, end }
 }

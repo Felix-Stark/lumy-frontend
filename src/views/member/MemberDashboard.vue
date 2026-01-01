@@ -154,12 +154,15 @@ watch(() => selectedFilter.value, async (val) => {
 	if(val == 'month') {
 		console.log('val = month', val)
 		allFeedback.value = await feedbackStore.getSubmissionsGiven();
-		console.log('feedback store: ', feedbackStore.subsGiven)
-		allFeedback.value ?? console.log('allFeedback' , allFeedback.value);
+		if(allFeedback.value) {
+			console.log('allFeedback: ', allFeedback.value)
+		}
 		lastMonth.value = filterFeedbackByRange(allFeedback.value, start, end);
-		lastMonth.value ?? console.log('lastMonth: ', lastMonth.value);
+		
 	}
 })
+
+
 
 onMounted(async() => {
 	try {
@@ -180,7 +183,7 @@ function selectedSkill(skill: SkillSummary) {
 
 const avgSentChart = computed(() => {
 	
-	if(lastMonth.value) {
+	if(selectedFilter.value === 'month') {
 		const daily = aggregateSentimentPerDay(lastMonth.value);
 	 	avgSentLabels.value = daily.map(d =>
 			new Date(d.date).toLocaleDateString('en-GB', {
@@ -193,7 +196,7 @@ const avgSentChart = computed(() => {
 		console.log('labels: ', avgSentLabels.value);
 		console.log('data: ', avgSentData.value);
 	} 
-	if(summary.value?.avg_sentiment) {
+	if(summary.value?.avg_sentiment && selectedFilter.value !== 'month') {
 		avgSent.value = filtered(summary.value.avg_sentiment, selectedFilter.value)
 		avgSentLabels.value = Object.keys(avgSent.value)
 		avgSentData.value = Object.values(avgSent.value)

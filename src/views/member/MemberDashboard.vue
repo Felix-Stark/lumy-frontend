@@ -153,7 +153,6 @@ watch(() => timeFilter.value, async (val) => {
 	console.log('selectedFilter updated: ', val)
 	if (val !== 'month') return;
 	if (rawFeedback.value.length) return;
-	if (lastMonth.value.length) return;
 	rawFeedback.value = await feedbackStore.getSubmissionsGiven();
 	lastMonth.value = filterFeedbackByRange(rawFeedback.value, start, end);
 })

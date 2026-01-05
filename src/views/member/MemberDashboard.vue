@@ -114,8 +114,8 @@
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
-import { Chart, registerables } from 'chart.js'
-import type { ChartOptions } from 'chart.js';
+import { Chart, elements, registerables } from 'chart.js'
+import type { ChartOptions, ElementChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
@@ -184,7 +184,8 @@ onMounted(async() => {
 });
 
 function handleChartClick(event: MouseEvent, elements: any[]) {
-	if (!elements.length) return
+	// if (!elements.length) return
+	console.log('chart clicked')
 	const index = elements[0].index
 	const monthLabel = chartLabels.value[index]
 	activeRange.value = getMonthRange(monthLabel)
@@ -225,7 +226,7 @@ const avgSentOptions = {
   onclick: handleChartClick,
   maintainAspectRatio: false,
   plugins: {
-    legend: { display: true },
+    legend: { display: false },
     title: { display: false }
   },
   scales: {

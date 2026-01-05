@@ -142,11 +142,7 @@ const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
-const avgSent = ref<TimeSeries>({})
 const feedback = ref<FeedbackSubmissionFull[]>([])
-const lastMonth = ref<FeedbackSubmissionFull[]>([])
-const avgSentLabels = ref([''])
-const avgSentData = ref([0])
 const chartLabels = ref([''])
 const timeFilter = ref<TimeFilter>('year')
 const activeRange = ref<DateRange | null>(null);
@@ -191,8 +187,9 @@ function handleChartClick(event: MouseEvent, elements: any[]) {
 	if (!elements.length) return
 	const index = elements[0].index
 	const monthLabel = chartLabels.value[index]
-
 	activeRange.value = getMonthRange(monthLabel)
+	console.log('chartClick elements: ', elements)
+	console.log('chartClick event: ', event)
 }
 
 const avgSentChart = computed(() => {

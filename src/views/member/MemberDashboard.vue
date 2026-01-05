@@ -51,7 +51,7 @@
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
-				<Line :data="avgSentChart" :options="avgSentOptions" />
+				<Line :data="avgSentChart" :options="avgSentOptions" @click="handleChartClick" />
 			</div>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
@@ -224,7 +224,6 @@ const avgSentChart = computed(() => {
 })
 const avgSentOptions = {
   responsive: true,
-  onClick: () => handleChartClick,
   maintainAspectRatio: false,
   plugins: {
     legend: { display: false },

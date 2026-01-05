@@ -121,12 +121,12 @@ import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type {  TimeSeries,   SessionUser,   SkillSummary,   UserSummary, FeedbackSubmissionFull } from '@/types';
+import type {   TimeSeries,    SessionUser,    SkillSummary,    UserSummary,  FeedbackSubmissionFull,  TimeFilter, DateRange } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import { filtered } from '@/composables/timeFilter';
-import api from '@/services/api';
+import { filtered, getMonthRange } from '@/composables/timeFilter';
+
 import { useFeedbackStore } from '@/stores/feedbackStore';
 import { getLastMonthRange, filterFeedbackByRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
 const session = useSessionStore();
@@ -143,19 +143,38 @@ const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const avgSent = ref<TimeSeries>({})
-const rawFeedback = ref<FeedbackSubmissionFull[]>([])
+const feedback = ref<FeedbackSubmissionFull[]>([])
 const lastMonth = ref<FeedbackSubmissionFull[]>([])
 const avgSentLabels = ref([''])
 const avgSentData = ref([0])
-const timeFilter = ref<'month' | 'quarter' | 'year'>('year')
-
-watch(() => timeFilter.value, async (val) => {
-	console.log('selectedFilter updated: ', val)
-	if (val !== 'month') return;
-	if (rawFeedback.value.length) return;
-	rawFeedback.value = await feedbackStore.getSubmissionsGiven();
-	lastMonth.value = filterFeedbackByRange(rawFeedback.value, start, end);
+const chartLabels = ref([''])
+const timeFilter = ref<TimeFilter>('year')
+const activeRange = ref<DateRange | null>(null);
+const dailySeries = ref<{ labels: string[]; data: number[];}>({
+	labels: [],
+	data: [],
 })
+
+watch(activeRange, async (range) => {
+  if (!range) return
+
+  // fetch once
+  if (!feedback.value.length) {
+    feedback.value = await feedbackStore.getSubmissionsGiven();
+  }
+
+  const aggregated = aggregateSentimentPerDay(
+    feedback.value,
+    range.from,
+    range.to
+  )
+
+  dailySeries.value = {
+    labels: aggregated.map(d => d.label),
+    data: aggregated.map(d => d.value),
+  }
+})
+
 
 onMounted(async() => {
 	try {
@@ -168,28 +187,22 @@ onMounted(async() => {
 	}
 });
 
-function selectedSkill(skill: SkillSummary) {
-	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	router.push({ name: 'member-skill' });
-}
+function handleChartClick(event: MouseEvent, elements: any[]) {
+	if (!elements.length) return
+	const index = elements[0].index
+	const monthLabel = chartLabels.value[index]
 
+	activeRange.value = getMonthRange(monthLabel)
+}
 
 const avgSentChart = computed(() => {
 	if(timeFilter.value === 'month') {
-		console.log('lastMonth: ', lastMonth.value)
-		const daily = aggregateSentimentPerDay(lastMonth.value);
-		console.log('daily in avgSentChart: ', daily)
 		return {
-			labels: daily.map(d =>
-			   new Date(d.date).toLocaleDateString('en-GB', {
-				   day: '2-digit',
-				   month: 'short'
-			   })
-		   ), // → ['02 Dec', '05 Dec', '18 Dec']
+			labels: dailySeries.value.labels,
 		   datasets: [
 			{
 				label: 'Average sentiment last month',
-				data: daily.map(d => d.sentiment)
+				data: dailySeries.value.data
 			}
 		   ]
 		}
@@ -212,9 +225,10 @@ const avgSentChart = computed(() => {
 })
 const avgSentOptions = {
   responsive: true,
+  onclick: handleChartClick,
   maintainAspectRatio: false,
   plugins: {
-    legend: { display: false },
+    legend: { display: true },
     title: { display: false }
   },
   scales: {
@@ -342,4 +356,9 @@ const feedbackChartOptions = computed<LineChartOptions>(() => ({
     }
   }
 }));
+
+function selectedSkill(skill: SkillSummary) {
+	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
+	router.push({ name: 'member-skill' });
+}
 </script>

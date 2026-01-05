@@ -1,4 +1,9 @@
 export type TimeSeries = Record<string, number>;
+export type TimeFilter = 'month' | 'quarter' | 'year' | 'month-drilldown';
+export type DateRange = {
+  from: Date;
+  to: Date;
+}
 
 export type Session = {
   authenticated: boolean;

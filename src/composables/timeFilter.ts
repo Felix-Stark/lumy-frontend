@@ -1,4 +1,4 @@
-import type { FeedbackSubmissionFull, TimeSeries } from "@/types";
+import type { DateRange, FeedbackSubmissionFull, TimeSeries } from "@/types";
 
 export function filtered(ts: TimeSeries, tf: string): TimeSeries {
     const keys = Object.keys(ts).sort((a, b) => new Date(a + '-01').getTime() - new Date(b + '-01').getTime());
@@ -22,6 +22,16 @@ export function filtered(ts: TimeSeries, tf: string): TimeSeries {
     });
     console.log('filteredKeys: ', filteredKeys)
     return filteredTs;
+}
+
+export function getMonthRange(label: string): DateRange {
+  const [monthName, year] = label.split(' ')
+  const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
+
+  const from = new Date(Number(year), monthIndex, 1)
+  const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
+
+  return { from, to }
 }
 
 export function getLastMonthRange() {
@@ -56,21 +66,42 @@ export function mapFeedbackToPoints(feedback: FeedbackSubmissionFull[]) {
   }))
 }
 
-export function aggregateSentimentPerDay(feedback: FeedbackSubmissionFull[]) {
-  const map = new Map<string, { sum: number; count: number }>()
+export function aggregateSentimentPerDay(
+  feedback: FeedbackSubmissionFull[],
+  from: Date,
+  to: Date): { label: string; value: number }[] {
+  const buckets = new Map<string, number[]>()
 
-  feedback.forEach(f => {
-    const day = new Date(f.created_at).toISOString().slice(0, 10) // YYYY-MM-DD
-    console.log('day in timeFilter: ', day)
-    const entry = map.get(day) ?? { sum: 0, count: 0 }
-    entry.sum += f.sentiment_score
-    entry.count += 1
+  for (const f of feedback) {
+    const date = new Date(f.created_at)
+    if (date < from || date > to) continue
 
-    map.set(day, entry)
-  })
-  
-  return Array.from(map.entries()).map(([date, { sum, count }]) => ({
-    date,
-    sentiment: Number((sum / count).toFixed(2))
-  }))
-}
+    const key = date.toISOString().slice(0, 10)
+
+    if (!buckets.has(key)) {
+      buckets.set(key, [])
+    }
+    buckets.get(key)!.push(f.sentiment_score)
+  };
+
+  const result: { label: string; value: number }[] = [] 
+  const cursor = new Date(from)
+
+  while (cursor <= to) {
+    const key = cursor.toISOString().slice(0, 10)
+    const values = buckets.get(key) ?? []
+
+    const avg = values.length === 0 ? 0 : values.reduce((a, b) => a + b, 0) / values.length
+    
+    result.push({
+      label: cursor.toLocaleDateString('en-GB', {
+        month: 'short',
+        day: '2-digit'
+      }),
+      value: Number(avg.toFixed(2)),
+    })
+
+    cursor.setDate(cursor.getDate() + 1)
+  }
+  return result;
+};

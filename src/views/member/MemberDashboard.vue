@@ -183,9 +183,10 @@ onMounted(async() => {
 	}
 });
 
-function handleChartClick(event: MouseEvent, elements: ActiveElement[]) {
+function handleChartClick(event: MouseEvent, elements: ActiveElement[], chart: Chart) {
 	// if (!elements.length) return
 	console.log('chart clicked')
+	console.log('chart: ', chart)
 	const index = elements[0].index
 	const monthLabel = chartLabels.value[index]
 	activeRange.value = getMonthRange(monthLabel)

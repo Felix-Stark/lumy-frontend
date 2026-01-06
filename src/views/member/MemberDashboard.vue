@@ -157,6 +157,7 @@ const dailySeries = ref<{ labels: string[]; data: number[];}>({
 watch(activeRange, async (range) => {
   if (!range) return
 
+  console.log('activeRange updated: ', activeRange.value)
   // fetch once
   if (!feedback.value.length) {
     feedback.value = await feedbackStore.getSubmissionsGiven();

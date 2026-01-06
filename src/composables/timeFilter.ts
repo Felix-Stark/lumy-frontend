@@ -70,6 +70,7 @@ export function aggregateSentimentPerDay(
   feedback: FeedbackSubmissionFull[],
   from: Date,
   to: Date): { label: string; value: number }[] {
+    console.log('aggregatedSentimentPerDay activated')
   const buckets = new Map<string, number[]>()
 
   for (const f of feedback) {

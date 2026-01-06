@@ -122,20 +122,19 @@ import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type {   TimeSeries,    SessionUser,    SkillSummary,    UserSummary,  FeedbackSubmissionFull,  TimeFilter, DateRange } from '@/types';
+import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, TimeFilter, DateRange } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { filtered, getMonthRange } from '@/composables/timeFilter';
 
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import { getLastMonthRange, filterFeedbackByRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
+import { getLastMonthRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
 const { start, end } = getLastMonthRange();
 
 ChartJS.register(...registerables);
-const chartRef = ref<Chart | null>(null)
 
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
@@ -146,7 +145,6 @@ const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const feedback = ref<FeedbackSubmissionFull[]>([])
-const chartLabels = ref([''])
 const timeFilter = ref<TimeFilter>('year')
 const activeRange = ref<DateRange | null>(null);
 const dailySeries = ref<{ labels: string[]; data: number[];}>({

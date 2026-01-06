@@ -104,5 +104,6 @@ export function aggregateSentimentPerDay(
 
     cursor.setDate(cursor.getDate() + 1)
   }
+  console.log('result aggSent: ', result);
   return result;
 };

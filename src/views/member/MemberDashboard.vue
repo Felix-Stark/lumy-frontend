@@ -114,9 +114,9 @@
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
-import { Chart, elements, registerables } from 'chart.js'
-import { getElementAtEvent } from 'vue-chartjs';
-import type { ActiveElement, ChartOptions, ElementChartOptions } from 'chart.js';
+import { Chart, registerables } from 'chart.js'
+import { getElementsAtEvent } from 'vue-chartjs';
+import type {  ActiveElement, ChartOptions, ElementChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
@@ -133,6 +133,7 @@ import { getLastMonthRange, filterFeedbackByRange, aggregateSentimentPerDay } fr
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
 const { start, end } = getLastMonthRange();
+
 Chart.register(...registerables);
 const chartRef = ref<Chart | null>(null)
 
@@ -187,7 +188,7 @@ onMounted(async() => {
 
 function handleChartClick(event: MouseEvent) {
 	if (!chartRef.value) return;
-	const elements = getElementAtEvent(chartRef.value, event);
+	const elements = getElementsAtEvent(chartRef.value, event);
 	if (elements) {
 		console.log('elements: ', elements)
 	}

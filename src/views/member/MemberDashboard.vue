@@ -114,9 +114,9 @@
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
-import { Chart, registerables } from 'chart.js'
+import { Chart as ChartJS, registerables } from 'chart.js'
 import { getElementsAtEvent } from 'vue-chartjs';
-import type {  ActiveElement, ChartOptions, ElementChartOptions } from 'chart.js';
+import type { Chart, ActiveElement, ChartOptions, ElementChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
@@ -134,7 +134,7 @@ const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
 const { start, end } = getLastMonthRange();
 
-Chart.register(...registerables);
+ChartJS.register(...registerables);
 const chartRef = ref<Chart | null>(null)
 
 const { formatFeedbackDate } = useDateFormat();
@@ -153,6 +153,21 @@ const dailySeries = ref<{ labels: string[]; data: number[];}>({
 	labels: [],
 	data: [],
 })
+
+function handleChartClick(event: MouseEvent) {
+	if (!chartRef.value) return;
+	const chart = chartRef.value;
+	const elements = chart.getElementsAtEventForMode(
+		event,
+		'nearest',
+		{ intersect: true },
+		false
+	);
+	if(elements) {
+		console.log('elements: ', elements)
+	}
+
+}
 
 watch(activeRange, async (range) => {
   if (!range) return
@@ -186,20 +201,7 @@ onMounted(async() => {
 	}
 });
 
-function handleChartClick(event: MouseEvent) {
-	if (!chartRef.value) return;
-	const chart = chartRef.value;
-	const elements = chart.getElementsAtEventForMode(
-		event,
-		'nearest',
-		{ intersect: true },
-		false
-	);
-	if(elements) {
-		console.log('elements: ', elements)
-	}
 
-}
 
 const avgSentChart = computed(() => {
 	if(timeFilter.value === 'month') {

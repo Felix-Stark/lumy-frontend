@@ -257,6 +257,7 @@ const avgSentOptions = {
     chart: any
   ) => {
     if (!elements.length) return;
+	if (timeFilter.value.includes('month')) return;
 
     const index = elements[0].index;
     const label = chart.data.labels[index];

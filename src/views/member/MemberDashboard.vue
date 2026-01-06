@@ -51,7 +51,7 @@
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
-				<Line :data="avgSentChart" :options="avgSentOptions" @click="handleChartClick" />
+				<Line ref="chartRef" :data="avgSentChart" :options="avgSentOptions" @click="handleChartClick" />
 			</div>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
@@ -186,7 +186,8 @@ onMounted(async() => {
 });
 
 function handleChartClick(event: MouseEvent) {
-	console.log('chart click: ', event.target)
+	console.log('chart clicked')
+	console.log('chart ref: ', chartRef.value)
 }
 
 const avgSentChart = computed(() => {

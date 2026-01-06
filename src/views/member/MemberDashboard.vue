@@ -188,8 +188,14 @@ onMounted(async() => {
 
 function handleChartClick(event: MouseEvent) {
 	if (!chartRef.value) return;
-	const elements = getElementsAtEvent(chartRef.value, event);
-	if (elements) {
+	const chart = chartRef.value;
+	const elements = chart.getElementsAtEventForMode(
+		event,
+		'nearest',
+		{ intersect: true },
+		false
+	);
+	if(elements) {
 		console.log('elements: ', elements)
 	}
 

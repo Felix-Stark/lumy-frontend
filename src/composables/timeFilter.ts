@@ -33,6 +33,15 @@ export function getMonthRange(label: string): DateRange {
 
   return { from, to }
 }
+export function getNextMonthRange(label: string): DateRange {
+  const [monthName, year] = label.split(' ')
+  const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth() + 1;
+
+  const from = new Date(Number(year), monthIndex, 1)
+  const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
+
+  return { from, to }
+}
 
 export function getLastMonthRange() {
   const to = new Date()

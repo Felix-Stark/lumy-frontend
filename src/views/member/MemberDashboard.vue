@@ -126,7 +126,7 @@ import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, Ti
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
+import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay, getNextMonthRange } from '@/composables/timeFilter';
 import { useFeedbackStore } from '@/stores/feedbackStore';
 
 const session = useSessionStore();
@@ -263,6 +263,7 @@ const avgSentOptions = {
     const label = chart.data.labels[index];
 
     console.log('Clicked month:', label);
+	console.log('next month: ', getNextMonthRange(label))
 	timeFilter.value = 'month-drilldown';
 	activeRange.value = getMonthRange(label);
   }

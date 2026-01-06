@@ -242,6 +242,7 @@ const avgSentOptions = {
     const label = chart.data.labels[index];
 
     console.log('Clicked month:', label);
+	timeFilter.value = 'month';
 	activeRange.value = getMonthRange(label);
   }
 };

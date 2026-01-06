@@ -154,21 +154,6 @@ const dailySeries = ref<{ labels: string[]; data: number[];}>({
 	data: [],
 })
 
-// function handleChartClick(event: MouseEvent) {
-// 	if (!chartRef.value) return;
-// 	const chart = chartRef.value;
-// 	const elements = chart.getElementsAtEventForMode(
-// 		event,
-// 		'nearest',
-// 		{ intersect: true },
-// 		false
-// 	);
-// 	if(elements) {
-// 		console.log('elements: ', elements)
-// 	}
-
-// }
-
 watch(activeRange, async (range) => {
   if (!range) return
 
@@ -256,9 +241,7 @@ const avgSentOptions = {
     const label = chart.data.labels[index];
 
     console.log('Clicked month:', label);
-
-    // 👉 trigger month drill-down here
-    // setActiveRangeFromMonth(label)
+	activeRange.value = getMonthRange(label);
   }
 };
 

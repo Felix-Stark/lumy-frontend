@@ -203,7 +203,7 @@ onMounted(async() => {
 
 
 const avgSentChart = computed(() => {
-	if(timeFilter.value === 'month') {
+	if(timeFilter.value.includes('month')) {
 		return {
 			labels: dailySeries.value.labels,
 		   datasets: [

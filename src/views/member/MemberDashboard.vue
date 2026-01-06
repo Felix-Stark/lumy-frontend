@@ -51,7 +51,7 @@
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
-				<Line ref="chartRef" :data="avgSentChart" :options="avgSentOptions" @click="handleChartClick" />
+				<Line ref="chartRef" :data="avgSentChart" :options="avgSentOptions"  />
 			</div>
 		</section>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
@@ -154,20 +154,20 @@ const dailySeries = ref<{ labels: string[]; data: number[];}>({
 	data: [],
 })
 
-function handleChartClick(event: MouseEvent) {
-	if (!chartRef.value) return;
-	const chart = chartRef.value;
-	const elements = chart.getElementsAtEventForMode(
-		event,
-		'nearest',
-		{ intersect: true },
-		false
-	);
-	if(elements) {
-		console.log('elements: ', elements)
-	}
+// function handleChartClick(event: MouseEvent) {
+// 	if (!chartRef.value) return;
+// 	const chart = chartRef.value;
+// 	const elements = chart.getElementsAtEventForMode(
+// 		event,
+// 		'nearest',
+// 		{ intersect: true },
+// 		false
+// 	);
+// 	if(elements) {
+// 		console.log('elements: ', elements)
+// 	}
 
-}
+// }
 
 watch(activeRange, async (range) => {
   if (!range) return

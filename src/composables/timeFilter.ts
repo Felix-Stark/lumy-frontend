@@ -35,13 +35,13 @@ export function getMonthRange(label: string): DateRange {
 }
 
 export function getLastMonthRange() {
-  const end = new Date()
-  end.setHours(23, 59, 59, 999 );
-  const start = new Date(end)
-  start.setDate(start.getDate() - 29)
-  start.setHours(0,0,0,0)
+  const to = new Date()
+  to.setHours(23, 59, 59, 999 );
+  const from = new Date(to)
+  from.setDate(from.getDate() - 29)
+  from.setHours(0,0,0,0)
 
-  return { start, end }
+  return { from, to }
 }
 
 export function filterFeedbackByRange(

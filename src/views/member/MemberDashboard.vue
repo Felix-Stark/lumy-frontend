@@ -126,13 +126,11 @@ import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, Ti
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import { filtered, getMonthRange } from '@/composables/timeFilter';
-
+import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import { getLastMonthRange, aggregateSentimentPerDay } from '@/composables/timeFilter';
+
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
-const { start, end } = getLastMonthRange();
 
 ChartJS.register(...registerables);
 
@@ -171,6 +169,10 @@ watch(activeRange, async (range) => {
     labels: aggregated.map(d => d.label),
     data: aggregated.map(d => d.value),
   }
+})
+watch(timeFilter, async (val) => {
+  if (val !== 'month') return
+	activeRange.value = getLastMonthRange();
 })
 
 

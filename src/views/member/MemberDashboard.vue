@@ -151,7 +151,13 @@ const avgSentTitle = computed(() => {
 		case 'quarter':
 			return 'Average sentiment last quarter';
 		case 'month-drilldown':
-			return `Average sentiment ${activeRange.value?.from} - ${activeRange.value?.to}`
+			return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
+				month: 'short',
+				day: '2-digit'
+			})} - ${activeRange.value?.to.toLocaleDateString('en-GB', {
+				month: 'short',
+				day: '2-digit'
+			})}`
 		case 'year':
 			default:
 				return 'Average sentiment last year'

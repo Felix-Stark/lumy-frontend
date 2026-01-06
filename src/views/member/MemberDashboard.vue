@@ -186,8 +186,12 @@ onMounted(async() => {
 });
 
 function handleChartClick(event: MouseEvent) {
-	console.log('chart clicked')
-	console.log('chart ref: ', chartRef.value)
+	if (!chartRef.value) return;
+	const elements = getElementAtEvent(chartRef.value, event)
+	if (elements) {
+		console.log('elements: ', elements)
+	}
+
 }
 
 const avgSentChart = computed(() => {

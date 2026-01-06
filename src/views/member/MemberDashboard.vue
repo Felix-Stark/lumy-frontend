@@ -194,7 +194,11 @@ const avgSentChart = computed(() => {
 		   datasets: [
 			{
 				label: 'Average sentiment last month',
-				data: dailySeries.value.data
+				data: dailySeries.value.data,
+				fill: false,
+				borderColor: 'rgba(150, 45, 255, 1)',
+				borderDash: [ 5, 5 ],
+				tension: 0.3
 			}
 		   ]
 		}

@@ -187,7 +187,7 @@ onMounted(async() => {
 
 function handleChartClick(event: MouseEvent) {
 	if (!chartRef.value) return;
-	const elements = getElementAtEvent(chartRef.value, event)
+	const elements = getElementAtEvent(chartRef.value, event);
 	if (elements) {
 		console.log('elements: ', elements)
 	}

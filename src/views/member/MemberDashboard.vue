@@ -47,7 +47,7 @@
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<div class="w-full flex items-center justify-between">
-				<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
+				<h2 class="text-xl self-start mb-8">{{ avgSentTitle }}</h2>
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
@@ -144,6 +144,19 @@ const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const feedback = ref<FeedbackSubmissionFull[]>([])
 const timeFilter = ref<TimeFilter>('year')
+const avgSentTitle = computed(() => {
+	switch(timeFilter.value) {
+		case 'month':
+			return 'Average sentiment last 30 days';
+		case 'quarter':
+			return 'Average sentiment last quarter';
+		case 'month-drilldown':
+			return `Average sentiment ${activeRange.value?.from} - ${activeRange.value?.to}`
+		case 'year':
+			default:
+				return 'Average sentiment last year'
+	}
+})
 const activeRange = ref<DateRange | null>(null);
 const dailySeries = ref<{ labels: string[]; data: number[];}>({
 	labels: [],
@@ -246,7 +259,7 @@ const avgSentOptions = {
     const label = chart.data.labels[index];
 
     console.log('Clicked month:', label);
-	timeFilter.value = 'month';
+	timeFilter.value = 'month-drilldown';
 	activeRange.value = getMonthRange(label);
   }
 };

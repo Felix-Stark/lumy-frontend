@@ -116,7 +116,7 @@ import { ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js'
 import { getElementsAtEvent } from 'vue-chartjs';
-import type { Chart, ActiveElement, ChartOptions, ElementChartOptions } from 'chart.js';
+import type { Chart, ActiveElement, ChartOptions, ElementChartOptions, ChartEvent } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
@@ -244,6 +244,21 @@ const avgSentOptions = {
       max: 10,
       ticks: { stepSize: 2 }
     }
+  },
+  onClick: (
+    event: ChartEvent,
+    elements: ActiveElement[],
+    chart: any
+  ) => {
+    if (!elements.length) return;
+
+    const index = elements[0].index;
+    const label = chart.data.labels[index];
+
+    console.log('Clicked month:', label);
+
+    // 👉 trigger month drill-down here
+    // setActiveRangeFromMonth(label)
   }
 };
 

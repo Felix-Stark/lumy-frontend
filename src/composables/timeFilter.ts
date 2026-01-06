@@ -99,7 +99,7 @@ export function aggregateSentimentPerDay(
         month: 'short',
         day: '2-digit'
       }),
-      value: Number(avg.toFixed(2)),
+      value: Number(avg.toFixed(2)) / 10,
     })
 
     cursor.setDate(cursor.getDate() + 1)

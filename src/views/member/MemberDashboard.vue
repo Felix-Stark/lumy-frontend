@@ -49,10 +49,16 @@
 			<h2 class="text-xl mb-8 self-start">{{ avgSentTitle }}</h2>
 			<div class="w-full flex items-center justify-between">
 				<div v-if="activeRange" class="flex items-center gap-4">
-					<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+					<button @click="handlePrevMonth"
+					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
+					@mouseleave="handleMouseLeave"
+					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
 						<ChevronLeft />
 					</button>
-					<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+					<button @click="handleNextMonth"
+					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
+					@mouseleave="handleMouseLeave"
+					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
 						<ChevronRight />
 					</button>
 				</div>
@@ -116,6 +122,12 @@
 			</div>
 		</section>
 	</div>
+	<Tooltip 
+	:text="tooltipText"
+	:visible="showTooltip"
+	:x="tooltipX"
+	:y="tooltipY"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -135,6 +147,7 @@ import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay, getNextMonthRange, getPrevMonthRange } from '@/composables/timeFilter';
 import { useFeedbackStore } from '@/stores/feedbackStore';
+import Tooltip from '@/components/base/Tooltip.vue';
 
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
@@ -144,6 +157,19 @@ ChartJS.register(...registerables);
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 
+const showTooltip = ref(false)
+const tooltipText = ref('')
+const tooltipX = ref(0)
+const tooltipY = ref(0)
+function handleMouseEnter(event: MouseEvent, text: string) {
+  tooltipText.value = text
+  tooltipX.value = event.clientX - 12 // offset for better positioning
+  tooltipY.value = event.clientY + 12
+  showTooltip.value = true
+}
+function handleMouseLeave() {
+  showTooltip.value = false
+}
 const router = useRouter();
 const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);

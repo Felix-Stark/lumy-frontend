@@ -47,14 +47,16 @@
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<div class="w-full flex items-center justify-between">
-				<h2 class="text-xl self-start mb-8">{{ avgSentTitle }}</h2>
-				<div v-if="activeRange" class="flex items-center gap-4">
-					<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white">
-						<ChevronLeft />
-					</button>
-					<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white">
-						<ChevronRight />
-					</button>
+				<div class="flex flex-col">
+					<h2 class="text-xl mb-8">{{ avgSentTitle }}</h2>
+					<div v-if="activeRange" class="flex items-center gap-4">
+						<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+							<ChevronLeft />
+						</button>
+						<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+							<ChevronRight />
+						</button>
+					</div>
 				</div>
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>

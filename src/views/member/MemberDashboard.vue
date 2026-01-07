@@ -62,7 +62,7 @@
 						<ChevronRight />
 					</button>
 				</div>
-				<ChartFilter v-model:selectedFilter="timeFilter" />
+				<ChartFilter class="justify-self-start" v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
 				<Line ref="chartRef" :data="avgSentChart" :options="avgSentOptions"  />

@@ -46,17 +46,15 @@
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
+			<h2 class="text-xl mb-8 self-start">{{ avgSentTitle }}</h2>
 			<div class="w-full flex items-center justify-between">
-				<div class="flex flex-col">
-					<h2 class="text-xl mb-8">{{ avgSentTitle }}</h2>
-					<div v-if="activeRange" class="flex items-center gap-4">
-						<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
-							<ChevronLeft />
-						</button>
-						<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
-							<ChevronRight />
-						</button>
-					</div>
+				<div v-if="activeRange" class="flex items-center gap-4">
+					<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+						<ChevronLeft />
+					</button>
+					<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+						<ChevronRight />
+					</button>
 				</div>
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>

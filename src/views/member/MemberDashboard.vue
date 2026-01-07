@@ -229,7 +229,10 @@ watch(activeRange, async (range) => {
   }
 })
 watch(timeFilter, async (val) => {
-  if (val !== 'month') return
+  if (val !== 'month') {
+	activeRange.value = null;
+	return
+  }
 	activeRange.value = getLastMonthRange();
 })
 

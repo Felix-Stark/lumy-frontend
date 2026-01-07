@@ -48,6 +48,14 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
 			<div class="w-full flex items-center justify-between">
 				<h2 class="text-xl self-start mb-8">{{ avgSentTitle }}</h2>
+				<div v-if="activeRange" class="flex items-center gap-4">
+					<button @click="handlePrevMonth" class="px-4 py-2 rounded-lg shadow-md bg-white">
+						<ChevronLeft />
+					</button>
+					<button @click="handleNextMonth" class="px-4 py-2 rounded-lg shadow-md bg-white">
+						<ChevronRight />
+					</button>
+				</div>
 				<ChartFilter v-model:selectedFilter="timeFilter" />
 			</div>
 			<div class="w-full h-100 items-stretch">
@@ -112,11 +120,10 @@
 
 <script setup lang="ts">
 import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
-import { ChevronRight, Heart } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js'
-import { getElementsAtEvent } from 'vue-chartjs';
-import type { Chart, ActiveElement, ChartOptions, ElementChartOptions, ChartEvent } from 'chart.js';
+import type { ActiveElement, ChartOptions, ChartEvent } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
@@ -126,7 +133,7 @@ import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, Ti
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay, getNextMonthRange } from '@/composables/timeFilter';
+import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay, getNextMonthRange, getPrevMonthRange } from '@/composables/timeFilter';
 import { useFeedbackStore } from '@/stores/feedbackStore';
 
 const session = useSessionStore();
@@ -161,6 +168,13 @@ const avgSentTitle = computed(() => {
 	}
 })
 const activeRange = ref<DateRange | null>(null);
+const monthLabel = computed(() => {
+	if(!activeRange.value) return;
+	return activeRange.value.from.toLocaleDateString('en-GB', {
+				month: 'long',
+				year: 'numeric'
+			})
+})
 const dailySeries = ref<{ labels: string[]; data: number[];}>({
 	labels: [],
 	data: [],
@@ -203,6 +217,14 @@ onMounted(async() => {
 	}
 });
 
+function handlePrevMonth() {
+	if(!activeRange.value) return;
+	activeRange.value = getPrevMonthRange(monthLabel.value!)
+}
+function handleNextMonth() {
+	if(!activeRange.value) return;
+	activeRange.value = getNextMonthRange(monthLabel.value!)
+}
 
 
 const avgSentChart = computed(() => {

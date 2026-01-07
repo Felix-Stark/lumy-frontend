@@ -62,7 +62,7 @@
 						<ChevronRight />
 					</button>
 				</div>
-				<section class="flex flex-end">
+				<section class="w-full flex justify-end">
 					<ChartFilter v-model:selectedFilter="timeFilter" />
 				</section>
 			</div>

@@ -52,13 +52,13 @@
 					<button @click="handlePrevMonth"
 					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
 					@mouseleave="handleMouseLeave"
-					class="px-4 py-2 rounded-lg shadow-lg bg-white cursor-pointer">
+					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
 						<ChevronLeft />
 					</button>
 					<button @click="handleNextMonth"
 					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
 					@mouseleave="handleMouseLeave"
-					class="px-4 py-2 rounded-lg shadow-lg bg-white cursor-pointer">
+					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
 						<ChevronRight />
 					</button>
 				</div>

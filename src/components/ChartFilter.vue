@@ -24,7 +24,7 @@ const emit = defineEmits<{
 }>();
 
 const filters = [
-  { value: 'month', label: 'Month' },
+  { value: 'month', label: '30 days' },
   { value: 'quarter', label: 'Quarter' },
   { value: 'year', label: 'Year' }
 ];

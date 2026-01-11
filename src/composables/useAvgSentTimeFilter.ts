@@ -115,7 +115,7 @@ export function useAvgSentTimeFilter() {
         } else {
             activeRange.value = null
         }
-        console.log('setFilter: ', activeRange)
+        console.log('setFilter: ', activeRange.value)
 
     }
 
@@ -123,7 +123,7 @@ export function useAvgSentTimeFilter() {
         timeFilter.value = 'month-drilldown'
         activeMonthLabel.value = label
         activeRange.value = getMonthRange(label)
-        console.log('drillDownToMonth: ', activeRange)
+        console.log('drillDownToMonth: ', activeRange.value)
 
     }
 
@@ -137,7 +137,7 @@ export function useAvgSentTimeFilter() {
             month: 'long',
             year: 'numeric'
         })
-
+        console.log('goToPrev: ', label)
         drillDownToMonth(label)
     }
 
@@ -151,7 +151,7 @@ export function useAvgSentTimeFilter() {
             month: 'long',
             year: 'numeric'
         })
-
+        console.log('goToNext: ', label)
         drillDownToMonth(label)
     }
 

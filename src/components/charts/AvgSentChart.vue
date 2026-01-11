@@ -84,8 +84,8 @@ const {
 } = useAvgSentTimeFilter();
 const loading = ref(true);
 const isNextDisabled = computed(() => {
-    if (!activeRange.value) return;
-    const now = new Date().getMonth();
+    if (!nextMonth.value) return;
+    const now = new Date();
     console.log('now: ', now)
     return nextMonth.value > now;
 });

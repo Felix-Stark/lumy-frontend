@@ -97,8 +97,6 @@ export function useAvgSentTimeFilter() {
 
         if (tf === 'month') {
             activeRange.value = getLast30DaysRange()
-        } else {
-            activeRange.value = null
         }
         console.log('setFilter: ', activeRange.value)
 
@@ -131,7 +129,7 @@ export function useAvgSentTimeFilter() {
         const { from } = getMonthRange(activeMonthLabel.value)
         const next = new Date(from)
         next.setMonth(next.getMonth() + 1)
-
+        nextMonth.value = next;
         const label = next.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'

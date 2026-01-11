@@ -52,12 +52,7 @@ const showTooltip = ref(false)
 const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
-function handleEnterChart(event: MouseEvent, text: string) {
-    tooltipText.value = text
-    tooltipX.value = event.clientX - 12 // offset for better positioning
-    tooltipY.value = event.clientY + 12
-    showTooltip.value = true
-}
+
 function handleMouseEnter(event: MouseEvent, text: string) {
     tooltipText.value = text
     tooltipX.value = event.clientX - 12 // offset for better positioning
@@ -98,6 +93,7 @@ const avgSentTitle = computed(() => {
             emit('update:drilldown', true)
             return 'Average sentiment last 30 days';
         case 'quarter':
+            activeRange.value = null
             emit('update:drilldown', false)
             return 'Average sentiment last quarter';
         case 'month-drilldown':
@@ -107,6 +103,8 @@ const avgSentTitle = computed(() => {
             })}`
         case 'year':
         default:
+            activeRange.value = null
+            emit('update:drilldown', false)
             return 'Average sentiment last year'
     }
 })
@@ -176,7 +174,7 @@ const avgSentOptions = {
         const target = event.native?.target as HTMLCanvasElement
         if (!target) return
 
-        target.style.cursor = elements.length ? 'pointer' : 'default'
+        target.style.cursor = elements.length && activeRange ? 'pointer' : 'default'
     },
     onClick: (
         event: ChartEvent,

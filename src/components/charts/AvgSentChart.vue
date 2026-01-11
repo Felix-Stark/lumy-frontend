@@ -4,44 +4,32 @@
         <div class="w-full flex items-center justify-between mb-4">
             <div v-if="activeRange" class="flex items-center gap-4">
                 <button :disabled="isNextDisabled" @click="goToPrevMonth"
-                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
-                @mouseleave="handleMouseLeave"
-                class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
+                    @mouseleave="handleMouseLeave" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
                     <ChevronLeft />
                 </button>
-                <button @click="goToNextMonth"
-                @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
-                @mouseleave="handleMouseLeave"
-                class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+                <button @click="goToNextMonth" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
+                    @mouseleave="handleMouseLeave" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
                     <ChevronRight />
                 </button>
             </div>
             <section class="w-full flex justify-end">
                 <div class="flex items-center gap-6 py-2 px-4">
-                    <button
-                    v-for="filter in filters"
-                    :key="filter.value"
-                    @click=" setFilter(filter.value as TimeFilter)"
-                    :class="[
-                        'rounded-lg shadow-md px-4 py-2 cursor-pointer',
-                        timeFilter === filter.value ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary'
-                    ]"
-                    >
+                    <button v-for="filter in filters" :key="filter.value"
+                        @click=" setFilter(filter.value as TimeFilter)" :class="[
+                            'rounded-lg shadow-md px-4 py-2 cursor-pointer',
+                            timeFilter === filter.value ? 'bg-lumy-secondary text-white' : 'bg-white text-lumy-secondary'
+                        ]">
                         {{ filter.label }}
                     </button>
                 </div>
             </section>
         </div>
         <div class="w-full h-100 items-stretch">
-            <Line ref="chartRef" :data="chartData" :options="avgSentOptions"  />
+            <Line ref="chartRef" :data="chartData" :options="avgSentOptions" />
         </div>
     </section>
-    <Tooltip 
-    :text="tooltipText"
-    :visible="showTooltip"
-    :x="tooltipX"
-    :y="tooltipY"
-    />
+    <Tooltip :text="tooltipText" :visible="showTooltip" :x="tooltipX" :y="tooltipY" />
 </template>
 
 <script setup lang="ts">
@@ -55,9 +43,9 @@ import { useAvgSentTimeFilter } from '@/composables/useAvgSentTimeFilter';
 import Tooltip from '@/components/base/Tooltip.vue';
 
 const filters = [
-  { value: 'month', label: '30 days' },
-  { value: 'quarter', label: 'Quarter' },
-  { value: 'year', label: 'Year' }
+    { value: 'month', label: '30 days' },
+    { value: 'quarter', label: 'Quarter' },
+    { value: 'year', label: 'Year' }
 ];
 ChartJS.register(...registerables);
 const showTooltip = ref(false)
@@ -65,124 +53,127 @@ const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
 function handleMouseEnter(event: MouseEvent, text: string) {
-  tooltipText.value = text
-  tooltipX.value = event.clientX - 12 // offset for better positioning
-  tooltipY.value = event.clientY + 12
-  showTooltip.value = true
+    tooltipText.value = text
+    tooltipX.value = event.clientX - 12 // offset for better positioning
+    tooltipY.value = event.clientY + 12
+    showTooltip.value = true
 }
 function handleMouseLeave() {
-  showTooltip.value = false
+    showTooltip.value = false
 }
 const props = defineProps<{
-  monthlySeries: TimeSeries;
-  feedback?: FeedbackSubmissionFull[] | null;
-  drilldown: boolean;
+    drilldown: boolean;
+    monthlySeries: TimeSeries;
+    feedback?: FeedbackSubmissionFull[] | null;
 }>()
+const emit = defineEmits<{
+    (e: 'update:drilldown', value: boolean): void;
+}>();
 
 const {
-  timeFilter,
-  activeRange,
-  setFilter,
-  goToNextMonth,
-  goToPrevMonth,
-  drillDownToMonth,
-  aggregateSentimentPerDay,
-  filterTimeSeries
+    timeFilter,
+    activeRange,
+    setFilter,
+    goToNextMonth,
+    goToPrevMonth,
+    drillDownToMonth,
+    aggregateSentimentPerDay,
+    filterTimeSeries
 } = useAvgSentTimeFilter();
-const drilldown = ref(false)
 const loading = ref(true);
 const isNextDisabled = computed(() => {
-	if(!activeRange.value) return;
-	return activeRange.value.to > new Date();
+    if (!activeRange.value) return;
+    return activeRange.value.to < new Date();
 });
 
 const avgSentTitle = computed(() => {
-	switch(timeFilter.value) {
-		case 'month':
-			return 'Average sentiment last 30 days';
-		case 'quarter':
-			return 'Average sentiment last quarter';
-		case 'month-drilldown':
-			return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
-				month: 'long',
-				year: 'numeric'
-			})}`
-		case 'year':
-			default:
-				return 'Average sentiment last year'
-	}
+    switch (timeFilter.value) {
+        case 'month':
+            emit('update:drilldown', true)
+            return 'Average sentiment last 30 days';
+        case 'quarter':
+            emit('update:drilldown', false)
+            return 'Average sentiment last quarter';
+        case 'month-drilldown':
+            emit('update:drilldown', false)
+            return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
+                month: 'long',
+                year: 'numeric'
+            })}`
+        case 'year':
+        default:
+            return 'Average sentiment last year'
+    }
 })
 
 
 const chartData = computed(() => {
-    if(timeFilter.value === 'month' || timeFilter.value === 'month-drilldown') {
-        drilldown.value = true;
-    }
-	if(activeRange.value && props.feedback) {
-         const points = aggregateSentimentPerDay(
+    if ((timeFilter.value === 'month' || timeFilter.value === 'month-drilldown')
+    && activeRange.value && props.feedback) {
+        const points = aggregateSentimentPerDay(
             props.feedback,
             activeRange.value
         )
         console.log(points)
-		return {
-			labels: points.map(p => p.label),
-		   datasets: [
-			{
-				label: 'Average sentiment last month',
-				data: points.map(p => p.value),
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.3
-			}
-		   ]
-		}
-	}
-	const entries = filterTimeSeries(props.monthlySeries, timeFilter.value)
-	
-	return {
-		labels: Object.keys(entries), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Average Sentiment',
-				data: Object.values(entries), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.3
-			}
-		]
-	};
+        return {
+            labels: points.map(p => p.label),
+            datasets: [
+                {
+                    label: 'Average sentiment last month',
+                    data: points.map(p => p.value),
+                    fill: false,
+                    borderColor: 'rgba(150, 45, 255, 1)',
+                    borderDash: [5, 5],
+                    tension: 0.3
+                }
+            ]
+        }
+    }
+    const entries = filterTimeSeries(props.monthlySeries, timeFilter.value)
+
+    return {
+        labels: Object.keys(entries), // e.g. ["2025-07", "2025-08", ...]
+        datasets: [
+            {
+                label: 'Average Sentiment',
+                data: Object.values(entries), // e.g. [0.8, 0.85, ...]
+                fill: false,
+                borderColor: 'rgba(150, 45, 255, 1)',
+                borderDash: [5, 5],
+                tension: 0.3
+            }
+        ]
+    };
 })
 const avgSentOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: false },
-    title: { display: false }
-  },
-  scales: {
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { display: false },
+        title: { display: false }
+    },
+    scales: {
+        y: {
+            min: 0,
+            max: 10,
+            ticks: { stepSize: 2 }
+        }
+    },
+    onClick: (
+        event: ChartEvent,
+        elements: ActiveElement[],
+        chart: any
+    ) => {
+        if (!elements.length) return;
+        if (timeFilter.value.includes('month')) return;
+
+        const index = elements[0].index;
+        const label = chart.data.labels[index];
+        emit('update:drilldown', true)
+        console.log('Clicked month:', label);
+        drillDownToMonth(label);
+
     }
-  },
-  onClick: (
-    event: ChartEvent,
-    elements: ActiveElement[],
-    chart: any
-  ) => {
-    if (!elements.length) return;
-	if (timeFilter.value.includes('month')) return;
-
-    const index = elements[0].index;
-    const label = chart.data.labels[index];
-
-    console.log('Clicked month:', label);
-    drillDownToMonth(label);
-	
-  }
 };
 
 </script>

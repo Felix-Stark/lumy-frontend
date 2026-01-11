@@ -100,7 +100,7 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
 			<div class="w-full h-100 self-stretch">
-				<Line :data="feedbackChart" :options="feedbackChartOptions" />
+				<Line :data="feedbackChart" :options="feedbackChartOptions" v-model="drilldown"/>
 			</div>
 		</section>
 	</div>
@@ -111,7 +111,7 @@ import DashSkeleton from '@/components/skeletons/DashSkeleton.vue';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js'
-import type { ActiveElement, ChartOptions, ChartEvent } from 'chart.js';
+import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';

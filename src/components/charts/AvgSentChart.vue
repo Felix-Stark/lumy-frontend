@@ -89,7 +89,7 @@ const {
   aggregateSentimentPerDay,
   filterTimeSeries
 } = useAvgSentTimeFilter();
-
+const drilldown = ref(false)
 const loading = ref(true);
 const isNextDisabled = computed(() => {
 	if(!activeRange.value) return;
@@ -115,10 +115,10 @@ const avgSentTitle = computed(() => {
 
 
 const chartData = computed(() => {
-	if((timeFilter.value === 'month' || timeFilter.value === 'month-drilldown') &&
-    props.feedback &&
-    activeRange.value
-  ) {
+    if(timeFilter.value === 'month' || timeFilter.value === 'month-drilldown') {
+        drilldown.value = true;
+    }
+	if(activeRange.value && props.feedback) {
          const points = aggregateSentimentPerDay(
             props.feedback,
             activeRange.value

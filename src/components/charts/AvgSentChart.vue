@@ -86,6 +86,7 @@ const loading = ref(true);
 const isNextDisabled = computed(() => {
     if (!activeRange.value) return;
     const now = new Date().getMonth();
+    console.log('now: ', now)
     return nextMonth.value > now;
 });
 

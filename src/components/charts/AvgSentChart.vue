@@ -85,7 +85,7 @@ const {
 const loading = ref(true);
 const isNextDisabled = computed(() => {
     if (!activeRange.value) return;
-    return nextMonth.value > new Date().getMonth();
+    return activeRange.value.to <= new Date()
 });
 
 const avgSentTitle = computed(() => {

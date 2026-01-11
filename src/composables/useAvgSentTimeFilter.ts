@@ -95,7 +95,7 @@ export function useAvgSentTimeFilter() {
         timeFilter.value = tf
         activeMonthLabel.value = null
 
-        if (tf.includes('month')) {
+        if (tf === 'month') {
             activeRange.value = getLast30DaysRange()
         } else {
             activeRange.value = null

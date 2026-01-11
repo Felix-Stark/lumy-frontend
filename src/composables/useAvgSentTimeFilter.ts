@@ -5,11 +5,16 @@ export function useAvgSentTimeFilter() {
     const timeFilter = ref<TimeFilter>('year')
     const activeRange = ref<DateRange | null>(null)
     const activeMonthLabel = ref<string | null>(null)
+    const nextMonth = ref(0)
+    const prevMonth = ref(0)
 
     function getMonthRange(label: string): DateRange {
         const [monthName, year] = label.split(' ')
         const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
-
+        nextMonth.value = monthIndex + 1;
+        prevMonth.value = monthIndex - 1;
+        console.log('next: ', nextMonth.value)
+        console.log('prev: ', prevMonth.value)
         const from = new Date(Number(year), monthIndex, 1)
         from.setHours(0, 0, 0, 0)
 
@@ -17,26 +22,6 @@ export function useAvgSentTimeFilter() {
         console.log('getMonthRange: ', { from, to })
         return { from, to }
     }
-
-    // function getPrevMonthRange(label: string): DateRange {
-    //     const [monthName, year] = label.split(' ')
-    //     const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth() - 1
-
-    //     const from = new Date(Number(year), monthIndex, 1)
-    //     const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
-
-    //     return { from, to }
-    // }
-
-    // function getNextMonthRange(label: string): DateRange {
-    //     const [monthName, year] = label.split(' ')
-    //     const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth() + 1;
-
-    //     const from = new Date(Number(year), monthIndex, 1)
-    //     const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
-
-    //     return { from, to }
-    // }
 
     function getLast30DaysRange(): DateRange {
         const to = new Date()
@@ -110,7 +95,7 @@ export function useAvgSentTimeFilter() {
         timeFilter.value = tf
         activeMonthLabel.value = null
 
-        if (tf === 'month') {
+        if (tf.includes('month')) {
             activeRange.value = getLast30DaysRange()
         } else {
             activeRange.value = null
@@ -160,6 +145,7 @@ export function useAvgSentTimeFilter() {
         timeFilter,
         activeRange,
         activeMonthLabel,
+        nextMonth,
 
         // actions
         setFilter,

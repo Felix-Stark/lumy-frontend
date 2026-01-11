@@ -74,6 +74,7 @@ const emit = defineEmits<{
 const {
     timeFilter,
     activeRange,
+    nextMonth,
     setFilter,
     goToNextMonth,
     goToPrevMonth,
@@ -84,7 +85,7 @@ const {
 const loading = ref(true);
 const isNextDisabled = computed(() => {
     if (!activeRange.value) return;
-    return activeRange.value.to < new Date();
+    return nextMonth.value > new Date().getMonth();
 });
 
 const avgSentTitle = computed(() => {

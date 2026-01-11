@@ -3,13 +3,13 @@
         <h2 class="text-xl mb-8 self-start">{{ avgSentTitle }}</h2>
         <div class="w-full flex items-center justify-between mb-4">
             <div v-if="activeRange" class="flex items-center gap-4">
-                <button :disabled="isNextDisabled" @click="goToPrevMonth"
-                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
+                <button @click="goToPrevMonth" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
                     @mouseleave="handleMouseLeave" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
                     <ChevronLeft />
                 </button>
-                <button @click="goToNextMonth" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
-                    @mouseleave="handleMouseLeave" class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
+                <button :disabled="isNextDisabled" @click="goToNextMonth"
+                    @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')" @mouseleave="handleMouseLeave"
+                    class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer disabled:cursor-not-allowed">
                     <ChevronRight />
                 </button>
             </div>
@@ -36,7 +36,7 @@
 import { ref, computed, watch } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, registerables } from 'chart.js';
+import { Chart as ChartJS, elements, registerables } from 'chart.js';
 import type { ActiveElement, ChartEvent } from 'chart.js';
 import type { FeedbackSubmissionFull, TimeFilter, TimeSeries } from '@/types';
 import { useAvgSentTimeFilter } from '@/composables/useAvgSentTimeFilter';
@@ -52,6 +52,12 @@ const showTooltip = ref(false)
 const tooltipText = ref('')
 const tooltipX = ref(0)
 const tooltipY = ref(0)
+function handleEnterChart(event: MouseEvent, text: string) {
+    tooltipText.value = text
+    tooltipX.value = event.clientX - 12 // offset for better positioning
+    tooltipY.value = event.clientY + 12
+    showTooltip.value = true
+}
 function handleMouseEnter(event: MouseEvent, text: string) {
     tooltipText.value = text
     tooltipX.value = event.clientX - 12 // offset for better positioning
@@ -108,7 +114,7 @@ const avgSentTitle = computed(() => {
 
 const chartData = computed(() => {
     if ((timeFilter.value === 'month' || timeFilter.value === 'month-drilldown')
-    && activeRange.value && props.feedback) {
+        && activeRange.value && props.feedback) {
         const points = aggregateSentimentPerDay(
             props.feedback,
             activeRange.value
@@ -147,6 +153,8 @@ const chartData = computed(() => {
 const avgSentOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: { intersect: false },
+
     plugins: {
         legend: { display: false },
         title: { display: false }
@@ -157,6 +165,18 @@ const avgSentOptions = {
             max: 10,
             ticks: { stepSize: 2 }
         }
+    },
+    elements: {
+        point: {
+            radius: 4,
+            hoverRadius: 7
+        }
+    },
+    onHover: (event: ChartEvent, elements: ActiveElement[],) => {
+        const target = event.native?.target as HTMLCanvasElement
+        if (!target) return
+
+        target.style.cursor = elements.length ? 'pointer' : 'default'
     },
     onClick: (
         event: ChartEvent,
@@ -172,7 +192,7 @@ const avgSentOptions = {
         console.log('Clicked month:', label);
         drillDownToMonth(label);
     },
-    
+
 };
 
 </script>

@@ -14,7 +14,7 @@ export function useAvgSentTimeFilter() {
         from.setHours(0, 0, 0, 0)
 
         const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59, 999)
-
+        console.log('getMonthRange: ', { from, to })
         return { from, to }
     }
 
@@ -45,7 +45,7 @@ export function useAvgSentTimeFilter() {
         const from = new Date(to)
         from.setDate(from.getDate() - 29)
         from.setHours(0, 0, 0, 0)
-
+        console.log('getLast30DaysRange: ', {from,to})
         return { from, to }
     }
 
@@ -57,6 +57,7 @@ export function useAvgSentTimeFilter() {
         let numToTake = keys.length
         if (tf === 'month') numToTake = 1
         if (tf === 'quarter') numToTake = 3
+        console.log('filterTimeSeries: ', [ts, tf])
 
         return Object.fromEntries(
             keys.slice(-numToTake).map(k => [k, ts[k]])
@@ -100,6 +101,7 @@ export function useAvgSentTimeFilter() {
 
             cursor.setDate(cursor.getDate() + 1)
         }
+        console.log('aggregateSentimentPerDay: ', result)
 
         return result
     }
@@ -113,12 +115,16 @@ export function useAvgSentTimeFilter() {
         } else {
             activeRange.value = null
         }
+        console.log('setFilter: ', activeRange)
+
     }
 
     function drillDownToMonth(label: string) {
         timeFilter.value = 'month-drilldown'
         activeMonthLabel.value = label
         activeRange.value = getMonthRange(label)
+        console.log('drillDownToMonth: ', activeRange)
+
     }
 
     function goToPrevMonth() {

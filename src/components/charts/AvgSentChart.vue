@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js';
@@ -88,7 +88,7 @@ const {
   drillDownToMonth,
   aggregateSentimentPerDay,
   filterTimeSeries
-} = useAvgSentTimeFilter()
+} = useAvgSentTimeFilter();
 
 const loading = ref(true);
 const isNextDisabled = computed(() => {
@@ -123,6 +123,7 @@ const chartData = computed(() => {
             props.feedback,
             activeRange.value
         )
+        console.log(points)
 		return {
 			labels: points.map(p => p.label),
 		   datasets: [

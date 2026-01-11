@@ -172,8 +172,8 @@ const avgSentOptions = {
         emit('update:drilldown', true)
         console.log('Clicked month:', label);
         drillDownToMonth(label);
-
-    }
+    },
+    
 };
 
 </script>

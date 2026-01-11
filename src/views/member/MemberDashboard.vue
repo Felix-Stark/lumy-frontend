@@ -48,7 +48,7 @@
 		<AvgSentChart
 			:monthly-series="summary!.avg_sentiment"
 			:feedback="feedback"
-			:drilldown="drilldown"
+			v-model:drilldown="isDrilldown"
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
@@ -100,7 +100,7 @@
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
 			<h2 class="text-xl self-start mb-8">Feedback over time</h2>
 			<div class="w-full h-100 self-stretch">
-				<Line :data="feedbackChart" :options="feedbackChartOptions" v-model="drilldown"/>
+				<Line :data="feedbackChart" :options="feedbackChartOptions"/>
 			</div>
 		</section>
 	</div>
@@ -130,7 +130,7 @@ ChartJS.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
-const drilldown = ref(false)
+const isDrilldown = ref(false)
 const router = useRouter();
 const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
@@ -150,7 +150,7 @@ onMounted(async() => {
 	}
 });
 
-watch(drilldown, async (val) => {
+watch(isDrilldown, async (val) => {
 	if(feedback.value.length) return;
 	if(val) {
 		feedback.value = await feedbackStore.getSubmissionsGiven();

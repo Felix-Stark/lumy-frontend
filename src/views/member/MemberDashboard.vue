@@ -45,31 +45,11 @@
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
-		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-6 rounded-lg">
-			<h2 class="text-xl mb-8 self-start">{{ avgSentTitle }}</h2>
-			<div class="w-full flex items-center justify-between">
-				<div v-if="activeRange" class="flex items-center gap-4">
-					<button @click="handlePrevMonth"
-					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Previous month')"
-					@mouseleave="handleMouseLeave"
-					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
-						<ChevronLeft />
-					</button>
-					<button @click="handleNextMonth"
-					@mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Next month')"
-					@mouseleave="handleMouseLeave"
-					class="px-4 py-2 rounded-lg shadow-md bg-white cursor-pointer">
-						<ChevronRight />
-					</button>
-				</div>
-				<section class="w-full flex justify-end">
-					<ChartFilter v-model:selectedFilter="timeFilter" />
-				</section>
-			</div>
-			<div class="w-full h-100 items-stretch">
-				<Line ref="chartRef" :data="avgSentChart" :options="avgSentOptions"  />
-			</div>
-		</section>
+		<AvgSentChart
+			:monthly-series="summary!.avg_sentiment"
+			:feedback="feedback"
+			:drilldown="drilldown"
+		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
 			<div class="overflow-x-auto">
@@ -124,12 +104,6 @@
 			</div>
 		</section>
 	</div>
-	<Tooltip 
-	:text="tooltipText"
-	:visible="showTooltip"
-	:x="tooltipX"
-	:y="tooltipY"
-	/>
 </template>
 
 <script setup lang="ts">
@@ -139,7 +113,6 @@ import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, registerables } from 'chart.js'
 import type { ActiveElement, ChartOptions, ChartEvent } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
-import ChartFilter from '@/components/ChartFilter.vue'
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -147,9 +120,8 @@ import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, Ti
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
-import { filtered, getMonthRange, getLastMonthRange, aggregateSentimentPerDay, getNextMonthRange, getPrevMonthRange } from '@/composables/timeFilter';
 import { useFeedbackStore } from '@/stores/feedbackStore';
-import Tooltip from '@/components/base/Tooltip.vue';
+import AvgSentChart from '@/components/charts/AvgSentChart.vue';
 
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
@@ -158,83 +130,13 @@ ChartJS.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
-
-const showTooltip = ref(false)
-const tooltipText = ref('')
-const tooltipX = ref(0)
-const tooltipY = ref(0)
-function handleMouseEnter(event: MouseEvent, text: string) {
-  tooltipText.value = text
-  tooltipX.value = event.clientX - 12 // offset for better positioning
-  tooltipY.value = event.clientY + 12
-  showTooltip.value = true
-}
-function handleMouseLeave() {
-  showTooltip.value = false
-}
+const drilldown = ref(false)
 const router = useRouter();
 const userStore = useUserStore();
 const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const feedback = ref<FeedbackSubmissionFull[]>([])
-const timeFilter = ref<TimeFilter>('year')
-const avgSentTitle = computed(() => {
-	switch(timeFilter.value) {
-		case 'month':
-			return 'Average sentiment last 30 days';
-		case 'quarter':
-			return 'Average sentiment last quarter';
-		case 'month-drilldown':
-			return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
-				month: 'long',
-				year: 'numeric'
-			})}`
-		case 'year':
-			default:
-				return 'Average sentiment last year'
-	}
-})
-const activeRange = ref<DateRange | null>(null);
-const monthLabel = computed(() => {
-	if(!activeRange.value) return;
-	return activeRange.value.from.toLocaleDateString('en-GB', {
-				month: 'long',
-				year: 'numeric'
-			})
-})
-const dailySeries = ref<{ labels: string[]; data: number[];}>({
-	labels: [],
-	data: [],
-})
-
-watch(activeRange, async (range) => {
-  if (!range) return
-
-  console.log('activeRange updated: ', activeRange.value)
-  // fetch once
-  if (!feedback.value.length) {
-    feedback.value = await feedbackStore.getSubmissionsGiven();
-  }
-
-  const aggregated = aggregateSentimentPerDay(
-    feedback.value,
-    range.from,
-    range.to
-  )
-
-  dailySeries.value = {
-    labels: aggregated.map(d => d.label),
-    data: aggregated.map(d => d.value),
-  }
-})
-watch(timeFilter, async (val) => {
-  if (!val.includes('month')) {
-	activeRange.value = null;
-	return
-  }
-	activeRange.value = getLastMonthRange();
-})
 
 
 onMounted(async() => {
@@ -248,80 +150,12 @@ onMounted(async() => {
 	}
 });
 
-function handlePrevMonth() {
-	if(!activeRange.value) return;
-	activeRange.value = getPrevMonthRange(monthLabel.value!)
-}
-function handleNextMonth() {
-	if(!activeRange.value) return;
-	activeRange.value = getNextMonthRange(monthLabel.value!)
-}
-
-
-const avgSentChart = computed(() => {
-	if(timeFilter.value.includes('month')) {
-		return {
-			labels: dailySeries.value.labels,
-		   datasets: [
-			{
-				label: 'Average sentiment last month',
-				data: dailySeries.value.data,
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.3
-			}
-		   ]
-		}
+watch(drilldown, async (val) => {
+	if(feedback.value.length) return;
+	if(val) {
+		feedback.value = await feedbackStore.getSubmissionsGiven();
 	}
-	const entries = filtered(summary.value!.avg_sentiment, timeFilter.value)
-	
-	return {
-		labels: Object.keys(entries), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Average Sentiment',
-				data: Object.values(entries), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.3
-			}
-		]
-	};
 })
-const avgSentOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: false },
-    title: { display: false }
-  },
-  scales: {
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
-    }
-  },
-  onClick: (
-    event: ChartEvent,
-    elements: ActiveElement[],
-    chart: any
-  ) => {
-    if (!elements.length) return;
-	if (timeFilter.value.includes('month')) return;
-
-    const index = elements[0].index;
-    const label = chart.data.labels[index];
-
-    console.log('Clicked month:', label);
-	console.log('next month: ', getNextMonthRange(label))
-	timeFilter.value = 'month-drilldown';
-	activeRange.value = getMonthRange(label);
-  }
-};
-
 
 const feedbackChart = computed(() => {
   const feedbackRequested = summary.value?.feedback_requested || {};

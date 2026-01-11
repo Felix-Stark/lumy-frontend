@@ -95,7 +95,6 @@ const avgSentTitle = computed(() => {
             emit('update:drilldown', false)
             return 'Average sentiment last quarter';
         case 'month-drilldown':
-            emit('update:drilldown', false)
             return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
                 month: 'long',
                 year: 'numeric'

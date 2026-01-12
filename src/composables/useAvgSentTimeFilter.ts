@@ -42,8 +42,8 @@ export function useAvgSentTimeFilter() {
     function goToPrevMonth() {
         console.log('goToPrev: ', activeRange.value)
         if (!activeRange.value) return
-        
-        const prev = new Date(activeRange.value.from)
+
+        const prev = new Date(activeRange.value.to) //to instead of from solves goToPrev from 30 days.
         prev.setMonth(prev.getMonth() - 1)
 
         const label = prev.toLocaleDateString('en-GB', {

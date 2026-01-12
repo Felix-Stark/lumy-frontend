@@ -174,9 +174,9 @@ const avgSentOptions = {
     },
     onHover: (event: ChartEvent, elements: ActiveElement[],) => {
         const target = event.native?.target as HTMLCanvasElement
-        if (!target || timeFilter.value.includes('month')) return //disable hover on month drilldown
+        if (!target || activeRange.value) return //disable hover on month drilldown
 
-        target.style.cursor = elements.length && activeRange ? 'pointer' : 'default'
+        target.style.cursor = elements.length && !activeRange.value ? 'pointer' : 'default'
     },
     onClick: (
         event: ChartEvent,
@@ -189,7 +189,6 @@ const avgSentOptions = {
         const index = elements[0].index;
         const label = chart.data.labels[index];
         emit('update:drilldown', true)
-        console.log('Clicked month:', label);
         drillDownToMonth(label);
     },
 

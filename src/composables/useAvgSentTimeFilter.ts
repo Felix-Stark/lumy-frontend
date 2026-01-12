@@ -42,7 +42,7 @@ export function useAvgSentTimeFilter() {
     function goToPrevMonth() {
         console.log('goToPrev: ', activeRange.value)
         if (!activeRange.value) return
-
+        
         const prev = new Date(activeRange.value.from)
         prev.setMonth(prev.getMonth() - 1)
 

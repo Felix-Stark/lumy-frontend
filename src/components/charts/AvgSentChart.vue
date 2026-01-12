@@ -120,7 +120,6 @@ const chartData = computed(() => {
             props.feedback,
             activeRange.value
         )
-        console.log(points)
         return {
             labels: points.map(p => p.label),
             datasets: [

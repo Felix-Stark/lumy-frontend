@@ -55,12 +55,21 @@ export function useAvgSentTimeFilter() {
     }
 
     function goToNextMonth() {
-        if (!activeMonthLabel.value) return
-        const { from } = getMonthRange(activeMonthLabel.value)
+        if (!activeMonthLabel.value && !activeRange.value) return
+        let label = '';
+        if (!activeMonthLabel.value && activeRange.value) {
+            const next = new Date()
+            nextMonth.value = next;
+            label = next.toLocaleDateString('en-GB', {
+                month: 'long',
+                year: 'numeric'
+            })
+        }
+        const { from } = getMonthRange(activeMonthLabel.value!)
         const next = new Date(from)
         next.setMonth(next.getMonth() + 1)
         nextMonth.value = next;
-        const label = next.toLocaleDateString('en-GB', {
+        label = next.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'
         })

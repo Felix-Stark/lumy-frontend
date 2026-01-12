@@ -75,8 +75,11 @@ export function useAvgSentTimeFilter() {
         const from = new Date(to)
         from.setDate(from.getDate() - 29)
         from.setHours(0, 0, 0, 0)
-        nextMonth.value?.setMonth(from.getMonth() +1)
+        const next = from;
+        next.setMonth(next.getMonth() +1)
+        nextMonth.value = next;
         console.log('getLast30DaysRange: ', {from,to})
+        console.log('nextMonth from 30 days: ', nextMonth.value)
         activeRange.value = { from, to }
         return { from, to }
     }

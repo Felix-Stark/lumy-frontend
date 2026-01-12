@@ -8,19 +8,64 @@ export function useAvgSentTimeFilter() {
     const nextMonth = ref<Date>()
     const prevMonth = ref(0)
 
+    function setFilter(tf: TimeFilter) {
+        timeFilter.value = tf
+        activeMonthLabel.value = null
+
+        if (tf === 'month') {
+            activeRange.value = getLast30DaysRange()
+        }
+        console.log('setFilter: ', activeRange.value)
+
+    }
     function getMonthRange(label: string): DateRange {
         const [monthName, year] = label.split(' ')
         const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
         prevMonth.value = monthIndex - 1;
-        console.log('next: ', nextMonth.value)
-        console.log('prev: ', prevMonth.value)
-        const from = new Date(Number(year), monthIndex, 1)
-        nextMonth.value = new Date(Number(year), monthIndex + 1, 1)
-        from.setHours(0, 0, 0, 0)
 
+        const from = new Date(Number(year), monthIndex, 1)
+        from.setHours(0, 0, 0, 0)
         const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59, 999)
+        
+        nextMonth.value = new Date(Number(year), monthIndex + 1, 1)
         console.log('getMonthRange: ', { from, to })
         return { from, to }
+    }
+
+    function drillDownToMonth(label: string) {
+        timeFilter.value = 'month-drilldown'
+        activeMonthLabel.value = label
+        activeRange.value = getMonthRange(label)
+        console.log('drillDownToMonth: ', activeRange.value)
+    }
+
+    function goToPrevMonth() {
+        console.log('goToPrev: ', activeRange.value)
+        if (!activeRange.value) return
+
+        const prev = new Date(activeRange.value.from)
+        prev.setMonth(prev.getMonth() - 1)
+
+        const label = prev.toLocaleDateString('en-GB', {
+            month: 'long',
+            year: 'numeric'
+        })
+        console.log('goToPrev: ', label)
+        drillDownToMonth(label)
+    }
+
+    function goToNextMonth() {
+        if (!activeMonthLabel.value) return
+        const { from } = getMonthRange(activeMonthLabel.value)
+        const next = new Date(from)
+        next.setMonth(next.getMonth() + 1)
+        nextMonth.value = next;
+        const label = next.toLocaleDateString('en-GB', {
+            month: 'long',
+            year: 'numeric'
+        })
+        console.log('goToNext: ', label)
+        drillDownToMonth(label)
     }
 
     function getLast30DaysRange(): DateRange {
@@ -32,6 +77,7 @@ export function useAvgSentTimeFilter() {
         from.setHours(0, 0, 0, 0)
         nextMonth.value?.setMonth(from.getMonth() +1)
         console.log('getLast30DaysRange: ', {from,to})
+        activeRange.value = { from, to }
         return { from, to }
     }
 
@@ -87,56 +133,9 @@ export function useAvgSentTimeFilter() {
 
             cursor.setDate(cursor.getDate() + 1)
         }
-        console.log('aggregateSentimentPerDay: ', result)
+        console.log('aggregated sentiment')
 
         return result
-    }
-
-    function setFilter(tf: TimeFilter) {
-        timeFilter.value = tf
-        activeMonthLabel.value = null
-
-        if (tf === 'month') {
-            activeRange.value = getLast30DaysRange()
-        }
-        console.log('setFilter: ', activeRange.value)
-
-    }
-
-    function drillDownToMonth(label: string) {
-        timeFilter.value = 'month-drilldown'
-        activeMonthLabel.value = label
-        activeRange.value = getMonthRange(label)
-        console.log('drillDownToMonth: ', activeRange.value)
-
-    }
-
-    function goToPrevMonth() {
-        if (!activeMonthLabel.value) return
-        const { from } = getMonthRange(activeMonthLabel.value)
-        const prev = new Date(from)
-        prev.setMonth(prev.getMonth() - 1)
-
-        const label = prev.toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric'
-        })
-        console.log('goToPrev: ', label)
-        drillDownToMonth(label)
-    }
-
-    function goToNextMonth() {
-        if (!activeMonthLabel.value) return
-        const { from } = getMonthRange(activeMonthLabel.value)
-        const next = new Date(from)
-        next.setMonth(next.getMonth() + 1)
-        nextMonth.value = next;
-        const label = next.toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric'
-        })
-        console.log('goToNext: ', label)
-        drillDownToMonth(label)
     }
 
     return {

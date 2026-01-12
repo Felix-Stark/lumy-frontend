@@ -70,10 +70,13 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:drilldown', value: boolean): void;
 }>();
-
+// timeFilter 'month', 'quarter', 'year' (default) is set by setFilter() on filter button click.
+// activeRange holds a value  of { from, to } and is set by  if timeFilter === 'month' or 'month-drilldown'
+// drillDownToMonth() sets timeFilter, activeMonthLabel and activeRange
 const {
     timeFilter,
     activeRange,
+    activeMonthLabel,
     nextMonth,
     setFilter,
     goToNextMonth,
@@ -100,10 +103,7 @@ const avgSentTitle = computed(() => {
             emit('update:drilldown', false)
             return 'Average sentiment last quarter';
         case 'month-drilldown':
-            return `Average sentiment ${activeRange.value?.from.toLocaleDateString('en-GB', {
-                month: 'long',
-                year: 'numeric'
-            })}`
+            return `Average sentiment ${activeMonthLabel.value}`
         case 'year':
         default:
             activeRange.value = null
@@ -175,7 +175,7 @@ const avgSentOptions = {
     },
     onHover: (event: ChartEvent, elements: ActiveElement[],) => {
         const target = event.native?.target as HTMLCanvasElement
-        if (!target) return
+        if (!target || timeFilter.value.includes('month')) return //disable hover on month drilldown
 
         target.style.cursor = elements.length && activeRange ? 'pointer' : 'default'
     },
@@ -185,7 +185,7 @@ const avgSentOptions = {
         chart: any
     ) => {
         if (!elements.length) return;
-        if (timeFilter.value.includes('month')) return;
+        if (timeFilter.value.includes('month')) return; //disable click on month drilldown
 
         const index = elements[0].index;
         const label = chart.data.labels[index];

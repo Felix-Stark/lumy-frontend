@@ -55,21 +55,13 @@ export function useAvgSentTimeFilter() {
     }
 
     function goToNextMonth() {
-        if (!activeMonthLabel.value && !activeRange.value) return
-        let label = '';
-        if (!activeMonthLabel.value && activeRange.value) {
-            const next = new Date()
-            nextMonth.value = next;
-            label = next.toLocaleDateString('en-GB', {
-                month: 'long',
-                year: 'numeric'
-            })
-        }
+        if (!activeMonthLabel.value) return
+
         const { from } = getMonthRange(activeMonthLabel.value!)
         const next = new Date(from)
         next.setMonth(next.getMonth() + 1)
         nextMonth.value = next;
-        label = next.toLocaleDateString('en-GB', {
+        const label = next.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'
         })
@@ -87,8 +79,10 @@ export function useAvgSentTimeFilter() {
         const next = from;
         next.setMonth(next.getMonth() +1)
         nextMonth.value = next;
-        console.log('getLast30DaysRange: ', {from,to})
-        console.log('nextMonth from 30 days: ', nextMonth.value)
+        activeMonthLabel.value = next.toLocaleDateString('en-GB', {
+            month: 'long',
+            year: 'numeric'
+        });
         activeRange.value = { from, to }
         return { from, to }
     }

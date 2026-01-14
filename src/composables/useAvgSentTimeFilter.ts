@@ -24,14 +24,14 @@ export function useAvgSentTimeFilter() {
 
         const from = new Date(Number(year), monthIndex, 1)
         from.setHours(0, 0, 0, 0)
-        const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59, 999)
+        const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
         
-        nextMonth.value = new Date(Number(year), monthIndex + 1, 1)
         console.log('getMonthRange: ', { from, to })
         return { from, to }
     }
 
     function drillDownToMonth(label: string) {
+        console.log('drilldown label: ', label)
         timeFilter.value = 'month-drilldown'
         activeMonthLabel.value = label
         activeRange.value = getMonthRange(label)
@@ -39,7 +39,6 @@ export function useAvgSentTimeFilter() {
     }
 
     function goToPrevMonth() {
-        console.log('goToPrev: ', activeRange.value)
         if (!activeRange.value) return
 
         const { to } = getMonthRange(activeMonthLabel.value!) //to instead of from solves goToPrev from 30 days.

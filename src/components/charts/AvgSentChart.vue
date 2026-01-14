@@ -43,7 +43,7 @@ import { useAvgSentTimeFilter } from '@/composables/useAvgSentTimeFilter';
 import Tooltip from '@/components/base/Tooltip.vue';
 
 const filters = [
-    { value: 'month-drilldown', label: '30 days' },
+    { value: 'month-drilldown', label: 'Monthly' },
     { value: 'quarter', label: 'Quarter' },
     { value: 'year', label: 'Year' }
 ];

@@ -53,7 +53,6 @@ export function useAvgSentTimeFilter() {
         
         const prev = activeRange.value.from;
         prev.setMonth(prev.getMonth() - 1)
-        const label = getLabel(prev)
 
         drillDownToMonth(prev)
     }

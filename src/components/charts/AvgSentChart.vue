@@ -94,14 +94,12 @@ const isNextDisabled = computed(() => {
 
 const avgSentTitle = computed(() => {
     switch (timeFilter.value) {
-        case 'month':
-            emit('update:drilldown', true)
-            return 'Average sentiment last 30 days';
         case 'quarter':
             activeRange.value = null
             emit('update:drilldown', false)
             return 'Average sentiment last quarter';
         case 'month-drilldown':
+            emit('update:drilldown', true)
             return `Average sentiment ${activeMonthLabel.value}`
         case 'year':
         default:

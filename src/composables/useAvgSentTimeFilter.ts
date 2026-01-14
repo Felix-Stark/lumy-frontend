@@ -15,8 +15,6 @@ export function useAvgSentTimeFilter() {
         if (tf === 'month') {
             activeRange.value = getLast30DaysRange()
         }
-        console.log('setFilter: ', activeRange.value)
-
     }
 
     function getMonthRange(label: string): DateRange {
@@ -27,16 +25,13 @@ export function useAvgSentTimeFilter() {
         from.setHours(0, 0, 0, 0)
         const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
         
-        console.log('getMonthRange: ', { from, to })
         return { from, to }
     }
 
     function drillDownToMonth(label: string) {
-        console.log('drilldown label: ', label)
         timeFilter.value = 'month-drilldown'
         activeMonthLabel.value = label
         activeRange.value = getMonthRange(label)
-        console.log('drillDownToMonth: ', activeRange.value)
     }
 
     function goToPrevMonth() {
@@ -48,12 +43,10 @@ export function useAvgSentTimeFilter() {
         }
         const prev = prevMonth.value;
         prev.setMonth(prev.getMonth() - 1)
-        console.log('prev.setMonth: ', prev)
         const label = prev.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'
         })
-        console.log('goToPrev label: ', label)
         drillDownToMonth(label)
     }
 
@@ -86,7 +79,6 @@ export function useAvgSentTimeFilter() {
             month: 'long',
             year: 'numeric'
         });
-        console.log('30 days range: ', { from, to })
         return { from, to }
     }
 
@@ -98,7 +90,6 @@ export function useAvgSentTimeFilter() {
         let numToTake = keys.length
         if (tf === 'month') numToTake = 1
         if (tf === 'quarter') numToTake = 3
-        console.log('filterTimeSeries: ', [ts, tf])
 
         return Object.fromEntries(
             keys.slice(-numToTake).map(k => [k, ts[k]])
@@ -142,7 +133,6 @@ export function useAvgSentTimeFilter() {
 
             cursor.setDate(cursor.getDate() + 1)
         }
-        console.log('aggregated sentiment')
 
         return result
     }

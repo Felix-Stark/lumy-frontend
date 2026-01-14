@@ -85,11 +85,10 @@ const {
     aggregateSentimentPerDay,
     filterTimeSeries
 } = useAvgSentTimeFilter();
-const loading = ref(true);
+
 const isNextDisabled = computed(() => {
     if (!nextMonth.value) return;
     const now = new Date();
-    console.log('now: ', now)
     return nextMonth.value > now;
 });
 
@@ -174,9 +173,9 @@ const avgSentOptions = {
     },
     onHover: (event: ChartEvent, elements: ActiveElement[],) => {
         const target = event.native?.target as HTMLCanvasElement
-        if (!target || activeRange.value) return //disable hover on month drilldown
+        if (!target) return //disable hover on month drilldown
 
-        target.style.cursor = elements.length && !activeRange.value ? 'pointer' : 'default'
+        target.style.cursor = timeFilter.value.includes('month') ? 'default' : 'pointer'
     },
     onClick: (
         event: ChartEvent,

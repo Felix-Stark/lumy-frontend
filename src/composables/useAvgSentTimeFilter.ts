@@ -63,7 +63,7 @@ export function useAvgSentTimeFilter() {
             month: 'long',
             year: 'numeric'
         })
-        console.log('goToNext: ', label)
+
         drillDownToMonth(label)
     }
 

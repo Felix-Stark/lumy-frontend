@@ -185,7 +185,8 @@ const avgSentOptions = {
         const label = chart.data.labels[index];
         console.log('label in click: ', label)
         emit('update:drilldown', true)
-        drillDownToMonth(label);
+
+        drillDownToMonth(new Date(label));
     },
 
 };

@@ -126,6 +126,7 @@ import { Line } from 'vue-chartjs';
 import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
+import AvgSentChart from '@/components/charts/AvgSentChart.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';

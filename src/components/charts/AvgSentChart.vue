@@ -119,7 +119,7 @@ const chartData = computed(() => {
             labels: points.map(p => p.label),
             datasets: [
                 {
-                    label: 'Average sentiment last month',
+                    label: 'Average sentiment',
                     data: points.map(p => p.value),
                     fill: false,
                     borderColor: 'rgba(150, 45, 255, 1)',

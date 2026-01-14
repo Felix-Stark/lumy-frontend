@@ -116,7 +116,7 @@ import HeadCard from '@/components/dashboard/HeadCard.vue';
 import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull, TimeFilter, DateRange } from '@/types';
+import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';

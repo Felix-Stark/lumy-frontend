@@ -24,7 +24,9 @@ export function useAvgSentTimeFilter() {
         const from = new Date(Number(year), monthIndex, 1)
         from.setHours(0, 0, 0, 0)
         const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
-        
+        const next = new Date(from)
+        next.setMonth(next.getMonth() + 1)
+        nextMonth.value = next;
         return { from, to }
     }
 

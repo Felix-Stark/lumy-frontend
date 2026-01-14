@@ -54,17 +54,22 @@ export function useAvgSentTimeFilter() {
 
     function goToNextMonth() {
         if (!activeMonthLabel.value) return
-
+        
         const { from } = getMonthRange(activeMonthLabel.value!)
         const next = new Date(from)
         next.setMonth(next.getMonth() + 1)
         nextMonth.value = next;
+        const current = new Date()
         const label = next.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'
         })
-
-        drillDownToMonth(label)
+        
+        if(activeRange.value?.to.getMonth() === current.getMonth()) {
+            getLast30DaysRange();
+        } else {
+            drillDownToMonth(label)
+        }
     }
 
     function getLast30DaysRange(): DateRange {

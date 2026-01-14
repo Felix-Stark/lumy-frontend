@@ -6,6 +6,7 @@ import { type FeedbackRequest, type FeedbackSubmission, type FeedbackSubmissionF
 export const useFeedbackStore = defineStore("feedback", () => {
   const submissions = ref<FeedbackSubmission[]>([]);
   const subsGiven = ref<FeedbackSubmissionFull[]>([]);
+  const empSubsGiven = ref<FeedbackSubmissionFull[]>([]);
   const requests = ref<FeedbackRequest[]>([]);
   const loading = ref(false);
 
@@ -42,6 +43,23 @@ export const useFeedbackStore = defineStore("feedback", () => {
     }
   };
 
+  async function getEmployeeSubsGiven(id:number) {
+    if(empSubsGiven.value.length > 0) {
+      loading.value = false;
+      return empSubsGiven.value;
+    }
+    try {
+      const res = await api.get('/submissions_given?user_id='+id);
+      if(res.status === 200) {
+        empSubsGiven.value = res.data;
+        return res.data;
+      }
+    } catch (err:any) {
+      console.error('Error in getSubmissionsGiven: ', err)
+    } finally {
+      loading.value = false;
+    }
+  }
   async function getRequests() {
     loading.value = true;
     try {
@@ -64,5 +82,6 @@ export const useFeedbackStore = defineStore("feedback", () => {
     getRequests,
     fetchSubmissions,
     getSubmissionsGiven,
+    getEmployeeSubsGiven
   };
 });

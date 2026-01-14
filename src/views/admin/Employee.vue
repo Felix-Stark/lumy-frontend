@@ -61,12 +61,11 @@
 		<section class="w-full bg-lumy-purple text-white text-center p-8 rounded-lg">
 			<p>{{ summary?.chatgpt_summary.positive != null ? summary?.chatgpt_summary.positive : summary?.chatgpt_summary.improvement }}</p>
 		</section>
-		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
-			<h2 class="text-xl self-start mb-8">Average total sentiment over time</h2>
-			<div class="w-full h-100 items-stretch">
-				<Line :data="avgSentChart" :options="avgSentOptions" />
-			</div>
-		</section>
+		<AvgSentChart
+			:monthly-series="summary!.avg_sentiment"
+			:feedback="feedback"
+			v-model:drilldown="isDrilldown"
+		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
 			<div class="overflow-x-auto">
@@ -128,29 +127,39 @@ import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import { useUserStore } from '@/stores/userStore';
-import { ref, onMounted, computed, onUnmounted } from 'vue';
+import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type { Skill, SkillSummary, TeamUser, User, UserSummary } from '@/types';
+import type { FeedbackSubmissionFull, SkillSummary, TeamUser, UserSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
 import { useAdminStore } from '@/stores/adminStore';
 import { formatName } from '@/composables/formatName';
+import { useFeedbackStore } from '@/stores/feedbackStore';
 Chart.register(...registerables);
 
 const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
-const userStore = useUserStore();
+const feedbackStore = useFeedbackStore();
+
 const adminStore = useAdminStore();
 const summary = ref<UserSummary | null>();
 const loading = ref(true);
+const isDrilldown = ref(false);
+const feedback = ref<FeedbackSubmissionFull[]>([])
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
 		return JSON.parse(raw) as Partial<TeamUser>;
 	} else return null
 });
-
+watch(isDrilldown, async (val) => {
+	if(!employee.value)
+	if(feedback.value.length) return
+	if(val) {
+		feedback.value = await feedbackStore.getEmployeeSubsGiven(employee!.value!.user_id!)
+	}
+})
 onMounted(async() => {
 	try {
 		if(employee.value !== null) {

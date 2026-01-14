@@ -25,10 +25,15 @@ export const useFeedbackStore = defineStore("feedback", () => {
 
   async function getSubmissionsGiven() {
     loading.value = true;
+    if(subsGiven.value.length > 0) {
+      loading.value = false;
+      return subsGiven.value;
+    }
     try {
       const res = await api.get('/submissions_given');
       if(res.status === 200) {
         subsGiven.value = res.data;
+        return res.data;
       }
     } catch (err:any) {
       console.error('Error in getSubmissionsGiven: ', err)

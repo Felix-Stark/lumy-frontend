@@ -6,7 +6,7 @@ export function useAvgSentTimeFilter() {
     const activeRange = ref<DateRange | null>(null)
     const activeMonthLabel = ref<string | null>(null)
     const nextMonth = ref<Date>()
-    const prevMonth = ref(0)
+    const prevMonth = ref<Date>()
 
     function setFilter(tf: TimeFilter) {
         timeFilter.value = tf
@@ -21,7 +21,6 @@ export function useAvgSentTimeFilter() {
     function getMonthRange(label: string): DateRange {
         const [monthName, year] = label.split(' ')
         const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
-        prevMonth.value = monthIndex - 1;
 
         const from = new Date(Number(year), monthIndex, 1)
         from.setHours(0, 0, 0, 0)
@@ -43,14 +42,16 @@ export function useAvgSentTimeFilter() {
         console.log('goToPrev: ', activeRange.value)
         if (!activeRange.value) return
 
-        const prev = new Date(activeRange.value.to) //to instead of from solves goToPrev from 30 days.
+        const { to } = getMonthRange(activeMonthLabel.value!) //to instead of from solves goToPrev from 30 days.
+        const prev = new Date(to);
+
         prev.setMonth(prev.getMonth() - 1)
         console.log('prev.setMonth: ', prev)
         const label = prev.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'
         })
-        console.log('goToPrev: ', label)
+        console.log('goToPrev label: ', label)
         drillDownToMonth(label)
     }
 
@@ -60,7 +61,6 @@ export function useAvgSentTimeFilter() {
         const { from } = getMonthRange(activeMonthLabel.value!)
         const next = new Date(from)
         next.setMonth(next.getMonth() + 1)
-        nextMonth.value = next;
         const label = next.toLocaleDateString('en-GB', {
             month: 'long',
             year: 'numeric'

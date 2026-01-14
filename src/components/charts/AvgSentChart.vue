@@ -44,8 +44,8 @@ import Tooltip from '@/components/base/Tooltip.vue';
 
 const filters = [
     { value: 'month-drilldown', label: 'Monthly' },
-    { value: 'quarter', label: 'Quarter' },
-    { value: 'year', label: 'Year' }
+    { value: 'quarter', label: 'This Quarter' },
+    { value: 'year', label: 'This Year' }
 ];
 ChartJS.register(...registerables);
 const showTooltip = ref(false)
@@ -70,9 +70,7 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:drilldown', value: boolean): void;
 }>();
-// timeFilter 'month', 'quarter', 'year' (default) is set by setFilter() on filter button click.
-// activeRange holds a value  of { from, to } and is set by  if timeFilter === 'month' or 'month-drilldown'
-// drillDownToMonth() sets timeFilter, activeMonthLabel and activeRange
+
 const {
     timeFilter,
     activeRange,
@@ -94,13 +92,13 @@ const isNextDisabled = computed(() => {
 
 const avgSentTitle = computed(() => {
     switch (timeFilter.value) {
+        case 'month-drilldown':
+            emit('update:drilldown', true)
+            return `Average sentiment ${activeMonthLabel.value}`
         case 'quarter':
             activeRange.value = null
             emit('update:drilldown', false)
             return 'Average sentiment last quarter';
-        case 'month-drilldown':
-            emit('update:drilldown', true)
-            return `Average sentiment ${activeMonthLabel.value}`
         case 'year':
         default:
             activeRange.value = null
@@ -111,7 +109,7 @@ const avgSentTitle = computed(() => {
 
 
 const chartData = computed(() => {
-    if ((timeFilter.value === 'month' || timeFilter.value === 'month-drilldown')
+    if ((timeFilter.value === 'month-drilldown')
         && activeRange.value && props.feedback) {
         const points = aggregateSentimentPerDay(
             props.feedback,

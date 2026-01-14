@@ -1,92 +1,71 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { DateRange, FeedbackSubmissionFull, TimeFilter, TimeSeries } from "@/types";
 
 export function useAvgSentTimeFilter() {
     const timeFilter = ref<TimeFilter>('year')
     const activeRange = ref<DateRange | null>(null)
-    const activeMonthLabel = ref<string | null>(null)
+    const activeMonthLabel = computed(() => {
+        if(!activeRange.value) return;
+        return getLabel(activeRange.value.from)
+    })
     const nextMonth = ref<Date>()
     const prevMonth = ref<Date>()
 
     function setFilter(tf: TimeFilter) {
         timeFilter.value = tf
-        activeMonthLabel.value = null
+        if(!activeMonthLabel.value && tf === 'month-drilldown') {
+            const now = new Date();
 
-        if (tf === 'month') {
-            activeRange.value = getLast30DaysRange()
+            drillDownToMonth(now)
         }
     }
 
-    function getMonthRange(label: string): DateRange {
-        const [monthName, year] = label.split(' ')
-        const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
-
-        const from = new Date(Number(year), monthIndex, 1)
-        from.setHours(0, 0, 0, 0)
-        const to = new Date(Number(year), monthIndex + 1, 0, 23, 59, 59)
-        const next = new Date(from)
-        next.setMonth(next.getMonth() + 1)
-        nextMonth.value = next;
-        return { from, to }
+    function getLabel(from: Date): string {
+        const label = from.toLocaleDateString('en-GB', {
+            month: 'long',
+            year: 'numeric'
+        });
+        return label;
     }
 
-    function drillDownToMonth(label: string) {
+    function drillDownToMonth(date: Date) {
         timeFilter.value = 'month-drilldown'
-        activeMonthLabel.value = label
-        activeRange.value = getMonthRange(label)
+        activeRange.value = getMonthRange(date)
+    }
+
+    function getMonthRange(date: Date): DateRange {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const from = new Date(year, month, 1);
+        from.setHours(0, 0, 0, 0);
+
+        const to = new Date(year, month + 1, 0);
+        to.setHours(23, 59, 59, 999);
+
+        const next = new Date(from);
+        next.setMonth(next.getMonth() + 1);
+        nextMonth.value = next;
+        return { from, to };
     }
 
     function goToPrevMonth() {
         if (!activeRange.value) return
-        if(timeFilter.value === 'month') {
-            prevMonth.value = activeRange.value.to
-        } else {
-            prevMonth.value = activeRange.value.from
-        }
-        const prev = prevMonth.value;
+        
+        const prev = activeRange.value.from;
         prev.setMonth(prev.getMonth() - 1)
-        const label = prev.toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric'
-        })
-        drillDownToMonth(label)
+        const label = getLabel(prev)
+
+        drillDownToMonth(prev)
     }
 
     function goToNextMonth() {
-        if (!activeMonthLabel.value) return
+        if (!activeRange.value) return
         
-        const { from } = getMonthRange(activeMonthLabel.value!)
-        const next = new Date(from)
+        const next = new Date(activeRange.value.from)
         next.setMonth(next.getMonth() + 1)
         nextMonth.value = next;
-        const current = new Date()
-        const label = next.toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric'
-        })
-        
-        if(activeRange.value?.to.getMonth() === current.getMonth()) {
-            getLast30DaysRange();
-        } else {
-            drillDownToMonth(label)
-        }
-    }
 
-    function getLast30DaysRange(): DateRange {
-        const to = new Date()
-        to.setHours(23, 59, 59, 999)
-
-        const from = new Date(to)
-        from.setDate(from.getDate() - 29)
-        from.setHours(0, 0, 0, 0)
-        const next = new Date(from);
-        next.setMonth(next.getMonth() +1)
-        nextMonth.value = next;
-        activeMonthLabel.value = next.toLocaleDateString('en-GB', {
-            month: 'long',
-            year: 'numeric'
-        });
-        return { from, to }
+        drillDownToMonth(next)
     }
 
     function filterTimeSeries(ts: TimeSeries, tf: TimeFilter): TimeSeries {

@@ -39,7 +39,6 @@ export const useFeedbackStore = defineStore("feedback", () => {
       console.error('Error in getSubmissionsGiven: ', err)
     } finally {
       loading.value = false;
-      console.log('subsGiven in store: ', subsGiven.value)
     }
   };
 

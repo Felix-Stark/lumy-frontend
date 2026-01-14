@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import type { DateRange, FeedbackSubmissionFull, TimeFilter, TimeSeries } from "@/types";
 
 export function useAvgSentTimeFilter() {
@@ -18,6 +18,7 @@ export function useAvgSentTimeFilter() {
         console.log('setFilter: ', activeRange.value)
 
     }
+
     function getMonthRange(label: string): DateRange {
         const [monthName, year] = label.split(' ')
         const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth()
@@ -41,9 +42,8 @@ export function useAvgSentTimeFilter() {
     function goToPrevMonth() {
         if (!activeRange.value) return
 
-        const { to } = getMonthRange(activeMonthLabel.value!) //to instead of from solves goToPrev from 30 days.
-        const prev = new Date(to);
-
+        const prev = new Date(activeRange.value.to);
+        console.log('prev: ', new Date(activeRange.value.to))
         prev.setMonth(prev.getMonth() - 1)
         console.log('prev.setMonth: ', prev)
         const label = prev.toLocaleDateString('en-GB', {

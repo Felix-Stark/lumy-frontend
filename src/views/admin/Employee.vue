@@ -68,46 +68,7 @@
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
-			<div class="overflow-x-auto">
-				<table class="min-w-full rounded-lg">
-					<thead>
-						<tr>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Skill</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-						v-for="skill in summary?.skills_summary"
-						:key="skill.skill_id"
-						class="hover:bg-gray-50 "
-						@click="selectedSkill(skill)"
-						>
-							<td class="px-6 py-4">{{ skill.name }}</td>
-
-							<td v-if="skill.average_sentiment >= 0.60" class="px-6 py-4 text-green-500">
-								Strength
-							</td>
-							<td v-else-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-6 py-4 text-yellow-500">
-								Average
-							</td>
-							<td v-else-if="skill.average_sentiment === 0" class="px-6 py-4 text-gray-500">
-								No feedback
-							</td>
-							<td v-else class="px-6 py-4 text-red-500">
-								Needs improvement
-							</td>
-
-							<td class="px-6 py-4">{{ skill.feedback_count }}</td>
-							<td class="px-6 py-4">
-								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<SkillsTable :skills-summary="summary?.skills_summary" />
 		</section>
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
@@ -134,9 +95,9 @@ import { useDateFormat } from '@/composables/useDateFormat';
 import { useAdminStore } from '@/stores/adminStore';
 import { formatName } from '@/composables/formatName';
 import { useFeedbackStore } from '@/stores/feedbackStore';
+import SkillsTable from '@/components/dashboard/SkillsTable.vue';
 Chart.register(...registerables);
 
-const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
@@ -180,44 +141,6 @@ function resetEmployee() {
     sessionStorage.removeItem('employee');
     router.push({ name: 'admin-overview' });
 }
-
-function selectedSkill(skill: SkillSummary) {
-	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	// router.push({ name: 'overview-member-skill' });
-}
-
-const avgSentChart = computed(() => {
-	const avgSent = summary.value?.avg_sentiment || {};
-	return {
-		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Average Sentiment',
-				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			}
-		]
-	};
-})
-const avgSentOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: false },
-    title: { display: false }
-  },
-  scales: {
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
-    }
-  }
-};
-
 
 const feedbackChart = computed(() => {
   const feedbackRequested = summary.value?.feedback_requested || {};

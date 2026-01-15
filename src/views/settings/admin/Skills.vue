@@ -74,7 +74,7 @@
             />
         </section>
         <section class="flex flex-col gap-3">
-            <h2 class="flex items-start text-lg text-gray-600 mb-4">Custom skills<span class="rounded-full" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Skills created for your organisation')" @mouseleave="handleMouseLeave"><Info class="w-3 h-3" /></span></h2>
+            <h2 class="flex items-start text-lg text-gray-600 mb-4">Custom skills<span><InfoTip text="Skills created by your organisation" /></span></h2>
             <Disclosure v-if="customSkills" v-slot="{ open }" v-for="s in customSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">
@@ -192,6 +192,7 @@ Switch
 } from '@headlessui/vue';
 import { EllipsisVertical, ChevronDown, Edit,  Trash2, Info } from 'lucide-vue-next';
 import { ref, onMounted } from 'vue';
+import InfoTip from '@/components/InfoTip.vue';
 
 const initLoading = ref(true);
 const loading = ref(false);

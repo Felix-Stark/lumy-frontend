@@ -2,10 +2,8 @@
   <div
     class="w-3 h-3 rounded-full"
     tabindex="0"
-    @mouseenter="onEnter"
+    @mouseenter="(e: MouseEvent) => onEnter(e)"
     @mouseleave="onLeave"
-    @focus="onEnter"
-    @blur="onLeave"
     role="button"
     aria-label="Info"
   >
@@ -13,10 +11,10 @@
   </div>
 
   <Tooltip
-    :visible="visible"
+    :visible="showTool"
     :text="text"
-    :x="xAlign || 0"
-    :y="yAlign || 0"
+    :x="tooltipX || 0"
+    :y="tooltipY || 0"
   />
 </template>
 
@@ -27,29 +25,18 @@ import { ref, watch } from 'vue';
 
 const props = defineProps<{
   text: string;
-  showTool?: boolean;
-  xAlign?: number;
-  yAlign?: number;
 }>();
+const tooltipX = ref(0)
+const tooltipY = ref(0)
+const showTool = ref(false)
 
-const emit = defineEmits<{
-  (e: 'update:showTool', val: boolean): void;
-}>();
-
-// local visible state, sync with optional prop and emit updates for v-model:showTool
-const visible = ref<boolean>(props.showTool ?? false);
-
-watch(() => props.showTool, (v) => {
-  if (typeof v === 'boolean') visible.value = v;
-});
-
-function onEnter() {
-  visible.value = true;
-  emit('update:showTool', true);
+function onEnter(e: MouseEvent) {
+  showTool.value = true;
+    tooltipX.value = e.clientX - 12 // offset for better positioning
+    tooltipY.value = e.clientY + 12
 }
 
 function onLeave() {
-  visible.value = false;
-  emit('update:showTool', false);
+  showTool.value = false;
 }
 </script>

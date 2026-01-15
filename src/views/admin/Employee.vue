@@ -23,7 +23,7 @@
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 lg:mt-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
-				description="Feedbacks received"
+				description="Feedback received"
 			>
 				<Heart
 				class="w-12 h-12 text-red-500"
@@ -32,7 +32,7 @@
 			</HeadCard>
 			<HeadCard
 				:title="`${summary?.feedback_given_count ?? 0}`"
-				description="Feedbacks given"
+				description="Feedback given"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="lucide lucide-message-square-quote-icon lucide-message-square-quote text-blue-500">
 					<!-- Outer shape filled blue -->
@@ -44,7 +44,7 @@
 			</HeadCard>
 			<HeadCard
 				:title="summary?.top_positive_skill || 'N/A'"
-				description="Most mentioned strength"
+				description="Strongest skill"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
@@ -100,7 +100,7 @@
 								Needs improvement
 							</td>
 
-							<td class="px-6 py-4 text-center">{{ skill.feedback_count }}</td>
+							<td class="px-6 py-4">{{ skill.feedback_count }}</td>
 							<td class="px-6 py-4">
 								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
 							</td>
@@ -127,7 +127,6 @@ import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import AvgSentChart from '@/components/charts/AvgSentChart.vue';
-import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { FeedbackSubmissionFull, SkillSummary, TeamUser, UserSummary } from '@/types';

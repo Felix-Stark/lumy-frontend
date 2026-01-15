@@ -16,7 +16,7 @@
       <HeadCard :title="adminStore.teamSummary?.positive_feedback_percentage+'%' || 0" description="Positive feedback">
         <Smile class="text-lumy-green min-w-10 h-auto" stroke="currentColor" />
       </HeadCard>
-      <HeadCard :title="constructiveAverageRounded+'%' || 0" description="Constructive feedback">
+      <HeadCard :title="constructiveAverageRounded+'%' || 0" description="Constructive feedback rating">
         <Handshake class="text-[#d8ac19] min-w-10 h-auto" stroke="currentColor" />
       </HeadCard>
     </header>

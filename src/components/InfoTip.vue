@@ -7,7 +7,7 @@
     role="button"
     aria-label="Info"
   >
-    <Info class="text-gray-300 w-3 h-3" />
+    <Info class="text-gray-400 w-3 h-3" />
   </span>
 
   <Tooltip

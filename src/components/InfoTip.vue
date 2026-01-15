@@ -1,14 +1,14 @@
 <template>
-  <div
-    class="w-3 h-3 rounded-full"
+  <span
+    class="rounded-full"
     tabindex="0"
     @mouseenter="(e: MouseEvent) => onEnter(e)"
     @mouseleave="onLeave"
     role="button"
     aria-label="Info"
   >
-    <Info class="text-gray-300" />
-  </div>
+    <Info class="text-gray-300 w-3 h-3" />
+  </span>
 
   <Tooltip
     :visible="showTool"

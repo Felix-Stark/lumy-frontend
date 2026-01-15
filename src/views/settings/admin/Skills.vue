@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </Disclosure>
-            <h2 class="flex items-start text-lg text-gray-600 mt-8 mb-4">Default skills<span class="rounded-full" @mouseenter="(e: MouseEvent) => handleMouseEnter(e, 'Default skills created by Lumy. These skills cannot be edited or deleted, but you can disable them for your organisation using the toggle.')" @mouseleave="handleMouseLeave"><Info class="w-3 h-3" /></span></h2>
+            <h2 class="flex items-start text-lg text-gray-600 mt-8 mb-4">Default skills<InfoTip text="Default skills created by Lumy. These skills cannot be edited or deleted, but you can disable them for your organisation using the toggle." /></h2>
             <Disclosure v-slot="{ open }" v-for="s in defaultSkills">
                 <div class="flex w-full justify-between items-start border-b border-b-gray-300">
                     <div class="flex w-full flex-col">

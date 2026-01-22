@@ -19,16 +19,16 @@
 							<td class="px-6 py-4">{{ skill.name }}</td>
 
 							<td v-if="skill.average_sentiment >= 0.60" class="px-6 py-4 text-green-500">
-								Strength
+								Strong
 							</td>
 							<td v-else-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-6 py-4 text-yellow-500">
-								Average
+								Medium
 							</td>
 							<td v-else-if="skill.average_sentiment === 0" class="px-6 py-4 text-gray-500">
 								No feedback
 							</td>
 							<td v-else class="px-6 py-4 text-red-500">
-								Needs improvement
+								Weak
 							</td>
 
 							<td class="px-6 py-4">{{ skill.feedback_count }}</td>

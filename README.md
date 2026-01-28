@@ -1,4 +1,4 @@
-## Lumy-Frontend
+# Lumy-Frontend
 Lumy is a production-ready frontend web application for a performance-feedback platform, currently live in production and used by pilot customers.
 
 The platform replaces traditional performance reviews with continuous, peer-driven feedback and turns that data into clear, actionable performance insights for individuals and managers.
@@ -23,7 +23,7 @@ The frontend is built to operate independently of backend implementation details
 
 The Lumy frontend is responsible for user experience, application state, and data presentation across the entire platform.
 
-# Key responsibilities
+### Key responsibilities
 
 Role-based UI architecture
 Separate layouts and navigation flows for employees, managers, and admins, ensuring clarity, security, and relevance of information.
@@ -59,12 +59,12 @@ The focus of this codebase is frontend engineering, UX decisions, and maintainab
 
 ## Tech Stack
 
-Vue 3
-TypeScript
-Tailwind CSS
-Vue Router
-Pinia (state management)
-Chart.js / vue-chartjs
+- Vue 3
+- TypeScript
+- Tailwind CSS
+- Vue Router
+- Pinia (state management)
+- Chart.js / vue-chartjs
 
 ## Why This Project Matters
 

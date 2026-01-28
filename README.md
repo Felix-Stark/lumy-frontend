@@ -9,13 +9,10 @@ This repository contains the complete frontend implementation of Lumy and focuse
 
 Lumy is designed to collect feedback through integrations with collaboration tools like Slack and Microsoft Teams, while the web app acts as the central interface for:
 
-viewing and analyzing performance data
-
-managing users and roles
-
-configuring feedback workflows
-
-supporting ongoing iteration based on real user usage
+- viewing and analyzing performance data
+- managing users and roles
+- configuring feedback workflows
+- supporting ongoing iteration based on real user usage
 
 The frontend is built to operate independently of backend implementation details and consumes data exclusively through APIs.
 
@@ -25,23 +22,23 @@ The Lumy frontend is responsible for user experience, application state, and dat
 
 ### Key responsibilities
 
-Role-based UI architecture
-Separate layouts and navigation flows for employees, managers, and admins, ensuring clarity, security, and relevance of information.
+- Role-based UI architecture
+    Separate layouts and navigation flows for employees, managers, and admins, ensuring clarity, security, and relevance of information.
 
-Authentication-aware routing
-Protected routes, login flows, and permission-based rendering handled on the frontend.
+- Authentication-aware routing
+    Protected routes, login flows, and permission-based rendering handled on the frontend.
 
-Performance analytics & data visualization
-Aggregated feedback is displayed using interactive charts and dashboards to highlight trends, averages, and changes over time.
+- Performance analytics & data visualization
+    Aggregated feedback is displayed using interactive charts and dashboards to highlight trends, averages, and changes over time.
 
-API-driven data handling
-Async data loading, error handling, and empty states designed for real production scenarios.
+- API-driven data handling
+    Async data loading, error handling, and empty states designed for real production scenarios.
 
-Scalable Vue 3 architecture
-Modular components, shared layouts, centralized state management, and a structure designed to support growth and new features.
+- Scalable Vue 3 architecture
+    Modular components, shared layouts, centralized state management, and a structure designed to support growth and new features.
 
-Integration-ready UX
-Frontend surfaces feedback originating from Slack and Microsoft Teams without coupling UI logic to integration-specific behavior.
+- Integration-ready UX
+    Frontend surfaces feedback originating from Slack and Microsoft Teams without coupling UI logic to integration-specific behavior.
 
 ## Production Context
 
@@ -54,7 +51,7 @@ Frontend surfaces feedback originating from Slack and Microsoft Teams without co
 ## Scope
 
 This repository is frontend-only.
-Backend services, databases, and integrations are assumed to exist and are consumed via APIs.
+Backend services, databases, and integrations was built by a backend developer and are consumed via APIs.
 The focus of this codebase is frontend engineering, UX decisions, and maintainable architecture.
 
 ## Tech Stack

@@ -1,65 +1,76 @@
-1. Dålig kvalitet på feedback
-- Feedback är ofta vag, generisk eller ospecifik.
-- Många tycker att det är svårt att formulera konstruktiv och hjälpsam feedback.
+## Lumy-Frontend
+Lumy is a production-ready frontend web application for a performance-feedback platform, currently live in production and used by pilot customers.
 
-2. Ojämn feedbackkultur
-- Vissa får mycket feedback, andra nästan ingen.
-- Feedback ges sporadiskt eller bara i samband med årliga samtal.
+The platform replaces traditional performance reviews with continuous, peer-driven feedback and turns that data into clear, actionable performance insights for individuals and managers.
 
-3. Svårt att mäta kompetensutveckling
-- Ingen struktur för att följa upp om medarbetare utvecklas inom viktiga färdigheter.
-- Chefer saknar tydlig input för samtal om utveckling och prestation.
+This repository contains the complete frontend implementation of Lumy and focuses on scalable architecture, role-based UX, and data visualization for a real-world SaaS product.
 
-4. Feedbackprocesser är ofta tidskrävande
-- Det tar tid att samla in feedback manuellt.
-- HR och chefer behöver ofta jaga folk för att få svar.
+## Overview
 
-5. Brist på insikter för coachning
-- Chefer saknar tydliga signaler för vad medarbetare behöver hjälp med.
-- Feedbackdata är ostrukturerad och svår att tolka.
+Lumy is designed to collect feedback through integrations with collaboration tools like Slack and Microsoft Teams, while the web app acts as the central interface for:
 
-6. svårt att skala en feedbackkultur
-- i takt med att organisationen växer blir det svårare att hålla koll på vem som får feedback, när och om den är relevant.
+viewing and analyzing performance data
 
+managing users and roles
 
-# .
+configuring feedback workflows
 
+supporting ongoing iteration based on real user usage
 
-feedback fylla i och analyseras
- poäng kopplas till skill.
-performance data requests från asaya Labs
-feedback data analyseras baserat på skill 
-genomsnitts värde på skill skickas tillbaka
+The frontend is built to operate independently of backend implementation details and consumes data exclusively through APIs.
 
+## What the Frontend App Does
 
-This template should help get you started developing with Vue 3 in Vite.
+The Lumy frontend is responsible for user experience, application state, and data presentation across the entire platform.
 
-## Recommended IDE Setup
+# Key responsibilities
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Role-based UI architecture
+Separate layouts and navigation flows for employees, managers, and admins, ensuring clarity, security, and relevance of information.
 
-## Type Support for `.vue` Imports in TS
+Authentication-aware routing
+Protected routes, login flows, and permission-based rendering handled on the frontend.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Performance analytics & data visualization
+Aggregated feedback is displayed using interactive charts and dashboards to highlight trends, averages, and changes over time.
 
-## Customize configuration
+API-driven data handling
+Async data loading, error handling, and empty states designed for real production scenarios.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Scalable Vue 3 architecture
+Modular components, shared layouts, centralized state management, and a structure designed to support growth and new features.
 
-## Project Setup
+Integration-ready UX
+Frontend surfaces feedback originating from Slack and Microsoft Teams without coupling UI logic to integration-specific behavior.
 
-```sh
-npm install
-```
+## Production Context
 
-### Compile and Hot-Reload for Development
+- The application is live in production.
 
-```sh
-npm run dev
-```
+- Used by pilot customers.
 
-### Type-Check, Compile and Minify for Production
+- UX and frontend decisions are informed by real user behavior and feedback, not hypothetical use cases.
 
-```sh
-npm run build
-```
+## Scope
+
+This repository is frontend-only.
+Backend services, databases, and integrations are assumed to exist and are consumed via APIs.
+The focus of this codebase is frontend engineering, UX decisions, and maintainable architecture.
+
+## Tech Stack
+
+Vue 3
+TypeScript
+Tailwind CSS
+Vue Router
+Pinia (state management)
+Chart.js / vue-chartjs
+
+## Why This Project Matters
+
+This project demonstrates:
+
+- Ownership of a production SaaS frontend
+- Designing and maintaining role-based, data-heavy interfaces
+- Turning complex datasets into clear, usable UI
+- Writing frontend code that scales beyond a single feature or demo

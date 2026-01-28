@@ -52,7 +52,7 @@
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
-			<SkillsTable :skills-summary="summary?.skills_summary" />
+			<SkillsTable :my-summary="true" :skills-summary="summary?.skills_summary" />
 		</section>
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
@@ -75,7 +75,6 @@ import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull } from '@/types';
-import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { useFeedbackStore } from '@/stores/feedbackStore';
@@ -87,7 +86,6 @@ const feedbackStore = useFeedbackStore();
 
 ChartJS.register(...registerables);
 
-const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 const isDrilldown = ref(false)
 const router = useRouter();
@@ -96,7 +94,6 @@ const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const feedback = ref<FeedbackSubmissionFull[]>([])
-
 
 onMounted(async() => {
 	try {

@@ -68,7 +68,7 @@
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
-			<SkillsTable :skills-summary="summary?.skills_summary" />
+			<SkillsTable :my-summary="accessGranted" :skills-summary="summary?.skills_summary" />
 		</section>
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
@@ -90,19 +90,18 @@ import HeadCard from '@/components/dashboard/HeadCard.vue';
 import AvgSentChart from '@/components/charts/AvgSentChart.vue';
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type { FeedbackSubmissionFull, SkillSummary, TeamUser, UserSummary } from '@/types';
-import { useDateFormat } from '@/composables/useDateFormat';
+import type { FeedbackSubmissionFull, TeamUser, UserSummary } from '@/types';
 import { useAdminStore } from '@/stores/adminStore';
 import { formatName } from '@/composables/formatName';
 import { useFeedbackStore } from '@/stores/feedbackStore';
 import SkillsTable from '@/components/dashboard/SkillsTable.vue';
+import { useSessionStore } from '@/stores/sessionStore';
 Chart.register(...registerables);
 
-defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const feedbackStore = useFeedbackStore();
-
+const session = useSessionStore();
 const adminStore = useAdminStore();
 const summary = ref<UserSummary | null>();
 const loading = ref(true);
@@ -111,22 +110,24 @@ const feedback = ref<FeedbackSubmissionFull[]>([])
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
-		return JSON.parse(raw) as Partial<TeamUser>;
+		return JSON.parse(raw) as TeamUser;
 	} else return null
 });
+const accessGranted = ref(false);
 watch(isDrilldown, async (val) => {
-	if(!employee.value)
+	if(!employee.value) return
 	if(feedback.value.length) return
 	if(val) {
-		feedback.value = await feedbackStore.getEmployeeSubsGiven(employee!.value!.user_id!)
+		feedback.value = await feedbackStore.getEmployeeSubsGiven(employee.value.user_id)
 	}
 })
 onMounted(async() => {
 	try {
 		if(employee.value !== null) {
-		await adminStore.getEmployeeSummary(employee.value.user_id!)
+		await adminStore.getEmployeeSummary(employee.value.user_id)
 		summary.value = adminStore.employeeSummary
-		} 
+		}
+		accessGranted.value = false;
 	} catch (err: any) {
 		console.error('Error fetching employee summary: ', err)
 	} finally {

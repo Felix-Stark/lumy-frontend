@@ -44,14 +44,17 @@
 <script setup lang="ts">
 import type { SkillSummary } from '@/types';
 import { useDateFormat } from '@/composables/useDateFormat';
+
 const { formatFeedbackDate } = useDateFormat();
 
-defineProps<{
+
+const props = defineProps<{
     skillsSummary?: SkillSummary[];
+    mySummary: boolean;
 }>()
 
 function selectedSkill(skill: SkillSummary) {
-	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	// router.push({ name: 'overview-member-skill' });
+    if (!props.mySummary) return;
+	sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
 }
 </script>

@@ -52,49 +52,7 @@
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
-			<div class="overflow-x-auto">
-				<table class="min-w-full rounded-lg">
-					<thead>
-						<tr>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Skill</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-						v-for="skill in summary?.skills_summary"
-						:key="skill.skill_id"
-						class="hover:bg-gray-50 cursor-pointer"
-						@click="selectedSkill(skill)"
-						>
-							<td class="px-6 py-4">{{ skill.name }}</td>
-
-							<td v-if="skill.average_sentiment >= 0.60" class="px-6 py-4 text-green-500">
-								Strength
-							</td>
-							<td v-else-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-6 py-4 text-yellow-500">
-								Average
-							</td>
-							<td v-else-if="skill.average_sentiment === 0" class="px-6 py-4 text-gray-500">
-								No feedback
-							</td>
-							<td v-else class="px-6 py-4 text-red-500">
-								Needs improvement
-							</td>
-
-							<td class="px-6 py-4 text-center">{{ skill.feedback_count }}</td>
-							<td class="px-6 py-4">
-								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
-							</td>
-							<td class="px-6 py-4 text-right">
-								<ChevronRight />
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<SkillsTable :my-summary="true" :skills-summary="summary?.skills_summary" />
 		</section>
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
@@ -117,18 +75,17 @@ import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import type { SessionUser, SkillSummary, UserSummary, FeedbackSubmissionFull } from '@/types';
-import { useDateFormat } from '@/composables/useDateFormat';
 import { useSessionStore } from '@/stores/sessionStore';
 import { formatName } from '@/composables/formatName';
 import { useFeedbackStore } from '@/stores/feedbackStore';
 import AvgSentChart from '@/components/charts/AvgSentChart.vue';
+import SkillsTable from '@/components/dashboard/SkillsTable.vue';
 
 const session = useSessionStore();
 const feedbackStore = useFeedbackStore();
 
 ChartJS.register(...registerables);
 
-const { formatFeedbackDate } = useDateFormat();
 defineProps<{ lastFeedback: string }>();
 const isDrilldown = ref(false)
 const router = useRouter();
@@ -137,7 +94,6 @@ const summary = computed<UserSummary | null>(() => userStore.meSummary);
 const loading = ref(true);
 const user = ref<SessionUser | null>(null)
 const feedback = ref<FeedbackSubmissionFull[]>([])
-
 
 onMounted(async() => {
 	try {

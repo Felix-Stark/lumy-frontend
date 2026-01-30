@@ -23,7 +23,7 @@
 		<header class="grid grid-cols-2 xl:grid-cols-2 2xl:mx-8 lg:mt-8 w-full items-stretch gap-6">
 			<HeadCard
 				:title="`${summary?.feedback_received_count ?? 0}`"
-				description="Feedbacks received"
+				description="Feedback received"
 			>
 				<Heart
 				class="w-12 h-12 text-red-500"
@@ -32,7 +32,7 @@
 			</HeadCard>
 			<HeadCard
 				:title="`${summary?.feedback_given_count ?? 0}`"
-				description="Feedbacks given"
+				description="Feedback given"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="lucide lucide-message-square-quote-icon lucide-message-square-quote text-blue-500">
 					<!-- Outer shape filled blue -->
@@ -44,7 +44,7 @@
 			</HeadCard>
 			<HeadCard
 				:title="summary?.top_positive_skill || 'N/A'"
-				description="Most mentioned strength"
+				description="Strongest skill"
 			>
 				<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 24 24" fill="currentColor" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award text-lumy-purple"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
 			</HeadCard>
@@ -68,46 +68,7 @@
 		/>
 		<section class="flex flex-col w-full bg-white text-gray-800 p-8 rounded-lg">
 			<h2 class="text-xl self-start mb-4">Skills Overview</h2>
-			<div class="overflow-x-auto">
-				<table class="min-w-full rounded-lg">
-					<thead>
-						<tr>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Skill</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Sentiment</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500"># of feedback</th>
-						<th class="px-6 py-4 text-left font-thin text-gray-500">Last feedback received</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-						v-for="skill in summary?.skills_summary"
-						:key="skill.skill_id"
-						class="hover:bg-gray-50 "
-						@click="selectedSkill(skill)"
-						>
-							<td class="px-6 py-4">{{ skill.name }}</td>
-
-							<td v-if="skill.average_sentiment >= 0.60" class="px-6 py-4 text-green-500">
-								Strength
-							</td>
-							<td v-else-if="skill.average_sentiment > 0.40 && skill.average_sentiment < 0.60" class="px-6 py-4 text-yellow-500">
-								Average
-							</td>
-							<td v-else-if="skill.average_sentiment === 0" class="px-6 py-4 text-gray-500">
-								No feedback
-							</td>
-							<td v-else class="px-6 py-4 text-red-500">
-								Needs improvement
-							</td>
-
-							<td class="px-6 py-4 text-center">{{ skill.feedback_count }}</td>
-							<td class="px-6 py-4">
-								{{ skill.last_feedback_received ? formatFeedbackDate(skill.last_feedback_received) : 'None' }}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<SkillsTable :my-summary="accessGranted" :skills-summary="summary?.skills_summary" />
 		</section>
 
 		<section class="flex flex-col items-center w-full bg-white text-gray-800 p-8 xl:p-12 rounded-lg">
@@ -127,22 +88,20 @@ import { Chart, registerables } from 'chart.js'
 import type { ChartOptions } from 'chart.js';
 import HeadCard from '@/components/dashboard/HeadCard.vue';
 import AvgSentChart from '@/components/charts/AvgSentChart.vue';
-import { useUserStore } from '@/stores/userStore';
 import { ref, onMounted, computed, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import type { FeedbackSubmissionFull, SkillSummary, TeamUser, UserSummary } from '@/types';
-import { useDateFormat } from '@/composables/useDateFormat';
+import type { FeedbackSubmissionFull, TeamUser, UserSummary } from '@/types';
 import { useAdminStore } from '@/stores/adminStore';
 import { formatName } from '@/composables/formatName';
 import { useFeedbackStore } from '@/stores/feedbackStore';
+import SkillsTable from '@/components/dashboard/SkillsTable.vue';
+import { useSessionStore } from '@/stores/sessionStore';
 Chart.register(...registerables);
 
-const { formatFeedbackDate } = useDateFormat();
-defineProps<{ lastFeedback: string }>();
 
 const router = useRouter();
 const feedbackStore = useFeedbackStore();
-
+const session = useSessionStore();
 const adminStore = useAdminStore();
 const summary = ref<UserSummary | null>();
 const loading = ref(true);
@@ -151,22 +110,24 @@ const feedback = ref<FeedbackSubmissionFull[]>([])
 const employee = computed(() => {
 	const raw = sessionStorage.getItem('employee');
 	if(raw) {
-		return JSON.parse(raw) as Partial<TeamUser>;
+		return JSON.parse(raw) as TeamUser;
 	} else return null
 });
+const accessGranted = ref(false);
 watch(isDrilldown, async (val) => {
-	if(!employee.value)
+	if(!employee.value) return
 	if(feedback.value.length) return
 	if(val) {
-		feedback.value = await feedbackStore.getEmployeeSubsGiven(employee!.value!.user_id!)
+		feedback.value = await feedbackStore.getEmployeeSubsGiven(employee.value.user_id)
 	}
 })
 onMounted(async() => {
 	try {
 		if(employee.value !== null) {
-		await adminStore.getEmployeeSummary(employee.value.user_id!)
+		await adminStore.getEmployeeSummary(employee.value.user_id)
 		summary.value = adminStore.employeeSummary
-		} 
+		}
+		accessGranted.value = false;
 	} catch (err: any) {
 		console.error('Error fetching employee summary: ', err)
 	} finally {
@@ -181,44 +142,6 @@ function resetEmployee() {
     sessionStorage.removeItem('employee');
     router.push({ name: 'admin-overview' });
 }
-
-function selectedSkill(skill: SkillSummary) {
-	// sessionStorage.setItem('selectedSkill', JSON.stringify(skill));
-	// router.push({ name: 'overview-member-skill' });
-}
-
-const avgSentChart = computed(() => {
-	const avgSent = summary.value?.avg_sentiment || {};
-	return {
-		labels: Object.keys(avgSent), // e.g. ["2025-07", "2025-08", ...]
-		datasets: [
-			{
-				label: 'Average Sentiment',
-				data: Object.values(avgSent), // e.g. [0.8, 0.85, ...]
-				fill: false,
-				borderColor: 'rgba(150, 45, 255, 1)',
-				borderDash: [ 5, 5 ],
-				tension: 0.4
-			}
-		]
-	};
-})
-const avgSentOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { display: false },
-    title: { display: false }
-  },
-  scales: {
-    y: {
-      min: 0,
-      max: 10,
-      ticks: { stepSize: 2 }
-    }
-  }
-};
-
 
 const feedbackChart = computed(() => {
   const feedbackRequested = summary.value?.feedback_requested || {};
